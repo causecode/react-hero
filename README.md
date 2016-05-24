@@ -6,7 +6,7 @@ Plugin provides utility directives and services.
 
 1. `npm Install`
 2. `typings Install`
-3. `npm run start: dev`
+3. `npm run start:dev`
 
 ## Releasing a new Version
 
