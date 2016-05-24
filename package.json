@@ -1,0 +1,32 @@
+{
+  "name": "react-hero",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "webpack-dev-server --production",
+    "build": "webpack",
+    "start:dev": "webpack-dev-server --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/causecode/react-hero.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/causecode/react-hero#readme",
+  "dependencies": {
+    "backbone-react-component": "^0.10.0",
+    "bootstrap": "^3.3.6",
+    "font-awesome": "^4.6.1",
+    "react": "^15.0.2",
+    "react-dom": "^15.0.2",
+    "typescript": "^1.8.10",
+    "typings": "^1.0.4"
+  },
+  "devDependencies": {
+    "source-map-loader": "^0.1.5",
+    "ts-loader": "^0.8.2"
+  }
+}
