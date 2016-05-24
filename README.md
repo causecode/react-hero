@@ -7,6 +7,7 @@ Plugin provides utility directives and services.
 1. `npm Install`
 2. `typings Install`
 3. `npm run start:dev`
+4. Installing new typings, eg. `typings install dt~react-dom --global --save`
 
 ## Releasing a new Version
 
