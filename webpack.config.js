@@ -20,7 +20,7 @@ if (isProduction) {
 }
 
 var config = {
-	entry: "./src/scripts/index.tsx",
+	entry: "./src/index.tsx",
 	output: {
 		filename: isProduction ? "./dist/bundle.[hash].min.js" : "./dist/bundle.js"
 	},
