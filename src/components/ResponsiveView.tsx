@@ -20,7 +20,7 @@ export class DeviceTypes {
 		DeviceTypes.DESKTOP
 	];
 
-	constructor(public id, public name) {
+	constructor(public id: number, public name: string) {
 		if (DeviceTypes.allDeviceTypes && DeviceTypes.allDeviceTypes.length) {
 			throw new Error(`Error: Instantiation Failed: Trying to create a new instance of DeviceTypes. Please use
 					one of the predefined Device types.`)
@@ -29,19 +29,19 @@ export class DeviceTypes {
 		this.name = name;
 	}
 
-	getName() {
+	getName(): string {
 		return this.name;
 	}
 
-	getId() {
+	getId(): number {
 		return this.id;
 	}
 
-	static getCurrentDevice() {
-		let indicator = document.createElement('div');
+	static getCurrentDevice(): DeviceTypes {
+		let indicator: HTMLElement = document.createElement('div');
 		indicator.className = 'state-indicator';
 		document.body.appendChild(indicator);
-		let deviceId = parseInt(window.getComputedStyle(indicator).getPropertyValue('z-index'), 10);
+		let deviceId: number = parseInt(window.getComputedStyle(indicator).getPropertyValue('z-index'), 10);
 		return DeviceTypes.getDeviceTypeFromIdOrString(deviceId);
 	}
 
@@ -55,6 +55,16 @@ export class DeviceTypes {
 	}
 }
 
+export interface IResponsiveView {
+	renderDefault?() : JSX.Element;
+	renderMobile?() : JSX.Element;
+	renderMobilePortrait?() : JSX.Element;
+	renderMobileLandscape?() : JSX.Element;
+	renderTablet?() : JSX.Element;
+	renderTabletPortrait?() : JSX.Element;
+	renderTabletLandscape?() : JSX.Element;
+}
+
 export abstract class ResponsiveView<P,S> extends React.Component<P, S> {
 
 	constructor() {
@@ -62,8 +72,8 @@ export abstract class ResponsiveView<P,S> extends React.Component<P, S> {
 	}
 
 	render() {
-		let currentDeviceType = DeviceTypes.getCurrentDevice();
-		let deviceSpecificRenderFunction = `render${currentDeviceType.getName()}`;
+		let currentDeviceType: DeviceTypes = DeviceTypes.getCurrentDevice();
+		let deviceSpecificRenderFunction: string = `render${currentDeviceType.getName()}`;
 		return (
 			<div>
 				<h1>This is the responsive view</h1>
@@ -73,31 +83,29 @@ export abstract class ResponsiveView<P,S> extends React.Component<P, S> {
 		)
 	}
 
-	protected renderDefault() {
-		throw 'renderDefault need to be implemented';
-	}
+	abstract renderDefault(): JSX.Element;
 
-	protected renderMobile() {
+	protected renderMobile(): JSX.Element{
 		return this.renderDefault();
 	}
 
-	protected renderMobilePortrait() {
+	protected renderMobilePortrait(): JSX.Element {
 		return this.renderMobile();
 	}
 
-	protected renderMobileLandscape() {
+	protected renderMobileLandscape(): JSX.Element {
 		return this.renderMobile();
 	}
 
-	protected renderTablet() {
+	protected renderTablet(): JSX.Element {
 		return this.renderDefault();
 	}
 
-	protected renderTabletPortrait() {
+	protected renderTabletPortrait(): JSX.Element {
 		return this.renderTablet();
 	}
 
-	protected renderTabletLandscape() {
+	protected renderTabletLandscape(): JSX.Element {
 		return this.renderTablet();
 	}
 }
