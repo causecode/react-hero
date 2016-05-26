@@ -24,6 +24,7 @@ var config = {
 	output: {
 		filename: isProduction ? "./dist/bundle.[hash].min.js" : "./dist/bundle.js"
 	},
+	devtool: 'source-map',
 	resolve: {
 		extensions: ["", ".webpack.js", ".web.js", ".ts", ".tsx", ".js"]
 	},
