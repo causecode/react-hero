@@ -76,14 +76,12 @@ export abstract class ResponsiveView<P,S> extends React.Component<P, S> {
 		let deviceSpecificRenderFunction: string = `render${currentDeviceType.getName()}`;
 		return (
 			<div>
-				<h1>This is the responsive view</h1>
-				<p>This is the content</p>
 				{this[deviceSpecificRenderFunction]()}
 			</div>
 		)
 	}
 
-	abstract renderDefault(): JSX.Element;
+	protected abstract renderDefault(): JSX.Element;
 
 	protected renderMobile(): JSX.Element{
 		return this.renderDefault();
