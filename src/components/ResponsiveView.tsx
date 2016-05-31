@@ -37,6 +37,18 @@ export class DeviceTypes {
 		return this.id;
 	}
 
+	static isMobile(): boolean {
+		return DeviceTypes.getCurrentDevice().getName().toLowerCase().indexOf('mobile') > 0;
+	}
+
+	static isTablet(): boolean {
+		return DeviceTypes.getCurrentDevice().getName().toLowerCase().indexOf('tablet') > 0;
+	}
+
+	static isDesktop(): boolean {
+		return DeviceTypes.getCurrentDevice().getName().toLowerCase().indexOf('default') > 0;
+	}
+
 	static getCurrentDevice(): DeviceTypes {
 		let indicator: HTMLElement = document.createElement('div');
 		indicator.className = 'state-indicator';

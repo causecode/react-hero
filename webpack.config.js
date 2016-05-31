@@ -44,7 +44,7 @@ var config = {
 		loaders: [
 			{test: /\.tsx?$/, exclude: /(node_modules)/, loaders: ["react-hot", "ts-loader"]},
 			{test: /\.css$/, loader: ExtractTextPlugin.extract("style-loader", "css-loader")},
-			{test: /\.(png|woff|woff2|eot|ttf|svg)$/, loader: 'url-loader?limit=100000' }
+			{test: /.(png|woff(2)?|eot|ttf|svg)(\?[a-z0-9=\.]+)?$/, loader: 'url-loader?limit=100000'}
 		]
 	},
 	plugins: plugins

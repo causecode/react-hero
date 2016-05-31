@@ -1,2 +1,4 @@
 @import url("state-indicator.css");
-@import url("../../node_modules/bootstrap/dist/css/bootstrap.css");
+@import url("main.css");
+@import url("../../node_modules/bootstrap/dist/css/bootstrap.min.css");
+@import url("../../node_modules/font-awesome/css/font-awesome.min.css");
