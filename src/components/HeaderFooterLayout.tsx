@@ -1,29 +1,34 @@
-import {ResponsiveView} from "./ResponsiveView";
-import {IResponsiveView} from "./ResponsiveView";
+import {ResponsiveView, IResponsiveView} from "./ResponsiveView";
 import * as React from 'react';
 import {BurgerIcon} from './BurgerIcon';
 import * as Bootstrap from 'react-bootstrap';
-import {Motion} from 'react-motion';
-import {spring} from "react-motion";
+import {Motion, spring} from 'react-motion';
 
-abstract class HeaderView extends React.Component<any, any> {
-	//TODO Add Header specific behaviour.
+export class HeaderView extends React.Component<any, any>{
+	// TODO Add Header specific behaviour.
 	render() {
-		return null
+		return <div>{this.props.children}</div>
 	}
 }
 
-abstract class FooterView extends React.Component<any,any> {
-	//TODO Add Header specific behaviour.
+export class FooterView extends React.Component<any,any> {
+	// TODO Add Footer specific behaviour.
 	render() {
-		return null
+		return <div>{this.props.children}</div>
 	}
 }
 
-abstract class ContentView extends React.Component<any, any> {
-	//TODO Add Header specific behaviour.
+export class ContentView extends React.Component<any, any> {
+	// TODO Add Content specific behaviour.
 	render() {
-		return null
+		return <div>{this.props.children}</div>
+	}
+}
+
+export class NavigationMenu extends React.Component<any, any> {
+	// TODO Add NavigationMenu specific behaviour.
+	render() {
+		return <div>{this.props.children}</div>
 	}
 }
 
@@ -31,7 +36,8 @@ interface IHeaderFooterLayoutProps {
 	fixedHeader: boolean,
 	fixedFooter: boolean,
 	menu: boolean,
-	menuPosition: 'left'|'right'
+	menuPosition: 'left'|'right';
+	children?: any;
 }
 
 interface IHeaderFooterLayoutState {
@@ -47,10 +53,29 @@ export class HeaderFooterLayout extends React.Component<IHeaderFooterLayoutProps
 	menu: HTMLDivElement;
 	private isNavBarPresent: boolean = false;
 
-	constructor() {
+
+	constructor(props: IHeaderFooterLayoutProps) {
 		super();
 		this.header = this.footer = this.content = <div></div>;
-		this.state = {open: false}
+		this.state = {open: false};
+		if (props.children) {
+			for(let child of props.children) {
+				switch (child.type.name) {
+					case 'HeaderView':
+						this.header = child;
+						break;
+					case 'ContentView':
+						this.content = child;
+						break;
+					case 'FooterView':
+						this.footer = child;
+						break;
+					case 'NavigationMenu':
+						this.setNav(child);
+						break;
+				}
+			}
+		}
 	}
 
 	protected setHeader(headerImpl: JSX.Element) {
