@@ -1,8 +1,11 @@
 import {ResponsiveView, IResponsiveView} from "./ResponsiveView";
 import * as React from 'react';
-import {BurgerIcon} from './BurgerIcon';
+import {NavMenuLauncherIcon} from './NavMenuLauncherIcon';
 import * as Bootstrap from 'react-bootstrap';
 import {Motion, spring} from 'react-motion';
+import {store} from "../store";
+import {connect} from "react-redux";
+import * as Actions from "./common/actions/actions";
 
 export class HeaderView extends React.Component<any, any>{
 	// TODO Add Header specific behaviour.
@@ -38,13 +41,10 @@ interface IHeaderFooterLayoutProps {
 	menu: boolean,
 	menuPosition: 'left'|'right';
 	children?: any;
-}
-
-interface IHeaderFooterLayoutState {
 	open?: boolean;
 }
 
-export class HeaderFooterLayout extends React.Component<IHeaderFooterLayoutProps, IHeaderFooterLayoutState>{
+export class HeaderFooterLayoutImpl extends React.Component<IHeaderFooterLayoutProps, {}> {
 
 	header: JSX.Element;
 	footer: JSX.Element;
@@ -96,16 +96,16 @@ export class HeaderFooterLayout extends React.Component<IHeaderFooterLayoutProps
 	}
 
 	private toggleNav = () => {
-		this.setState({open: !this.state.open})
+		store.dispatch(Actions.toggleNav())
 	};
 
 	render() {
 		return (
 			<div>
-				<Motion style={{x: spring(this.state.open ? 0 : -100 )}}>
+				<Motion style={{x: spring(this.props.open ? 0 : -100 )}}>
 					{({x}) =>
 					<div className="nav-menu" style={{ WebkitTransform: `translate3d(${x}%, 0, 0)`, transform: `translate3d(${x}%, 0, 0)`,}}>
-						<i className="fa fa-times" onClick={this.toggleNav} />
+						<i className="fa fa-times highlight-on-hover" onClick={this.toggleNav}/>
 						{this.nav}
 					</div>
 					}
@@ -113,7 +113,7 @@ export class HeaderFooterLayout extends React.Component<IHeaderFooterLayoutProps
 				<div className="header">
 					{(() => {
 						if (this.isNavBarPresent)
-							return <BurgerIcon handleClick={this.toggleNav} />;
+							return <NavMenuLauncherIcon />;
 						return
 						})()}
 					{this.header}
@@ -128,4 +128,14 @@ export class HeaderFooterLayout extends React.Component<IHeaderFooterLayoutProps
 		)
 	}
 }
+
+const mapStateToProps = (state) => {
+	return {
+		open: state.open
+	}
+};
+
+let HeaderFooterLayout = connect(mapStateToProps)(HeaderFooterLayoutImpl);
+
+export {HeaderFooterLayout};
 

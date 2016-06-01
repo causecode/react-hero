@@ -17,6 +17,15 @@
     font-size: larger
 }
 
+.highlight-on-hover:hover {
+    background: rgba(0,0,0,0.3)
+}
+
+.burger-icon {
+    padding: 5px;
+    display:inline-block;
+}
+
 .nav-menu .content{
     padding-top: 50px;
     padding-bottom: 15px;

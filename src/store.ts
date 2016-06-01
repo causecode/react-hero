@@ -1,9 +1,9 @@
 import {IStore} from "redux";
 import {createStore} from "redux";
+import {toggle} from './components/common/reducers/reducers';
 
 const initialState = {
+	open: false
 };
 
-const fooAction = (state, action) => { }
-
-export const store: IStore<any> = createStore(fooAction, initialState);
+export const store: IStore<any> = createStore(toggle, initialState);
