@@ -37,8 +37,6 @@ export class NavigationMenu extends React.Component<any, any> {
 
 interface IHeaderFooterLayoutProps {
 	fixedHeader: boolean,
-	fixedFooter: boolean,
-	menu: boolean,
 	menuPosition: 'left'|'right';
 	children?: any;
 	open?: boolean;
@@ -100,28 +98,28 @@ export class HeaderFooterLayoutImpl extends React.Component<IHeaderFooterLayoutP
 	};
 
 	render() {
+		let navMenuClasses = 'nav-menu ';
+		navMenuClasses += this.props.menuPosition;
+		let menuClosePosition = (this.props.menuPosition === 'left') ? -100 : 100;
+		let closeButtonClasses = 'fa fa-times highlight-on-hover ';
+		closeButtonClasses += (this.props.menuPosition === 'left') ? 'right' : 'left';
 		return (
 			<div>
-				<Motion style={{x: spring(this.props.open ? 0 : -100 )}}>
+				<Motion style={{x: spring(this.props.open ? 0 : menuClosePosition )}}>
 					{({x}) =>
-					<div className="nav-menu" style={{ WebkitTransform: `translate3d(${x}%, 0, 0)`, transform: `translate3d(${x}%, 0, 0)`,}}>
-						<i className="fa fa-times highlight-on-hover" onClick={this.toggleNav}/>
+					<div className={navMenuClasses} style={{ WebkitTransform: `translate3d(${x}%, 0, 0)`, transform: `translate3d(${x}%, 0, 0)`,}}>
+						<i className={closeButtonClasses} onClick={this.toggleNav}/>
 						{this.nav}
 					</div>
 					}
 				</Motion>
 				<div className="header">
-					{(() => {
-						if (this.isNavBarPresent)
-							return <NavMenuLauncherIcon />;
-						return
-						})()}
 					{this.header}
 				</div>
 				<div className="content">
 					{this.content}
 				</div>
-				<div>
+				<div className="footer">
 					{this.footer}
 				</div>
 			</div>
