@@ -2,6 +2,7 @@
   "globalDependencies": {
     "backbone": "registry:dt/backbone#1.0.0+20160316155526",
     "react": "registry:dt/react#0.14.0+20160423065914",
+    "react-bootstrap": "registry:dt/react-bootstrap#0.0.0+20160526141239",
     "react-dom": "registry:dt/react-dom#0.14.0+20160412154040",
     "react-motion": "registry:dt/react-motion#0.0.0+20160406115320"
   },
