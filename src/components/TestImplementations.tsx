@@ -14,10 +14,9 @@ export class NewPage extends React.Component<any, any> {
 
 	render() {
 		return (
-				<HeaderFooterLayout fixedHeader={true} menuPosition={'left'}>
+				<HeaderFooterLayout fixedHeader={true} menuPosition={'right'}>
 				<HeaderView>
 					<Content>
-						<NavMenuLauncherIcon/>
 						<Title>New App</Title>
 						<ButtonList highlightOnHover={true}>
 								<ButtonListItem><Link to="/">Home</Link> </ButtonListItem>

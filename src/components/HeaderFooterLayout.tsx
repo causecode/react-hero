@@ -98,8 +98,7 @@ export class HeaderFooterLayoutImpl extends React.Component<IHeaderFooterLayoutP
 	};
 
 	render() {
-		let navMenuClasses = 'nav-menu ';
-		navMenuClasses += this.props.menuPosition;
+		let navMenuClasses = `nav-menu ${this.props.menuPosition}`;
 		let menuClosePosition = (this.props.menuPosition === 'left') ? -100 : 100;
 		let closeButtonClasses = 'fa fa-times highlight-on-hover ';
 		closeButtonClasses += (this.props.menuPosition === 'left') ? 'right' : 'left';
@@ -114,6 +113,12 @@ export class HeaderFooterLayoutImpl extends React.Component<IHeaderFooterLayoutP
 					}
 				</Motion>
 				<div className="header">
+					{(() => {
+						if (this.isNavBarPresent) {
+							return ( <NavMenuLauncherIcon position={`${this.props.menuPosition}`}/>)
+							}
+						})()}
+
 					{this.header}
 				</div>
 				<div className="content">
