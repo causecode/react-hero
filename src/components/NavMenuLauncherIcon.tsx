@@ -1,17 +1,17 @@
 import * as React from 'react';
-import {store} from "../store";
+//import {store} from "../store";
 import * as Actions from "../components/common/actions/actions";
 
-interface INavMenuLauncherIconProps {
-	handleClick?: () => void;
+export interface INavMenuLauncherIconProps {
+	onClick?: () => void;
 	position?: string;
 }
 
 export class NavMenuLauncherIcon extends React.Component<INavMenuLauncherIconProps,{}> {
 
-	handleClick() {
-		store.dispatch(Actions.toggleNav())
-	}
+	handleClick = () => {
+		this.props.onClick()
+	};
 
 	render() {
 		return(

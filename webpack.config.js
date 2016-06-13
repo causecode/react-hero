@@ -8,7 +8,7 @@ var plugins = [];
 
 var entryPoints = [
 	'./src/styles/index.css',
-	'./src/index.tsx'
+	'./src/test-index.tsx'
 ];
 
 if (isProduction) {
@@ -48,11 +48,11 @@ var config = {
 	entry: entryPoints,
 	output: {
 		path:"./dist",
-		filename: isProduction ? "bundle.[hash].min.js" : "bundle.js",
+		filename: isProduction ? "bundle.[hash].min.js" : "bundle.js"
 	},
 	devtool: 'source-map',
 	resolve: {
-		extensions: ["", ".webpack.js", ".web.js", ".ts", ".tsx", ".js"]
+		extensions: ["", ".webpack.js", ".web.js", ".ts", ".tsx", ".js", ".css"]
 	},
 	module: {
 		loaders: [

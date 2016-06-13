@@ -3,9 +3,11 @@ import * as React from 'react';
 import {NavMenuLauncherIcon} from './NavMenuLauncherIcon';
 import * as Bootstrap from 'react-bootstrap';
 import {Motion, spring} from 'react-motion';
-import {store} from "../store";
 import {connect} from "react-redux";
-import * as Actions from "./common/actions/actions";
+
+require<any>("../../styles/index.css");
+require<any>("bootstrap/dist/css/bootstrap.min.css");
+require<any>("font-awesome/css/font-awesome.min.css");
 
 export class HeaderView extends React.Component<any, any>{
 	// TODO Add Header specific behaviour.
@@ -35,14 +37,17 @@ export class NavigationMenu extends React.Component<any, any> {
 	}
 }
 
-interface IHeaderFooterLayoutProps {
+export interface IHeaderFooterLayoutProps {
 	fixedHeader: boolean,
 	menuPosition: 'left'|'right';
 	children?: any;
-	open?: boolean;
 }
 
-export class HeaderFooterLayoutImpl extends React.Component<IHeaderFooterLayoutProps, {}> {
+export interface IHeaderFooterLayoutState {
+	open?: boolean
+}
+
+export class HeaderFooterLayout extends React.Component<IHeaderFooterLayoutProps, IHeaderFooterLayoutState> {
 
 	header: JSX.Element;
 	footer: JSX.Element;
@@ -94,7 +99,7 @@ export class HeaderFooterLayoutImpl extends React.Component<IHeaderFooterLayoutP
 	}
 
 	private toggleNav = () => {
-		store.dispatch(Actions.toggleNav())
+		this.setState({open: !this.state.open})
 	};
 
 	render() {
@@ -104,7 +109,7 @@ export class HeaderFooterLayoutImpl extends React.Component<IHeaderFooterLayoutP
 		closeButtonClasses += (this.props.menuPosition === 'left') ? 'right' : 'left';
 		return (
 			<div>
-				<Motion style={{x: spring(this.props.open ? 0 : menuClosePosition )}}>
+				<Motion style={{x: spring(this.state.open ? 0 : menuClosePosition )}}>
 					{({x}) =>
 					<div className={navMenuClasses} style={{ WebkitTransform: `translate3d(${x}%, 0, 0)`, transform: `translate3d(${x}%, 0, 0)`,}}>
 						<i className={closeButtonClasses} onClick={this.toggleNav}/>
@@ -115,7 +120,7 @@ export class HeaderFooterLayoutImpl extends React.Component<IHeaderFooterLayoutP
 				<div className="header">
 					{(() => {
 						if (this.isNavBarPresent) {
-							return ( <NavMenuLauncherIcon position={`${this.props.menuPosition}`}/>)
+							return ( <NavMenuLauncherIcon position={`${this.props.menuPosition}`} onClick={this.toggleNav}/>)
 							}
 						})()}
 
@@ -132,6 +137,7 @@ export class HeaderFooterLayoutImpl extends React.Component<IHeaderFooterLayoutP
 	}
 }
 
+/*
 const mapStateToProps = (state) => {
 	return {
 		open: state.open
@@ -139,6 +145,7 @@ const mapStateToProps = (state) => {
 };
 
 let HeaderFooterLayout = connect(mapStateToProps)(HeaderFooterLayoutImpl);
+*/
 
-export {HeaderFooterLayout};
+//export {HeaderFooterLayout};
 
