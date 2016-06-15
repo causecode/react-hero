@@ -1,5 +1,4 @@
 import * as React from 'react';
-//import {store} from "../store";
 import * as Actions from "../components/common/actions/actions";
 
 export interface INavMenuLauncherIconProps {

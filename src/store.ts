@@ -1,10 +1,20 @@
-/*
-import {IStore} from "redux";
-import {createStore} from "redux";
-import {toggle} from './components/common/reducers/reducers';
+import {open} from './components/common/reducers/reducers';
+import {Store, compose, createStore} from "redux";
+import {syncHistoryWithStore, routerReducer} from "react-router-redux";
+import {combineReducers} from "redux";
+import {IStore} from "~react-router-redux~redux/redux";
 
 const initialState = {
 	open: false
 };
 
-export const store: IStore<any> = createStore(toggle, initialState);*/
+// TODO Fix Reducer Type Error here on Toggle.
+export const store: any = createStore(
+	combineReducers({
+		open,
+		routing: routerReducer
+	}),
+	initialState,
+	compose(
+	window.devToolsExtension ? window.devToolsExtension() : f => f
+));

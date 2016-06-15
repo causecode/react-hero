@@ -1,1 +1,1 @@
-export declare const toggle: (state: any, action: any) => any;
+export declare function open(state: any, action: any): any;

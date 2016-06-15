@@ -6,4 +6,6 @@ __export(require("./components/HeaderFooterLayout"));
 __export(require("./components/Widgets"));
 __export(require("./components/NavMenuLauncherIcon"));
 __export(require("./components/ResponsiveView"));
+__export(require("./utils/AddReducers"));
+__export(require("./store"));
 //# sourceMappingURL=index.js.map

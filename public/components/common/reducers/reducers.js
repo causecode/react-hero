@@ -1,9 +1,14 @@
 "use strict";
 var actions_1 = require("../actions/actions");
-exports.toggle = function (state, action) {
-    if (action.type == actions_1.TOGGLE_NAV) {
-        return { open: !state.open };
+function open(state, action) {
+    if (state === void 0) { state = false; }
+    switch (action.type) {
+        case actions_1.TOGGLE_NAV:
+            return !state;
+        default:
+            return state;
     }
-    return state;
-};
+}
+exports.open = open;
+;
 //# sourceMappingURL=reducers.js.map

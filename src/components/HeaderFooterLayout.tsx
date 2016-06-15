@@ -3,8 +3,15 @@ import * as React from 'react';
 import {NavMenuLauncherIcon} from './NavMenuLauncherIcon';
 import * as Bootstrap from 'react-bootstrap';
 import {Motion, spring} from 'react-motion';
-import {connect} from "react-redux";
+import {store} from "../store";
+import * as Actions from "./common/actions/actions"
+import {MapStateToProps} from "react-redux";
 
+// Importing connect this way because of bug in react-redux type definition
+// TODO Revisit https://github.com/DefinitelyTyped/DefinitelyTyped/issues/8866
+const connect = require<any>('react-redux').connect;
+
+// Importing styles.
 require<any>("../../styles/index.css");
 require<any>("bootstrap/dist/css/bootstrap.min.css");
 require<any>("font-awesome/css/font-awesome.min.css");
@@ -41,13 +48,14 @@ export interface IHeaderFooterLayoutProps {
 	fixedHeader: boolean,
 	menuPosition: 'left'|'right';
 	children?: any;
-}
-
-export interface IHeaderFooterLayoutState {
 	open?: boolean
 }
 
-export class HeaderFooterLayout extends React.Component<IHeaderFooterLayoutProps, IHeaderFooterLayoutState> {
+/*export interface IHeaderFooterLayoutState {
+	open?: boolean
+}*/
+
+class HeaderFooterLayoutImpl extends React.Component<IHeaderFooterLayoutProps, {}> {
 
 	header: JSX.Element;
 	footer: JSX.Element;
@@ -99,7 +107,7 @@ export class HeaderFooterLayout extends React.Component<IHeaderFooterLayoutProps
 	}
 
 	private toggleNav = () => {
-		this.setState({open: !this.state.open})
+		store.dispatch(Actions.toggleNav());
 	};
 
 	render() {
@@ -109,7 +117,7 @@ export class HeaderFooterLayout extends React.Component<IHeaderFooterLayoutProps
 		closeButtonClasses += (this.props.menuPosition === 'left') ? 'right' : 'left';
 		return (
 			<div>
-				<Motion style={{x: spring(this.state.open ? 0 : menuClosePosition )}}>
+				<Motion style={{x: spring(this.props.open ? 0 : menuClosePosition )}}>
 					{({x}) =>
 					<div className={navMenuClasses} style={{ WebkitTransform: `translate3d(${x}%, 0, 0)`, transform: `translate3d(${x}%, 0, 0)`,}}>
 						<i className={closeButtonClasses} onClick={this.toggleNav}/>
@@ -137,15 +145,12 @@ export class HeaderFooterLayout extends React.Component<IHeaderFooterLayoutProps
 	}
 }
 
-/*
 const mapStateToProps = (state) => {
 	return {
 		open: state.open
 	}
 };
-
 let HeaderFooterLayout = connect(mapStateToProps)(HeaderFooterLayoutImpl);
-*/
 
-//export {HeaderFooterLayout};
+export {HeaderFooterLayout};
 

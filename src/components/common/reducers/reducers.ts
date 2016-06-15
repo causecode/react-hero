@@ -1,8 +1,10 @@
 import {TOGGLE_NAV} from "../actions/actions";
 
-export const toggle = (state, action) => {
-	if (action.type == TOGGLE_NAV) {
-		return {open: !state.open};
+export function open (state: any = false, action: any) {
+	switch (action.type) {
+		case TOGGLE_NAV:
+			return !state;
+		default:
+			return state
 	}
-	return state;
 };

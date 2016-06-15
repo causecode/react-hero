@@ -1,15 +1,16 @@
 // Commented out for usage as a plugin
-//export {store} from "./store";
+import {store} from "./store";
 import {NewPage} from "./components/TestImplementations";
 import {Router, Route, browserHistory} from "react-router";
 import * as React from 'react';
 import {render} from 'react-dom';
-//import * from "./components/HeaderFooterLayout";
-
+import {Provider} from 'react-redux';
 
 render(
-	<Router history={browserHistory}>
-		<Route path="/" component={NewPage} />
-	</Router>,
+	<Provider store={store}>
+		<Router history={browserHistory}>
+			<Route path="/" component={NewPage} />
+		</Router>
+	</Provider>,
 	document.getElementsByClassName('main-container')[0]
 );

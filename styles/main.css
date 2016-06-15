@@ -55,7 +55,6 @@
 
 .nav-menu .button-list-item {
     padding-left: 15px;
-    line-height: 40px;
 }
 
 .button-list.highlight .button-list-item:hover, .highlight-on-hover:hover {
@@ -93,7 +92,6 @@
 
 .header .button-list .button-list-item {
     display:inline-block;;
-    padding: 10px;
 }
 
 .footer {
@@ -107,4 +105,9 @@
 
 .main-container {
     overflow: hidden
+}
+
+.button-list-item a {
+    display: block;
+    padding: 10px;
 }

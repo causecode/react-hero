@@ -7,6 +7,9 @@ var __extends = (this && this.__extends) || function (d, b) {
 var React = require('react');
 var NavMenuLauncherIcon_1 = require('./NavMenuLauncherIcon');
 var react_motion_1 = require('react-motion');
+var store_1 = require("../store");
+var Actions = require("./common/actions/actions");
+var connect = require('react-redux').connect;
 require("../../styles/index.css");
 require("bootstrap/dist/css/bootstrap.min.css");
 require("font-awesome/css/font-awesome.min.css");
@@ -54,14 +57,13 @@ var NavigationMenu = (function (_super) {
     return NavigationMenu;
 }(React.Component));
 exports.NavigationMenu = NavigationMenu;
-var HeaderFooterLayout = (function (_super) {
-    __extends(HeaderFooterLayout, _super);
-    function HeaderFooterLayout(props) {
-        var _this = this;
+var HeaderFooterLayoutImpl = (function (_super) {
+    __extends(HeaderFooterLayoutImpl, _super);
+    function HeaderFooterLayoutImpl(props) {
         _super.call(this);
         this.isNavBarPresent = false;
         this.toggleNav = function () {
-            _this.setState({ open: !_this.state.open });
+            store_1.store.dispatch(Actions.toggleNav());
         };
         this.header = this.footer = this.content = React.createElement("div", null);
         this.state = { open: false };
@@ -85,26 +87,26 @@ var HeaderFooterLayout = (function (_super) {
             }
         }
     }
-    HeaderFooterLayout.prototype.setHeader = function (headerImpl) {
+    HeaderFooterLayoutImpl.prototype.setHeader = function (headerImpl) {
         this.header = headerImpl;
     };
-    HeaderFooterLayout.prototype.setContent = function (contentImpl) {
+    HeaderFooterLayoutImpl.prototype.setContent = function (contentImpl) {
         this.content = contentImpl;
     };
-    HeaderFooterLayout.prototype.setFooter = function (footerImpl) {
+    HeaderFooterLayoutImpl.prototype.setFooter = function (footerImpl) {
         this.footer = footerImpl;
     };
-    HeaderFooterLayout.prototype.setNav = function (NavImpl) {
+    HeaderFooterLayoutImpl.prototype.setNav = function (NavImpl) {
         this.isNavBarPresent = true;
         this.nav = NavImpl;
     };
-    HeaderFooterLayout.prototype.render = function () {
+    HeaderFooterLayoutImpl.prototype.render = function () {
         var _this = this;
         var navMenuClasses = "nav-menu " + this.props.menuPosition;
         var menuClosePosition = (this.props.menuPosition === 'left') ? -100 : 100;
         var closeButtonClasses = 'fa fa-times highlight-on-hover ';
         closeButtonClasses += (this.props.menuPosition === 'left') ? 'right' : 'left';
-        return (React.createElement("div", null, React.createElement(react_motion_1.Motion, {style: { x: react_motion_1.spring(this.state.open ? 0 : menuClosePosition) }}, function (_a) {
+        return (React.createElement("div", null, React.createElement(react_motion_1.Motion, {style: { x: react_motion_1.spring(this.props.open ? 0 : menuClosePosition) }}, function (_a) {
             var x = _a.x;
             return React.createElement("div", {className: navMenuClasses, style: { WebkitTransform: "translate3d(" + x + "%, 0, 0)", transform: "translate3d(" + x + "%, 0, 0)", }}, React.createElement("i", {className: closeButtonClasses, onClick: _this.toggleNav}), _this.nav);
         }), React.createElement("div", {className: "header"}, (function () {
@@ -113,7 +115,13 @@ var HeaderFooterLayout = (function (_super) {
             }
         })(), this.header), React.createElement("div", {className: "content"}, this.content), React.createElement("div", {className: "footer"}, this.footer)));
     };
-    return HeaderFooterLayout;
+    return HeaderFooterLayoutImpl;
 }(React.Component));
+var mapStateToProps = function (state) {
+    return {
+        open: state.open
+    };
+};
+var HeaderFooterLayout = connect(mapStateToProps)(HeaderFooterLayoutImpl);
 exports.HeaderFooterLayout = HeaderFooterLayout;
 //# sourceMappingURL=HeaderFooterLayout.js.map

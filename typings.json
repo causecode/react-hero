@@ -4,11 +4,13 @@
     "react": "registry:dt/react#0.14.0+20160423065914",
     "react-bootstrap": "registry:dt/react-bootstrap#0.0.0+20160526141239",
     "react-dom": "registry:dt/react-dom#0.14.0+20160412154040",
-    "react-motion": "registry:dt/react-motion#0.0.0+20160406115320"
+    "react-motion": "registry:dt/react-motion#0.0.0+20160406115320",
+    "react-redux": "registry:dt/react-redux#4.4.0+20160501125835",
+    "redux": "registry:dt/redux#3.3.1+20160326112656"
   },
   "dependencies": {
-    "react-redux": "registry:npm/react-redux#4.4.0+20160207114942",
     "react-router": "registry:npm/react-router#2.0.0+20160214194820",
+    "react-router-redux": "registry:npm/react-router-redux#4.0.0+20160602212457",
     "redux": "registry:npm/redux#3.0.6+20160214194820"
   }
 }

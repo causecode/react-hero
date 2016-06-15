@@ -9,6 +9,7 @@
     "build": "webpack",
     "clean": "rimraf public dist",
     "compile": "npm run clean && tsc",
+    "prepublish": "npm run compile",
     "start:dev": "npm run clean && webpack-dev-server --watch --hot"
   },
   "repository": {
@@ -28,9 +29,10 @@
     "react": "^15.1.0",
     "react-bootstrap": "^0.29.4",
     "react-dom": "^15.1.0",
+    "react-motion": "^0.4.4",
     "react-redux": "^4.4.5",
-    "react-motion": "^0.4.3",
     "react-router": "^2.4.1",
+    "react-router-redux": "^4.0.5",
     "redux": "^3.5.2",
     "typescript": "^1.8.10",
     "typings": "^1.0.4",
