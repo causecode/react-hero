@@ -5,9 +5,11 @@
   "main": "public/index.js",
   "typings": "public/index.d.ts",
   "scripts": {
-    "start": "webpack-dev-server --production",
+    "start": "npm run clean && webpack-dev-server --production",
     "build": "webpack",
-    "start:dev": "webpack-dev-server --watch --hot"
+    "clean": "rimraf public dist",
+    "compile": "npm run clean && tsc",
+    "start:dev": "npm run clean && webpack-dev-server --watch --hot"
   },
   "repository": {
     "type": "git",

@@ -60,6 +60,7 @@
 
 .button-list.highlight .button-list-item:hover, .highlight-on-hover:hover {
     background: rgba(0,0,0,0.2);
+    cursor: pointer;
 }
 
 .full-width {

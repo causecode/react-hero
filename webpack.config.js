@@ -7,7 +7,7 @@ var isProduction = process.argv.indexOf('--production') != -1;
 var plugins = [];
 
 var entryPoints = [
-	'./src/styles/index.css',
+	'./styles/index.css',
 	'./src/test-index.tsx'
 ];
 
