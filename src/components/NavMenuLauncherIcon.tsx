@@ -1,15 +1,15 @@
 import * as React from 'react';
-import * as Actions from "../components/common/actions/actions";
+import * as Actions from '../components/common/actions/actions';
 
 export interface INavMenuLauncherIconProps {
 	onClick?: () => void;
 	position?: string;
 }
 
-export class NavMenuLauncherIcon extends React.Component<INavMenuLauncherIconProps,{}> {
+export class NavMenuLauncherIcon extends React.Component<INavMenuLauncherIconProps, {}> {
 
 	handleClick = () => {
-		this.props.onClick()
+		this.props.onClick();
 	};
 
 	render() {
@@ -17,6 +17,6 @@ export class NavMenuLauncherIcon extends React.Component<INavMenuLauncherIconPro
 			<span className={`burger-icon highlight-on-hover float-${this.props.position}`} onClick={this.handleClick}>
 				<span className="fa fa-bars" />
 			</span>
-		)
+		);
 	}
 }

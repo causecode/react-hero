@@ -1,59 +1,55 @@
-import {ResponsiveView, IResponsiveView} from "./ResponsiveView";
+import {ResponsiveView, IResponsiveView} from './ResponsiveView';
 import * as React from 'react';
 import {NavMenuLauncherIcon} from './NavMenuLauncherIcon';
 import * as Bootstrap from 'react-bootstrap';
 import {Motion, spring} from 'react-motion';
-import {store} from "../store";
-import * as Actions from "./common/actions/actions"
-import {MapStateToProps} from "react-redux";
+import {store} from '../store';
+import * as Actions from './common/actions/actions';
+import {MapStateToProps} from 'react-redux';
 
 // Importing connect this way because of bug in react-redux type definition
 // TODO Revisit https://github.com/DefinitelyTyped/DefinitelyTyped/issues/8866
 const connect = require<any>('react-redux').connect;
 
 // Importing styles.
-require<any>("../../styles/index.css");
-require<any>("bootstrap/dist/css/bootstrap.min.css");
-require<any>("font-awesome/css/font-awesome.min.css");
+require<any>('../../styles/index.css');
+require<any>('bootstrap/dist/css/bootstrap.min.css');
+require<any>('font-awesome/css/font-awesome.min.css');
 
-export class HeaderView extends React.Component<any, any>{
+export class HeaderView extends React.Component<any, any> {
 	// TODO Add Header specific behaviour.
 	render() {
-		return <div>{this.props.children}</div>
+		return <div>{this.props.children}</div>;
 	}
 }
 
-export class FooterView extends React.Component<any,any> {
+export class FooterView extends React.Component<any, any> {
 	// TODO Add Footer specific behaviour.
 	render() {
-		return <div>{this.props.children}</div>
+		return <div>{this.props.children}</div>;
 	}
 }
 
 export class ContentView extends React.Component<any, any> {
 	// TODO Add Content specific behaviour.
 	render() {
-		return <div>{this.props.children}</div>
+		return <div>{this.props.children}</div>;
 	}
 }
 
 export class NavigationMenu extends React.Component<any, any> {
 	// TODO Add NavigationMenu specific behaviour.
 	render() {
-		return <div>{this.props.children}</div>
+		return <div>{this.props.children}</div>;
 	}
 }
 
 export interface IHeaderFooterLayoutProps {
-	fixedHeader: boolean,
+	fixedHeader: boolean;
 	menuPosition: 'left'|'right';
 	children?: any;
-	open?: boolean
+	open?: boolean;
 }
-
-/*export interface IHeaderFooterLayoutState {
-	open?: boolean
-}*/
 
 class HeaderFooterLayoutImpl extends React.Component<IHeaderFooterLayoutProps, {}> {
 
@@ -70,7 +66,7 @@ class HeaderFooterLayoutImpl extends React.Component<IHeaderFooterLayoutProps, {
 		this.header = this.footer = this.content = <div></div>;
 		this.state = {open: false};
 		if (props.children) {
-			for(let child of props.children) {
+			for (let child of props.children) {
 				switch (child.type.name) {
 					case 'HeaderView':
 						this.header = child;
@@ -119,7 +115,8 @@ class HeaderFooterLayoutImpl extends React.Component<IHeaderFooterLayoutProps, {
 			<div>
 				<Motion style={{x: spring(this.props.open ? 0 : menuClosePosition )}}>
 					{({x}) =>
-					<div className={navMenuClasses} style={{ WebkitTransform: `translate3d(${x}%, 0, 0)`, transform: `translate3d(${x}%, 0, 0)`,}}>
+					<div className={navMenuClasses} style={{ WebkitTransform: `translate3d(${x}%, 0, 0)`,
+							transform: `translate3d(${x}%, 0, 0)`,}}>
 						<i className={closeButtonClasses} onClick={this.toggleNav}/>
 						{this.nav}
 					</div>
@@ -128,7 +125,7 @@ class HeaderFooterLayoutImpl extends React.Component<IHeaderFooterLayoutProps, {
 				<div className="header">
 					{(() => {
 						if (this.isNavBarPresent) {
-							return ( <NavMenuLauncherIcon position={`${this.props.menuPosition}`} onClick={this.toggleNav}/>)
+							return ( <NavMenuLauncherIcon position={`${this.props.menuPosition}`} onClick={this.toggleNav}/>);
 							}
 						})()}
 
@@ -141,14 +138,14 @@ class HeaderFooterLayoutImpl extends React.Component<IHeaderFooterLayoutProps, {
 					{this.footer}
 				</div>
 			</div>
-		)
+		);
 	}
 }
 
 const mapStateToProps = (state) => {
 	return {
 		open: state.open
-	}
+	};
 };
 let HeaderFooterLayout = connect(mapStateToProps)(HeaderFooterLayoutImpl);
 

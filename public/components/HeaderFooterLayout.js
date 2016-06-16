@@ -7,12 +7,12 @@ var __extends = (this && this.__extends) || function (d, b) {
 var React = require('react');
 var NavMenuLauncherIcon_1 = require('./NavMenuLauncherIcon');
 var react_motion_1 = require('react-motion');
-var store_1 = require("../store");
-var Actions = require("./common/actions/actions");
+var store_1 = require('../store');
+var Actions = require('./common/actions/actions');
 var connect = require('react-redux').connect;
-require("../../styles/index.css");
-require("bootstrap/dist/css/bootstrap.min.css");
-require("font-awesome/css/font-awesome.min.css");
+require('../../styles/index.css');
+require('bootstrap/dist/css/bootstrap.min.css');
+require('font-awesome/css/font-awesome.min.css');
 var HeaderView = (function (_super) {
     __extends(HeaderView, _super);
     function HeaderView() {
@@ -108,7 +108,8 @@ var HeaderFooterLayoutImpl = (function (_super) {
         closeButtonClasses += (this.props.menuPosition === 'left') ? 'right' : 'left';
         return (React.createElement("div", null, React.createElement(react_motion_1.Motion, {style: { x: react_motion_1.spring(this.props.open ? 0 : menuClosePosition) }}, function (_a) {
             var x = _a.x;
-            return React.createElement("div", {className: navMenuClasses, style: { WebkitTransform: "translate3d(" + x + "%, 0, 0)", transform: "translate3d(" + x + "%, 0, 0)", }}, React.createElement("i", {className: closeButtonClasses, onClick: _this.toggleNav}), _this.nav);
+            return React.createElement("div", {className: navMenuClasses, style: { WebkitTransform: "translate3d(" + x + "%, 0, 0)",
+                transform: "translate3d(" + x + "%, 0, 0)", }}, React.createElement("i", {className: closeButtonClasses, onClick: _this.toggleNav}), _this.nav);
         }), React.createElement("div", {className: "header"}, (function () {
             if (_this.isNavBarPresent) {
                 return (React.createElement(NavMenuLauncherIcon_1.NavMenuLauncherIcon, {position: "" + _this.props.menuPosition, onClick: _this.toggleNav}));

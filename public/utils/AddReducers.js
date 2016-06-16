@@ -1,6 +1,6 @@
 "use strict";
-var reducers_1 = require("../components/common/reducers/reducers");
-var redux_1 = require("redux");
+var reducers_1 = require('../components/common/reducers/reducers');
+var redux_1 = require('redux');
 exports.addReducers = function (userReducers) {
     return redux_1.combineReducers({
         userReducers: userReducers,

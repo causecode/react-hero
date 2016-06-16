@@ -2,6 +2,7 @@
   "name": "react-hero",
   "version": "1.0.0",
   "description": "",
+  "private": true,
   "main": "public/index.js",
   "typings": "public/index.d.ts",
   "scripts": {
@@ -10,6 +11,7 @@
     "clean": "rimraf public dist",
     "compile": "npm run clean && tsc",
     "prepublish": "npm run compile",
+    "lint-ts": "tslint 'src/*.tsx' 'src/**/*.tsx' 'src/*.ts' 'src/**/*.ts'",
     "start:dev": "npm run clean && webpack-dev-server --watch --hot"
   },
   "repository": {
@@ -21,11 +23,15 @@
   "license": "ISC",
   "homepage": "https://bitbucket.org/causecode/react-hero#readme",
   "dependencies": {
-    "backbone": "^1.3.3",
-    "backbone-react-component": "^0.10.0",
-    "extract-text-webpack-plugin": "^1.0.1",
     "font-awesome": "^4.6.1",
-    "html-webpack-plugin": "^2.19.0",
+    "bootstrap": "^3.3.6"
+  },
+  "devDependencies": {
+    "webpack-dev-server": "^1.14.1",
+    "autoprefixer": "^6.3.6",
+    "redux": "^3.5.2",
+    "webpack": "^1.13.1",
+    "typings": "^1.0.4",
     "react": "^15.1.0",
     "react-bootstrap": "^0.29.4",
     "react-dom": "^15.1.0",
@@ -33,20 +39,37 @@
     "react-redux": "^4.4.5",
     "react-router": "^2.4.1",
     "react-router-redux": "^4.0.5",
-    "redux": "^3.5.2",
-    "typescript": "^1.8.10",
-    "typings": "^1.0.4",
-    "webpack": "^1.13.1",
-    "webpack-dev-server": "^1.14.1"
-  },
-  "devDependencies": {
+    "extract-text-webpack-plugin": "^1.0.1",
+    "html-webpack-plugin": "^2.19.0",
+    "autoprefixer-core": "^6.0.1",
+    "classnames": "^2.2.5",
+    "concurrently": "^2.1.0",
     "css-loader": "^0.23.1",
-    "bootstrap": "^3.3.6",
+    "cssnano": "^3.7.1",
+    "es5-shim": "^4.5.9",
+    "es6-promise": "^3.2.1",
     "file-loader": "^0.8.5",
+    "immutable": "^3.8.1",
+    "object-assign": "^4.1.0",
+    "postcss-cssnext": "^2.6.0",
+    "postcss-loader": "^0.9.1",
+    "raw-loader": "^0.5.1",
+    "react-addons-test-utils": "^15.1.0",
     "react-hot-loader": "^1.3.0",
+    "redux-form": "^5.2.5",
+    "redux-localstorage": "^0.4.1",
+    "redux-logger": "^2.6.1",
+    "redux-thunk": "^2.1.0",
+    "rimraf": "^2.5.2",
     "source-map-loader": "^0.1.5",
     "style-loader": "^0.13.1",
+    "stylelint": "^6.6.0",
+    "stylelint-webpack-plugin": "^0.2.0",
     "ts-loader": "^0.8.2",
-    "url-loader": "^0.5.7"
+    "tslint": "^3.11.0",
+    "tslint-loader": "^2.1.4",
+    "typescript": "^1.8.10",
+    "url-loader": "^0.5.7",
+    "whatwg-fetch": "^1.0.0"
   }
 }

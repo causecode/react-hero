@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ResponsiveView } from "./ResponsiveView";
+import { ResponsiveView } from './ResponsiveView';
 export declare class NewPage extends React.Component<any, any> {
     constructor();
     render(): JSX.Element;

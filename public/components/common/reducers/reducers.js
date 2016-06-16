@@ -1,5 +1,5 @@
 "use strict";
-var actions_1 = require("../actions/actions");
+var actions_1 = require('../actions/actions');
 function open(state, action) {
     if (state === void 0) { state = false; }
     switch (action.type) {

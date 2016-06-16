@@ -1,8 +1,8 @@
 "use strict";
 var reducers_1 = require('./components/common/reducers/reducers');
-var redux_1 = require("redux");
-var react_router_redux_1 = require("react-router-redux");
-var redux_2 = require("redux");
+var redux_1 = require('redux');
+var react_router_redux_1 = require('react-router-redux');
+var redux_2 = require('redux');
 var initialState = {
     open: false
 };

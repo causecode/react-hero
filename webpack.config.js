@@ -1,7 +1,6 @@
 var webpack = require('webpack');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var HtmlWebpackPlugin = require('html-webpack-plugin');
-
 var isProduction = process.argv.indexOf('--production') != -1;
 
 var plugins = [];
@@ -55,6 +54,9 @@ var config = {
 		extensions: ["", ".webpack.js", ".web.js", ".ts", ".tsx", ".js", ".css"]
 	},
 	module: {
+		preLoaders: [
+			{test: /\.tsx?$/, loader: 'tslint', exclude: /node_modules/}
+		],
 		loaders: [
 			{test: /\.tsx?$/, exclude: /(node_modules)/, loaders: ["react-hot", "ts-loader"]},
 			{test: /\.css$/, loader: ExtractTextPlugin.extract("style-loader", "css-loader")},

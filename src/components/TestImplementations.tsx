@@ -1,10 +1,10 @@
 import * as React from 'react';
 import {HeaderFooterLayout, HeaderView, FooterView, ContentView, NavigationMenu} from './HeaderFooterLayout';
-import {ResponsiveView} from "./ResponsiveView";
-import {Title, Description, Content, ButtonList, ButtonListItem} from "./Widgets";
-import {NavMenuLauncherIcon} from "./NavMenuLauncherIcon";
+import {ResponsiveView} from './ResponsiveView';
+import {Title, Description, Content, ButtonList, ButtonListItem} from './Widgets';
+import {NavMenuLauncherIcon} from './NavMenuLauncherIcon';
 import {Router, Route, Link} from 'react-router';
-import {browserHistory} from "react-router";
+import {browserHistory} from 'react-router';
 
 export class NewPage extends React.Component<any, any> {
 
@@ -45,19 +45,19 @@ export class NewPage extends React.Component<any, any> {
 					</Content>
 				</NavigationMenu>
 			</HeaderFooterLayout>
-		)
+		);
 	}
 }
 
 export class HomeContent extends ResponsiveView<any, any> {
-	protected renderDefault():JSX.Element {
+	protected renderDefault(): JSX.Element {
 		return <h1 style={{height: '30em'}}>This is the home page</h1>;
 	}
 
 }
 
 export class Page2Content extends ResponsiveView<any, any> {
-	protected renderDefault():JSX.Element {
+	protected renderDefault(): JSX.Element {
 		return <h1 style={{height: '30em'}}>Just Another Page!!</h1>;
 	}
 
@@ -69,7 +69,7 @@ export class ContentImpl extends ResponsiveView<any, any> {
 		super();
 	}
 
-	protected renderDefault():JSX.Element {
+	protected renderDefault(): JSX.Element {
 		return (
 			<h1>THis is the default Content</h1>
 		);
@@ -81,15 +81,15 @@ export class ContentImpl extends ResponsiveView<any, any> {
 		);
 	}
 
-	protected renderMobilePortrait():JSX.Element {
+	protected renderMobilePortrait(): JSX.Element {
 		return (
 			<h1>This is the Mobile Portrait Content</h1>
-		)
+		);
 	}
 
 	protected renderTabletLandscape(): JSX.Element {
 		return (
 			<h1>This is the tablet landscape content</h1>
-		)
+		);
 	}
 }

@@ -1,7 +1,7 @@
 
 export interface IAppServiceConfig {
-	alertType?: string,
-	alertTimeOut?: number
+	alertType?: string;
+	alertTimeOut?: number;
 }
 
 export class AppService {
@@ -12,7 +12,7 @@ export class AppService {
 		this.defaultConfig = {
 			alertType: 'info',
 			alertTimeOut: 1000
-		}
+		};
 	}
 
 	/**

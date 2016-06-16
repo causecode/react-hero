@@ -23,7 +23,7 @@ export class DeviceTypes {
 	constructor(public id: number, public name: string) {
 		if (DeviceTypes.allDeviceTypes && DeviceTypes.allDeviceTypes.length) {
 			throw new Error(`Error: Instantiation Failed: Trying to create a new instance of DeviceTypes. Please use
-					one of the predefined Device types.`)
+					one of the predefined Device types.`);
 		}
 		this.id = id;
 		this.name = name;
@@ -58,7 +58,7 @@ export class DeviceTypes {
 	}
 
 	static getDeviceTypeFromIdOrString( identifier: number | string) {
-		for(let deviceType of DeviceTypes.allDeviceTypes) {
+		for (let deviceType of DeviceTypes.allDeviceTypes) {
 			if (deviceType.getId() === identifier || deviceType.getName() === identifier) {
 				return deviceType;
 			}
@@ -77,7 +77,7 @@ export interface IResponsiveView {
 	renderTabletLandscape?() : JSX.Element;
 }
 
-export abstract class ResponsiveView<P,S> extends React.Component<P, S> {
+export abstract class ResponsiveView<P, S> extends React.Component<P, S> {
 
 	constructor() {
 		super();
@@ -90,12 +90,12 @@ export abstract class ResponsiveView<P,S> extends React.Component<P, S> {
 			<div>
 				{this[deviceSpecificRenderFunction]()}
 			</div>
-		)
+		);
 	}
 
 	protected abstract renderDefault(): JSX.Element;
 
-	protected renderMobile(): JSX.Element{
+	protected renderMobile(): JSX.Element {
 		return this.renderDefault();
 	}
 

@@ -6,10 +6,10 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var React = require('react');
 var HeaderFooterLayout_1 = require('./HeaderFooterLayout');
-var ResponsiveView_1 = require("./ResponsiveView");
-var Widgets_1 = require("./Widgets");
+var ResponsiveView_1 = require('./ResponsiveView');
+var Widgets_1 = require('./Widgets');
 var react_router_1 = require('react-router');
-var react_router_2 = require("react-router");
+var react_router_2 = require('react-router');
 var NewPage = (function (_super) {
     __extends(NewPage, _super);
     function NewPage() {
