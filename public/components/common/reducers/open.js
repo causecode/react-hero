@@ -9,6 +9,7 @@ function open(state, action) {
             return state;
     }
 }
-exports.open = open;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = open;
 ;
-//# sourceMappingURL=reducers.js.map
+//# sourceMappingURL=open.js.map

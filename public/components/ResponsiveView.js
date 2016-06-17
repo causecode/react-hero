@@ -10,7 +10,7 @@ var DeviceTypes = (function () {
         this.id = id;
         this.name = name;
         if (DeviceTypes.allDeviceTypes && DeviceTypes.allDeviceTypes.length) {
-            throw new Error("Error: Instantiation Failed: Trying to create a new instance of DeviceTypes. Please use\n\t\t\t\t\tone of the predefined Device types.");
+            throw new Error("Error: Instantiation Failed: Trying to create a new instance of DeviceTypes. Please use\n                    one of the predefined Device types.");
         }
         this.id = id;
         this.name = name;

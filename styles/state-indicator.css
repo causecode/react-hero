@@ -14,14 +14,14 @@
 	}
 }
 
-/*tablet portrait*/
+/* tablet portrait */
 @media all and (max-width: 768px) and (orientation: portrait) {
 	.state-indicator {
 		z-index: 2;
 	}
 }
 
-/*tablet landscape*/
+/* tablet landscape */
 @media all and (max-width: 1024px) and (orientation:landscape) {
 	.state-indicator {
 		z-index: 3;

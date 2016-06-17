@@ -7,10 +7,10 @@ import {render} from 'react-dom';
 import {Provider} from 'react-redux';
 
 render(
-	<Provider store={store}>
-		<Router history={browserHistory}>
-			<Route path="*" component={NewPage} />
-		</Router>
-	</Provider>,
-	document.getElementsByClassName('main-container')[0]
+    <Provider store={store}>
+        <Router history={browserHistory}>
+            <Route path="*" component={NewPage} />
+        </Router>
+    </Provider>,
+    document.getElementsByClassName('main-container')[0]
 );

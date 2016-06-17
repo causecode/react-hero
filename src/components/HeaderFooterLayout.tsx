@@ -125,7 +125,8 @@ class HeaderFooterLayoutImpl extends React.Component<IHeaderFooterLayoutProps, {
                 <div className="header">
                     {(() => {
                         if (this.isNavBarPresent) {
-                            return ( <NavMenuLauncherIcon position={`${this.props.menuPosition}`} onClick={this.toggleNav}/>);
+                            return ( <NavMenuLauncherIcon position={`${this.props.menuPosition}`}
+                                    onClick={this.toggleNav}/>);
                             }
                         })()}
 

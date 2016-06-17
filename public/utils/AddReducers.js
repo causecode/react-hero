@@ -1,10 +1,10 @@
 "use strict";
-var reducers_1 = require('../components/common/reducers/reducers');
+var open_1 = require('../components/common/reducers/open');
 var redux_1 = require('redux');
 exports.addReducers = function (userReducers) {
     return redux_1.combineReducers({
         userReducers: userReducers,
-        open: reducers_1.open
+        open: open_1.default
     });
 };
 //# sourceMappingURL=AddReducers.js.map
