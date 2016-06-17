@@ -1,3 +1,3 @@
 declare interface Window {
-	devToolsExtension: any
+    devToolsExtension: any
 }
