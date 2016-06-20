@@ -16,6 +16,7 @@ export function fetchInstanceList() {
           payload: {
               promise: fetchInstanceListFromApi()
               .then((res) => {
+                  console.log('<<<<res', res);
                   return res;
               }),
           },

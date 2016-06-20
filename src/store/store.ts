@@ -1,22 +1,20 @@
 import {Store, compose, createStore, applyMiddleware} from 'redux';
+import { fromJS } from 'immutable';
 import {IStore} from '~react-router-redux~redux/redux';
 import rootReducer from './../reducers/rootReducer';
 import promiseMiddleware from '../middleware/promise-middleware';
 import logger from './logger';
+const persistState = require<any>('redux-localstorage');
 const thunk = require<any>('redux-thunk').default;
 
-const initialState = {
-    open: false
-};
-
-export const store: any = createStore (
-    rootReducer,
-    initialState,
-    compose(
+function configureStore(initialState) {
+    const store = compose(
         _getMiddleware(),
-        window.devToolsExtension ? window.devToolsExtension() : f => f
-    )
-);
+        ..._getEnhancers()
+    )(createStore)(rootReducer, initialState);
+
+    return store;
+}
 
 function _getMiddleware() {
     let middleware = [
@@ -29,3 +27,28 @@ function _getMiddleware() {
 
     return applyMiddleware(...middleware);
 }
+
+function _getEnhancers() {
+    let enhancers = [
+        persistState('session', _getStorageConfig()),
+    ];
+
+    return enhancers;
+}
+
+function _getStorageConfig() {
+    return {
+        key: 'react-redux-seed',
+        serialize: (store) => {
+            return store && store.session ?
+                //JSON.stringify(store.session.toJS()) : store;
+                store.session.toJS() : store;
+        },
+        deserialize: (state) => ({
+            session: state ? fromJS(JSON.parse(state)) : fromJS({}),
+        }),
+    };
+}
+
+export const store = configureStore({});
+export default configureStore;

@@ -1,4 +1,4 @@
-const objectAssign = require('object-assign');
+const objectAssign = require<any>('object-assign');
 
 function isPromise(value) {
     if (value !== null && typeof value === 'object') {
@@ -19,11 +19,11 @@ export default function promiseMiddleware({ dispatch }) {
    /**
     * Dispatch the pending action
     */
-    dispatch( objectAssign({},
-      { type: PENDING },
-      data ? { payload: data } : {},
-      meta ? { meta } : {}
-    ));
+   dispatch(objectAssign({},
+       {type: PENDING},
+       data ? {payload: data} : {},
+       meta ? {meta} : {}
+   ));
 
     /**
      * If successful, dispatch the fulfilled action, otherwise dispatch

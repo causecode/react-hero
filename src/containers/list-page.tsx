@@ -10,6 +10,7 @@ const connect = require<any>('react-redux').connect;
 interface IListPageProps extends React.Props<any> {
     session: any;
     data: any;
+    properties: Array<any>;
     instanceList: Array<any>;
     fetchInstanceList: () => void;
 };
@@ -18,6 +19,7 @@ function mapStateToProps(state) {
     return {
         session: state.session,
         data: state.data,
+        properties: state.data.get('properties', []),
         instanceList: state.data.get('instanceList', []),
         router: state.router,
     };
@@ -38,22 +40,18 @@ class ListPage extends React.Component<IListPageProps, void> {
 
     render() {
         // const { instanceList } = this.props;
-        const { data, instanceList } = this.props;
+        const { data, instanceList, properties } = this.props;
         //const instanceList = data.get('instanceList', []);
 
         console.log('<<<inital instanceList', instanceList);
         console.log('<<<inital data', data);
-        const properties = ["author", "blogImgSrc", "body", "id", "lastUpdated", "numberOfComments", "publishedDate", "subTitle", "title"];
+        //const properties = ["author", "blogImgSrc", "body", "id", "lastUpdated", "numberOfComments",
+        // "publishedDate", "subTitle", "title"];
         const totalCount = 10;
 
         return (
             <Container size={4} center>
                 <h2 className="caps">Page List</h2>
-                <p>
-                    data: {data}<br/>
-                    instanceList1: {instanceList}<br/>
-                    instanceList2: {instanceList[0]}<br/>
-                </p>
                 <DataGrid
                     instanceList={ instanceList }
                     properties={ properties }

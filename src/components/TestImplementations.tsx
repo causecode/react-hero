@@ -1,5 +1,6 @@
 import * as React from 'react';
-import {HeaderFooterLayout, HeaderView, FooterView, ContentView, NavigationMenu} from './HeaderFooterLayout';
+import {HeaderView, FooterView, ContentView, NavigationMenu} from './HeaderFooterLayout';
+import HeaderFooterLayout from './HeaderFooterLayout';
 import {ResponsiveView} from './ResponsiveView';
 import {Title, Description, Content, ButtonList, ButtonListItem} from './Widgets';
 import {NavMenuLauncherIcon} from './NavMenuLauncherIcon';

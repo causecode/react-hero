@@ -3,8 +3,7 @@ import * as React from 'react';
 import {NavMenuLauncherIcon} from './NavMenuLauncherIcon';
 import * as Bootstrap from 'react-bootstrap';
 import {Motion, spring} from 'react-motion';
-import {store} from '../store/store';
-import * as Actions from '../actions/actions';
+import { toggleNav } from '../actions/actions';
 import {MapStateToProps} from 'react-redux';
 
 // Importing connect this way because of bug in react-redux type definition
@@ -49,7 +48,20 @@ export interface IHeaderFooterLayoutProps {
     menuPosition: 'left'|'right';
     children?: any;
     open?: boolean;
+    toggleNav: () => void;
 }
+
+const mapStateToProps = (state) => {
+    return {
+        open: state.open
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        toggleNav: (): void => dispatch(toggleNav())
+    };
+};
 
 class HeaderFooterLayoutImpl extends React.Component<IHeaderFooterLayoutProps, {}> {
 
@@ -102,22 +114,20 @@ class HeaderFooterLayoutImpl extends React.Component<IHeaderFooterLayoutProps, {
         this.nav = NavImpl;
     }
 
-    private toggleNav = () => {
-        store.dispatch(Actions.toggleNav());
-    };
-
     render() {
         let navMenuClasses = `nav-menu ${this.props.menuPosition}`;
         let menuClosePosition = (this.props.menuPosition === 'left') ? -100 : 100;
         let closeButtonClasses = 'fa fa-times highlight-on-hover ';
         closeButtonClasses += (this.props.menuPosition === 'left') ? 'right' : 'left';
+        const { toggleNav } = this.props;
+
         return (
             <div>
                 <Motion style={{x: spring(this.props.open ? 0 : menuClosePosition )}}>
                     {({x}) =>
                     <div className={navMenuClasses} style={{ WebkitTransform: `translate3d(${x}%, 0, 0)`,
                             transform: `translate3d(${x}%, 0, 0)`,}}>
-                        <i className={closeButtonClasses} onClick={this.toggleNav}/>
+                        <i className={closeButtonClasses} onClick={toggleNav}/>
                         {this.nav}
                     </div>
                     }
@@ -126,7 +136,7 @@ class HeaderFooterLayoutImpl extends React.Component<IHeaderFooterLayoutProps, {
                     {(() => {
                         if (this.isNavBarPresent) {
                             return ( <NavMenuLauncherIcon position={`${this.props.menuPosition}`}
-                                    onClick={this.toggleNav}/>);
+                                    onClick={toggleNav}/>);
                             }
                         })()}
 
@@ -143,12 +153,7 @@ class HeaderFooterLayoutImpl extends React.Component<IHeaderFooterLayoutProps, {
     }
 }
 
-const mapStateToProps = (state) => {
-    return {
-        open: state.open
-    };
-};
-let HeaderFooterLayout = connect(mapStateToProps)(HeaderFooterLayoutImpl);
-
-export {HeaderFooterLayout};
-
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(HeaderFooterLayoutImpl);

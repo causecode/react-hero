@@ -28,11 +28,11 @@ if (isProduction) {
     );
 } else {
     // Adding Development environment specific features.
-
+/*
     entryPoints.push(
         'webpack-dev-server/client?http://localhost:8080',
         'webpack/hot/only-dev-server'  // Used to enable hot reloading in webpack.
-    )
+    )*/
 }
 
 plugins.push(
