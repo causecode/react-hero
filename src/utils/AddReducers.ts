@@ -1,4 +1,4 @@
-import open from '../components/common/reducers/open';
+import open from '../reducers/open';
 import {combineReducers} from 'redux';
 import {Reducer} from 'redux';
 

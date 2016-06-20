@@ -4,3 +4,5 @@
 /dist
 /typings
 *.iml
+npm-debug.log
+public

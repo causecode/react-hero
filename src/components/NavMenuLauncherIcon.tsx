@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as Actions from '../components/common/actions/actions';
+import * as Actions from '../actions/actions';
 
 export interface INavMenuLauncherIconProps {
     onClick?: () => void;

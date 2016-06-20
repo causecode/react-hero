@@ -3,8 +3,8 @@ import * as React from 'react';
 import {NavMenuLauncherIcon} from './NavMenuLauncherIcon';
 import * as Bootstrap from 'react-bootstrap';
 import {Motion, spring} from 'react-motion';
-import {store} from '../store';
-import * as Actions from './common/actions/actions';
+import {store} from '../store/store';
+import * as Actions from '../actions/actions';
 import {MapStateToProps} from 'react-redux';
 
 // Importing connect this way because of bug in react-redux type definition

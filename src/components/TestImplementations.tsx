@@ -4,7 +4,8 @@ import {ResponsiveView} from './ResponsiveView';
 import {Title, Description, Content, ButtonList, ButtonListItem} from './Widgets';
 import {NavMenuLauncherIcon} from './NavMenuLauncherIcon';
 import {Router, Route, Link} from 'react-router';
-import {browserHistory} from 'react-router';
+import {hashHistory} from 'react-router';
+import ListPage from '../containers/list-page';
 
 export class NewPage extends React.Component<any, any> {
 
@@ -22,14 +23,16 @@ export class NewPage extends React.Component<any, any> {
                                 <ButtonListItem><Link to="/">Home</Link> </ButtonListItem>
                                 <ButtonListItem><Link to="/page2">Button 2</Link></ButtonListItem>
                                 <ButtonListItem><Link to="/resp">Responsive View Page</Link></ButtonListItem>
+                                <ButtonListItem><Link to="/list">Page List</Link></ButtonListItem>
                             </ButtonList>
                     </Content>
                 </HeaderView>
                 <ContentView>
-                    <Router history={browserHistory}>
+                    <Router history={hashHistory}>
                         <Route path="/" component={HomeContent}/>
                         <Route path="/page2" component={Page2Content}/>
                         <Route path="/resp" component={ContentImpl}/>
+                        <Route path="/list" component={ListPage}/>
                     </Router>
                 </ContentView>
                 <FooterView>my footer</FooterView>
