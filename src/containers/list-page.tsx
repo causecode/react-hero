@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Container from '../components/Container';
-import { Table } from 'react-bootstrap';
+import { Table, Pagination } from 'react-bootstrap';
 
 import DataGrid from '../components/DataGrid';
 import { fetchInstanceList } from '../actions/data';
@@ -8,38 +8,62 @@ import { fetchInstanceList } from '../actions/data';
 const connect = require<any>('react-redux').connect;
 
 interface IListPageProps extends React.Props<any> {
-    session: any;
-    data: any;
     properties: Array<any>;
-    instanceList: Array<any>;
-    fetchInstanceList: () => void;
-};
+    instanceList: any;
+    totalCount: number;
+    fetchInstanceList: (resource: string, filter: IFilter) => void;
+}
+
+export interface IFilter {
+    offset?: number;
+    sort?: 'asc' | 'desc';
+}
+
+interface IListPageState {
+    activePage: number;
+}
 
 function mapStateToProps(state) {
     return {
-        session: state.session,
-        data: state.data,
         properties: state.data.get('properties', []),
         instanceList: state.data.get('instanceList', []),
+        totalCount:  state.data.get('totalCount', 0),
         router: state.router,
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        fetchInstanceList: () => dispatch(fetchInstanceList()),
+        fetchInstanceList: (resource: string, filter: IFilter) => dispatch(fetchInstanceList(resource, filter)),
     };
 }
 
-class ListPage extends React.Component<IListPageProps, void> {
+class ListPage extends React.Component<IListPageProps, IListPageState> {
+
+    itemsPerPage: number;
+    constructor() {
+        super();
+        this.state = {activePage : 1}
+    }
 
     componentWillMount() {
-        this.props.fetchInstanceList();
+        this.props.fetchInstanceList('blog', {offset: 0});
     };
 
+    setItemsPerPage(itemsPerPage: number) {
+        if (!this.itemsPerPage) {
+            this.itemsPerPage = itemsPerPage;
+        }
+    }
+
     render() {
-        const { data, instanceList, properties } = this.props;
-        const totalCount = 10;
+        const { instanceList, properties, totalCount } = this.props;
+        const { activePage } = this.state;
+        this.setItemsPerPage(instanceList.size);
+        const setPage = (pageNumber: number) => {
+            this.props.fetchInstanceList('blog', {offset: (( pageNumber - 1 ) * this.itemsPerPage)});
+            this.setState({activePage: pageNumber});
+        };
 
         return (
             <Container size={4} center>
@@ -48,7 +72,20 @@ class ListPage extends React.Component<IListPageProps, void> {
                     instanceList={ instanceList }
                     properties={ properties }
                     totalCount={ totalCount }
-                    clazz="user" />
+                    clazz="blog" />
+
+                <Pagination
+                    prev
+                    next
+                    first
+                    last
+                    ellipsis
+                    boundaryLinks
+                    items={Math.ceil(totalCount / this.itemsPerPage)}
+                    maxButtons={5}
+                    activePage={activePage}
+                    onSelect={setPage} />
+
             </Container>
         );
     };

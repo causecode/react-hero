@@ -1,12 +1,10 @@
 import 'whatwg-fetch';
 
-export const BASE_URL = 'http://localhost:8080/api';
+export const BASE_URL = 'http://localhost:8080/be/';
 //export const BASE_URL_TEMP = 'http://192.168.2.10:8090/be';           // http://localhost:8090/api/v1/blog/action/index
-export const BASE_URL_TEMP = 'http://localhost:8080/be';
 
 export function post(path, data) {
-    // return fetch(BASE_URL + path, {
-    return fetch(BASE_URL_TEMP + path, {
+    return fetch(BASE_URL + path, {
         method: 'post',
         headers: {
           'Accept': 'application/json',
@@ -15,4 +13,23 @@ export function post(path, data) {
         body: JSON.stringify(data)
     })
     .then(response => response.json());
+};
+
+let serialize = function(obj, prefix?) {
+    var str = [];
+    for(var p in obj) {
+        if (obj.hasOwnProperty(p)) {
+            var k = prefix ? prefix + "[" + p + "]" : p, v = obj[p];
+            str.push(typeof v == "object" ?
+                serialize(v, k) :
+            encodeURIComponent(k) + "=" + encodeURIComponent(v));
+        }
+    }
+    return str.join("&");
 }
+
+export function getRequest(path, data) {
+    var params = serialize(data);
+    return fetch(BASE_URL + path + `?${params}`)
+        .then(response => response.json());
+};

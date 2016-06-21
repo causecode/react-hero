@@ -1,10 +1,11 @@
-import { post } from '../server/index';
+import { getRequest, post } from '../server/index';
+import { IFilter } from "../../containers/list-page";
 
-const FETCH_ERR_MSG = `Request couldn't be proceeded.`;
+const FETCH_ERR_MSG = `Request couldn't be processed.`;
 
-export function fetchInstanceListFromApi() {
+export function fetchInstanceListFromApi(path: string, filters: IFilter) {
   return new Promise((resolve, reject) => {
-    return post('/blog/index', {})
+    return getRequest(path, filters)
         .then((response) => {
           return resolve(response);
         })

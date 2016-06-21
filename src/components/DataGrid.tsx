@@ -3,12 +3,12 @@ import { Table } from 'react-bootstrap';
 
 export interface IDataGridProps extends React.Props<any> {
     totalCount: number;
-    instanceList: Array<any>;
+    instanceList: any;
     properties: Array<string>;
     clazz: any;
 };
 
-export default function DataGrid( { totalCount, instanceList, properties, clazz }: IDataGridProps) {
+export default function DataGrid( { totalCount, instanceList, properties, clazz}: IDataGridProps) {
     return (
         <div className="flex">
             <br/><br/>
@@ -31,10 +31,9 @@ export default function DataGrid( { totalCount, instanceList, properties, clazz 
                             })}
                         </tr>
                             )
-                        })}
-
+                    })}
                 </tbody>
             </Table>
         </div>
-    );
-};
+    )
+}

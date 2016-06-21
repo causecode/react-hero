@@ -9,7 +9,7 @@ import { fromJS } from 'immutable';
 
 const INITIAL_STATE = fromJS({
     totalCount: 0,
-    instanceList: [{author: 'initial author'}],
+    instanceList: [],
     properties: [],
     clazz: {},
     hasError: false,
@@ -21,14 +21,7 @@ function dataReducer(state = INITIAL_STATE, action = { type: '', payload: null }
     switch (action.type) {
 
     case FETCH_INSTANCE_LIST_START:
-        return state.merge(fromJS({
-            totalCount: 0,
-            instanceList: [{author: 'initial author'}],
-            properties: [],
-            clazz: {},
-            hasError: false,
-            isLoading: true,
-        }));
+        return INITIAL_STATE;
 
     case FETCH_INSTANCE_LIST_SUCCESS:
         return state.merge(fromJS({

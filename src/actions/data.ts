@@ -4,8 +4,9 @@ import {
   FETCH_INSTANCE_LIST_SUCCESS,
   FETCH_INSTANCE_LIST_ERROR
 } from '../constants/index';
+import {IFilter} from "../containers/list-page";
 
-export function fetchInstanceList() {
+export function fetchInstanceList(resource: string, filters: IFilter) {
     return (dispatch) => {
         return dispatch({
           types: [
@@ -14,7 +15,7 @@ export function fetchInstanceList() {
               FETCH_INSTANCE_LIST_ERROR,
           ],
           payload: {
-              promise: fetchInstanceListFromApi()
+              promise: fetchInstanceListFromApi(resource, filters)
               .then((res) => {
                   return res;
               }),
