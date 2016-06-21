@@ -31,13 +31,9 @@ function dataReducer(state = INITIAL_STATE, action = { type: '', payload: null }
         }));
 
     case FETCH_INSTANCE_LIST_SUCCESS:
-        //return state.update('instanceList', (instanceList) => [{author: 'initial author'}]);
         return state.merge(fromJS({
             totalCount: action.payload.totalCount,
             instanceList: action.payload.instanceList,
-            //instanceList: [{author: 'final author', id: 'final id'}],
-            //instanceList: [{author: 'final author', id: 'final id'}, {author: 'second final author', id:
-            // 'secondfinal id'}],
             properties: action.payload.properties,
             clazz: {},
             hasError: false,

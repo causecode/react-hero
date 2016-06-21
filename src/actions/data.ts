@@ -3,7 +3,7 @@ import {
   FETCH_INSTANCE_LIST_START,
   FETCH_INSTANCE_LIST_SUCCESS,
   FETCH_INSTANCE_LIST_ERROR
-} from '../constants';
+} from '../constants/index';
 
 export function fetchInstanceList() {
     return (dispatch) => {
@@ -16,7 +16,6 @@ export function fetchInstanceList() {
           payload: {
               promise: fetchInstanceListFromApi()
               .then((res) => {
-                  console.log('<<<<res', res);
                   return res;
               }),
           },

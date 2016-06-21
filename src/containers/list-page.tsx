@@ -33,20 +33,12 @@ function mapDispatchToProps(dispatch) {
 
 class ListPage extends React.Component<IListPageProps, void> {
 
-    componentDidMount() {
-        console.log('<<<<<<componentDidMount');
+    componentWillMount() {
         this.props.fetchInstanceList();
     };
 
     render() {
-        // const { instanceList } = this.props;
         const { data, instanceList, properties } = this.props;
-        //const instanceList = data.get('instanceList', []);
-
-        console.log('<<<inital instanceList', instanceList);
-        console.log('<<<inital data', data);
-        //const properties = ["author", "blogImgSrc", "body", "id", "lastUpdated", "numberOfComments",
-        // "publishedDate", "subTitle", "title"];
         const totalCount = 10;
 
         return (

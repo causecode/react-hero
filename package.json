@@ -10,7 +10,7 @@
     "build": "webpack",
     "clean": "rimraf public dist",
     "compile": "npm run clean && tsc",
-    "prepublish": "npm run compile",
+    "postInstall": "npm run compile",
     "lint-ts": "tslint 'src/*.tsx' 'src/**/*.tsx' 'src/*.ts' 'src/**/*.ts'",
     "start:dev": "npm run clean && webpack-dev-server --watch --hot"
   },

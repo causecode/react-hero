@@ -41,8 +41,7 @@ function _getStorageConfig() {
         key: 'react-redux-seed',
         serialize: (store) => {
             return store && store.session ?
-                //JSON.stringify(store.session.toJS()) : store;
-                store.session.toJS() : store;
+                JSON.stringify(store.session.toJS()) : store;
         },
         deserialize: (state) => ({
             session: state ? fromJS(JSON.parse(state)) : fromJS({}),
