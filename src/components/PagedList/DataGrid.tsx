@@ -17,8 +17,8 @@ export default function DataGrid( { totalCount, instanceList, properties, clazz}
                     <tr>
                         <th>#</th>
                         {properties.map(function(property) {
-                            return <th key = {properties.indexOf(property)}>{property}</th>
-                        })},
+                            return ( <th key = {properties.indexOf(property)}>{property}</th> );
+                        })}
                     </tr>
                 </thead>
                 <tbody>
@@ -27,13 +27,13 @@ export default function DataGrid( { totalCount, instanceList, properties, clazz}
                         <tr key={instance.get('id')}>
                             <td>#</td>
                             {properties.map(function(property) {
-                                return <td key={properties.indexOf(property)}>{instance.get(property)}</td>
+                                return ( <td key={properties.indexOf(property)}>{instance.get(property)}</td> );
                             })}
                         </tr>
-                            )
+                            );
                     })}
                 </tbody>
             </Table>
         </div>
-    )
+    );
 }

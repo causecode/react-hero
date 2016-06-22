@@ -1,5 +1,5 @@
 import { getRequest, post } from '../server/index';
-import { IFilter } from "../../containers/list-page";
+import { IFilter } from '../../containers/PagedList';
 
 const FETCH_ERR_MSG = `Request couldn't be processed.`;
 
@@ -9,7 +9,7 @@ export function fetchInstanceListFromApi(path: string, filters: IFilter) {
         .then((response) => {
           return resolve(response);
         })
-        //.then(json => resolve(json.meta))
+        // .then(json => resolve(json.meta))
         .then(null, (err) => reject(new Error(FETCH_ERR_MSG)));
   });
 }

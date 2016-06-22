@@ -33,3 +33,19 @@ export const ButtonListItem = (props) => {
         <li className={classes}>{props.children}</li>
     );
 };
+
+export class DatePicker extends React.Component<{}, {date: any}> {
+
+    constructor() {
+        super();
+        this.state = {date: new Date()}
+    }
+
+    setDate = (date?: any) => {
+        this.setState({date: date});
+    };
+
+    render() {
+        return ( <input type="date" val={this.state.date} onChange={this.setDate}/> );
+    }
+}

@@ -1,8 +1,12 @@
 import * as React from 'react';
 import Container from '../components/Container';
 import { Table, Pagination } from 'react-bootstrap';
+import QueryFilter from '../components/PagedList/Filters/QueryFilter';
+import DropDownFilter from '../components/PagedList/Filters/DropDownFilter';
+import RangeFilter from '../components/PagedList/Filters/RangeFilter';
+import DateRangeFilter from '../components/PagedList/Filters/DateRangeFilter';
 
-import PagedListFilters from '../components/PagedList/Filters';
+import PagedListFilters from '../components/PagedList/Filters/PagedListFilter';
 import DataGrid from '../components/PagedList/DataGrid';
 import { fetchInstanceList } from '../actions/data';
 
@@ -44,7 +48,7 @@ class ListPage extends React.Component<IListPageProps, IListPageState> {
     itemsPerPage: number;
     constructor() {
         super();
-        this.state = {activePage : 1}
+        this.state = {activePage : 1};
     }
 
     componentWillMount() {
@@ -72,8 +76,35 @@ class ListPage extends React.Component<IListPageProps, IListPageState> {
 
                 <PagedListFilters
                     clazz="blog"
-                    dropdown={[{name: 'status', possibleValues: ['enable', 'disable', 'inactive']}, {name: 'types', possibleValues: ['poopopo', 'momomo', 'chohchocho']}]}
-                />
+                >
+                    <RangeFilter
+                        label = 'Bill Amount'
+                        paramName = 'billAmount'
+                    />
+
+                    <DateRangeFilter
+                        label = 'Date Created'
+                        paramName = 'dateCreated'
+                    />
+
+                    <DropDownFilter
+                        label = 'status'
+                        paramName = 'status'
+                        possibleValues = {['enable', 'disable', 'inactive']}
+                    />
+                    <DropDownFilter
+                        label = 'types'
+                        paramName = 'types'
+                        possibleValues = {['Zoo', 'Jungle', 'Forest']}
+                    />
+
+                    <QueryFilter
+                        label="search"
+                        paramName = 'search'
+                        fields={["First Name", "Last Name"]}
+                    />
+
+                    </PagedListFilters>
                 <DataGrid
                     instanceList={ instanceList }
                     properties={ properties }

@@ -6,7 +6,7 @@ import {Title, Description, Content, ButtonList, ButtonListItem} from './Widgets
 import {NavMenuLauncherIcon} from './NavMenuLauncherIcon';
 import {Router, Route, Link} from 'react-router';
 import {hashHistory} from 'react-router';
-import ListPage from '../containers/list-page';
+import ListPage from '../containers/PagedList';
 
 export class NewPage extends React.Component<any, any> {
 

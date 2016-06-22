@@ -4,7 +4,7 @@ import {
   FETCH_INSTANCE_LIST_SUCCESS,
   FETCH_INSTANCE_LIST_ERROR
 } from '../constants/index';
-import {IFilter} from "../containers/list-page";
+import {IFilter} from '../containers/PagedList';
 
 export function fetchInstanceList(resource: string, filters: IFilter) {
     return (dispatch) => {
@@ -22,4 +22,4 @@ export function fetchInstanceList(resource: string, filters: IFilter) {
           },
         });
     };
-}
+};
