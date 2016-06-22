@@ -33,7 +33,7 @@ export class NewPage extends React.Component<any, any> {
                         <Route path="/" component={HomeContent}/>
                         <Route path="/page2" component={Page2Content}/>
                         <Route path="/resp" component={ContentImpl}/>
-                        <Route path="/list" component={ListPage}/>
+                        <Route path="/list" component={BlogListPage}/>
                     </Router>
                 </ContentView>
                 <FooterView>my footer</FooterView>
@@ -51,6 +51,12 @@ export class NewPage extends React.Component<any, any> {
             </HeaderFooterLayout>
         );
     }
+}
+
+function BlogListPage() {
+    return (
+        <ListPage resource="blog"/>
+    )
 }
 
 export class HomeContent extends ResponsiveView<any, any> {

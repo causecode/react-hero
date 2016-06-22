@@ -1,5 +1,5 @@
 import { getRequest, post } from '../server/index';
-import { IFilter } from '../../containers/PagedList';
+import {IFilter} from "../../components/PagedList/Filters/IFilters";
 
 const FETCH_ERR_MSG = `Request couldn't be processed.`;
 

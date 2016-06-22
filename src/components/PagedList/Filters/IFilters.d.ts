@@ -1,4 +1,6 @@
 export interface IFilter {
 	label?: string;
-	paramName: string;
+	paramName?: string;
+	offset?: number;
+	sort?: 'asc' | 'desc';
 }

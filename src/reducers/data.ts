@@ -5,6 +5,7 @@ import {
   DELETE_INSTANCE_LIST,
 } from '../constants/index';
 
+import {SET_PAGE} from '../actions/actions';
 import { fromJS } from 'immutable';
 
 const INITIAL_STATE = fromJS({
@@ -17,7 +18,7 @@ const INITIAL_STATE = fromJS({
 });
 
 
-function dataReducer(state = INITIAL_STATE, action = { type: '', payload: null }) {
+function dataReducer(state = INITIAL_STATE, action ) {
     switch (action.type) {
 
     case FETCH_INSTANCE_LIST_START:
@@ -41,6 +42,9 @@ function dataReducer(state = INITIAL_STATE, action = { type: '', payload: null }
 
     case DELETE_INSTANCE_LIST:
         return state.merge(INITIAL_STATE);
+
+    case SET_PAGE:
+        return state.update('activePage', (value) => value = action.pageNumber);
 
     default:
         return state;

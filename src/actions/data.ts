@@ -4,7 +4,8 @@ import {
   FETCH_INSTANCE_LIST_SUCCESS,
   FETCH_INSTANCE_LIST_ERROR
 } from '../constants/index';
-import {IFilter} from '../containers/PagedList';
+import {SET_PAGE} from "./actions";
+import {IFilter} from "../components/PagedList/Filters/IFilters";
 
 export function fetchInstanceList(resource: string, filters: IFilter) {
     return (dispatch) => {
@@ -23,3 +24,10 @@ export function fetchInstanceList(resource: string, filters: IFilter) {
         });
     };
 };
+
+export const setPage = (pageNumber: number) => {
+    return {
+        type: SET_PAGE,
+        pageNumber: pageNumber
+    }
+}

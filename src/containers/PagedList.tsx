@@ -9,6 +9,8 @@ import DateRangeFilter from '../components/PagedList/Filters/DateRangeFilter';
 import PagedListFilters from '../components/PagedList/Filters/PagedListFilter';
 import DataGrid from '../components/PagedList/DataGrid';
 import { fetchInstanceList } from '../actions/data';
+import {setPage} from "../actions/data";
+import {IFilter} from "../components/PagedList/Filters/IFilters";
 
 const connect = require<any>('react-redux').connect;
 
@@ -17,15 +19,9 @@ interface IListPageProps extends React.Props<any> {
     instanceList: any;
     totalCount: number;
     fetchInstanceList: (resource: string, filter: IFilter) => void;
-}
-
-export interface IFilter {
-    offset?: number;
-    sort?: 'asc' | 'desc';
-}
-
-interface IListPageState {
+    setPage: (pageNumber: number) => void;
     activePage: number;
+    resource: string;
 }
 
 function mapStateToProps(state) {
@@ -34,25 +30,33 @@ function mapStateToProps(state) {
         instanceList: state.data.get('instanceList', []),
         totalCount:  state.data.get('totalCount', 0),
         router: state.router,
+        activePage: state.data.get('activePage', 1)
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
         fetchInstanceList: (resource: string, filter: IFilter) => dispatch(fetchInstanceList(resource, filter)),
+        setPage: (pageNumber) => {
+            //dispatch(fetchInstanceList(resource, {offset: (( pageNumber - 1 ) * this.itemsPerPage)}));
+            dispatch(setPage(pageNumber))
+        }
     };
 }
 
-class ListPage extends React.Component<IListPageProps, IListPageState> {
+class ListPage extends React.Component<IListPageProps, {}> {
 
     itemsPerPage: number;
-    constructor() {
+    resource: string;
+
+    constructor(props) {
         super();
         this.state = {activePage : 1};
+        this.resource = props.resource;
     }
 
     componentWillMount() {
-        this.props.fetchInstanceList('blog', {offset: 0});
+        this.props.fetchInstanceList(this.props.resource, {offset: 0});
     };
 
     setItemsPerPage(itemsPerPage: number) {
@@ -61,14 +65,14 @@ class ListPage extends React.Component<IListPageProps, IListPageState> {
         }
     }
 
+    handlePagination = (pageNumber: number) => {
+        this.props.fetchInstanceList(this.resource, {offset: (( pageNumber - 1 ) * this.itemsPerPage)});
+        this.props.setPage(pageNumber)
+    };
+
     render() {
-        const { instanceList, properties, totalCount } = this.props;
-        const { activePage } = this.state;
+        const { instanceList, properties, totalCount, activePage } = this.props;
         this.setItemsPerPage(instanceList.size);
-        const setPage = (pageNumber: number) => {
-            this.props.fetchInstanceList('blog', {offset: (( pageNumber - 1 ) * this.itemsPerPage)});
-            this.setState({activePage: pageNumber});
-        };
 
         return (
             <Container size={4} center>
@@ -104,7 +108,7 @@ class ListPage extends React.Component<IListPageProps, IListPageState> {
                         fields={["First Name", "Last Name"]}
                     />
 
-                    </PagedListFilters>
+                </PagedListFilters>
                 <DataGrid
                     instanceList={ instanceList }
                     properties={ properties }
@@ -121,7 +125,7 @@ class ListPage extends React.Component<IListPageProps, IListPageState> {
                     items={Math.ceil(totalCount / this.itemsPerPage)}
                     maxButtons={5}
                     activePage={activePage}
-                    onSelect={setPage} />
+                    onSelect={this.handlePagination} />
 
             </Container>
         );
