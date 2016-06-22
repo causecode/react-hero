@@ -2,7 +2,8 @@ import * as React from 'react';
 import Container from '../components/Container';
 import { Table, Pagination } from 'react-bootstrap';
 
-import DataGrid from '../components/DataGrid';
+import PagedListFilters from '../components/PagedList/Filters';
+import DataGrid from '../components/PagedList/DataGrid';
 import { fetchInstanceList } from '../actions/data';
 
 const connect = require<any>('react-redux').connect;
@@ -68,6 +69,11 @@ class ListPage extends React.Component<IListPageProps, IListPageState> {
         return (
             <Container size={4} center>
                 <h2 className="caps">Page List</h2>
+
+                <PagedListFilters
+                    clazz="blog"
+                    dropdown={[{name: 'status', possibleValues: ['enable', 'disable', 'inactive']}, {name: 'types', possibleValues: ['poopopo', 'momomo', 'chohchocho']}]}
+                />
                 <DataGrid
                     instanceList={ instanceList }
                     properties={ properties }
