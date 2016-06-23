@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {FormControl} from 'react-bootstrap';
 
 export const Title = (props) => {
     return (
@@ -34,7 +35,7 @@ export const ButtonListItem = (props) => {
     );
 };
 
-export class DatePicker extends React.Component<{}, {date: any}> {
+export class DatePicker extends React.Component<{name?: string, fields?: any}, {date: any}> {
 
     constructor() {
         super();
@@ -46,6 +47,7 @@ export class DatePicker extends React.Component<{}, {date: any}> {
     };
 
     render() {
-        return ( <input type="date" val={this.state.date} onChange={this.setDate}/> );
+        let attribute = this.props.name ? {name: this.props.name} : this.props.fields;
+        return ( <FormControl type="date" val={this.state.date} onChange={this.setDate} {...attribute}/> );
     }
 }

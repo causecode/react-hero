@@ -6,7 +6,7 @@ import DropDownFilter from '../components/PagedList/Filters/DropDownFilter';
 import RangeFilter from '../components/PagedList/Filters/RangeFilter';
 import DateRangeFilter from '../components/PagedList/Filters/DateRangeFilter';
 
-import PagedListFilters from '../components/PagedList/Filters/PagedListFilter';
+import {PagedListFilters} from '../components/PagedList/Filters/PagedListFilter';
 import DataGrid from '../components/PagedList/DataGrid';
 import { fetchInstanceList } from '../actions/data';
 import {setPage} from "../actions/data";
@@ -38,7 +38,6 @@ function mapDispatchToProps(dispatch) {
     return {
         fetchInstanceList: (resource: string, filter: IFilter) => dispatch(fetchInstanceList(resource, filter)),
         setPage: (pageNumber) => {
-            //dispatch(fetchInstanceList(resource, {offset: (( pageNumber - 1 ) * this.itemsPerPage)}));
             dispatch(setPage(pageNumber))
         }
     };
@@ -51,7 +50,6 @@ class ListPage extends React.Component<IListPageProps, {}> {
 
     constructor(props) {
         super();
-        this.state = {activePage : 1};
         this.resource = props.resource;
     }
 
@@ -73,41 +71,12 @@ class ListPage extends React.Component<IListPageProps, {}> {
     render() {
         const { instanceList, properties, totalCount, activePage } = this.props;
         this.setItemsPerPage(instanceList.size);
-
         return (
             <Container size={4} center>
                 <h2 className="caps">Page List</h2>
 
-                <PagedListFilters
-                    clazz="blog"
-                >
-                    <RangeFilter
-                        label = 'Bill Amount'
-                        paramName = 'billAmount'
-                    />
-
-                    <DateRangeFilter
-                        label = 'Date Created'
-                        paramName = 'dateCreated'
-                    />
-
-                    <DropDownFilter
-                        label = 'status'
-                        paramName = 'status'
-                        possibleValues = {['enable', 'disable', 'inactive']}
-                    />
-                    <DropDownFilter
-                        label = 'types'
-                        paramName = 'types'
-                        possibleValues = {['Zoo', 'Jungle', 'Forest']}
-                    />
-
-                    <QueryFilter
-                        label="search"
-                        paramName = 'search'
-                        fields={["First Name", "Last Name"]}
-                    />
-
+                <PagedListFilters>
+                    {this.props.children}
                 </PagedListFilters>
                 <DataGrid
                     instanceList={ instanceList }

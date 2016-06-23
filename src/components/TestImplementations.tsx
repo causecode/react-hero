@@ -7,6 +7,10 @@ import {NavMenuLauncherIcon} from './NavMenuLauncherIcon';
 import {Router, Route, Link} from 'react-router';
 import {hashHistory} from 'react-router';
 import ListPage from '../containers/PagedList';
+import DropDownFilter from '../components/PagedList/Filters/DropDownFilter';
+import DateRangeFilter from '../components/PagedList/Filters/DateRangeFilter';
+import RangeFilter from '../components/PagedList/Filters/RangeFilter';
+import QueryFilter from '../components/PagedList/Filters/QueryFilter';
 
 export class NewPage extends React.Component<any, any> {
 
@@ -55,7 +59,31 @@ export class NewPage extends React.Component<any, any> {
 
 function BlogListPage() {
     return (
-        <ListPage resource="blog"/>
+        <ListPage resource="blog">
+            <DropDownFilter
+                label = 'status'
+                paramName = 'status'
+                possibleValues = {['enable', 'disable', 'inactive']}
+            />
+            <RangeFilter
+                label = 'Bill Amount'
+                paramName = 'billAmount'
+            />
+            <DateRangeFilter
+                label = 'Date Created'
+                paramName = 'dateCreated'
+            />
+            <DropDownFilter
+                label = 'types'
+                paramName = 'types'
+                possibleValues = {['Zoo', 'Jungle', 'Forest']}
+            />
+            <QueryFilter
+                label = "Search"
+                paramName = "query"
+                placeholder = {['First Name', 'Last Name', "Email"]}
+            />
+        </ListPage>
     )
 }
 

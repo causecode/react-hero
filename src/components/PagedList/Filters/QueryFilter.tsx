@@ -1,20 +1,19 @@
 import * as React from 'react';
-import { Button, Grid, Row } from 'react-bootstrap';
+import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap';
 import {IFilter} from "./IFilters";
 import {capitalizeFirstLetter} from "../../../utils/AppService";
 
 export interface IQueryFilter extends IFilter {
-    fields: Array<string>;
+    placeholder: Array<string>;
 }
 
-export default function QueryFilter ({ label, fields, paramName }: IQueryFilter, {}) {
+export default function QueryFilter ({ label, placeholder, fields, paramName }: IQueryFilter, {}) {
 
-    let queryFields: string = fields.join(', ');
     label = label ? label : paramName;
     return (
-        <div className="flex query-filter">
-            <strong> { capitalizeFirstLetter(label) } </strong>
-            <input type="text" placeholder={ queryFields }/>
-        </div>
+        <FormGroup className="query-filter">
+            <ControlLabel>{ capitalizeFirstLetter(label) }</ControlLabel>
+            <FormControl type="text" placeholder={ placeholder} {...fields[0]} />
+        </FormGroup>
     );
 }

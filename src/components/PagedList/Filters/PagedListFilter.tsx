@@ -1,52 +1,58 @@
 import * as React from 'react';
-import { Button, Grid, Row } from 'react-bootstrap';
+import { Form, Button, Grid, Row } from 'react-bootstrap';
 import {DatePicker} from '../../Widgets';
 import {IFilter} from "./IFilters";
-
-export interface IDropDownFilter extends IFilter {
-    possibleValues: Array<string>;
-}
-
-export interface IRangeFilter extends IFilter {
-    type: 'integer' | 'date';
-}
-
-export interface IQueryFilter extends IFilter {
-    fields: Array<string>;
-}
+const ReduxForm = require<any>('redux-form');
+import DropDownFilter from './DropDownFilter';
+import fields from "../../Test/SimpleForm";
 
 export interface IPagedListFiltersProps extends React.Props<any> {
-    clazz: any;
     content?: JSX.Element;
-    dropdown?: IDropDownFilter | Array<IDropDownFilter>;
-    range?: IRangeFilter | Array<IRangeFilter>;
-    query?: IQueryFilter;
     children?: JSX.Element | JSX.Element[];
+    fields?: string[];
 };
 
-export default function PagedListFilters ({ dropdown, content, clazz, range, query, children }: IPagedListFiltersProps, {}) {
-    let dropdownHTML, queryHTML, rangeHTML;
-    /*
-    if (dropdown) {
-        dropdownHTML = getArrayFilterHTML(dropdown, getDropdownFilterHTML);
-    }
-    if (query) {
-        queryHTML = getQueryHTML(query);
-    }
-    if (range) {
-        rangeHTML = getArrayFilterHTML(range, getRangeFilterHTML);
-    }
+function FilterForm ({content , fields }:IPagedListFiltersProps) {
+    const childrenWithProps = React.Children.map(content,
+        (child: any) => {
+            let paramName = child.props.paramName;
+            let filterName = child.type.name;
+            if (['RangeFilter', 'DateRangeFilter'].indexOf(filterName) !== -1) {
+                return React.cloneElement(child, {
+                    fields: [fields[`${paramName}From`], fields[`${paramName}To`]]
+                })
+            } else {
+                return React.cloneElement(child, {
+                    fields: [fields[child.props.paramName]]
+                })
+            }
+        });
 
-     * <Row>{queryHTML}</Row>
-     <Row>{dropdownHTML}</Row>
-     <Row>{rangeHTML}</Row> */
+    return(
+        <Form inline className="filter-form stick-left">
+            {childrenWithProps}
+            <Button className="filter-button" bsStyle="primary" type="submit">Submit</Button>
+        </Form>
+    )
+}
 
+let DynamicForm = ReduxForm.reduxForm({form: 'dynamic'})(FilterForm);
+
+export function PagedListFilters ({ content, children }:IPagedListFiltersProps) {
+    let filterProps = [];
+    React.Children.forEach(children, (child: any) => {
+        let paramName = child.props.paramName;
+        let filterName = child.type.name;
+        if (['RangeFilter', 'DateRangeFilter'].indexOf(filterName) !== -1) {
+            filterProps.push(`${paramName}From`, `${paramName}To`);
+        } else {
+            filterProps.push(child.props.paramName);
+        }
+    });
     return (
         <div className="flex">
             <Button> { content || <i className="fa fa-filter" /> } </Button>
-            <Grid>
-                {children}
-            </Grid>
+            <DynamicForm fields={filterProps} content={children}/>
         </div>
     );
 

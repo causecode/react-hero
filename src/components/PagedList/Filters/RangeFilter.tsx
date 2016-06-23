@@ -1,19 +1,19 @@
 import * as React from 'react';
-import { Button, Grid, Row, FormControl } from 'react-bootstrap';
+import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap';
 import {IFilter} from "./IFilters";
 import {capitalizeFirstLetter} from "../../../utils/AppService";
 
-export default function RangeFilter({ label, paramName }: IFilter, {}) {
+export default function RangeFilter({ label, paramName, fields }: IFilter, {}) {
 
     label = label ? label : paramName;
     return (
-        <section>
-            <strong>{ capitalizeFirstLetter(label) }</strong> <br/>
+        <FormGroup>
+            <ControlLabel>{ capitalizeFirstLetter(label) }</ControlLabel>
             <strong>From</strong>
-            <FormControl type="text" />
-            <br/>
+            <FormControl type="text" {...fields[0]}/>
+
             <strong>To</strong>
-            <FormControl type="text" />
-        </section>
+            <FormControl type="text" {...fields[1]}/>
+        </FormGroup>
     );
 }

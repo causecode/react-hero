@@ -1,24 +1,19 @@
 import * as React from 'react';
-import { Button, Grid, Row } from 'react-bootstrap';
+import { FormGroup, ControlLabel } from 'react-bootstrap';
 import {DatePicker} from '../../Widgets';
 import {IFilter} from "./IFilters";
 import {capitalizeFirstLetter} from "../../../utils/AppService";
 
-/*export interface IRangeFilter extends IFilter {
- type: 'integer' | 'date';
- }*/
-
-export default function DateRangeFilter({ label, paramName }: IFilter, {}) {
+export default function DateRangeFilter({ label, paramName, fields }: IFilter, {}) {
 
 	label = label ? label : paramName;
 	return (
-		<section>
-			<strong>{ capitalizeFirstLetter(label) }</strong> <br/>
+		<FormGroup>
+			<ControlLabel>{ capitalizeFirstLetter(label) }</ControlLabel>
 			<strong>From</strong>
-			<DatePicker />
-			<br/>
+			<DatePicker fields={fields[0]}/>
 			<strong>To</strong>
-			<DatePicker />
-		</section>
+			<DatePicker fields={fields[1]}/>
+		</FormGroup>
 	);
 }

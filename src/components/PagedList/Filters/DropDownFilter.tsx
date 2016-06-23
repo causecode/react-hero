@@ -1,26 +1,26 @@
 import * as React from 'react';
-import { Button, Grid, Row } from 'react-bootstrap';
+import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap';
 import {IFilter} from "./IFilters";
+import {capitalizeFirstLetter} from "../../../utils/AppService";
 
 export interface IDropDownFilter extends IFilter {
     possibleValues: Array<string>;
 }
 
-export default function DropDownFilter({ label, possibleValues }: IDropDownFilter, {}) {
+export default function DropDownFilter({ label, paramName, possibleValues, fields }: IDropDownFilter, {}) {
 
+    label = label ? label : paramName;
     return (
-        <div className="flex dropdown-filter">
-            <section>
-                <strong>{ label } </strong>
-                <select>
-                    { possibleValues.map(value => {
-                        return (
-                        <option key={possibleValues.indexOf(value)} value={value}>{value}</option>
-                            );
-                        })
-                    }
-                </select>
-            </section>
-        </div>
+        <FormGroup>
+            <ControlLabel>{ capitalizeFirstLetter(label) }</ControlLabel>
+            <FormControl componentClass="select" {...fields[0]}>
+                { possibleValues.map(value => {
+                    return (
+                    <option key={possibleValues.indexOf(value)} value={value}>{value}</option>
+                        );
+                    })
+                }
+            </FormControl>
+        </FormGroup>
     );
 }

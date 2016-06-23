@@ -29,9 +29,7 @@ function _getMiddleware() {
 }
 
 function _getEnhancers() {
-    let enhancers = [
-        persistState('session', _getStorageConfig()),
-    ];
+    let enhancers = [window.devToolsExtension() ];
 
     return enhancers;
 }
