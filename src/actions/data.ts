@@ -7,7 +7,7 @@ import {
 import {SET_PAGE} from "./actions";
 import {IFilter} from "../components/PagedList/Filters/IFilters";
 
-export function fetchInstanceList(resource: string, filters: IFilter) {
+export function fetchInstanceList(resource: string, offset: number) {
     return (dispatch) => {
         return dispatch({
           types: [
@@ -16,7 +16,7 @@ export function fetchInstanceList(resource: string, filters: IFilter) {
               FETCH_INSTANCE_LIST_ERROR,
           ],
           payload: {
-              promise: fetchInstanceListFromApi(resource, filters)
+              promise: fetchInstanceListFromApi(resource, offset)
               .then((res) => {
                   return res;
               }),

@@ -5,40 +5,63 @@ import {IFilter} from "./IFilters";
 const ReduxForm = require<any>('redux-form');
 import DropDownFilter from './DropDownFilter';
 import fields from "../../Test/SimpleForm";
+import {fetchInstanceList} from "../../../actions/data";
 
 export interface IPagedListFiltersProps extends React.Props<any> {
-    content?: JSX.Element;
-    children?: JSX.Element | JSX.Element[];
+    children?: JSX.Element;
     fields?: string[];
+    sendFilters?: () => void;
+    clazz: string;
 };
 
-function FilterForm ({content , fields }:IPagedListFiltersProps) {
-    const childrenWithProps = React.Children.map(content,
-        (child: any) => {
-            let paramName = child.props.paramName;
-            let filterName = child.type.name;
-            if (['RangeFilter', 'DateRangeFilter'].indexOf(filterName) !== -1) {
-                return React.cloneElement(child, {
-                    fields: [fields[`${paramName}From`], fields[`${paramName}To`]]
-                })
-            } else {
-                return React.cloneElement(child, {
-                    fields: [fields[child.props.paramName]]
-                })
-            }
-        });
+class FilterForm extends React.Component<IPagedListFiltersProps, {}> {
 
-    return(
-        <Form inline className="filter-form stick-left">
-            {childrenWithProps}
-            <Button className="filter-button" bsStyle="primary" type="submit">Submit</Button>
-        </Form>
-    )
+    handleSubmit = () => {
+    }
+
+    render() {
+        const { children, fields } = this.props;
+        const childrenWithProps = React.Children.map(children,
+            (child:any) => {
+                let paramName = child.props.paramName;
+                let filterName = child.type.name;
+                if (['RangeFilter', 'DateRangeFilter'].indexOf(filterName) !== -1) {
+                    return React.cloneElement(child, {
+                        fields: [fields[`${paramName}From`], fields[`${paramName}To`]]
+                    })
+                } else {
+                    return React.cloneElement(child, {
+                        fields: [fields[child.props.paramName]]
+                    })
+                }
+            });
+
+        return (
+            <form className="form-inline filter-form stick-left" onSubmit={this.handleSubmit}>
+                {childrenWithProps}
+                <Button className="filter-button" bsStyle="primary" type="submit">Submit</Button>
+            </form>
+        )
+    }
 }
 
-let DynamicForm = ReduxForm.reduxForm({form: 'dynamic'})(FilterForm);
+function mapDispatchToProps(dispatch) {
+    return {
+        sendFilters: (resource: string, offset: number) => dispatch(fetchInstanceList(resource, offset)),
+    };
+}
 
-export function PagedListFilters ({ content, children }:IPagedListFiltersProps) {
+function mapStateToProps(state) {
+    return {};
+}
+
+let DynamicForm = ReduxForm.reduxForm(
+    {form: 'dynamic'},
+    mapStateToProps,
+    mapDispatchToProps
+)(FilterForm);
+
+export function PagedListFilters ({ children, clazz }:IPagedListFiltersProps) {
     let filterProps = [];
     React.Children.forEach(children, (child: any) => {
         let paramName = child.props.paramName;
@@ -50,9 +73,9 @@ export function PagedListFilters ({ content, children }:IPagedListFiltersProps) 
         }
     });
     return (
-        <div className="flex">
-            <Button> { content || <i className="fa fa-filter" /> } </Button>
-            <DynamicForm fields={filterProps} content={children}/>
+        <div>
+            <Button> <i className="fa fa-filter" /> </Button>
+            <DynamicForm fields={filterProps} children={children} clazz={clazz}/>
         </div>
     );
 

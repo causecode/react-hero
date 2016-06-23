@@ -18,7 +18,7 @@ interface IListPageProps extends React.Props<any> {
     properties: Array<any>;
     instanceList: any;
     totalCount: number;
-    fetchInstanceList: (resource: string, filter: IFilter) => void;
+    fetchInstanceList: (resource: string, offset?: number) => void;
     setPage: (pageNumber: number) => void;
     activePage: number;
     resource: string;
@@ -36,7 +36,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        fetchInstanceList: (resource: string, filter: IFilter) => dispatch(fetchInstanceList(resource, filter)),
+        fetchInstanceList: (resource: string, offset: number) => {dispatch(fetchInstanceList(resource, offset))},
         setPage: (pageNumber) => {
             dispatch(setPage(pageNumber))
         }
@@ -54,7 +54,7 @@ class ListPage extends React.Component<IListPageProps, {}> {
     }
 
     componentWillMount() {
-        this.props.fetchInstanceList(this.props.resource, {offset: 0});
+        this.props.fetchInstanceList(this.props.resource, 0);
     };
 
     setItemsPerPage(itemsPerPage: number) {
@@ -64,7 +64,7 @@ class ListPage extends React.Component<IListPageProps, {}> {
     }
 
     handlePagination = (pageNumber: number) => {
-        this.props.fetchInstanceList(this.resource, {offset: (( pageNumber - 1 ) * this.itemsPerPage)});
+        this.props.fetchInstanceList(this.resource, (( pageNumber - 1 ) * this.itemsPerPage));
         this.props.setPage(pageNumber)
     };
 
@@ -75,7 +75,7 @@ class ListPage extends React.Component<IListPageProps, {}> {
             <Container size={4} center>
                 <h2 className="caps">Page List</h2>
 
-                <PagedListFilters>
+                <PagedListFilters clazz={this.resource}>
                     {this.props.children}
                 </PagedListFilters>
                 <DataGrid
