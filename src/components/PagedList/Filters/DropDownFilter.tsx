@@ -10,6 +10,7 @@ export interface IDropDownFilter extends IFilter {
 export default function DropDownFilter({ label, paramName, possibleValues, fields }: IDropDownFilter, {}) {
 
     label = label ? label : paramName;
+    // TODO Reset Dropdown.
     return (
         <FormGroup>
             <ControlLabel>{ capitalizeFirstLetter(label) }</ControlLabel>

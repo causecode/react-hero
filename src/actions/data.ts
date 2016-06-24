@@ -7,6 +7,8 @@ import {
 import {SET_PAGE} from "./actions";
 import {IFilter} from "../components/PagedList/Filters/IFilters";
 
+export const TOGGLE_FILTERS = 'TOGGLE_FILTERS';
+
 export function fetchInstanceList(resource: string, offset: number) {
     return (dispatch) => {
         return dispatch({
@@ -29,5 +31,11 @@ export const setPage = (pageNumber: number) => {
     return {
         type: SET_PAGE,
         pageNumber: pageNumber
+    }
+}
+
+export const toggleFilters = () => {
+    return {
+        type: TOGGLE_FILTERS
     }
 }

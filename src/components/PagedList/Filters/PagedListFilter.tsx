@@ -4,23 +4,29 @@ import {DatePicker} from '../../Widgets';
 import {IFilter} from "./IFilters";
 const ReduxForm = require<any>('redux-form');
 import DropDownFilter from './DropDownFilter';
-import fields from "../../Test/SimpleForm";
 import {fetchInstanceList} from "../../../actions/data";
+import {store} from "../../../store/store";
+const classNames = require<any>('classnames');
+import * as Actions from '../../../actions/data'
+import {spring} from "react-motion";
 
 export interface IPagedListFiltersProps extends React.Props<any> {
     children?: JSX.Element;
     fields?: string[];
-    sendFilters?: () => void;
-    clazz: string;
+    sendFilters?: (resource: string) => void;
+    clazz?: string;
+    filtersOpen?: boolean
 };
 
 class FilterForm extends React.Component<IPagedListFiltersProps, {}> {
 
-    handleSubmit = () => {
-    }
+    handleSubmit = (e) => {
+        e.preventDefault();
+        this.props.sendFilters(this.props.clazz);
+    };
 
     render() {
-        const { children, fields } = this.props;
+        const { filtersOpen, children, fields } = this.props;
         const childrenWithProps = React.Children.map(children,
             (child:any) => {
                 let paramName = child.props.paramName;
@@ -36,8 +42,9 @@ class FilterForm extends React.Component<IPagedListFiltersProps, {}> {
                 }
             });
 
+        let hideClasses = filtersOpen? '' : 'hide';
         return (
-            <form className="form-inline filter-form stick-left" onSubmit={this.handleSubmit}>
+            <form className={classNames('form-inline', 'filter-form', 'stick-left', hideClasses)} onSubmit={this.handleSubmit}>
                 {childrenWithProps}
                 <Button className="filter-button" bsStyle="primary" type="submit">Submit</Button>
             </form>
@@ -47,12 +54,14 @@ class FilterForm extends React.Component<IPagedListFiltersProps, {}> {
 
 function mapDispatchToProps(dispatch) {
     return {
-        sendFilters: (resource: string, offset: number) => dispatch(fetchInstanceList(resource, offset)),
+        sendFilters: (resource: string) => dispatch(fetchInstanceList(resource, 0)),
     };
 }
 
 function mapStateToProps(state) {
-    return {};
+    return {
+        filtersOpen: state.data.get('filtersOpen')
+    };
 }
 
 let DynamicForm = ReduxForm.reduxForm(
@@ -72,10 +81,13 @@ export function PagedListFilters ({ children, clazz }:IPagedListFiltersProps) {
             filterProps.push(child.props.paramName);
         }
     });
+
+    // TODO use connect and mapDispatchToProps for this.
+    let toggleFilters = () => {store.dispatch(Actions.toggleFilters())}
     return (
         <div>
-            <Button> <i className="fa fa-filter" /> </Button>
-            <DynamicForm fields={filterProps} children={children} clazz={clazz}/>
+            <Button onClick={toggleFilters}> <i className="fa fa-filter" /> </Button>
+            <DynamicForm fields={filterProps} children={children} clazz={clazz} filtersOpen=""/>
         </div>
     );
 

@@ -7,6 +7,7 @@ import {
 
 import {SET_PAGE} from '../actions/actions';
 import { fromJS } from 'immutable';
+import {TOGGLE_FILTERS} from "../actions/data";
 
 const INITIAL_STATE = fromJS({
     totalCount: 0,
@@ -15,6 +16,7 @@ const INITIAL_STATE = fromJS({
     clazz: {},
     hasError: false,
     isLoading: false,
+    filtersOpen: false
 });
 
 
@@ -45,6 +47,9 @@ function dataReducer(state = INITIAL_STATE, action ) {
 
     case SET_PAGE:
         return state.update('activePage', (value) => value = action.pageNumber);
+
+    case TOGGLE_FILTERS:
+        return  state.update('filtersOpen', (value) => value = !value)
 
     default:
         return state;
