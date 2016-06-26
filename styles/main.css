@@ -140,3 +140,21 @@
 	margin-top: 15px;
 	margin-left: 15px;
 }
+
+.data-show-table {
+    margin-top: 20px;
+}
+
+.data-edit-form button, .data-edit-form a {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.data-edit-form .control-label {
+    text-align: right;
+}
+
+.fa {
+    padding-left: 5px;
+    padding-right: 5px;
+}

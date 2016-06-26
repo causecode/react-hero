@@ -11,6 +11,8 @@ import DropDownFilter from '../components/PagedList/Filters/DropDownFilter';
 import DateRangeFilter from '../components/PagedList/Filters/DateRangeFilter';
 import RangeFilter from '../components/PagedList/Filters/RangeFilter';
 import QueryFilter from '../components/PagedList/Filters/QueryFilter';
+import GenericShowPage from './CRUD/GenericShowPage';
+import GenericEditPage from './CRUD/GenericEditPage';
 
 export class NewPage extends React.Component<any, any> {
 
@@ -28,7 +30,7 @@ export class NewPage extends React.Component<any, any> {
                                 <ButtonListItem><Link to="/">Home</Link> </ButtonListItem>
                                 <ButtonListItem><Link to="/page2">Button 2</Link></ButtonListItem>
                                 <ButtonListItem><Link to="/resp">Responsive View Page</Link></ButtonListItem>
-                                <ButtonListItem><Link to="/list">Page List</Link></ButtonListItem>
+                                <ButtonListItem><Link to="/blog/list">Page List</Link></ButtonListItem>
                             </ButtonList>
                     </Content>
                 </HeaderView>
@@ -37,7 +39,9 @@ export class NewPage extends React.Component<any, any> {
                         <Route path="/" component={HomeContent}/>
                         <Route path="/page2" component={Page2Content}/>
                         <Route path="/resp" component={ContentImpl}/>
-                        <Route path="/list" component={BlogListPage}/>
+                        <Route path="/blog/list" component={BlogListPage}/>
+                        <Route path="/:resource/show/:resourceID" component={GenericShowPage} />
+                        <Route path="/:resource/edit/:resourceID" component={GenericEditPage} />
                     </Router>
                 </ContentView>
                 <FooterView>my footer</FooterView>

@@ -18,3 +18,13 @@ export function fetchInstanceListFromApi(path: string, offset: number) {
         .then(null, (err) => reject(new Error(FETCH_ERR_MSG)));
     });
 }
+
+export function fetchInstanceDataFromApi(path: string) {
+    return new Promise((resolve, reject) => {
+
+        return getRequest(path).then((response) => {
+            return resolve(response);
+        }).then(null, (err) => reject(new Error(FETCH_ERR_MSG)))
+    });
+
+}

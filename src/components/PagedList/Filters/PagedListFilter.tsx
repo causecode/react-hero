@@ -37,7 +37,7 @@ class FilterForm extends React.Component<IPagedListFiltersProps, {}> {
                     })
                 } else {
                     return React.cloneElement(child, {
-                        fields: [fields[child.props.paramName]]
+                        fields: [fields[paramName]]
                     })
                 }
             });

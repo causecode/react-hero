@@ -29,8 +29,8 @@ let serialize = function(obj, prefix?) {
     return str.join('&');
 };
 
-export function getRequest(path, data) {
+export function getRequest(path: string, data={}) {
     let params = serialize(data);
     return fetch(BASE_URL + path + `?${params}`)
-        .then(response => response.json());
+          .then(response => response.json());
 };

@@ -8,6 +8,11 @@ import {
 import {SET_PAGE} from '../actions/actions';
 import { fromJS } from 'immutable';
 import {TOGGLE_FILTERS} from "../actions/data";
+import {
+    FETCH_INSTANCE_DATA_START,
+    FETCH_INSTANCE_DATA_SUCCESS,
+    FETCH_INSTANCE_DATA_ERROR
+} from "../constants/index";
 
 const INITIAL_STATE = fromJS({
     totalCount: 0,
@@ -16,7 +21,8 @@ const INITIAL_STATE = fromJS({
     clazz: {},
     hasError: false,
     isLoading: false,
-    filtersOpen: false
+    filtersOpen: false,
+    blogInstance: {}
 });
 
 
@@ -37,6 +43,20 @@ function dataReducer(state = INITIAL_STATE, action ) {
         }));
 
     case FETCH_INSTANCE_LIST_ERROR:
+        return state.merge(fromJS({
+            hasError: true,
+            isLoading: false,
+        }));
+
+    case FETCH_INSTANCE_DATA_START:
+        return INITIAL_STATE;
+
+    case FETCH_INSTANCE_DATA_SUCCESS:
+        return state.merge(fromJS({
+            blogInstance: action.payload.blogInstance
+        }));
+
+    case FETCH_INSTANCE_DATA_ERROR:
         return state.merge(fromJS({
             hasError: true,
             isLoading: false,
