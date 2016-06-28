@@ -18,43 +18,27 @@ interface IListPageProps extends React.Props<any> {
     properties: Array<any>;
     instanceList: any;
     totalCount: number;
-    fetchInstanceList: (resource: string, offset?: number) => void;
+    fetchInstanceList: (resource: string, offset?: number, model?: Function) => void;
     setPage: (pageNumber: number) => void;
     activePage: number;
     resource: string;
+    model: Function
 }
 
-function mapStateToProps(state) {
-    return {
-        properties: state.data.get('properties', []),
-        instanceList: state.data.get('instanceList', []),
-        totalCount:  state.data.get('totalCount', 0),
-        router: state.router,
-        activePage: state.data.get('activePage', 1)
-    };
-}
-
-function mapDispatchToProps(dispatch) {
-    return {
-        fetchInstanceList: (resource: string, offset: number) => {dispatch(fetchInstanceList(resource, offset))},
-        setPage: (pageNumber) => {
-            dispatch(setPage(pageNumber))
-        }
-    };
-}
 
 class ListPage extends React.Component<IListPageProps, {}> {
 
     itemsPerPage: number;
     resource: string;
 
-    constructor(props) {
+    constructor(props: IListPageProps) {
         super();
         this.resource = props.resource;
     }
 
     componentWillMount() {
-        this.props.fetchInstanceList(this.props.resource, 0);
+        const { resource, model } = this.props;
+        this.props.fetchInstanceList(resource, 0);
     };
 
     setItemsPerPage(itemsPerPage: number) {
@@ -72,10 +56,9 @@ class ListPage extends React.Component<IListPageProps, {}> {
         const { instanceList, properties, totalCount, activePage } = this.props;
         this.setItemsPerPage(instanceList.size);
         return (
-            <Container size={4} center>
-                <h2 className="caps">Page List</h2>
-
-                <PagedListFilters clazz={this.resource}>
+        <Container size={4} center>
+            <h2 className="caps">Page List</h2>
+            <PagedListFilters clazz={this.resource}>
                     {this.props.children}
                 </PagedListFilters>
                 <DataGrid
@@ -101,6 +84,24 @@ class ListPage extends React.Component<IListPageProps, {}> {
     };
 };
 
+function mapStateToProps(state) {
+    return {
+        properties: state.data.get('properties', []),
+        instanceList: state.data.get('instanceList', []),
+        totalCount:  state.data.get('totalCount', 0),
+        router: state.router,
+        activePage: state.data.get('activePage', 1)
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        fetchInstanceList: (resource: string, offset: number) => {dispatch(fetchInstanceList(resource, offset))},
+        setPage: (pageNumber) => {
+            dispatch(setPage(pageNumber))
+        }
+    };
+}
 export default connect(
     mapStateToProps,
     mapDispatchToProps

@@ -1,9 +1,9 @@
 import * as React from 'react';
-import {HeaderView, FooterView, ContentView, NavigationMenu} from './HeaderFooterLayout';
-import HeaderFooterLayout from './HeaderFooterLayout';
-import {ResponsiveView} from './ResponsiveView';
-import {Title, Description, Content, ButtonList, ButtonListItem} from './Widgets';
-import {NavMenuLauncherIcon} from './NavMenuLauncherIcon';
+import {HeaderView, FooterView, ContentView, NavigationMenu} from './../components/HeaderFooterLayout';
+import HeaderFooterLayout from './../components/HeaderFooterLayout';
+import {ResponsiveView} from './../components/ResponsiveView';
+import {Title, Description, Content, ButtonList, ButtonListItem} from './../components/Widgets';
+import {NavMenuLauncherIcon} from './../components/NavMenuLauncherIcon';
 import {Router, Route, Link} from 'react-router';
 import {hashHistory} from 'react-router';
 import ListPage from '../containers/PagedList';
@@ -11,8 +11,9 @@ import DropDownFilter from '../components/PagedList/Filters/DropDownFilter';
 import DateRangeFilter from '../components/PagedList/Filters/DateRangeFilter';
 import RangeFilter from '../components/PagedList/Filters/RangeFilter';
 import QueryFilter from '../components/PagedList/Filters/QueryFilter';
-import GenericShowPage from './CRUD/GenericShowPage';
-import GenericEditPage from './CRUD/GenericEditPage';
+import GenericShowPage from './../components/CRUD/GenericShowPage';
+import GenericEditPage from './../components/CRUD/GenericEditPage';
+import BlogModel from "./TestModel";
 
 export class NewPage extends React.Component<any, any> {
 
@@ -89,6 +90,23 @@ function BlogListPage() {
             />
         </ListPage>
     )
+}
+
+export abstract class IModuleFactory {
+    abstract getClass(resourceName: string): new (...args: any[]) => {}
+    abstract getComponent(componentName: string): Function;
+}
+
+export class ModuleFactory extends IModuleFactory {
+
+    getClass(resourceName: string): new (...args: any[]) => {} {
+        if (resourceName === 'blog')
+            return BlogModel;
+    }
+
+    getComponent(ComponentName: string) {
+        return new Function();
+    }
 }
 
 export class HomeContent extends ResponsiveView<any, any> {

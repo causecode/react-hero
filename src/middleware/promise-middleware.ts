@@ -34,7 +34,7 @@ export default function promiseMiddleware({ dispatch }) {
         dispatch({
           type: FULFILLED,
           payload: result,
-          meta,
+          meta
         });
       },
       error => {

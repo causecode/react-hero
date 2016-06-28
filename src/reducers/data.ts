@@ -13,6 +13,8 @@ import {
     FETCH_INSTANCE_DATA_SUCCESS,
     FETCH_INSTANCE_DATA_ERROR
 } from "../constants/index";
+import BlogModel from '../Demo/TestModel';
+import {ModuleFactory} from "../Demo/TestImplementations";
 
 const INITIAL_STATE = fromJS({
     totalCount: 0,
@@ -25,17 +27,25 @@ const INITIAL_STATE = fromJS({
     blogInstance: {}
 });
 
+function instantiate<T>(ctor: { new(...args: any[]): T }, args): T {
+    return new ctor(...args);
+}
 
 function dataReducer(state = INITIAL_STATE, action ) {
+    let Model;
     switch (action.type) {
 
     case FETCH_INSTANCE_LIST_START:
         return INITIAL_STATE;
 
     case FETCH_INSTANCE_LIST_SUCCESS:
+        Model = new ModuleFactory().getClass('blog');
+        let instanceList = action.payload.instanceList.map(instance => {
+            return instantiate(Model, [instance]);
+        });
         return state.merge(fromJS({
             totalCount: action.payload.totalCount,
-            instanceList: action.payload.instanceList,
+            instanceList: instanceList,
             properties: action.payload.properties,
             clazz: {},
             hasError: false,
@@ -52,8 +62,9 @@ function dataReducer(state = INITIAL_STATE, action ) {
         return INITIAL_STATE;
 
     case FETCH_INSTANCE_DATA_SUCCESS:
+        Model = new ModuleFactory().getClass('blog');
         return state.merge(fromJS({
-            blogInstance: action.payload.blogInstance
+            blogInstance: instantiate(Model, [action.payload.blogInstance])
         }));
 
     case FETCH_INSTANCE_DATA_ERROR:

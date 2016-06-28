@@ -10,29 +10,31 @@ import {
 import {SET_PAGE} from "./actions";
 import {IFilter} from "../components/PagedList/Filters/IFilters";
 import {fetchInstanceDataFromApi} from "../api/auth/index";
+import BaseModel from '../models/BaseModel';
 
 export const TOGGLE_FILTERS = 'TOGGLE_FILTERS';
 
-export function fetchInstanceList(resource: string, offset: number) {
+export function fetchInstanceList(resource:string, offset:number) {
     return (dispatch) => {
         return dispatch({
-          types: [
-              FETCH_INSTANCE_LIST_START,
-              FETCH_INSTANCE_LIST_SUCCESS,
-              FETCH_INSTANCE_LIST_ERROR,
-          ],
-          payload: {
-              promise: fetchInstanceListFromApi(resource, offset)
-              .then((response) => {
-                  return response;
-              }),
-          },
+            types: [
+                FETCH_INSTANCE_LIST_START,
+                FETCH_INSTANCE_LIST_SUCCESS,
+                FETCH_INSTANCE_LIST_ERROR,
+            ],
+            payload: {
+                promise: fetchInstanceListFromApi(resource, offset)
+                    .then((response) => {
+                        return response;
+                    }),
+            },
+            resource: resource
         });
     };
 };
 
-export function fetchInstanceData(resource: string, resourceID: string) {
-    let path: string = `${resource}/show/${resourceID}`;
+export function fetchInstanceData(resource:string, resourceID:string) {
+    let path:string = `${resource}/show/${resourceID}`;
     return (dispatch) => {
         return dispatch({
             types: [
@@ -42,10 +44,11 @@ export function fetchInstanceData(resource: string, resourceID: string) {
             ],
             payload: {
                 promise: fetchInstanceDataFromApi(path)
-                    .then((response) => {
-                        return response;
-                    }),
+                .then((response) => {
+                    return response;
+                }),
             },
+            resource: resource
         });
     };
 };

@@ -3,8 +3,9 @@ import * as React from 'react';
 import {fetchInstanceData} from "../../actions/data";
 import {connect} from "react-redux";
 import {Table, Row, Col} from 'react-bootstrap';
+import BaseModel from "../../models/BaseModel";
 
-class GenericShowPage extends React.Component<IInstancePageProps,{}> {
+class GenericShowPage extends React.Component<IInstancePageProps<BaseModel>,{}> {
 
     componentWillMount() {
         const { resource, resourceID } = this.props.params;
@@ -13,7 +14,7 @@ class GenericShowPage extends React.Component<IInstancePageProps,{}> {
 
     render() {
         const { resource, resourceID } = this.props.params;
-        const instanceData = this.props.instanceData;
+        const instanceData = this.props.model.instanceData || {};
         let instanceKeys = Object.keys(instanceData);
         return (
             <Table responsive bordered className="data-show-table">
@@ -36,19 +37,11 @@ class GenericShowPage extends React.Component<IInstancePageProps,{}> {
             </Table>
         );
     }
-
-    /*render() {
-        return (
-            <div>
-                <h1>{this.props.params.resource} Show Page and id is {this.props.params.resourceID}</h1>
-            </div>
-        )
-    }*/
 }
 
 function mapStateToProps(state) {
     return {
-        instanceData: state.data.get('blogInstance').toJS()
+        model: state.data.get('blogInstance')
     }
 }
 

@@ -4,17 +4,18 @@ import { connect } from 'react-redux';
 import { fetchInstanceData } from '../../actions/data';
 import { Grid, Col, Row, FormGroup, FormControl, ControlLabel, Button } from 'react-bootstrap';
 import { Link } from 'react-router';
+import BaseModel from "../../models/BaseModel";
 
 
 interface IInstancePageState {
-    instanceData: {}
+    instance: BaseModel
 }
 
-class GenericEditPage extends React.Component<IInstancePageProps,IInstancePageState> {
+class GenericEditPage extends React.Component<IInstancePageProps<BaseModel>,IInstancePageState> {
 
-    constructor(props: IInstancePageProps) {
+    constructor(props: IInstancePageProps<BaseModel>) {
         super();
-        this.state = {instanceData: props.instanceData};
+        this.state = {instance: props.model};
     }
 
     componentWillMount() {
@@ -23,18 +24,27 @@ class GenericEditPage extends React.Component<IInstancePageProps,IInstancePageSt
     }
 
     handleChange = (key: string, event: any)  => {
-        let instanceData = this.state.instanceData;
-        instanceData[key] = event.target.value;
-        this.setState({instanceData: instanceData})
+        let instance = this.state.instance;
+        instance.instanceData[key] = event.target.value;
+        this.setState({instance: instance})
+    }
+
+    handleSubmit = (instance: BaseModel, e: Event): void => {
+        e.preventDefault();
+        instance.$save()
+    }
+
+    handleDelete = (instance: BaseModel) : void => {
+        instance.$delete();
     }
 
     render() {
         const { resource, resourceID } = this.props.params;
-        const instanceData = this.props.instanceData;
-        this.state.instanceData = instanceData;
-        let instanceKeys = Object.keys(instanceData);
+        const instance: BaseModel = this.props.model;
+        this.state.instance = instance;
+        let instanceKeys = Object.keys(this.props.model.instanceData || {});
         return (
-            <form className="data-edit-form">
+            <form className="data-edit-form" onSubmit={this.handleSubmit.bind(this, this.state.instance)}>
                 <Grid>
                     {instanceKeys.map(key => {
                         return (
@@ -44,7 +54,7 @@ class GenericEditPage extends React.Component<IInstancePageProps,IInstancePageSt
                                     <Col sm={4}>
                                         <FormControl
                                             type="text"
-                                            value={this.state.instanceData[key]}
+                                            value={this.state.instance.instanceData[key]}
                                             onChange={this.handleChange.bind(this, key)}
                                         />
                                     </Col>
@@ -55,7 +65,7 @@ class GenericEditPage extends React.Component<IInstancePageProps,IInstancePageSt
                     <FormGroup>
                         <Col sm={4} smOffset={3}>
                             <Button bsStyle="primary" type="submit">Update</Button>
-                            <Button bsStyle="danger">Delete</Button>
+                            <Button bsStyle="danger" onClick={this.handleDelete.bind(this, this.state.instance)}>Delete</Button>
                             <Link className="btn btn-default" to={`${resource}/list`}>Cancel</Link>
                         </Col>
                     </FormGroup>
@@ -67,7 +77,7 @@ class GenericEditPage extends React.Component<IInstancePageProps,IInstancePageSt
 
 function mapStateToProps(state) {
     return {
-        instanceData: state.data.get('blogInstance').toJS()
+        model: state.data.get('blogInstance')
     }
 }
 
