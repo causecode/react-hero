@@ -1,6 +1,6 @@
-import {Store, compose, createStore, applyMiddleware} from 'redux';
+import { Store, compose, createStore, applyMiddleware } from 'redux';
 import { fromJS } from 'immutable';
-import {IStore} from '~react-router-redux~redux/redux';
+import { IStore } from '~react-router-redux~redux/redux';
 import rootReducer from './../reducers/rootReducer';
 import promiseMiddleware from '../middleware/promise-middleware';
 import logger from './logger';

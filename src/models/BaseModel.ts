@@ -1,5 +1,6 @@
 
 import {store} from '../store/store';
+import {saveInstance, updateInstance, deleteInstance} from '../actions/instanceActions';
 
 interface IConstructor extends Function {
     name: string
@@ -18,14 +19,17 @@ export default class BaseModel {
 
     $save(flush: boolean = true) {
         console.log('>> saving your Data', this);
+        store.dispatch(saveInstance(this));
     }
 
     $update(flush: boolean = true) {
-        console.log('>> updating your Data', this)
+        console.log('>> updating your Data', this);
+        store.dispatch(updateInstance(this));
     }
 
     $delete(flush: boolean = true) {
         console.log('>> deleting your Data', this);
+        store.dispatch(deleteInstance(this));
     }
 
 }
