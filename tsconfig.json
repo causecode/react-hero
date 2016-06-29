@@ -5,6 +5,7 @@
     "declaration": true,
     "noImplicitAny": false,
     "removeComments": true,
+    "experimentalDecorators": true,
     "rootDir": "src",
     "outDir": "public",
     "sourceMap": true,
