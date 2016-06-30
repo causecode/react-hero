@@ -1,11 +1,11 @@
 /// <reference path="crudInterfaces.d.ts" />
 import * as React from 'react';
-import {fetchInstanceData} from "../../actions/data";
+import {fetchInstanceData} from "../../actions/instanceActions";
 import {connect} from "react-redux";
 import {Table, Row, Col} from 'react-bootstrap';
 import BaseModel from "../../models/BaseModel";
 
-class GenericShowPage extends React.Component<IInstancePageProps<BaseModel>,{}> {
+class GenericShowPage extends React.Component<IInstancePageProps,{}> {
 
     componentWillMount() {
         const { resource, resourceID } = this.props.params;
@@ -14,8 +14,9 @@ class GenericShowPage extends React.Component<IInstancePageProps<BaseModel>,{}> 
 
     render() {
         const { resource, resourceID } = this.props.params;
-        const instanceData = this.props.model.instanceData || {};
+        const instanceData: JSON = this.props.instances[resource] ? this.props.instances[resource].instanceData : {};
         let instanceKeys = Object.keys(instanceData);
+
         return (
             <Table responsive bordered className="data-show-table">
                 <thead>
@@ -40,8 +41,9 @@ class GenericShowPage extends React.Component<IInstancePageProps<BaseModel>,{}> 
 }
 
 function mapStateToProps(state) {
+    let instances: JSON = state.instances.toJS();
     return {
-        model: state.data.get('blogInstance')
+        instances: instances
     }
 }
 

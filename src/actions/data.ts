@@ -3,14 +3,14 @@ import {
     FETCH_INSTANCE_LIST_START,
     FETCH_INSTANCE_LIST_SUCCESS,
     FETCH_INSTANCE_LIST_ERROR,
-    FETCH_INSTANCE_DATA_START,
-    FETCH_INSTANCE_DATA_SUCCESS,
-    FETCH_INSTANCE_DATA_ERROR
 } from '../constants/index';
 import {SET_PAGE} from "./actions";
 import {IFilter} from "../components/PagedList/Filters/IFilters";
 import {fetchInstanceDataFromApi} from "../api/auth/index";
 import BaseModel from '../models/BaseModel';
+import {FETCH_INSTANCE_DATA_START} from "./instanceActions";
+import {FETCH_INSTANCE_DATA_SUCCESS} from "./instanceActions";
+import {FETCH_INSTANCE_DATA_ERROR} from "./instanceActions";
 
 export const TOGGLE_FILTERS = 'TOGGLE_FILTERS';
 

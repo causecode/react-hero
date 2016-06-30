@@ -1,12 +1,9 @@
-
+/// <reference path="../interfaces/IBaseModel.d.ts" />
 import {store} from '../store/store';
 import {saveInstance, updateInstance, deleteInstance} from '../actions/instanceActions';
+import resolver from '../resolver';
 
-interface IConstructor extends Function {
-    name: string
-}
-
-export default class BaseModel {
+export default class BaseModel implements IBaseModel {
     constructor(public instanceData, public resourceName?) {
         let className: string = (this.constructor as IConstructor).name;
         if (resourceName) {

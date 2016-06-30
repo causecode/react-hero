@@ -8,13 +8,9 @@ import {
 import {SET_PAGE} from '../actions/actions';
 import { fromJS } from 'immutable';
 import {TOGGLE_FILTERS} from "../actions/data";
-import {
-    FETCH_INSTANCE_DATA_START,
-    FETCH_INSTANCE_DATA_SUCCESS,
-    FETCH_INSTANCE_DATA_ERROR
-} from "../constants/index";
-import BlogModel from '../Demo/TestModel';
-import {ModuleFactory} from "../Demo/TestImplementations";
+import resolver from '../resolver';
+import BaseModel from "../models/BaseModel";
+import InstanceLoader from '../utils/instanceLoader';
 
 const INITIAL_STATE = fromJS({
     totalCount: 0,
@@ -24,24 +20,31 @@ const INITIAL_STATE = fromJS({
     hasError: false,
     isLoading: false,
     filtersOpen: false,
-    blogInstance: {}
 });
-
-function instantiate<T>(ctor: { new(...args: any[]): T }, args): T {
-    return new ctor(...args);
-}
 
 function dataReducer(state = INITIAL_STATE, action ) {
     let Model;
+    let key: string;
+
+    if (action.resource) {
+        key = action.resource.toLowerCase();
+        if (resolver.has(key)) {
+            Model = resolver.get(key);
+        } else {
+            console.error(`Unable to find ${key}Model using BaseModel instead.`);
+            Model = BaseModel;
+        }
+    }
+
     switch (action.type) {
 
-    case FETCH_INSTANCE_LIST_START:
+        case FETCH_INSTANCE_LIST_START:
         return INITIAL_STATE;
 
-    case FETCH_INSTANCE_LIST_SUCCESS:
-        Model = new ModuleFactory().getClass('blog');
+        case FETCH_INSTANCE_LIST_SUCCESS:
         let instanceList = action.payload.instanceList.map(instance => {
-            return instantiate(Model, [instance]);
+            let ModelInst : IBaseModel = InstanceLoader.instantiate<BaseModel>(Model, instance);
+            return ModelInst;
         });
         return state.merge(fromJS({
             totalCount: action.payload.totalCount,
@@ -53,21 +56,6 @@ function dataReducer(state = INITIAL_STATE, action ) {
         }));
 
     case FETCH_INSTANCE_LIST_ERROR:
-        return state.merge(fromJS({
-            hasError: true,
-            isLoading: false,
-        }));
-
-    case FETCH_INSTANCE_DATA_START:
-        return INITIAL_STATE;
-
-    case FETCH_INSTANCE_DATA_SUCCESS:
-        Model = new ModuleFactory().getClass('blog');
-        return state.merge(fromJS({
-            blogInstance: instantiate(Model, [action.payload.blogInstance])
-        }));
-
-    case FETCH_INSTANCE_DATA_ERROR:
         return state.merge(fromJS({
             hasError: true,
             isLoading: false,

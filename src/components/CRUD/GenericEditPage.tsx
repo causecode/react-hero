@@ -1,21 +1,20 @@
 /// <reference path="crudInterfaces.d.ts" />
 import * as React from 'react';
-import { connect } from 'react-redux';
 import { fetchInstanceData } from '../../actions/data';
 import { Grid, Col, Row, FormGroup, FormControl, ControlLabel, Button } from 'react-bootstrap';
 import { Link } from 'react-router';
 import BaseModel from "../../models/BaseModel";
-
+const connect = require<any>('react-redux').connect;
 
 interface IInstancePageState {
-    instance: BaseModel
+    instance: IBaseModel;
 }
 
-class GenericEditPage extends React.Component<IInstancePageProps<BaseModel>,IInstancePageState> {
+class GenericEditPage extends React.Component<IInstancePageProps,IInstancePageState> {
 
-    constructor(props: IInstancePageProps<BaseModel>) {
+    constructor(props: IInstancePageProps) {
         super();
-        this.state = {instance: props.model};
+        this.state = {instance: props.instances[props.params.resource]}
     }
 
     componentWillMount() {
@@ -26,7 +25,7 @@ class GenericEditPage extends React.Component<IInstancePageProps<BaseModel>,IIns
     handleChange = (key: string, event: any)  => {
         let instance = this.state.instance;
         instance.instanceData[key] = event.target.value;
-        this.setState({instance: instance})
+        this.setState({instance: instance});
     }
 
     handleSubmit = (instance: BaseModel, e: Event): void => {
@@ -40,9 +39,9 @@ class GenericEditPage extends React.Component<IInstancePageProps<BaseModel>,IIns
 
     render() {
         const { resource, resourceID } = this.props.params;
-        const instance: BaseModel = this.props.model;
+        const instance: IBaseModel= this.props.instances ? this.props.instances[resource] : {};
         this.state.instance = instance;
-        let instanceKeys = Object.keys(this.props.model.instanceData || {});
+        let instanceKeys = Object.keys(instance ? instance.instanceData : {});
         return (
             <form className="data-edit-form" onSubmit={this.handleSubmit.bind(this, this.state.instance)}>
                 <Grid>
@@ -76,8 +75,9 @@ class GenericEditPage extends React.Component<IInstancePageProps<BaseModel>,IIns
 }
 
 function mapStateToProps(state) {
+    let instances: JSON = state.instances.toJS();
     return {
-        model: state.data.get('blogInstance')
+        instances: instances
     }
 }
 

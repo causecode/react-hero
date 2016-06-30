@@ -1,4 +1,4 @@
-const objectAssign = require<any>('object-assign');
+const objectAssign: any = require<any>('object-assign');
 
 function isPromise(value) {
     if (value !== null && typeof value === 'object') {
@@ -12,7 +12,7 @@ export default function promiseMiddleware({ dispatch }) {
       return next(action);
     }
 
-    const { types, payload, meta } = action;
+    const { types, payload, meta, resource } = action;
     const { promise, data } = payload;
     const [ PENDING, FULFILLED, REJECTED ] = types;
 
@@ -22,7 +22,8 @@ export default function promiseMiddleware({ dispatch }) {
    dispatch(objectAssign({},
        {type: PENDING},
        data ? {payload: data} : {},
-       meta ? {meta} : {}
+       meta ? {meta} : {},
+       {resource}
    ));
 
     /**
@@ -34,7 +35,8 @@ export default function promiseMiddleware({ dispatch }) {
         dispatch({
           type: FULFILLED,
           payload: result,
-          meta
+          meta,
+          resource
         });
       },
       error => {
