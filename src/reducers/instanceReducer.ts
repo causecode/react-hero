@@ -9,6 +9,7 @@ import {
 import InstanceLoader from "../utils/instanceLoader";
 import BaseModel from "../models/BaseModel";
 import resolver from '../resolver';
+import {ModelService} from '../utils/modelService';
 const INITIAL_STATE = fromJS({});
 
 export default function crudReducer(state = INITIAL_STATE, action) {
@@ -21,11 +22,11 @@ export default function crudReducer(state = INITIAL_STATE, action) {
         case FETCH_INSTANCE_DATA_SUCCESS:
 
             let key;
-            key = action.resource.toLowerCase();
-            if (resolver.has(key)) {
+            key = action.resource;
+            if (ModelService.hasModel(key)) {
                 Model = resolver.get(key);
             } else {
-                console.error('Unable to find blogmodel using Base Model instead');
+                console.error(`Unable to find ${action.resource}model using Base Model instead`);
                 Model = BaseModel;
             }
 

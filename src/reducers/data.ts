@@ -11,6 +11,7 @@ import {TOGGLE_FILTERS} from "../actions/data";
 import resolver from '../resolver';
 import BaseModel from "../models/BaseModel";
 import InstanceLoader from '../utils/instanceLoader';
+import {ModelService} from '../utils/modelService';
 
 const INITIAL_STATE = fromJS({
     totalCount: 0,
@@ -26,22 +27,21 @@ function dataReducer(state = INITIAL_STATE, action ) {
     let Model;
     let key: string;
 
-    if (action.resource) {
-        key = action.resource.toLowerCase();
-        if (resolver.has(key)) {
-            Model = resolver.get(key);
-        } else {
-            console.error(`Unable to find ${key}Model using BaseModel instead.`);
-            Model = BaseModel;
-        }
-    }
-
     switch (action.type) {
 
         case FETCH_INSTANCE_LIST_START:
         return INITIAL_STATE;
 
         case FETCH_INSTANCE_LIST_SUCCESS:
+            if (action.resource) {
+                key = action.resource.toLowerCase();
+                if (ModelService.hasModel(key)) {
+                    Model = ModelService.getModel(key);
+                } else {
+                    console.error(`Unable to find ${key}Model using BaseModel instead.`);
+                    Model = BaseModel;
+                }
+            }
         let instanceList = action.payload.instanceList.map(instance => {
             let ModelInst : IBaseModel = InstanceLoader.instantiate<BaseModel>(Model, instance);
             return ModelInst;

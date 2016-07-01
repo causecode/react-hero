@@ -2,11 +2,11 @@ import * as React from 'react';
 import { Form, Button, Grid, Row } from 'react-bootstrap';
 import {DatePicker} from '../../Widgets';
 import {IFilter} from "./IFilters";
-const ReduxForm = require<any>('redux-form');
+const ReduxForm: any = require<any>('redux-form');
 import DropDownFilter from './DropDownFilter';
 import {fetchInstanceList} from "../../../actions/data";
 import {store} from "../../../store/store";
-const classNames = require<any>('classnames');
+const classNames: any = require<any>('classnames');
 import * as Actions from '../../../actions/data'
 import {spring} from "react-motion";
 
@@ -14,7 +14,7 @@ export interface IPagedListFiltersProps extends React.Props<any> {
     children?: JSX.Element;
     fields?: string[];
     sendFilters?: (resource: string) => void;
-    clazz?: string;
+    resource?: string;
     filtersOpen?: boolean
 };
 
@@ -22,7 +22,7 @@ class FilterForm extends React.Component<IPagedListFiltersProps, {}> {
 
     handleSubmit = (e) => {
         e.preventDefault();
-        this.props.sendFilters(this.props.clazz);
+        this.props.sendFilters(this.props.resource);
     };
 
     render() {
@@ -70,7 +70,7 @@ let DynamicForm = ReduxForm.reduxForm(
     mapDispatchToProps
 )(FilterForm);
 
-export function PagedListFilters ({ children, clazz }:IPagedListFiltersProps) {
+export function PagedListFilters ({ children, resource }:IPagedListFiltersProps) {
     let filterProps = [];
     React.Children.forEach(children, (child: any) => {
         let paramName = child.props.paramName;
@@ -87,7 +87,7 @@ export function PagedListFilters ({ children, clazz }:IPagedListFiltersProps) {
     return (
         <div>
             <Button onClick={toggleFilters}> <i className="fa fa-filter" /> </Button>
-            <DynamicForm fields={filterProps} children={children} clazz={clazz} filtersOpen=""/>
+            <DynamicForm fields={filterProps} children={children} resource={resource} filtersOpen=""/>
         </div>
     );
 

@@ -1,16 +1,15 @@
 import * as React from 'react';
 import { Table } from 'react-bootstrap';
 import { Link } from 'react-router';
-import BlogModel from '../../Demo/TestModel';
 
 export interface IDataGridProps extends React.Props<any> {
     totalCount: number;
     instanceList: any;
     properties: Array<string>;
-    clazz: any;
+    resource: any;
 };
 
-export default function DataGrid( { totalCount, instanceList, properties, clazz}: IDataGridProps) {
+export default function DataGrid( { totalCount, instanceList, properties, resource}: IDataGridProps) {
     return (
         <div className="flex">
             <br/><br/>
@@ -29,8 +28,8 @@ export default function DataGrid( { totalCount, instanceList, properties, clazz}
                         return (
                         <tr key={instanceData['id']}>
                             <td>
-                                <Link to={`/blog/edit/${instanceData['id']}`}><i className="fa fa-pencil" /></Link>
-                                <Link to={`/blog/show/${instanceData['id']}`}><i className="fa fa-location-arrow" /></Link>
+                                <Link to={`/${resource}/edit/${instanceData['id']}`}><i className="fa fa-pencil" /></Link>
+                                <Link to={`/${resource}/show/${instanceData['id']}`}><i className="fa fa-location-arrow" /></Link>
                             </td>
                             {properties.map(function(property) {
                                 return ( <td key={properties.indexOf(property)}>{instanceData[property]}</td> );

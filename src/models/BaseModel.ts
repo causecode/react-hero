@@ -4,13 +4,10 @@ import {saveInstance, updateInstance, deleteInstance} from '../actions/instanceA
 import resolver from '../resolver';
 
 export default class BaseModel implements IBaseModel {
-    constructor(public instanceData, public resourceName?) {
+    resourceName: string;
+    constructor(public instanceData) {
         let className: string = (this.constructor as IConstructor).name;
-        if (resourceName) {
-            this.resourceName = resourceName;
-        } else {
-            this.resourceName = className.substr(0, className.indexOf('Model')).toLowerCase(); // Dynamically assigning resource name from class Name
-        }
+        this.resourceName = className.substr(0, className.indexOf('Model')).toLowerCase(); // Dynamically assigning resource name from class Name
         this.instanceData = instanceData;
     }
 

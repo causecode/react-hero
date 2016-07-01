@@ -2,6 +2,7 @@ var webpack = require('webpack');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var isProduction = process.argv.indexOf('--production') != -1;
+var path = require('path');
 
 var plugins = [];
 
@@ -50,6 +51,9 @@ var config = {
     },
     devtool: 'source-map',
     resolve: {
+        root: [
+            path.resolve('./src')
+        ],
         extensions: ["", ".webpack.js", ".web.js", ".ts", ".tsx", ".js", ".css"]
     },
     module: {

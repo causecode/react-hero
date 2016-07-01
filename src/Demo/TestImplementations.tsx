@@ -13,7 +13,6 @@ import RangeFilter from '../components/PagedList/Filters/RangeFilter';
 import QueryFilter from '../components/PagedList/Filters/QueryFilter';
 import GenericShowPage from './../components/CRUD/GenericShowPage';
 import GenericEditPage from './../components/CRUD/GenericEditPage';
-import BlogModel from "./TestModel";
 
 export class NewPage extends React.Component<any, any> {
 
@@ -40,7 +39,7 @@ export class NewPage extends React.Component<any, any> {
                         <Route path="/" component={HomeContent}/>
                         <Route path="/page2" component={Page2Content}/>
                         <Route path="/resp" component={ContentImpl}/>
-                        <Route path="/blog/list" component={BlogListPage}/>
+                        <Route path="/:resource/list" component={BlogListPage}/>
                         <Route path="/:resource/show/:resourceID" component={GenericShowPage} />
                         <Route path="/:resource/edit/:resourceID" component={GenericEditPage} />
                     </Router>
@@ -62,9 +61,9 @@ export class NewPage extends React.Component<any, any> {
     }
 }
 
-function BlogListPage() {
+function BlogListPage(props) {
     return (
-        <ListPage resource="blog">
+        <ListPage resource={props.params.resource}>
             <DropDownFilter
                 label = 'status'
                 paramName = 'status'
@@ -90,23 +89,6 @@ function BlogListPage() {
             />
         </ListPage>
     )
-}
-
-export abstract class IModuleFactory {
-    abstract getClass(resourceName: string): new (...args: any[]) => {}
-    abstract getComponent(componentName: string): Function;
-}
-
-export class ModuleFactory extends IModuleFactory {
-
-    getClass(resourceName: string): new (...args: any[]) => {} {
-        if (resourceName === 'blog')
-            return BlogModel;
-    }
-
-    getComponent(ComponentName: string) {
-        return new Function();
-    }
 }
 
 export class HomeContent extends ResponsiveView<any, any> {

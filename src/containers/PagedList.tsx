@@ -58,14 +58,14 @@ class ListPage extends React.Component<IListPageProps, {}> {
         return (
         <Container size={4} center>
             <h2 className="caps">Page List</h2>
-            <PagedListFilters clazz={this.resource}>
+            <PagedListFilters resource={this.resource}>
                     {this.props.children}
                 </PagedListFilters>
                 <DataGrid
                     instanceList={ instanceList }
                     properties={ properties }
                     totalCount={ totalCount }
-                    clazz="blog" />
+                    resource={this.resource} />
 
                 <Pagination
                     prev
