@@ -13,6 +13,10 @@ import RangeFilter from '../components/PagedList/Filters/RangeFilter';
 import QueryFilter from '../components/PagedList/Filters/QueryFilter';
 import GenericShowPage from './../components/CRUD/GenericShowPage';
 import GenericEditPage from './../components/CRUD/GenericEditPage';
+import GenericListPage from "../components/CRUD/GenericListPage";
+import {ComponentService} from '../utils/componentService';
+
+ComponentService.register(BlogListPage);
 
 export class NewPage extends React.Component<any, any> {
 
@@ -39,7 +43,7 @@ export class NewPage extends React.Component<any, any> {
                         <Route path="/" component={HomeContent}/>
                         <Route path="/page2" component={Page2Content}/>
                         <Route path="/resp" component={ContentImpl}/>
-                        <Route path="/:resource/list" component={BlogListPage}/>
+                        <Route path="/:resource/list" component={GenericListPage}/>
                         <Route path="/:resource/show/:resourceID" component={GenericShowPage} />
                         <Route path="/:resource/edit/:resourceID" component={GenericEditPage} />
                     </Router>
@@ -90,6 +94,40 @@ function BlogListPage(props) {
         </ListPage>
     )
 }
+
+// This list page is for testing
+/*function UserListPage(props) {
+    return (
+        <div>
+            <h1 style={{'background' : 'red'}}>This is MY user list page</h1>
+            <ListPage resource={props.params.resource}>
+                <DropDownFilter
+                    label = 'status'
+                    paramName = 'status'
+                    possibleValues = {['enable', 'disable', 'inactive']}
+                />
+                <RangeFilter
+                    label = 'Bill Amount'
+                    paramName = 'billAmount'
+                />
+                <DateRangeFilter
+                    label = 'Date Created'
+                    paramName = 'dateCreated'
+                />
+                <DropDownFilter
+                    label = 'types'
+                    paramName = 'types'
+                    possibleValues = {['Zoo', 'Jungle', 'Forest']}
+                />
+                <QueryFilter
+                    label = "Search"
+                    paramName = "query"
+                    placeholder = {['First Name', 'Last Name', "Email"]}
+                />
+            </ListPage>
+        </div>
+    )
+}*/
 
 export class HomeContent extends ResponsiveView<any, any> {
     protected renderDefault(): JSX.Element {

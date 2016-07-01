@@ -42,37 +42,41 @@ function dataReducer(state = INITIAL_STATE, action ) {
                     Model = BaseModel;
                 }
             }
-        let instanceList = action.payload.instanceList.map(instance => {
-            let ModelInst : IBaseModel = InstanceLoader.instantiate<BaseModel>(Model, instance);
-            return ModelInst;
-        });
-        return state.merge(fromJS({
-            totalCount: action.payload.totalCount,
-            instanceList: instanceList,
-            properties: action.payload.properties,
-            clazz: {},
-            hasError: false,
-            isLoading: false,
-        }));
+            let instanceList;
+            if(action.payload && action.payload.instanceList) {
+                instanceList = action.payload.instanceList.map(instance => {
+                    let ModelInst:IBaseModel = InstanceLoader.instantiate<BaseModel>(Model, instance);
+                    return ModelInst;
+                });
+            } else {
+                throw new Error('No Data in the Action Payload. Please make sure you are returning an instanceList from the server.');
+            }
+            return state.merge(fromJS({
+                totalCount: action.payload.totalCount,
+                instanceList: instanceList,
+                properties: action.payload.properties,
+                clazz: {},
+                hasError: false,
+                isLoading: false,
+            }));
+        case FETCH_INSTANCE_LIST_ERROR:
+            return state.merge(fromJS({
+                hasError: true,
+                isLoading: false,
+            }));
 
-    case FETCH_INSTANCE_LIST_ERROR:
-        return state.merge(fromJS({
-            hasError: true,
-            isLoading: false,
-        }));
+        case DELETE_INSTANCE_LIST:
+            return state.merge(INITIAL_STATE);
 
-    case DELETE_INSTANCE_LIST:
-        return state.merge(INITIAL_STATE);
+        case SET_PAGE:
+            return state.update('activePage', (value) => value = action.pageNumber);
 
-    case SET_PAGE:
-        return state.update('activePage', (value) => value = action.pageNumber);
+        case TOGGLE_FILTERS:
+            return  state.update('filtersOpen', (value) => value = !value)
 
-    case TOGGLE_FILTERS:
-        return  state.update('filtersOpen', (value) => value = !value)
-
-    default:
-        return state;
-    }
+        default:
+            return state;
+        }
 }
 
 export default dataReducer;

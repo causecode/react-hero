@@ -6,7 +6,7 @@ import resolver from '../resolver';
 export default class BaseModel implements IBaseModel {
     resourceName: string;
     constructor(public instanceData) {
-        let className: string = (this.constructor as IConstructor).name;
+        let className: string = (this.constructor as IFunction).name;
         this.resourceName = className.substr(0, className.indexOf('Model')).toLowerCase(); // Dynamically assigning resource name from class Name
         this.instanceData = instanceData;
     }

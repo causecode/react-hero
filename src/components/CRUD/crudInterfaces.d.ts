@@ -1,8 +1,9 @@
+interface IRouteParams {
+    resource: string;
+    resourceID?: string;
+}
 interface IInstancePageProps {
-    params?: {
-        resource: string;
-        resourceID: string;
-    };
+    params: IRouteParams;
     fetchInstanceData: (resource: string, resourceID: string) => void;
     instances: JSON
 }
