@@ -1,16 +1,11 @@
+/// <reference path='crudInterfaces.d.ts' />
 import * as React from 'react';
 import { Grid, Col, Row, FormGroup, FormControl, ControlLabel, Button } from 'react-bootstrap';
 import { Link } from 'react-router';
 
-export interface IGenericEditPageProps {
-    instance: IBaseModel;
+export interface IGenericEditPageProps extends IInstancePageProps {
     handleSubmit: (instance: IBaseModel, e: Event) => void;
     handleDelete: (instance: IBaseModel) => void;
-    resource: string;
-}
-
-export interface IGenericEditPageState {
-    instance: IBaseModel;
 }
 
 export default class GenericEditPage extends React.Component<IGenericEditPageProps, IGenericEditPageState> {
@@ -37,7 +32,9 @@ export default class GenericEditPage extends React.Component<IGenericEditPagePro
                         return (
                         <Row key={instanceKeys.indexOf(key)}>
                             <FormGroup>
-                                <Col sm={3}><ControlLabel>{key}</ControlLabel></Col>
+                                <Col sm={3}>
+                                    <ControlLabel>{key}</ControlLabel>
+                                </Col>
                                 <Col sm={4}>
                                     <FormControl
                                         type="text"

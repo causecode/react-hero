@@ -6,17 +6,23 @@ import {Title, Description, Content, ButtonList, ButtonListItem} from './../comp
 import {NavMenuLauncherIcon} from './../components/NavMenuLauncherIcon';
 import {Router, Route, Link} from 'react-router';
 import {hashHistory} from 'react-router';
-import ListPage from '../containers/PagedList';
+import {PagedList} from '../containers/PagedList';
+import {ListPage} from '../containers/ListPage';
 import DropDownFilter from '../components/PagedList/Filters/DropDownFilter';
 import DateRangeFilter from '../components/PagedList/Filters/DateRangeFilter';
 import RangeFilter from '../components/PagedList/Filters/RangeFilter';
 import QueryFilter from '../components/PagedList/Filters/QueryFilter';
 import ShowPage from './../containers/ShowPage';
 import EditPage from './../containers/EditPage';
-import GenericListPage from "../components/CRUD/GenericListPage";
 import {ComponentService} from '../utils/componentService';
+import {ModelService} from "../utils/modelService";
+import {BlogModel} from "./TestModel";
+import {UserModel} from "./TestModel";
 
-ComponentService.register(BlogListPage);
+ComponentService.register(UserListPage);
+ComponentService.register(UserEditPage);
+ModelService.register(BlogModel);
+ModelService.register(UserModel);
 
 export class NewPage extends React.Component<any, any> {
 
@@ -43,7 +49,7 @@ export class NewPage extends React.Component<any, any> {
                         <Route path="/" component={HomeContent}/>
                         <Route path="/page2" component={Page2Content}/>
                         <Route path="/resp" component={ContentImpl}/>
-                        <Route path="/:resource/list" component={GenericListPage}/>
+                        <Route path="/:resource/list" component={ListPage}/>
                         <Route path="/:resource/show/:resourceID" component={ShowPage} />
                         <Route path="/:resource/edit/:resourceID" component={EditPage} />
                     </Router>
@@ -67,7 +73,9 @@ export class NewPage extends React.Component<any, any> {
 
 function BlogListPage(props) {
     return (
-        <ListPage resource={props.params.resource}>
+        <div>
+            <h1>This is a list page</h1>
+        <PagedList resource={props.params.resource}>
             <DropDownFilter
                 label = 'status'
                 paramName = 'status'
@@ -91,16 +99,23 @@ function BlogListPage(props) {
                 paramName = "query"
                 placeholder = {['First Name', 'Last Name', "Email"]}
             />
-        </ListPage>
+        </PagedList>
+            </div>
+    )
+}
+
+function UserEditPage(props) {
+    return (
+        <h1>Test</h1>
     )
 }
 
 // This list page is for testing
-/*function UserListPage(props) {
+function UserListPage(props) {
     return (
         <div>
             <h1 style={{'background' : 'red'}}>This is MY user list page</h1>
-            <ListPage resource={props.params.resource}>
+            <PagedList resource={props.params.resource}>
                 <DropDownFilter
                     label = 'status'
                     paramName = 'status'
@@ -124,10 +139,10 @@ function BlogListPage(props) {
                     paramName = "query"
                     placeholder = {['First Name', 'Last Name', "Email"]}
                 />
-            </ListPage>
+            </PagedList>
         </div>
     )
-}*/
+}
 
 export class HomeContent extends ResponsiveView<any, any> {
     protected renderDefault(): JSX.Element {

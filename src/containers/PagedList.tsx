@@ -25,8 +25,7 @@ interface IListPageProps extends React.Props<any> {
     model: Function
 }
 
-
-class ListPage extends React.Component<IListPageProps, {}> {
+class PagedListImpl extends React.Component<IListPageProps, {}> {
 
     itemsPerPage: number;
     resource: string;
@@ -102,7 +101,9 @@ function mapDispatchToProps(dispatch) {
         }
     };
 }
-export default connect(
+let PagedList = connect(
     mapStateToProps,
     mapDispatchToProps
-)(ListPage);
+)(PagedListImpl);
+
+export {PagedList};

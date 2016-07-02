@@ -5,13 +5,14 @@ import { Grid, Col, Row, FormGroup, FormControl, ControlLabel, Button } from 're
 import { Link } from 'react-router';
 import BaseModel from "../models/BaseModel";
 import GenericEditPage from "./../components/CRUD/GenericEditPage";
+import {ComponentService} from '../utils/componentService';
 const connect = require<any>('react-redux').connect;
 
-interface IInstancePageState {
+interface IInstanceContainerState {
     instance: IBaseModel;
 }
 
-class EditPage extends React.Component<IInstancePageProps,IInstancePageState> {
+class EditPage extends React.Component<IInstanceContainerProps,IInstanceContainerState> {
 
     componentWillMount() {
         const { resource, resourceID } = this.props.params;
@@ -28,12 +29,12 @@ class EditPage extends React.Component<IInstancePageProps,IInstancePageState> {
     }
 
     render() {
-        const { resource, resourceID } = this.props.params;
+        const resource = this.props.params.resource;
         const instance: IBaseModel= this.props.instances ? this.props.instances[resource] : {};
-        let instanceKeys = Object.keys(instance ? instance.instanceData : {});
         const childProps = {resource: resource, handleSubmit: this.handleSubmit, handleDelete: this.handleDelete, instance: instance};
+        let Page = ComponentService.getEditPage(resource);
         return(
-            <GenericEditPage {...childProps}/>
+            <Page {...childProps}/>
         );
     }
 }

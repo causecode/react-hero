@@ -1,5 +1,8 @@
 import resolver from '../resolver';
 import {capitalizeFirstLetter} from './AppService';
+import {GenericListPage} from "../components/CRUD/GenericListPage";
+import GenericEditPage from "../components/CRUD/GenericEditPage";
+import GenericShowPage from "../components/CRUD/GenericShowPage";
 
 module ComponentService {
 
@@ -35,15 +38,15 @@ module ComponentService {
     }
 
     export function getListPage(name: string) {
-        return getComponent(name, 'listpage');
+        return hasListPage(name) ? getComponent(name, 'listPage') : GenericListPage;
     }
 
     export function getEditPage(name: string) {
-        return getComponent(name, 'editpage');
+        return hasEditPage(name) ? getComponent(name, 'editpage') : GenericEditPage;
     }
 
     export function getShowPage(name: string) {
-        return getComponent(name, 'showpage');
+        return hasShowPage(name) ? getComponent(name, 'showpage') : GenericShowPage;
     }
 
 }

@@ -4,14 +4,6 @@ import {Router, Route, hashHistory} from 'react-router';
 import * as React from 'react';
 import {render} from 'react-dom';
 import {Provider} from 'react-redux';
-import {ModelService} from "./utils/modelService";
-import {ComponentService} from "./utils/componentService";
-import {BlogModel} from "./Demo/TestModel";
-import {UserModel} from "./Demo/TestModel";
-import resolver from './resolver';
-
-ModelService.register(BlogModel);
-ModelService.register(UserModel);
 
 render(
     <Provider store={store}>

@@ -1,4 +1,5 @@
 /// <reference path="../components/CRUD/crudInterfaces.d.ts" />
+/// <reference path="../components/CRUD/crudInterfaces.d.ts" />
 import * as React from 'react';
 import {fetchInstanceData} from "../actions/instanceActions";
 import {connect} from "react-redux";
@@ -6,8 +7,9 @@ import {Table, Row, Col} from 'react-bootstrap';
 import BaseModel from "../models/BaseModel";
 import {ComponentService} from '../utils/componentService';
 import GenericShowPage from './../components/CRUD/GenericShowPage';
+import {IComponent} from "../interfaces/IComponent";
 
-class ShowPage extends React.Component<IInstancePageProps,{}> {
+class ShowPage extends React.Component<IInstanceContainerProps,{}> {
 
     componentWillMount() {
         const { resource, resourceID } = this.props.params;
@@ -18,8 +20,9 @@ class ShowPage extends React.Component<IInstancePageProps,{}> {
         const { resource, resourceID } = this.props.params;
         const instance: IBaseModel = this.props.instances[resource] ? this.props.instances[resource] : {};
         const childProps = {instance: instance, resource: resource};
+        let Page: IComponent = ComponentService.getShowPage(resource);
         return (
-            <GenericShowPage {...childProps}/>
+            <Page {...childProps}/>
         );
     }
 }

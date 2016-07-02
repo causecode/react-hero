@@ -1,9 +1,19 @@
-interface IRouteParams {
+declare interface IRouteParams {
     resource: string;
     resourceID?: string;
 }
-interface IInstancePageProps {
+
+declare interface IInstanceContainerProps {
     params: IRouteParams;
     fetchInstanceData: (resource: string, resourceID: string) => void;
     instances: JSON
+}
+
+declare interface IGenericEditPageState {
+    instance: IBaseModel;
+}
+
+declare interface IInstancePageProps {
+    resource: string;
+    instance: IBaseModel;
 }

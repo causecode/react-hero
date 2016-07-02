@@ -1,12 +1,7 @@
 import * as React from 'react';
 import {Table, Row, Col} from 'react-bootstrap';
 
-export interface IGenericShowPage {
-    resource: string;
-    instance: IBaseModel;
-}
-
-export default class GenericShowPage extends React.Component<IGenericShowPage,{}> {
+export default class GenericShowPage extends React.Component<IInstancePageProps ,{}> {
 
     render() {
         const {instance, resource} =  this.props;

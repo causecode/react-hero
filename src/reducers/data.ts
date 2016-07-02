@@ -33,20 +33,12 @@ function dataReducer(state = INITIAL_STATE, action ) {
         return INITIAL_STATE;
 
         case FETCH_INSTANCE_LIST_SUCCESS:
-            if (action.resource) {
-                key = action.resource.toLowerCase();
-                if (ModelService.hasModel(key)) {
-                    Model = ModelService.getModel(key);
-                } else {
-                    console.error(`Unable to find ${key}Model using BaseModel instead.`);
-                    Model = BaseModel;
-                }
-            }
+            let resource = action.resource || '';
+            Model = ModelService.getModel(resource);
             let instanceList;
             if(action.payload && action.payload.instanceList) {
                 instanceList = action.payload.instanceList.map(instance => {
-                    let ModelInst:IBaseModel = InstanceLoader.instantiate<BaseModel>(Model, instance);
-                    return ModelInst;
+                    return InstanceLoader.instantiate<BaseModel>(Model, instance);
                 });
             } else {
                 throw new Error('No Data in the Action Payload. Please make sure you are returning an instanceList from the server.');
