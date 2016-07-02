@@ -12,7 +12,7 @@ import resolver from '../resolver';
 import {ModelService} from '../utils/modelService';
 const INITIAL_STATE = fromJS({});
 
-export default function crudReducer(state = INITIAL_STATE, action) {
+export default function instanceReducer(state = INITIAL_STATE, action) {
     let Model;
     let instanceKey = action.instance ? `${action.instance.resourceName}Model` : '';
     switch(action.type) {
@@ -23,12 +23,7 @@ export default function crudReducer(state = INITIAL_STATE, action) {
 
             let key;
             key = action.resource;
-            if (ModelService.hasModel(key)) {
-                Model = resolver.get(key);
-            } else {
-                console.error(`Unable to find ${action.resource}model using Base Model instead`);
-                Model = BaseModel;
-            }
+            Model = ModelService.getModel(key);
 
             let instance = action.payload[`${action.resource}Instance`];
             return state.set(action.resource, InstanceLoader.instantiate<BaseModel>(Model, instance));

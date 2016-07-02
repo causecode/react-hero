@@ -1,5 +1,6 @@
 import resolver from '../resolver';
 import {capitalizeFirstLetter} from './AppService';
+import BaseModel from "../models/BaseModel";
 
 declare interface Function {
     name: string
@@ -12,8 +13,13 @@ module ModelService {
     }
 
     export function getModel(name: string) {
-        name = name.toLowerCase();
-        return (name.indexOf('model') === -1) ? resolver.get(`${name}model`) :resolver.get(name);
+        name = (name.indexOf('model') === -1) ? `${name}model`.toLowerCase() : name.toLowerCase();
+        if (hasModel(name)) {
+            return resolver.get(name);
+        } else {
+            console.warn(`Cannot find ${name}, make sure you have registered it. Using Base Model instead.`);
+            return BaseModel;
+        }
     }
 
     export function hasModel(name: string): boolean {
