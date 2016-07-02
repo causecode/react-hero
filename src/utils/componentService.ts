@@ -8,20 +8,17 @@ module ComponentService {
     }
 
     export function getComponent(name: string, type: string = '') {
-        if (type.length) {
-            name = (name.indexOf(type) === -1) ? `${name}${type}`.toLowerCase() : name.toLowerCase();
+        name = (type.length && (name.indexOf(type) === -1)) ? `${name}${type}`.toLowerCase() : name.toLowerCase();
+        if (hasComponent(name)) {
+            return resolver.get(name)
         } else {
-            name = name.toLowerCase();
+            console.warn(`Cannot find Component ${name}, Make sure you have registered it. Using Generic ${type} instead.`)
+            return
         }
-        return resolver.get(name);
     }
 
     export function hasComponent(name: string, type: string = ''): boolean {
-        if (type.length) {
-            name = (name.indexOf(type) === -1) ? `${name}${type}`.toLowerCase() : name.toLowerCase();
-        } else {
-            name = name.toLowerCase();
-        }
+        name = (type.length && (name.indexOf(type) === -1)) ? `${name}${type}`.toLowerCase() : name.toLowerCase()
         return resolver.has(name);
     }
 

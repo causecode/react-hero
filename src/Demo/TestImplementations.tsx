@@ -11,8 +11,8 @@ import DropDownFilter from '../components/PagedList/Filters/DropDownFilter';
 import DateRangeFilter from '../components/PagedList/Filters/DateRangeFilter';
 import RangeFilter from '../components/PagedList/Filters/RangeFilter';
 import QueryFilter from '../components/PagedList/Filters/QueryFilter';
-import GenericShowPage from './../components/CRUD/GenericShowPage';
-import GenericEditPage from './../components/CRUD/GenericEditPage';
+import ShowPage from './../containers/ShowPage';
+import EditPage from './../containers/EditPage';
 import GenericListPage from "../components/CRUD/GenericListPage";
 import {ComponentService} from '../utils/componentService';
 
@@ -44,8 +44,8 @@ export class NewPage extends React.Component<any, any> {
                         <Route path="/page2" component={Page2Content}/>
                         <Route path="/resp" component={ContentImpl}/>
                         <Route path="/:resource/list" component={GenericListPage}/>
-                        <Route path="/:resource/show/:resourceID" component={GenericShowPage} />
-                        <Route path="/:resource/edit/:resourceID" component={GenericEditPage} />
+                        <Route path="/:resource/show/:resourceID" component={ShowPage} />
+                        <Route path="/:resource/edit/:resourceID" component={EditPage} />
                     </Router>
                 </ContentView>
                 <FooterView>my footer</FooterView>
