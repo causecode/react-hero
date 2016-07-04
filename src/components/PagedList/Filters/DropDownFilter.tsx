@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap';
-import {IFilter} from "./IFilters";
-import "../../../utils/appService";
+import {IFilter} from './IFilters';
+import '../../../utils/appService';
 
 export interface IDropDownFilter extends IFilter {
     possibleValues: Array<string>;

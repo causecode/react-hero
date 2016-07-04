@@ -15,9 +15,8 @@ import QueryFilter from '../components/PagedList/Filters/QueryFilter';
 import ShowPage from './../containers/ShowPage';
 import EditPage from './../containers/EditPage';
 import {ComponentService} from '../utils/componentService';
-import {ModelService} from "../utils/modelService";
-import {BlogModel} from "./TestModel";
-import {UserModel} from "./TestModel";
+import {ModelService} from '../utils/modelService';
+import {BlogModel, UserModel} from './TestModel';
 
 ComponentService.register(BlogListPage);
 ModelService.register(BlogModel);
@@ -75,71 +74,72 @@ function BlogListPage(props) {
             <h1>This is a list page</h1>
         <PagedList resource={props.params.resource}>
             <DropDownFilter
-                label = 'status'
-                paramName = 'status'
-                possibleValues = {['enable', 'disable', 'inactive']}
+                label="status"
+                paramName="status"
+                possibleValues={['enable', 'disable', 'inactive']}
             />
             <RangeFilter
-                label = 'Bill Amount'
-                paramName = 'billAmount'
+                label="Bill Amount"
+                paramName="billAmount"
             />
             <DateRangeFilter
-                label = 'Date Created'
-                paramName = 'dateCreated'
+                label="Date Created"
+                paramName="dateCreated"
             />
             <DropDownFilter
-                label = 'types'
-                paramName = 'types'
-                possibleValues = {['Zoo', 'Jungle', 'Forest']}
+                label="types"
+                paramName="types"
+                possibleValues={['Zoo', 'Jungle', 'Forest']}
             />
             <QueryFilter
-                label = "Search"
-                paramName = "query"
-                placeholder = {['First Name', 'Last Name', "Email"]}
+                label="Search"
+                paramName="query"
+                placeholder={['First Name', 'Last Name', 'Email']}
             />
         </PagedList>
             </div>
-    )
+    );
 }
 
+// This component is for testing.
 function UserEditPage(props) {
     return (
         <h1>Test</h1>
-    )
+    );
 }
 
 // This list page is for testing
 function UserListPage(props) {
     return (
         <div>
-            <h1 style={{'background' : 'red'}}>This is MY user list page</h1>
+            <h1 style={{background : 'red'}}>This is MY user list page</h1>
             <PagedList resource={props.params.resource}>
                 <DropDownFilter
-                    label = 'status'
-                    paramName = 'status'
+                    label = "status"
+                    paramName = "status"
                     possibleValues = {['enable', 'disable', 'inactive']}
                 />
                 <RangeFilter
-                    label = 'Bill Amount'
-                    paramName = 'billAmount'
+                    label = "Bill Amount"
+                    paramName = "billAmount"
                 />
                 <DateRangeFilter
-                    label = 'Date Created'
-                    paramName = 'dateCreated'
+                    label = "Date Created"
+                    paramName = "dateCreated"
                 />
                 <DropDownFilter
-                    label = 'types'
-                    paramName = 'types'
+                    label = "types"
+                    paramName = "types"
                     possibleValues = {['Zoo', 'Jungle', 'Forest']}
                 />
                 <QueryFilter
                     label = "Search"
                     paramName = "query"
-                    placeholder = {['First Name', 'Last Name', "Email"]}
+                    placeholder = {['First Name', 'Last Name', 'Email']}
                 />
             </PagedList>
         </div>
-    )
+    );
 }
 
 export class HomeContent extends ResponsiveView<any, any> {

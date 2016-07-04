@@ -1,26 +1,23 @@
 import resolver from '../resolver';
-import {GenericListPage} from "../components/CRUD/GenericListPage";
-import GenericEditPage from "../components/CRUD/GenericEditPage";
-import GenericShowPage from "../components/CRUD/GenericShowPage";
+import {GenericListPage} from '../components/CRUD/GenericListPage';
+import GenericEditPage from '../components/CRUD/GenericEditPage';
+import GenericShowPage from '../components/CRUD/GenericShowPage';
 
 module ComponentService {
 
+    const warn = (name: string, type: string) => console.warn('Cannot find Component ' + name + ', ' +
+            'Make sure you have registered it. Using Generic ' + type.capitalize() + ' instead.');
     export function register(component: any) {
         resolver.set(component.name.toLowerCase(), component);
     }
 
     export function getComponent(name: string, type: string = '') {
         name = (type.length && (name.indexOf(type) === -1)) ? `${name}${type}`.toLowerCase() : name.toLowerCase();
-        if (hasComponent(name)) {
-            return resolver.get(name)
-        } else {
-            console.warn(`Cannot find Component ${name}, Make sure you have registered it. Using Generic ${type} instead.`)
-            return
-        }
+        return resolver.get(name);
     }
 
     export function hasComponent(name: string, type: string = ''): boolean {
-        name = (type.length && (name.indexOf(type) === -1)) ? `${name}${type}`.toLowerCase() : name.toLowerCase()
+        name = (type.length && (name.indexOf(type) === -1)) ? `${name}${type}`.toLowerCase() : name.toLowerCase();
         return resolver.has(name);
     }
 
@@ -37,15 +34,33 @@ module ComponentService {
     }
 
     export function getListPage(name: string) {
-        return hasListPage(name) ? getComponent(name, 'listPage') : GenericListPage;
+        const type: string = 'listpage';
+        if (hasListPage(name)) {
+            return getComponent(name, type);
+        } else {
+            warn(name, type);
+            return GenericListPage;
+        }
     }
 
     export function getEditPage(name: string) {
-        return hasEditPage(name) ? getComponent(name, 'editpage') : GenericEditPage;
+        const type: string = 'editpage';
+        if (hasEditPage(name)) {
+            return getComponent(name, type);
+        } else {
+            warn(name, type);
+            return GenericEditPage;
+        }
     }
 
     export function getShowPage(name: string) {
-        return hasShowPage(name) ? getComponent(name, 'showpage') : GenericShowPage;
+        const type: string = 'showpage';
+        if (hasShowPage(name)) {
+            return getComponent(name, 'showPage');
+        } else {
+            warn(name, type);
+            return GenericShowPage;
+        }
     }
 
 }

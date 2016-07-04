@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {ComponentService} from '../utils/componentService';
 import {PagedList} from './PagedList';
-import {IComponent} from "../interfaces/IComponent";
+import {IComponent} from '../interfaces/IComponent';
 
 export interface IListPage {
     params?: IRouteParams;

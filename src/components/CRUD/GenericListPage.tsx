@@ -1,4 +1,4 @@
-import {IListPage} from "../../containers/ListPage";
+import {IListPage} from '../../containers/ListPage';
 import {PagedList} from '../../containers/PagedList';
 import * as React from 'react';
 
@@ -11,5 +11,5 @@ export function GenericListPage(props) {
         <div className="listPage">
             <PagedList resource={props.params.resource}/>
         </div>
-    )
+    );
 }

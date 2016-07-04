@@ -4,17 +4,17 @@ import {
     FETCH_INSTANCE_LIST_SUCCESS,
     FETCH_INSTANCE_LIST_ERROR,
 } from '../constants/index';
-import {SET_PAGE} from "./actions";
-import {IFilter} from "../components/PagedList/Filters/IFilters";
-import {fetchInstanceDataFromApi} from "../api/auth/index";
+import {SET_PAGE} from './actions';
+import {IFilter} from '../components/PagedList/Filters/IFilters';
+import {fetchInstanceDataFromApi} from '../api/auth/index';
 import BaseModel from '../models/BaseModel';
-import {FETCH_INSTANCE_DATA_START} from "./instanceActions";
-import {FETCH_INSTANCE_DATA_SUCCESS} from "./instanceActions";
-import {FETCH_INSTANCE_DATA_ERROR} from "./instanceActions";
+import {FETCH_INSTANCE_DATA_START} from './instanceActions';
+import {FETCH_INSTANCE_DATA_SUCCESS} from './instanceActions';
+import {FETCH_INSTANCE_DATA_ERROR} from './instanceActions';
 
 export const TOGGLE_FILTERS = 'TOGGLE_FILTERS';
 
-export function fetchInstanceList(resource:string, offset:number) {
+export function fetchInstanceList(resource: string, offset: number) {
     return (dispatch) => {
         return dispatch({
             types: [
@@ -33,8 +33,8 @@ export function fetchInstanceList(resource:string, offset:number) {
     };
 };
 
-export function fetchInstanceData(resource:string, resourceID:string) {
-    let path:string = `${resource}/show/${resourceID}`;
+export function fetchInstanceData(resource: string, resourceID: string) {
+    let path: string = `${resource}/show/${resourceID}`;
     return (dispatch) => {
         return dispatch({
             types: [
@@ -57,11 +57,11 @@ export const setPage = (pageNumber: number) => {
     return {
         type: SET_PAGE,
         pageNumber: pageNumber
-    }
-}
+    };
+};
 
 export const toggleFilters = () => {
     return {
         type: TOGGLE_FILTERS
-    }
-}
+    };
+};

@@ -1,21 +1,21 @@
 import * as React from 'react';
 import { Form, Button, Grid, Row } from 'react-bootstrap';
 import {DatePicker} from '../../Widgets';
-import {IFilter} from "./IFilters";
+import {IFilter} from './IFilters';
 const ReduxForm: any = require<any>('redux-form');
 import DropDownFilter from './DropDownFilter';
-import {fetchInstanceList} from "../../../actions/data";
-import {store} from "../../../store/store";
+import {fetchInstanceList} from '../../../actions/data';
+import {store} from '../../../store/store';
 const classNames: any = require<any>('classnames');
-import * as Actions from '../../../actions/data'
-import {spring} from "react-motion";
+import * as Actions from '../../../actions/data';
+import {spring} from 'react-motion';
 
 export interface IPagedListFiltersProps extends React.Props<any> {
     children?: JSX.Element;
     fields?: string[];
     sendFilters?: (resource: string) => void;
     resource?: string;
-    filtersOpen?: boolean
+    filtersOpen?: boolean;
 };
 
 class FilterForm extends React.Component<IPagedListFiltersProps, {}> {
@@ -28,27 +28,28 @@ class FilterForm extends React.Component<IPagedListFiltersProps, {}> {
     render() {
         const { filtersOpen, children, fields } = this.props;
         const childrenWithProps = React.Children.map(children,
-            (child:any) => {
+            (child: any) => {
                 let paramName = child.props.paramName;
                 let filterName = child.type.name;
                 if (['RangeFilter', 'DateRangeFilter'].indexOf(filterName) !== -1) {
                     return React.cloneElement(child, {
                         fields: [fields[`${paramName}From`], fields[`${paramName}To`]]
-                    })
+                    });
                 } else {
                     return React.cloneElement(child, {
                         fields: [fields[paramName]]
-                    })
+                    });
                 }
             });
 
-        let hideClasses = filtersOpen? '' : 'hide';
+        let hideClasses = filtersOpen ? '' : 'hide';
         return (
-            <form className={classNames('form-inline', 'filter-form', 'stick-left', hideClasses)} onSubmit={this.handleSubmit}>
+            <form className={classNames('form-inline', 'filter-form', 'stick-left', hideClasses)}
+                    onSubmit={this.handleSubmit}>
                 {childrenWithProps}
                 <Button className="filter-button" bsStyle="primary" type="submit">Submit</Button>
             </form>
-        )
+        );
     }
 }
 
@@ -70,7 +71,7 @@ let DynamicForm = ReduxForm.reduxForm(
     mapDispatchToProps
 )(FilterForm);
 
-export function PagedListFilters ({ children, resource }:IPagedListFiltersProps) {
+export function PagedListFilters ({ children, resource }: IPagedListFiltersProps) {
     let filterProps = [];
     React.Children.forEach(children, (child: any) => {
         let paramName = child.props.paramName;
@@ -83,11 +84,14 @@ export function PagedListFilters ({ children, resource }:IPagedListFiltersProps)
     });
 
     // TODO use connect and mapDispatchToProps for this.
-    let toggleFilters = () => {store.dispatch(Actions.toggleFilters())}
+    let toggleFilters = () => {
+        store.dispatch(Actions.toggleFilters());
+    };
+
     return (
         <div>
             <Button onClick={toggleFilters}> <i className="fa fa-filter" /> </Button>
-            <DynamicForm fields={filterProps} children={children} resource={resource} filtersOpen=""/>
+            <DynamicForm fields={filterProps} children={children} resource={resource} filtersOpen={false}/>
         </div>
     );
 

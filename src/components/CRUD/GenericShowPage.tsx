@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Table, Row, Col} from 'react-bootstrap';
 
-export default class GenericShowPage extends React.Component<IInstancePageProps ,{}> {
+export default class GenericShowPage extends React.Component<IInstancePageProps, {}> {
 
     render() {
         const {instance, resource} =  this.props;
@@ -18,12 +18,12 @@ export default class GenericShowPage extends React.Component<IInstancePageProps 
                 <tbody>
                     {instanceKeys.map(key => {
                         return (
-                        <tr key={instanceKeys.indexOf(key)}>
-                            <td><strong>{key}</strong></td>
-                            <td>{instanceData[key]}</td>
-                        </tr>
-                            )
-                        })}
+                            <tr key={instanceKeys.indexOf(key)}>
+                                <td><strong>{key}</strong></td>
+                                <td>{instanceData[key]}</td>
+                            </tr>
+                        );
+                    })}
                 </tbody>
             </Table>
         );

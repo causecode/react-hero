@@ -8,8 +8,8 @@ import DateRangeFilter from '../components/PagedList/Filters/DateRangeFilter';
 import {PagedListFilters} from '../components/PagedList/Filters/PagedListFilter';
 import DataGrid from '../components/PagedList/DataGrid';
 import { fetchInstanceList } from '../actions/data';
-import {setPage} from "../actions/data";
-import {IFilter} from "../components/PagedList/Filters/IFilters";
+import {setPage} from '../actions/data';
+import {IFilter} from '../components/PagedList/Filters/IFilters';
 import '../utils/appService.ts';
 
 const connect = require<any>('react-redux').connect;
@@ -22,7 +22,7 @@ interface IListPageProps extends React.Props<any> {
     setPage: (pageNumber: number) => void;
     activePage: number;
     resource: string;
-    model: Function
+    model: Function;
 }
 
 class PagedListImpl extends React.Component<IListPageProps, {}> {
@@ -48,7 +48,7 @@ class PagedListImpl extends React.Component<IListPageProps, {}> {
 
     handlePagination = (pageNumber: number) => {
         this.props.fetchInstanceList(this.resource, (( pageNumber - 1 ) * this.itemsPerPage));
-        this.props.setPage(pageNumber)
+        this.props.setPage(pageNumber);
     };
 
     render() {
@@ -95,9 +95,11 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        fetchInstanceList: (resource: string, offset: number) => {dispatch(fetchInstanceList(resource, offset))},
+        fetchInstanceList: (resource: string, offset: number) => {
+            dispatch(fetchInstanceList(resource, offset));
+        },
         setPage: (pageNumber) => {
-            dispatch(setPage(pageNumber))
+            dispatch(setPage(pageNumber));
         }
     };
 }

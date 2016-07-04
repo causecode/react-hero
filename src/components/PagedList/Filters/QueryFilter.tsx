@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap';
-import {IFilter} from "./IFilters";
-import {capitalizeFirstLetter} from "../../../utils/appService";
+import {IFilter} from './IFilters';
+import '../../../utils/appService';
 
 export interface IQueryFilter extends IFilter {
     placeholder: Array<string>;

@@ -39,7 +39,7 @@ export class DatePicker extends React.Component<{name?: string, fields?: any}, {
 
     constructor() {
         super();
-        this.state = {date: new Date()}
+        this.state = {date: new Date()};
     }
 
     setDate = (date?: any) => {

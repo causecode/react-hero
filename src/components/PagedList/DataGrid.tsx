@@ -6,7 +6,7 @@ export interface IDataGridProps extends React.Props<any> {
     totalCount: number;
     instanceList: any;
     properties: Array<string>;
-    resource: any;
+    resource: string;
 };
 
 export default function DataGrid( { totalCount, instanceList, properties, resource}: IDataGridProps) {
@@ -23,13 +23,15 @@ export default function DataGrid( { totalCount, instanceList, properties, resour
                     </tr>
                 </thead>
                 <tbody>
-                    {instanceList.map(function(instance) {
+                    {instanceList.map((instance) => {
                         let instanceData = instance.instanceData;
                         return (
-                        <tr key={instanceData['id']}>
+                        <tr key={instanceData.id}>
                             <td>
-                                <Link to={`/${resource}/edit/${instanceData['id']}`}><i className="fa fa-pencil" /></Link>
-                                <Link to={`/${resource}/show/${instanceData['id']}`}><i className="fa fa-location-arrow" /></Link>
+                                <Link to={`/${resource}/edit/${instanceData.id}`}><i className="fa fa-pencil" />
+                                </Link>
+                                <Link to={`/${resource}/show/${instanceData.id}`}><i className="fa fa-location-arrow" />
+                                </Link>
                             </td>
                             {properties.map(function(property) {
                                 return ( <td key={properties.indexOf(property)}>{instanceData[property]}</td> );

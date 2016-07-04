@@ -1,8 +1,8 @@
 import resolver from '../resolver';
-import BaseModel from "../models/BaseModel";
+import BaseModel from '../models/BaseModel';
 
 declare interface Function {
-    name: string
+    name: string;
 }
 
 module ModelService {

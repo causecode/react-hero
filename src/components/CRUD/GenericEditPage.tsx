@@ -30,26 +30,28 @@ export default class GenericEditPage extends React.Component<IGenericEditPagePro
                 <Grid>
                     {instanceKeys.map(key => {
                         return (
-                        <Row key={instanceKeys.indexOf(key)}>
-                            <FormGroup>
-                                <Col sm={3}>
-                                    <ControlLabel>{key}</ControlLabel>
-                                </Col>
-                                <Col sm={4}>
-                                    <FormControl
-                                        type="text"
-                                        value={this.state.instance.instanceData[key]}
-                                        onChange={this.handleChange.bind(this, key)}
-                                    />
-                                </Col>
-                            </FormGroup>
-                        </Row>
-                            )
-                        })}
+                            <Row key={instanceKeys.indexOf(key)}>
+                                <FormGroup>
+                                    <Col sm={3}>
+                                        <ControlLabel>{key}</ControlLabel>
+                                    </Col>
+                                    <Col sm={4}>
+                                        <FormControl
+                                            type="text"
+                                            value={this.state.instance.instanceData[key]}
+                                            onChange={this.handleChange.bind(this, key)}
+                                        />
+                                    </Col>
+                                </FormGroup>
+                            </Row>
+                        );
+                    })}
                     <FormGroup>
                         <Col sm={4} smOffset={3}>
                             <Button bsStyle="primary" type="submit">Update</Button>
-                            <Button bsStyle="danger" onClick={handleDelete.bind(this, this.state.instance)}>Delete</Button>
+                            <Button bsStyle="danger" onClick={handleDelete.bind(this, this.state.instance)}>
+                                Delete
+                            </Button>
                             <Link className="btn btn-default" to={`${resource}/list`}>Cancel</Link>
                         </Col>
                     </FormGroup>
