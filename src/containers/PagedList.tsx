@@ -5,12 +5,12 @@ import QueryFilter from '../components/PagedList/Filters/QueryFilter';
 import DropDownFilter from '../components/PagedList/Filters/DropDownFilter';
 import RangeFilter from '../components/PagedList/Filters/RangeFilter';
 import DateRangeFilter from '../components/PagedList/Filters/DateRangeFilter';
-
 import {PagedListFilters} from '../components/PagedList/Filters/PagedListFilter';
 import DataGrid from '../components/PagedList/DataGrid';
 import { fetchInstanceList } from '../actions/data';
 import {setPage} from "../actions/data";
 import {IFilter} from "../components/PagedList/Filters/IFilters";
+import '../utils/appService.ts';
 
 const connect = require<any>('react-redux').connect;
 
@@ -56,7 +56,7 @@ class PagedListImpl extends React.Component<IListPageProps, {}> {
         this.setItemsPerPage(instanceList.size);
         return (
         <Container size={4} center>
-            <h2 className="caps">Page List</h2>
+            <h2 className="caps">{this.resource.capitalize()} List</h2>
             <PagedListFilters resource={this.resource}>
                     {this.props.children}
                 </PagedListFilters>

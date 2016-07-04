@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap';
 import {IFilter} from "./IFilters";
-import {capitalizeFirstLetter} from "../../../utils/AppService";
+import "../../../utils/appService";
 
 export interface IDropDownFilter extends IFilter {
     possibleValues: Array<string>;
@@ -13,7 +13,7 @@ export default function DropDownFilter({ label, paramName, possibleValues, field
     // TODO Reset Dropdown.
     return (
         <FormGroup>
-            <ControlLabel>{ capitalizeFirstLetter(label) }</ControlLabel>
+            <ControlLabel>{ label.capitalize() }</ControlLabel>
             <FormControl componentClass="select" {...fields[0]}>
                 { possibleValues.map(value => {
                     return (

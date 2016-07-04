@@ -1,5 +1,4 @@
 import resolver from '../resolver';
-import {capitalizeFirstLetter} from './AppService';
 import BaseModel from "../models/BaseModel";
 
 declare interface Function {

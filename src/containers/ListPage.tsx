@@ -17,7 +17,6 @@ export class ListPage extends React.Component<IListPage, {}> {
 
     render() {
         let Page: IComponent = ComponentService.getListPage(this.props.params.resource);
-        console.log(">> this.props", this.props);
         return (
             <Page {...this.props} />
         );

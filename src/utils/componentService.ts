@@ -1,5 +1,4 @@
 import resolver from '../resolver';
-import {capitalizeFirstLetter} from './AppService';
 import {GenericListPage} from "../components/CRUD/GenericListPage";
 import GenericEditPage from "../components/CRUD/GenericEditPage";
 import GenericShowPage from "../components/CRUD/GenericShowPage";

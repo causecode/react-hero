@@ -19,10 +19,8 @@ import {ModelService} from "../utils/modelService";
 import {BlogModel} from "./TestModel";
 import {UserModel} from "./TestModel";
 
-ComponentService.register(UserListPage);
-ComponentService.register(UserEditPage);
+ComponentService.register(BlogListPage);
 ModelService.register(BlogModel);
-ModelService.register(UserModel);
 
 export class NewPage extends React.Component<any, any> {
 

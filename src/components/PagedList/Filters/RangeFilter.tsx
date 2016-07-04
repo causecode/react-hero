@@ -1,14 +1,14 @@
 import * as React from 'react';
 import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap';
 import {IFilter} from "./IFilters";
-import {capitalizeFirstLetter} from "../../../utils/AppService";
+import "../../../utils/appService";
 
 export default function RangeFilter({ label, paramName, fields }: IFilter, {}) {
 
     label = label ? label : paramName;
     return (
         <FormGroup>
-            <ControlLabel>{ capitalizeFirstLetter(label) }</ControlLabel>
+            <ControlLabel>{ label.capitalize() }</ControlLabel>
             <strong>From</strong>
             <FormControl type="text" {...fields[0]}/>
 
