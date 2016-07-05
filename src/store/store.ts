@@ -29,7 +29,11 @@ function _getMiddleware() {
 }
 
 function _getEnhancers() {
-    let enhancers = [window.devToolsExtension() ];
+    let enhancers = [];
+
+    if (window.devToolsExtension) {
+        enhancers = [window.devToolsExtension()];
+    }
 
     return enhancers;
 }

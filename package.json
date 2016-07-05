@@ -11,12 +11,20 @@
     "clean": "rimraf public dist",
     "compile": "npm run clean && tsc",
     "postInstall": "npm run compile",
+    "test": "jest",
     "lint-ts": "tslint 'src/*.tsx' 'src/**/*.tsx' 'src/*.ts' 'src/**/*.ts'",
     "start:dev": "npm run clean && webpack-dev-server --watch --hot"
   },
   "repository": {
     "type": "git",
     "url": "git+ssh://git@bitbucket.org/causecode/react-hero.git"
+  },
+  "jest": {
+    "verbose": true,
+    "scriptPreprocessor": "<rootDir>/preprocessor.js",
+    "preprocessorIgnorePatterns": ["<rootDir>/node_modules/", "<rootDir>/typings/"],
+    "testFileExtensions": ["ts", "tsx", "js"],
+    "unmockedModulePathPatterns": ["react"]
   },
   "keywords": [],
   "author": "",
@@ -58,11 +66,12 @@
     "es5-shim": "^4.5.9",
     "es6-promise": "^3.2.1",
     "immutable": "^3.8.1",
+    "jest-cli": "^13.0.0",
     "object-assign": "^4.1.0",
     "postcss-cssnext": "^2.6.0",
     "postcss-loader": "^0.9.1",
     "raw-loader": "^0.5.1",
-    "react-addons-test-utils": "^15.1.0",
+    "react-addons-test-utils": "^15.2.0",
     "redux-form": "^5.2.5",
     "redux-localstorage": "^0.4.1",
     "redux-logger": "^2.6.1",

@@ -68,78 +68,84 @@ export class NewPage extends React.Component<any, any> {
     }
 }
 
-function BlogListPage(props) {
-    return (
-        <div>
-            <h1>This is a list page</h1>
-        <PagedList resource={props.params.resource}>
-            <DropDownFilter
-                label="status"
-                paramName="status"
-                possibleValues={['enable', 'disable', 'inactive']}
-            />
-            <RangeFilter
-                label="Bill Amount"
-                paramName="billAmount"
-            />
-            <DateRangeFilter
-                label="Date Created"
-                paramName="dateCreated"
-            />
-            <DropDownFilter
-                label="types"
-                paramName="types"
-                possibleValues={['Zoo', 'Jungle', 'Forest']}
-            />
-            <QueryFilter
-                label="Search"
-                paramName="query"
-                placeholder={['First Name', 'Last Name', 'Email']}
-            />
-        </PagedList>
+class BlogListPage extends React.Component<{params: any}, any> {
+    render() {
+        return (
+            <div>
+                <h1>This is a list page</h1>
+                <PagedList resource={this.props.params.resource}>
+                    <DropDownFilter
+                        label="status"
+                        paramName="status"
+                        possibleValues={['enable', 'disable', 'inactive']}
+                    />
+                    <RangeFilter
+                        label="Bill Amount"
+                        paramName="billAmount"
+                    />
+                    <DateRangeFilter
+                        label="Date Created"
+                        paramName="dateCreated"
+                    />
+                    <DropDownFilter
+                        label="types"
+                        paramName="types"
+                        possibleValues={['Zoo', 'Jungle', 'Forest']}
+                    />
+                    <QueryFilter
+                        label="Search"
+                        paramName="query"
+                        placeholder={['First Name', 'Last Name', 'Email']}
+                    />
+                </PagedList>
             </div>
-    );
+        );
+    }
 }
 
 // This component is for testing.
-function UserEditPage(props) {
-    return (
-        <h1>Test</h1>
-    );
+class UserEditPage extends React.Component<any, any> {
+    render() {
+        return (
+            <h1>Test</h1>
+        );
+    }
 }
 
 // This list page is for testing
-function UserListPage(props) {
-    return (
-        <div>
-            <h1 style={{background : 'red'}}>This is MY user list page</h1>
-            <PagedList resource={props.params.resource}>
-                <DropDownFilter
-                    label = "status"
-                    paramName = "status"
-                    possibleValues = {['enable', 'disable', 'inactive']}
-                />
-                <RangeFilter
-                    label = "Bill Amount"
-                    paramName = "billAmount"
-                />
-                <DateRangeFilter
-                    label = "Date Created"
-                    paramName = "dateCreated"
-                />
-                <DropDownFilter
-                    label = "types"
-                    paramName = "types"
-                    possibleValues = {['Zoo', 'Jungle', 'Forest']}
-                />
-                <QueryFilter
-                    label = "Search"
-                    paramName = "query"
-                    placeholder = {['First Name', 'Last Name', 'Email']}
-                />
-            </PagedList>
-        </div>
-    );
+class UserListPage extends React.Component<{params?: any}, any> {
+    render() {
+        return (
+            <div>
+                <h1 style={{background : 'red'}}>This is MY user list page</h1>
+                <PagedList resource={this.props.params.resource}>
+                    <DropDownFilter
+                        label = "status"
+                        paramName = "status"
+                        possibleValues = {['enable', 'disable', 'inactive']}
+                    />
+                    <RangeFilter
+                        label = "Bill Amount"
+                        paramName = "billAmount"
+                    />
+                    <DateRangeFilter
+                        label = "Date Created"
+                        paramName = "dateCreated"
+                    />
+                    <DropDownFilter
+                        label = "types"
+                        paramName = "types"
+                        possibleValues = {['Zoo', 'Jungle', 'Forest']}
+                    />
+                    <QueryFilter
+                        label = "Search"
+                        paramName = "query"
+                        placeholder = {['First Name', 'Last Name', 'Email']}
+                    />
+                </PagedList>
+            </div>
+        );
+    }
 }
 
 export class HomeContent extends ResponsiveView<any, any> {

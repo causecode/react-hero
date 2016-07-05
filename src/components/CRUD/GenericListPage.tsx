@@ -6,10 +6,12 @@ export interface IListPage {
     params?: IRouteParams;
 }
 
-export function GenericListPage(props) {
-    return (
-        <div className="listPage">
-            <PagedList resource={props.params.resource}/>
-        </div>
-    );
+export default class GenericListPage extends React.Component<IListPage, {}> {
+    render() {
+        return (
+            <div className="listPage">
+                <PagedList resource={this.props.params.resource}/>
+            </div>
+        );
+    }
 }

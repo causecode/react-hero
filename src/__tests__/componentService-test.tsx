@@ -1,0 +1,83 @@
+jest.unmock('../utils/componentService');
+import {ComponentService} from '../utils/componentService';
+import resolver from '../resolver';
+import * as React from 'react';
+import GenericListPage from '../components/CRUD/GenericListPage';
+import GenericShowPage from '../components/CRUD/GenericShowPage';
+import GenericEditPage from '../components/CRUD/GenericEditPage';
+
+describe('Test Component Service', () => {
+    class TestComponent extends React.Component<any, any> {
+        render() {
+            return (<div></div>);
+        }
+    }
+
+    class TestListPage extends React.Component<any, any> {
+        render() {
+            return (<div></div>);
+        }
+    }
+
+    class TestEditPage extends React.Component<any, any> {
+        render() {
+            return (<div></div>);
+        }
+    }
+
+    class TestShowPage extends React.Component<any, any> {
+        render() {
+            return (<div></div>);
+        }
+    }
+
+    it('registers the component in the React DI resolver object', () => {
+        ComponentService.register(TestComponent);
+
+        expect(resolver.has('testcomponent')).toBe(true);
+        expect(resolver.get('testcomponent')).toEqual(TestComponent);
+    });
+
+
+    describe('Component Service retrieval functions', () => {
+
+        beforeEach(() => {
+            ComponentService.register(TestComponent);
+            ComponentService.register(TestListPage);
+            ComponentService.register(TestEditPage);
+            ComponentService.register(TestShowPage);
+        });
+
+        it('checks if the specified component has been registered', () => {
+
+            expect(ComponentService.hasComponent('test', 'component')).toBe(true);
+            expect(ComponentService.hasComponent('test')).toBe(false);
+            expect(ComponentService.hasComponent('')).toBe(false);
+
+        });
+
+        it('checks if the specified Pages have been registered', () => {
+
+            expect(ComponentService.hasListPage('test')).toBe(true);
+            expect(ComponentService.hasEditPage('test')).toBe(true);
+            expect(ComponentService.hasShowPage('test')).toBe(true);
+
+        });
+
+        it('retrieves the specified Pages', () => {
+            expect(ComponentService.getListPage('test')).toEqual(TestListPage);
+            expect(ComponentService.getEditPage('test')).toEqual(TestEditPage);
+            expect(ComponentService.getShowPage('test')).toEqual(TestShowPage);
+
+            expect(ComponentService.getListPage('abc')).toEqual(GenericListPage);
+            expect(ComponentService.getShowPage('abc')).toEqual(GenericShowPage);
+            expect(ComponentService.getEditPage('abc')).toEqual(GenericEditPage);
+
+            expect(ComponentService.getListPage('')).toEqual(GenericListPage);
+            expect(ComponentService.getShowPage('')).toEqual(GenericShowPage);
+            expect(ComponentService.getEditPage('')).toEqual(GenericEditPage);
+
+        });
+
+    });
+});

@@ -1,13 +1,18 @@
 import resolver from '../resolver';
-import {GenericListPage} from '../components/CRUD/GenericListPage';
+import GenericListPage from '../components/CRUD/GenericListPage';
 import GenericEditPage from '../components/CRUD/GenericEditPage';
 import GenericShowPage from '../components/CRUD/GenericShowPage';
+import * as React from 'react';
+import {StatelessComponent} from 'react';
+
+export type ComponentWithName = (new() => React.Component<any, any> | StatelessComponent<any>) & {name?: string};
 
 module ComponentService {
 
     const warn = (name: string, type: string) => console.warn('Cannot find Component ' + name + ', ' +
             'Make sure you have registered it. Using Generic ' + type.capitalize() + ' instead.');
-    export function register(component: any) {
+
+    export function register(component: ComponentWithName ) {
         resolver.set(component.name.toLowerCase(), component);
     }
 
@@ -56,7 +61,7 @@ module ComponentService {
     export function getShowPage(name: string) {
         const type: string = 'showpage';
         if (hasShowPage(name)) {
-            return getComponent(name, 'showPage');
+            return getComponent(name, type);
         } else {
             warn(name, type);
             return GenericShowPage;
