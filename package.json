@@ -22,19 +22,31 @@
   "jest": {
     "verbose": true,
     "scriptPreprocessor": "<rootDir>/preprocessor.js",
-    "preprocessorIgnorePatterns": ["<rootDir>/node_modules/", "<rootDir>/typings/"],
-    "testFileExtensions": ["ts", "tsx", "js"],
-    "unmockedModulePathPatterns": ["react"]
+    "preprocessorIgnorePatterns": [
+      "<rootDir>/node_modules/",
+      "<rootDir>/typings/"
+    ],
+    "testFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ],
+    "unmockedModulePathPatterns": [
+      "react"
+    ]
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "homepage": "https://bitbucket.org/causecode/react-hero#readme",
   "dependencies": {
+    "axios": "^0.12.0",
     "bootstrap": "^3.3.6",
     "css-loader": "^0.23.1",
+    "extract-text-webpack-plugin": "^1.0.1",
     "file-loader": "^0.8.5",
     "font-awesome": "^4.6.1",
+    "html-webpack-plugin": "^2.19.0",
     "react": "^15.1.0",
     "react-bootstrap": "^0.29.4",
     "react-di": "^0.3.1",
@@ -47,14 +59,12 @@
     "redux": "^3.5.2",
     "style-loader": "^0.13.1",
     "ts-loader": "^0.8.2",
-    "tslint-loader": "^2.1.4",
-    "url-loader": "^0.5.7",
-    "extract-text-webpack-plugin": "^1.0.1",
-    "webpack-dev-server": "^1.14.1",
-    "html-webpack-plugin": "^2.19.0",
     "tslint": "^3.11.0",
+    "tslint-loader": "^2.1.4",
     "typescript": "^1.8.10",
-    "webpack": "^1.13.1"
+    "url-loader": "^0.5.7",
+    "webpack": "^1.13.1",
+    "webpack-dev-server": "^1.14.1"
   },
   "devDependencies": {
     "autoprefixer": "^6.3.6",

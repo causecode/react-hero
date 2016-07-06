@@ -1,4 +1,4 @@
-import { getRequest, post } from '../server/index';
+import { HTTP } from '../server/index';
 import {IFilter} from '../../components/PagedList/Filters/IFilters';
 import {store} from '../../store/store';
 const objectAssign: any = require<any>('object-assign');
@@ -11,7 +11,7 @@ export function fetchInstanceListFromApi(path: string, offset: number) {
         let filterFormData = getValues(store.getState().form.dynamic);
         let filters = {offset: offset};
         objectAssign(filters, filterFormData);
-        return getRequest(path, filters)
+        return HTTP.getRequest(path, filters)
             .then((response) => {
                 return resolve(response);
         })
@@ -21,7 +21,7 @@ export function fetchInstanceListFromApi(path: string, offset: number) {
 
 export function fetchInstanceDataFromApi(path: string) {
     return new Promise((resolve, reject) => {
-        return getRequest(path).then((response) => {
+        return HTTP.getRequest(path).then((response) => {
             return resolve(response);
         }).then(null, (err) => reject(new Error(FETCH_ERR_MSG)));
     });

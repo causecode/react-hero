@@ -51,7 +51,7 @@ export default class GenericEditPage extends React.Component<IGenericEditPagePro
                             <Button bsStyle="primary" type="submit">
                                 {(() => {return this.props.handleDelete ? 'Update' : 'Create';})()}
                             </Button>
-                            {() => {
+                            {(() => {
                                 if (handleDelete) {
                                     return (
                                     <Button bsStyle="danger" onClick={handleDelete.bind(this, this.state.instance)}>
@@ -61,7 +61,7 @@ export default class GenericEditPage extends React.Component<IGenericEditPagePro
                                     } else {
                                     return;
                                     }
-                                }}
+                                })()}
                             <Link className="btn btn-default" to={`${resource}/list`}>Cancel</Link>
                         </Col>
                     </FormGroup>

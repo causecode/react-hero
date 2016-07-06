@@ -21,7 +21,7 @@ class EditPage extends React.Component<IInstanceContainerProps, IInstanceContain
 
     handleSubmit = (instance: BaseModel, e: Event): void => {
         e.preventDefault();
-        instance.$save();
+        instance.$update();
     };
 
     handleDelete = (instance: BaseModel) : void => {
