@@ -17,6 +17,7 @@ import EditPage from './../containers/EditPage';
 import {ComponentService} from '../utils/componentService';
 import {ModelService} from '../utils/modelService';
 import {BlogModel, UserModel} from './TestModel';
+import CreatePage from '../containers/CreatePage';
 
 export class NewPage extends React.Component<any, any> {
 
@@ -44,6 +45,7 @@ export class NewPage extends React.Component<any, any> {
                         <Route path="/page2" component={Page2Content}/>
                         <Route path="/resp" component={ContentImpl}/>
                         <Route path="/:resource/list" component={ListPage}/>
+                        <Route path="/:resource/create" component={CreatePage}/>
                         <Route path="/:resource/show/:resourceID" component={ShowPage} />
                         <Route path="/:resource/edit/:resourceID" component={EditPage} />
                     </Router>

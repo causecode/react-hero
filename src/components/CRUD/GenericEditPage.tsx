@@ -5,7 +5,7 @@ import { Link } from 'react-router';
 
 export interface IGenericEditPageProps extends IInstancePageProps {
     handleSubmit: (instance: IBaseModel, e: Event) => void;
-    handleDelete: (instance: IBaseModel) => void;
+    handleDelete?: (instance: IBaseModel) => void;
 }
 
 export default class GenericEditPage extends React.Component<IGenericEditPageProps, IGenericEditPageState> {
@@ -48,10 +48,20 @@ export default class GenericEditPage extends React.Component<IGenericEditPagePro
                     })}
                     <FormGroup>
                         <Col sm={4} smOffset={3}>
-                            <Button bsStyle="primary" type="submit">Update</Button>
-                            <Button bsStyle="danger" onClick={handleDelete.bind(this, this.state.instance)}>
-                                Delete
+                            <Button bsStyle="primary" type="submit">
+                                {(() => {return this.props.handleDelete ? 'Update' : 'Create';})()}
                             </Button>
+                            {() => {
+                                if (handleDelete) {
+                                    return (
+                                    <Button bsStyle="danger" onClick={handleDelete.bind(this, this.state.instance)}>
+                                        Delete
+                                    </Button>
+                                        );
+                                    } else {
+                                    return;
+                                    }
+                                }}
                             <Link className="btn btn-default" to={`${resource}/list`}>Cancel</Link>
                         </Col>
                     </FormGroup>
