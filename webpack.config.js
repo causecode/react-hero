@@ -61,7 +61,7 @@ var config = {
             {test: /\.tsx?$/, loader: 'tslint', exclude: /node_modules/}
         ],
         loaders: [
-            {test: /\.tsx?$/, exclude: /(node_modules)/, loaders: ["react-hot", "ts-loader"]},
+            {test: /\.tsx?$/, exclude: /(node_modules | src\/__tests__)/, loaders: ["react-hot", "ts-loader"]},
             {test: /\.css$/, loader: ExtractTextPlugin.extract("style-loader", "css-loader")},
             {test: /.(png|woff(2)?|eot|ttf|svg)(\?[a-z0-9=\.]+)?$/, loader: 'url-loader?limit=100000'}
         ]

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Container from '../components/Container';
 import { Table, Pagination } from 'react-bootstrap';
 import QueryFilter from '../components/PagedList/Filters/QueryFilter';
 import DropDownFilter from '../components/PagedList/Filters/DropDownFilter';
@@ -56,7 +55,7 @@ class PagedListImpl extends React.Component<IListPageProps, {}> {
         const { instanceList, properties, totalCount, activePage } = this.props;
         this.setItemsPerPage(instanceList.size);
         return (
-        <Container size={4} center>
+            <div>
             <h2 className="caps">
                 {this.resource.capitalize()} List
                 <Link to={`${this.resource}/create`} ><i className="fa fa-plus" /></Link>
@@ -81,8 +80,7 @@ class PagedListImpl extends React.Component<IListPageProps, {}> {
                     maxButtons={5}
                     activePage={activePage}
                     onSelect={this.handlePagination} />
-
-            </Container>
+            </div>
         );
     };
 };

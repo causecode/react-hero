@@ -7,12 +7,13 @@ declare interface Function {
 
 module ModelService {
 
-    export function register(model: any) {
+    export function register(model: (new(instanceData: JSON) => IBaseModel) & {name?: string}) {
         resolver.set(model.name.toLowerCase(), model);
     }
 
     export function getModel(name: string) {
-        name = (name.indexOf('model') === -1) ? `${name}model`.toLowerCase() : name.toLowerCase();
+        name = name.toLowerCase();
+        name = (name.indexOf('model') === -1) ? `${name}model` : name;
         if (hasModel(name)) {
             return resolver.get(name);
         } else {

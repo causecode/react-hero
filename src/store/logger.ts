@@ -1,4 +1,4 @@
-const createLogger = require<any>('redux-logger');
+const createLogger: Function = require<Function>('redux-logger');
 import immutableToJS from '../utils/immutable-to-js';
 
 

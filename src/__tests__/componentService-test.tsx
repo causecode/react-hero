@@ -68,6 +68,9 @@ describe('Test Component Service', () => {
             expect(ComponentService.getListPage('test')).toEqual(TestListPage);
             expect(ComponentService.getEditPage('test')).toEqual(TestEditPage);
             expect(ComponentService.getShowPage('test')).toEqual(TestShowPage);
+            expect(ComponentService.getListPage('TEst')).toEqual(TestListPage);
+            expect(ComponentService.getEditPage('TEst')).toEqual(TestEditPage);
+            expect(ComponentService.getShowPage('TEst')).toEqual(TestShowPage);
 
             expect(ComponentService.getListPage('abc')).toEqual(GenericListPage);
             expect(ComponentService.getShowPage('abc')).toEqual(GenericShowPage);
