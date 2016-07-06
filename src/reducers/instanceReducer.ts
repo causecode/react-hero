@@ -8,7 +8,7 @@ import {
     FETCH_INSTANCE_DATA_ERROR} from '../actions/instanceActions';
 import InstanceLoader from '../utils/instanceLoader';
 import BaseModel from '../models/BaseModel';
-import resolver from '../resolver';
+import {resolver} from '../resolver';
 import {ModelService} from '../utils/modelService';
 const INITIAL_STATE = fromJS({});
 

@@ -1,7 +1,7 @@
 /// <reference path="../interfaces/IBaseModel.d.ts" />
 import {store} from '../store/store';
 import {saveInstance, updateInstance, deleteInstance} from '../actions/instanceActions';
-import resolver from '../resolver';
+import {resolver} from '../resolver';
 
 export default class BaseModel implements IBaseModel {
     resourceName: string;

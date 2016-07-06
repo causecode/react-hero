@@ -8,7 +8,7 @@ import {
 import {SET_PAGE} from '../actions/actions';
 import { fromJS } from 'immutable';
 import {TOGGLE_FILTERS} from '../actions/data';
-import resolver from '../resolver';
+import {resolver} from '../resolver';
 import BaseModel from '../models/BaseModel';
 import InstanceLoader from '../utils/instanceLoader';
 import {ModelService} from '../utils/modelService';

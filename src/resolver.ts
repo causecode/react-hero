@@ -1,2 +1,3 @@
 const ReactDI: any = require<any>('react-di');
-export default new ReactDI();
+let resolver = new ReactDI();
+export {resolver};

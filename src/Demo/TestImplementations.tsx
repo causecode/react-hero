@@ -18,9 +18,6 @@ import {ComponentService} from '../utils/componentService';
 import {ModelService} from '../utils/modelService';
 import {BlogModel, UserModel} from './TestModel';
 
-ComponentService.register(BlogListPage);
-ModelService.register(BlogModel);
-
 export class NewPage extends React.Component<any, any> {
 
     constructor() {
@@ -102,6 +99,9 @@ class BlogListPage extends React.Component<{params: any}, any> {
         );
     }
 }
+
+ComponentService.register(BlogListPage);
+ModelService.register(BlogModel);
 
 // This component is for testing.
 class UserEditPage extends React.Component<any, any> {

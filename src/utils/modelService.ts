@@ -1,4 +1,4 @@
-import resolver from '../resolver';
+import {resolver} from '../resolver';
 import BaseModel from '../models/BaseModel';
 
 declare interface Function {

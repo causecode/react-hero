@@ -1,6 +1,6 @@
 jest.unmock('../utils/componentService');
 import {ComponentService} from '../utils/componentService';
-import resolver from '../resolver';
+import {resolver} from '../resolver';
 import * as React from 'react';
 import GenericListPage from '../components/CRUD/GenericListPage';
 import GenericShowPage from '../components/CRUD/GenericShowPage';

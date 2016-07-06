@@ -1,5 +1,5 @@
 import BaseModel from './../models/BaseModel';
-import resolver from '../resolver';
+import {resolver} from '../resolver';
 
 export class BlogModel extends BaseModel {
     constructor(instanceData: any) {
