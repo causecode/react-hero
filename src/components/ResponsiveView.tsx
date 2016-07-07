@@ -2,13 +2,13 @@ import * as React from 'react';
 
 export class DeviceTypes {
 
-    static DESKTOP: DeviceTypes = new DeviceTypes(0, 'Default');
-    static TABLET: DeviceTypes = new DeviceTypes(1, 'Tablet');
-    static TABLET_PORTRAIT: DeviceTypes = new DeviceTypes(2, 'TabletPortrait');
-    static TABLET_LANDSCAPE: DeviceTypes = new DeviceTypes(3, 'TabletLandscape');
-    static MOBILE: DeviceTypes = new DeviceTypes(4, 'Mobile');
-    static MOBILE_PORTRAIT: DeviceTypes = new DeviceTypes(5, 'MobilePortrait');
-    static MOBILE_LANDSCAPE: DeviceTypes = new DeviceTypes(6, 'MobileLandscape');
+    static DESKTOP: DeviceTypes = new DeviceTypes(0, 'default');
+    static TABLET: DeviceTypes = new DeviceTypes(1, 'tablet');
+    static TABLET_PORTRAIT: DeviceTypes = new DeviceTypes(2, 'tabletportrait');
+    static TABLET_LANDSCAPE: DeviceTypes = new DeviceTypes(3, 'tabletlandscape');
+    static MOBILE: DeviceTypes = new DeviceTypes(4, 'mobile');
+    static MOBILE_PORTRAIT: DeviceTypes = new DeviceTypes(5, 'mobileportrait');
+    static MOBILE_LANDSCAPE: DeviceTypes = new DeviceTypes(6, 'mobilelandscape');
 
     private static allDeviceTypes = [
         DeviceTypes.MOBILE,
@@ -54,21 +54,27 @@ export class DeviceTypes {
         indicator.className = 'state-indicator';
         document.body.appendChild(indicator);
         let deviceId: number = parseInt(window.getComputedStyle(indicator).getPropertyValue('z-index'), 10);
+        document.body.removeChild(indicator);
         return DeviceTypes.getDeviceTypeFromIdOrString(deviceId);
     }
 
     static getDeviceTypeFromIdOrString( identifier: number | string) {
+
+        if (typeof identifier === 'string') {
+            identifier = (identifier as string).toLowerCase();
+        }
+
         for (let deviceType of DeviceTypes.allDeviceTypes) {
             if (deviceType.getId() === identifier || deviceType.getName() === identifier) {
                 return deviceType;
             }
         }
-        throw new Error('Error: No matching device for the given identifier.');
+        throw new Error('No matching device for the given identifier.');
     }
 }
 
 export interface IResponsiveView {
-    renderDefault?() : JSX.Element;
+    renderDefault() : JSX.Element;
     renderMobile?() : JSX.Element;
     renderMobilePortrait?() : JSX.Element;
     renderMobileLandscape?() : JSX.Element;
@@ -77,6 +83,7 @@ export interface IResponsiveView {
     renderTabletLandscape?() : JSX.Element;
 }
 
+// TODO call renderTablet if render only renderTabletPortrait is defined and not renderTablet. same goes for mobile.
 export abstract class ResponsiveView<P, S> extends React.Component<P, S> {
 
     constructor() {
