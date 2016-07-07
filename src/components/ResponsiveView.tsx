@@ -83,7 +83,7 @@ export interface IResponsiveView {
     renderTabletLandscape?() : JSX.Element;
 }
 
-// TODO call renderTablet if render only renderTabletPortrait is defined and not renderTablet. same goes for mobile.
+// TODO call renderTablet if only renderTabletPortrait is defined and not renderTablet. Same goes for mobile.
 export abstract class ResponsiveView<P, S> extends React.Component<P, S> {
 
     constructor() {
@@ -92,7 +92,7 @@ export abstract class ResponsiveView<P, S> extends React.Component<P, S> {
 
     render() {
         let currentDeviceType: DeviceTypes = DeviceTypes.getCurrentDevice();
-        let deviceSpecificRenderFunction: string = `render${currentDeviceType.getName()}`;
+        let deviceSpecificRenderFunction: string = `render${currentDeviceType.getName().capitalize()}`;
         return (
             <div>
                 {this[deviceSpecificRenderFunction]()}
