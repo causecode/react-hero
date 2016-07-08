@@ -27,41 +27,41 @@ export class NewPage extends React.Component<any, any> {
 
     render() {
         return (
-                <HeaderFooterLayout fixedHeader={true} menuPosition={'right'}>
-                <HeaderView>
-                    <Content>
-                        <Title>New App</Title>
-                        <ButtonList highlightOnHover={true}>
-                                <ButtonListItem><Link to="/">Home</Link> </ButtonListItem>
-                                <ButtonListItem><Link to="/page2">Button 2</Link></ButtonListItem>
-                                <ButtonListItem><Link to="/resp">Responsive View Page</Link></ButtonListItem>
-                                <ButtonListItem><Link to="/blog/list">Page List</Link></ButtonListItem>
-                            </ButtonList>
-                    </Content>
-                </HeaderView>
-                <ContentView>
-                    <Router history={hashHistory}>
-                        <Route path="/" component={HomeContent}/>
-                        <Route path="/page2" component={Page2Content}/>
-                        <Route path="/resp" component={ContentImpl}/>
-                        <Route path="/:resource/list" component={ListPage}/>
-                        <Route path="/:resource/create" component={CreatePage}/>
-                        <Route path="/:resource/show/:resourceID" component={ShowPage} />
-                        <Route path="/:resource/edit/:resourceID" component={EditPage} />
-                    </Router>
-                </ContentView>
-                <FooterView>my footer</FooterView>
-                <NavigationMenu>
-                    <Content>
-                        <Title>This is the nav-mnu</Title>
-                        <Description>This is the description</Description>
-                        <ButtonList highlightOnHover={true}>
-                            <ButtonListItem><Link to="/">Home</Link></ButtonListItem>
+            <HeaderFooterLayout menuPosition="left">
+            <HeaderView>
+                <Content>
+                    <Title>New App</Title>
+                    <ButtonList highlightOnHover={true}>
+                            <ButtonListItem><Link to="/">Home</Link> </ButtonListItem>
                             <ButtonListItem><Link to="/page2">Button 2</Link></ButtonListItem>
                             <ButtonListItem><Link to="/resp">Responsive View Page</Link></ButtonListItem>
+                            <ButtonListItem><Link to="/blog/list">Page List</Link></ButtonListItem>
                         </ButtonList>
-                    </Content>
-                </NavigationMenu>
+                </Content>
+            </HeaderView>
+            <ContentView>
+                <Router history={hashHistory}>
+                    <Route path="/" component={HomeContent}/>
+                    <Route path="/page2" component={Page2Content}/>
+                    <Route path="/resp" component={ContentImpl}/>
+                    <Route path="/:resource/list" component={ListPage}/>
+                    <Route path="/:resource/create" component={CreatePage}/>
+                    <Route path="/:resource/show/:resourceID" component={ShowPage} />
+                    <Route path="/:resource/edit/:resourceID" component={EditPage} />
+                </Router>
+            </ContentView>
+            <FooterView>my footer</FooterView>
+            <NavigationMenu>
+                <Content>
+                    <Title>This is the nav-mnu</Title>
+                    <Description>This is the description</Description>
+                    <ButtonList highlightOnHover={true}>
+                        <ButtonListItem><Link to="/">Home</Link></ButtonListItem>
+                        <ButtonListItem><Link to="/page2">Button 2</Link></ButtonListItem>
+                        <ButtonListItem><Link to="/resp">Responsive View Page</Link></ButtonListItem>
+                    </ButtonList>
+                </Content>
+            </NavigationMenu>
             </HeaderFooterLayout>
         );
     }
