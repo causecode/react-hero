@@ -1,14 +1,14 @@
-jest.unmock('../components/HeaderFooterLayout');
+jest.unmock('../src/components/HeaderFooterLayout');
 import HeaderFooterLayout , {
     NavigationMenu,
     HeaderView,
     FooterView,
     ContentView
-} from '../components/HeaderFooterLayout';
+} from '../src/components/HeaderFooterLayout';
 import {ReactComponent} from 'react-router';
 import * as TestUtils from 'react-addons-test-utils';
 import * as React from 'react';
-import {store} from '../store/store';
+import {store} from '../src/store/store';
 import {Provider, connect} from 'react-redux';
 import * as ReactDOM from 'react-dom';
 

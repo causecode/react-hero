@@ -12,6 +12,9 @@ export default class GenericEditPage extends React.Component<IGenericEditPagePro
 
     constructor(props: IGenericEditPageProps) {
         super();
+        if (!props.instance) {
+            throw new Error('Cannot render GenericEditPage without a model instance.');
+        }
         this.state = { instance: props.instance };
     }
 
@@ -22,7 +25,8 @@ export default class GenericEditPage extends React.Component<IGenericEditPagePro
     };
 
     render() {
-        const { instance, handleSubmit, handleDelete, resource } = this.props;
+        const { instance, handleSubmit, handleDelete } = this.props;
+        const resource: string = this.props.resource ? this.props.resource : instance.resourceName;
         this.state.instance = instance;
         let instanceKeys = Object.keys(instance ? instance.instanceData : {});
         return (

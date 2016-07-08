@@ -1,5 +1,5 @@
-jest.unmock('../utils/appService');
-import '../utils/appService';
+jest.unmock('../src/utils/appService');
+import '../src/utils/appService';
 
 describe('Test for AppService', () => {
 

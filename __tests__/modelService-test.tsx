@@ -1,7 +1,7 @@
-import BaseModel from '../models/BaseModel';
-jest.unmock('../utils/modelService');
-import {ModelService} from '../utils/modelService';
-import {resolver} from '../resolver';
+import BaseModel from '../src/models/BaseModel';
+jest.unmock('../src/utils/modelService');
+import {ModelService} from '../src/utils/modelService';
+import {resolver} from '../src/resolver';
 
 describe('Test Model Service', () => {
 

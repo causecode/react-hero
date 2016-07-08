@@ -1,10 +1,10 @@
-jest.unmock('../utils/componentService');
-import {ComponentService} from '../utils/componentService';
-import {resolver} from '../resolver';
+jest.unmock('../src/utils/componentService');
+import {ComponentService} from '../src/utils/componentService';
+import {resolver} from '../src/resolver';
 import * as React from 'react';
-import GenericListPage from '../components/CRUD/GenericListPage';
-import GenericShowPage from '../components/CRUD/GenericShowPage';
-import GenericEditPage from '../components/CRUD/GenericEditPage';
+import GenericListPage from '../src/components/CRUD/GenericListPage';
+import GenericShowPage from '../src/components/CRUD/GenericShowPage';
+import GenericEditPage from '../src/components/CRUD/GenericEditPage';
 
 describe('Test Component Service', () => {
     class TestComponent extends React.Component<any, any> {

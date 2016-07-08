@@ -1,6 +1,6 @@
-import {DeviceTypes} from '../components/ResponsiveView';
-jest.unmock('../components/ResponsiveView');
-import {ResponsiveView} from '../components/ResponsiveView';
+import {DeviceTypes} from '../src/components/ResponsiveView';
+jest.unmock('../src/components/ResponsiveView');
+import {ResponsiveView} from '../src/components/ResponsiveView';
 import * as TestUtils from 'react-addons-test-utils';
 import * as ReactDOM from 'react-dom';
 import * as React from 'react';
