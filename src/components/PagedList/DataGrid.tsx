@@ -1,21 +1,28 @@
 import * as React from 'react';
 import { Table } from 'react-bootstrap';
 import { Link } from 'react-router';
+import {MissingInstanceListError} from '../../errors/MissingInstanceListError';
 
-export interface IDataGridProps extends React.Props<any> {
-    totalCount: number;
-    instanceList: any;
-    properties: Array<string>;
-    resource: string;
-};
+export interface IDataGridProps extends React.Props<{}> {
+    instanceList: IBaseModel[];
+    properties: string[];
+    resource?: string;
+}
 
-export default function DataGrid( { totalCount, instanceList, properties, resource}: IDataGridProps) {
+export default function DataGrid( { instanceList, properties, resource }: IDataGridProps) {
+    if (!instanceList) {
+        throw new MissingInstanceListError();
+    }
+    resource = instanceList[0] ? instanceList[0].resourceName : '';
+    if (!properties) {
+        properties = Object.keys(instanceList[0].instanceData);
+    }
     return (
-        <div className="flex">
+        <div className="data-grid">
             <br/><br/>
             <Table responsive striped bordered hover>
                 <thead>
-                    <tr>
+                    <tr className="data-grid-header">
                         <th>#</th>
                         {properties.map(function(property) {
                             return ( <th key = {properties.indexOf(property)}>{property}</th> );
@@ -26,7 +33,7 @@ export default function DataGrid( { totalCount, instanceList, properties, resour
                     {instanceList.map((instance) => {
                         let instanceData = instance.instanceData;
                         return (
-                        <tr key={instanceData.id}>
+                        <tr key={instanceData.id} className="data-grid-row">
                             <td>
                                 <Link to={`/${resource}/edit/${instanceData.id}`}><i className="fa fa-pencil" />
                                 </Link>

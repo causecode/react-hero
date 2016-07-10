@@ -66,8 +66,7 @@ class PagedListImpl extends React.Component<IListPageProps, {}> {
                 <DataGrid
                     instanceList={ instanceList }
                     properties={ properties }
-                    totalCount={ totalCount }
-                    resource={this.resource} />
+                />
 
                 <Pagination
                     prev
@@ -88,7 +87,7 @@ class PagedListImpl extends React.Component<IListPageProps, {}> {
 function mapStateToProps(state) {
     return {
         properties: state.data.get('properties', []),
-        instanceList: state.data.get('instanceList', []),
+        instanceList: state.data.get('instanceList', []).toJS(),
         totalCount:  state.data.get('totalCount', 0),
         router: state.router,
         activePage: state.data.get('activePage', 1)

@@ -1,4 +1,4 @@
 interface IBaseModel {
-    instanceData: JSON;
+    instanceData: any;
     resourceName: string;
 }
