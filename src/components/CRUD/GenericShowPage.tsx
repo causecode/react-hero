@@ -1,10 +1,19 @@
 import * as React from 'react';
 import {Table, Row, Col} from 'react-bootstrap';
+import {MissingInstanceError} from '../../errors/MissingInstanceError';
 
 export default class GenericShowPage extends React.Component<IInstancePageProps, {}> {
 
+    constructor(props: IInstancePageProps) {
+        super();
+        if (!props.instance) {
+            throw new MissingInstanceError();
+        }
+    }
+
     render() {
-        const {instance, resource} =  this.props;
+        const { instance } =  this.props;
+        const resource = instance.resourceName;
         const instanceData = instance.instanceData || {} as JSON;
         let instanceKeys = Object.keys(instanceData);
         return (
@@ -19,8 +28,8 @@ export default class GenericShowPage extends React.Component<IInstancePageProps,
                     {instanceKeys.map(key => {
                         return (
                             <tr key={instanceKeys.indexOf(key)}>
-                                <td><strong>{key}</strong></td>
-                                <td>{instanceData[key]}</td>
+                                <td className={`${resource}-property`}><strong>{key}</strong></td>
+                                <td className={`${resource}-value`}>{instanceData[key]}</td>
                             </tr>
                         );
                     })}

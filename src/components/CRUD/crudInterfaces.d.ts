@@ -14,6 +14,5 @@ declare interface IGenericEditPageState {
 }
 
 declare interface IInstancePageProps {
-    resource?: string;
     instance: IBaseModel;
 }

@@ -2,6 +2,7 @@
 import * as React from 'react';
 import { Grid, Col, Row, FormGroup, FormControl, ControlLabel, Button } from 'react-bootstrap';
 import { Link } from 'react-router';
+import {MissingInstanceError} from '../../errors/MissingInstanceError';
 
 export interface IGenericEditPageProps extends IInstancePageProps {
     handleSubmit: (instance: IBaseModel, e: Event) => void;
@@ -13,12 +14,12 @@ export default class GenericEditPage extends React.Component<IGenericEditPagePro
     constructor(props: IGenericEditPageProps) {
         super();
         if (!props.instance) {
-            throw new Error('Cannot render GenericEditPage without a model instance.');
+            throw new MissingInstanceError();
         }
         this.state = { instance: props.instance };
     }
 
-    handleChange = (key: string, event: any)  => {
+    handleChange = (key: string, event: Event & {target: {value: string}})  => {
         let instance = this.state.instance;
         instance.instanceData[key] = event.target.value;
         this.setState({instance: instance});
@@ -26,7 +27,7 @@ export default class GenericEditPage extends React.Component<IGenericEditPagePro
 
     render() {
         const { instance, handleSubmit, handleDelete } = this.props;
-        const resource: string = this.props.resource ? this.props.resource : instance.resourceName;
+        const resource: string = instance.resourceName;
         this.state.instance = instance;
         let instanceKeys = Object.keys(instance ? instance.instanceData : {});
         return (

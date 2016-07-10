@@ -9,6 +9,7 @@ import {FormControl} from 'react-bootstrap';
 import {Input} from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
 import {Row, Button} from 'react-bootstrap';
+import {MissingInstanceError} from '../src/errors/MissingInstanceError';
 
 describe('Test Generic Edit Page', () => {
     let handleSubmit, handleDelete, ModelInstance, keys, submit, del;
@@ -118,7 +119,7 @@ describe('Test Generic Edit Page', () => {
     it('renders an EditPage without any props', () => {
         expect(() => {TestUtils.renderIntoDocument(
             <GenericEditPage/>
-        ); }).toThrow(new Error('Cannot render GenericEditPage without a model instance.'));
+        ); }).toThrow(new MissingInstanceError());
     });
 
 });
