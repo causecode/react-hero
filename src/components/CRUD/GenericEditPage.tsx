@@ -13,9 +13,6 @@ export default class GenericEditPage extends React.Component<IGenericEditPagePro
 
     constructor(props: IGenericEditPageProps) {
         super();
-        if (!props.instance) {
-            throw new MissingInstanceError();
-        }
         this.state = { instance: props.instance };
     }
 
@@ -26,10 +23,18 @@ export default class GenericEditPage extends React.Component<IGenericEditPagePro
     };
 
     render() {
-        const { instance, handleSubmit, handleDelete } = this.props;
-        const resource: string = instance.resourceName;
+        let { instance, handleSubmit, handleDelete } = this.props;
+        let stubFunction: Stub = (...args: any[]) => { return; };
+        if (!handleSubmit) {
+            handleSubmit = stubFunction;
+        }
+        let resource: string = this.props.resource;
+        if (!resource) {
+            resource = instance ? instance.resourceName : '';
+        }
         this.state.instance = instance;
-        let instanceKeys = Object.keys(instance ? instance.instanceData : {});
+        let instanceData = (instance && instance.instanceData) ? instance.instanceData : {};
+        let instanceKeys = Object.keys(instanceData);
         return (
             <form className="data-edit-form" onSubmit={handleSubmit.bind(this, this.state.instance)}>
                 <Grid>

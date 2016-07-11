@@ -5,3 +5,5 @@ declare interface IFunction extends Function {
 declare interface String {
     capitalize(): string
 }
+
+declare type Stub = (...args: any[]) => void ;

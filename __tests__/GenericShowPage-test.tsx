@@ -32,10 +32,38 @@ describe('Test Generic Show Page', () => {
         }
     });
 
+    it('renders a GenericShowPage with a resource', () => {
+        let page = TestUtils.renderIntoDocument<React.Component<{}, {}>> (
+            <GenericShowPage instance={ModelInstance} resource="test"/>
+        );
+
+        expect(TestUtils.scryRenderedDOMComponentsWithClass(page, 'data-show-table').length).toBe(1);
+
+        let properties = TestUtils.scryRenderedDOMComponentsWithClass(page, 'test-property');
+        let values = TestUtils.scryRenderedDOMComponentsWithClass(page, 'test-value');
+
+        expect(properties.length).toBe(2);
+        expect(values.length).toBe(2);
+
+        for (let i = 0; i < properties.length; i++ ) {
+            expect(properties[i].textContent).toEqual(keys[i]);
+            expect(values[i].textContent).toEqual(ModelInstance.instanceData[keys[i]]);
+        }
+
+    });
+
     it('renders a GenericShowPage without any props', () => {
-        expect(() => TestUtils.renderIntoDocument<React.Component<{}, {}>>(
-            <GenericShowPage/>
-        )).toThrow(new MissingInstanceError());
+        let page = TestUtils.renderIntoDocument<React.Component<{}, {}>>(
+            <GenericShowPage />
+        );
+
+        expect(TestUtils.scryRenderedDOMComponentsWithClass(page, 'data-show-table').length).toBe(1);
+
+        let properties = TestUtils.scryRenderedDOMComponentsWithClass(page, 'base-property');
+        let values = TestUtils.scryRenderedDOMComponentsWithClass(page, 'base-value');
+
+        expect(properties.length).toBe(0);
+        expect(values.length).toBe(0);
     });
 
 });

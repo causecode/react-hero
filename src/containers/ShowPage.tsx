@@ -18,7 +18,7 @@ class ShowPage extends React.Component<IInstanceContainerProps, {}> {
         const { resource, resourceID } = this.props.params;
         const instance: IBaseModel = this.props.instances[resource] ? this.props.instances[resource] : {};
         const childProps = {instance: instance, resource: resource};
-        let Page: new() => React.Component<any, any> = ComponentService.getShowPage(resource);
+        let Page: new() => React.Component<{}, {}> = ComponentService.getShowPage(resource);
         return (
             <Page {...childProps}/>
         );

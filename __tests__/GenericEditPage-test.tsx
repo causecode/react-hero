@@ -10,9 +10,10 @@ import {Input} from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
 import {Row, Button} from 'react-bootstrap';
 import {MissingInstanceError} from '../src/errors/MissingInstanceError';
+import {Link} from 'react-router';
 
 describe('Test Generic Edit Page', () => {
-    let handleSubmit, handleDelete, ModelInstance, keys, submit, del;
+    let resource, handleSubmit, handleDelete, ModelInstance, keys, submit, del;
 
     beforeEach(() => {
         submit = del = false;
@@ -25,6 +26,7 @@ describe('Test Generic Edit Page', () => {
         handleDelete = (instance: IBaseModel) => {
             del = true;
         };
+        resource = 'test';
 
     });
 
@@ -32,7 +34,7 @@ describe('Test Generic Edit Page', () => {
 
         let EditPage: any = TestUtils.renderIntoDocument(
             <GenericEditPage instance={ModelInstance}
-                    handleSubmit={handleSubmit} handleDelete={handleDelete} resource="test"/>
+                    handleSubmit={handleSubmit} handleDelete={handleDelete} resource={resource}/>
         );
 
         let grid = TestUtils
@@ -58,12 +60,14 @@ describe('Test Generic Edit Page', () => {
         }
 
         let buttons = [...TestUtils.scryRenderedDOMComponentsWithTag(grid, 'button'),
-                ...TestUtils.scryRenderedDOMComponentsWithTag(grid, 'a')];
+                ...TestUtils.scryRenderedComponentsWithType(grid, Link)];
 
         expect(buttons.length).toBe(3);
         expect(buttons[0].textContent).toBe('Update');
         expect(buttons[1].textContent).toBe('Delete');
-        expect(buttons[2].textContent).toBe('Cancel');
+        expect(TestUtils.scryRenderedDOMComponentsWithTag(buttons[2], 'a')[0].textContent).toBe('Cancel');
+
+        expect(buttons[2].props.to).toEqual(`${resource}/list`);
 
         expect(submit).toBe(false);
         expect(del).toBe(false);
@@ -101,11 +105,13 @@ describe('Test Generic Edit Page', () => {
         }
 
         let buttons = [...TestUtils.scryRenderedDOMComponentsWithTag(EditPage, 'button'),
-            ...TestUtils.scryRenderedDOMComponentsWithTag(EditPage, 'a')];
+            ...TestUtils.scryRenderedComponentsWithType(EditPage, Link)];
 
         expect(buttons.length).toBe(2);
         expect(buttons[0].textContent).toBe('Create');
-        expect(buttons[1].textContent).toBe('Cancel');
+        expect(TestUtils.scryRenderedDOMComponentsWithTag(buttons[1], 'a')[0].textContent).toBe('Cancel');
+
+        expect(buttons[1].props.to).toEqual(`${ModelInstance.resourceName}/list`);
 
         expect(submit).toBe(false);
 
@@ -117,9 +123,21 @@ describe('Test Generic Edit Page', () => {
     });
 
     it('renders an EditPage without any props', () => {
-        expect(() => {TestUtils.renderIntoDocument(
+        let page = TestUtils.renderIntoDocument<React.Component<{}, {}>>(
             <GenericEditPage/>
-        ); }).toThrow(new MissingInstanceError());
+        );
+
+        let formControls: any = TestUtils.scryRenderedDOMComponentsWithTag(page, 'input');
+        let labels: any = TestUtils.scryRenderedDOMComponentsWithTag(page, 'label');
+        expect(formControls.length).toEqual(0);
+        expect(labels.length).toEqual(0);
+
+        let buttons = [...TestUtils.scryRenderedDOMComponentsWithTag(page, 'button'),
+            ...TestUtils.scryRenderedDOMComponentsWithTag(page, 'a')];
+
+        expect(buttons.length).toBe(2);
+        expect(buttons[0].textContent).toBe('Create');
+        expect(buttons[1].textContent).toBe('Cancel');
     });
 
 });

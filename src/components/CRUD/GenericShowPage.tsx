@@ -6,15 +6,15 @@ export default class GenericShowPage extends React.Component<IInstancePageProps,
 
     constructor(props: IInstancePageProps) {
         super();
-        if (!props.instance) {
-            throw new MissingInstanceError();
-        }
     }
 
     render() {
         const { instance } =  this.props;
-        const resource = instance.resourceName;
-        const instanceData = instance.instanceData || {} as JSON;
+        let resource = this.props.resource;
+        if (!resource) {
+            resource = instance ? instance.resourceName : '';
+        }
+        const instanceData = (instance && instance.instanceData) ? instance.instanceData : {};
         let instanceKeys = Object.keys(instanceData);
         return (
             <Table responsive bordered className="data-show-table">

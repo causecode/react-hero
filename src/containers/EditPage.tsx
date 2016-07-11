@@ -30,10 +30,10 @@ class EditPage extends React.Component<IInstanceContainerProps, IInstanceContain
 
     render() {
         const resource = this.props.params.resource;
-        const instance: IBaseModel = this.props.instances ? this.props.instances[resource] : {};
+        const instance: IBaseModel = this.props.instances[resource] ? this.props.instances[resource] : {};
         const childProps = {resource: resource, handleSubmit: this.handleSubmit, handleDelete: this.handleDelete,
                 instance: instance};
-        let Page = ComponentService.getEditPage(resource);
+        let Page: new() => React.Component<{}, {}> = ComponentService.getEditPage(resource);
         return(
             <Page {...childProps}/>
         );
