@@ -14,82 +14,89 @@ import '../utils/appService.ts';
 
 const connect = require<any>('react-redux').connect;
 
-interface IListPageProps extends React.Props<any> {
-    properties: Array<any>;
-    instanceList: any;
+export interface IListPageProps extends React.Props<{}> {
+    properties: string[];
+    instanceList: IBaseModel[];
     totalCount: number;
-    fetchInstanceList: (resource: string, offset?: number, model?: Function) => void;
+    fetchInstanceList: ((resource: string, offset?: number) => void) ;
     setPage: (pageNumber: number) => void;
     activePage: number;
     resource: string;
-    model: Function;
 }
 
-class PagedListImpl extends React.Component<IListPageProps, {}> {
-
+export class PagedListImpl extends React.Component<IListPageProps, {}> {
     itemsPerPage: number;
-    resource: string;
 
     constructor(props: IListPageProps) {
         super();
-        this.resource = props.resource;
+        if (!props.resource) {
+            throw new Error('No resource name passed.');
+        }
+        this.itemsPerPage = 1;
     }
 
+    static defaultProps: IListPageProps = {
+        properties: [],
+        resource: '',
+        totalCount: 0,
+        activePage: 1,
+        instanceList: [],
+        fetchInstanceList: (resource, offset) => { return; },
+        setPage: (pageNumber) => { return; }
+    };
+
     componentWillMount() {
-        const { resource, model } = this.props;
+        const { resource } = this.props;
         this.props.fetchInstanceList(resource, 0);
     };
 
     setItemsPerPage(itemsPerPage: number) {
-        if (!this.itemsPerPage) {
-            this.itemsPerPage = itemsPerPage;
-        }
+        this.itemsPerPage = itemsPerPage;
     }
 
     handlePagination = (pageNumber: number) => {
-        this.props.fetchInstanceList(this.resource, (( pageNumber - 1 ) * this.itemsPerPage));
+        this.props.fetchInstanceList(this.props.resource, (( pageNumber - 1 ) * this.itemsPerPage));
         this.props.setPage(pageNumber);
     };
 
     render() {
-        const { instanceList, properties, totalCount, activePage } = this.props;
-        this.setItemsPerPage(instanceList.size);
+        let activePage: number = this.props.activePage;
+        this.setItemsPerPage(this.props.instanceList.length);
+        let items: number = this.itemsPerPage ? Math.ceil(this.props.totalCount / this.itemsPerPage) : 1;
         return (
             <div>
-            <h2 className="caps">
-                {this.resource.capitalize()} List
-                <Link to={`${this.resource}/create`} ><i className="fa fa-plus" /></Link>
-            </h2>
-            <PagedListFilters resource={this.resource}>
-                    {this.props.children}
-                </PagedListFilters>
-                <DataGrid
-                    instanceList={ instanceList }
-                    properties={ properties }
-                />
-
-                <Pagination
-                    prev
-                    next
-                    first
-                    last
-                    ellipsis
-                    boundaryLinks
-                    items={Math.ceil(totalCount / this.itemsPerPage)}
-                    maxButtons={5}
-                    activePage={activePage}
-                    onSelect={this.handlePagination} />
+                <h2 className="caps">
+                    {this.props.resource.capitalize()} List
+                    <Link to={`${this.props.resource}/create`} ><i className="fa fa-plus" /></Link>
+                </h2>
+                <PagedListFilters resource={this.props.resource}>
+                        {this.props.children}
+                    </PagedListFilters>
+                    <DataGrid
+                        instanceList={ this.props.instanceList }
+                        properties={ this.props.properties }
+                    />
+                    <Pagination
+                        prev
+                        next
+                        first
+                        last
+                        ellipsis
+                        boundaryLinks
+                        maxButtons={5}
+                        items={items}
+                        activePage={activePage}
+                        onSelect={this.handlePagination} />
             </div>
         );
     };
-};
+}
 
 function mapStateToProps(state) {
     return {
         properties: state.data.get('properties', []),
         instanceList: state.data.get('instanceList', []).toJS(),
         totalCount:  state.data.get('totalCount', 0),
-        router: state.router,
         activePage: state.data.get('activePage', 1)
     };
 }
