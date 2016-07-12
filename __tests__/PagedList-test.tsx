@@ -14,7 +14,7 @@ import {Provider} from 'react-redux';
 import {PagedListFilters} from '../src/components/PagedList/Filters/PagedListFilter';
 import {Wrapper} from './Wrapper';
 
-const ShallowTestUtils: any = require<any>('react-shallow-testutils');
+const ShallowTestUtils: IShallowTestUtils = require<IShallowTestUtils>('react-shallow-testutils');
 
 interface ITestModel extends IBaseModel {
     instanceData: {
@@ -37,17 +37,6 @@ describe('Test Paged List', () => {
         fetchInstanceList = jest.fn();
         setPage = (pageNumber: number) => { activePage = pageNumber; };
     });
-
-    /*
-    * ShallowTestUtils { findAll: [Function: findAll],
-     findAllWithClass: [Function: findAllWithClass],
-     findAllWithType: [Function: findAllWithType],
-     findWithClass: [Function: findWithClass],
-     findWithRef: [Function: findWithRef],
-     findWithType: [Function: findWithType],
-     isComponentOfType: [Function: isComponentOfType],
-     isDOMComponent: [Function: isDOMComponent] }
-    * */
 
     it('renders a simple PagedList', () => {
         renderer.render(

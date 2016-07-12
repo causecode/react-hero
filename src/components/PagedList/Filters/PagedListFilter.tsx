@@ -10,15 +10,15 @@ const classNames: any = require<any>('classnames');
 import * as Actions from '../../../actions/data';
 import {spring} from 'react-motion';
 
-export interface IPagedListFiltersProps extends React.Props<any> {
-    children?: JSX.Element;
+export interface IPagedListFiltersProps extends React.Props<{}> {
+    children?: React.Component<{}, {}> | React.Component<{}, {}>[];
     fields?: string[];
     sendFilters?: (resource: string) => void;
     resource?: string;
     filtersOpen?: boolean;
-};
+}
 
-class FilterForm extends React.Component<IPagedListFiltersProps, {}> {
+export class FilterForm extends React.Component<IPagedListFiltersProps, {}> {
 
     handleSubmit = (e) => {
         e.preventDefault();
@@ -71,14 +71,19 @@ let DynamicForm = ReduxForm.reduxForm(
     mapDispatchToProps
 )(FilterForm);
 
+export {DynamicForm};
+
 export function PagedListFilters ({ children, resource }: IPagedListFiltersProps) {
     let filterProps = [];
+    if (!resource) {
+        resource = '';
+    }
     React.Children.forEach(children, (child: any) => {
         let paramName = child.props.paramName;
         let filterName = child.type.name;
         if (['RangeFilter', 'DateRangeFilter'].indexOf(filterName) !== -1) {
             filterProps.push(`${paramName}From`, `${paramName}To`);
-        } else {
+        } else if (child.props.paramName) {
             filterProps.push(child.props.paramName);
         }
     });
@@ -88,11 +93,19 @@ export function PagedListFilters ({ children, resource }: IPagedListFiltersProps
         store.dispatch(Actions.toggleFilters());
     };
 
-    return (
-        <div>
-            <Button onClick={toggleFilters}> <i className="fa fa-filter" /> </Button>
-            <DynamicForm fields={filterProps} children={children} resource={resource} filtersOpen={false}/>
-        </div>
-    );
+    if (children) {
+        return (
+            <div className="paged-list-filters">
+                <Button onClick={toggleFilters}>
+                    <i className="fa fa-filter"/>
+                </Button>
+                <DynamicForm fields={filterProps} resource={resource} filtersOpen={false}>
+                    {children}
+                </DynamicForm>
+            </div>
+        );
+    } else {
+        return <div></div>;
+    }
 
 }
