@@ -1,7 +1,6 @@
-import {DynamicForm} from '../src/components/PagedList/Filters/PagedListFilter';
+import {DynamicForm} from '../src/components/PagedList/Filters/DynamicForm';
 jest.unmock('../src/components/PagedList/Filters/PagedListFilter');
 import {PagedListFilters} from '../src/components/PagedList/Filters/PagedListFilter';
-import {FilterForm} from '../src/components/PagedList/Filters/PagedListFilter';
 import * as React from 'react';
 import * as TestUtils from 'react-addons-test-utils';
 import initializeTestCase from './initializeTestCase';
@@ -47,17 +46,17 @@ describe('Test Pagedlist Filters', () => {
     });
 
     it('renders a simple PagedListFilters Component with a few Filters', () => {
-        let children =
-            [<DropDownFilter
+        let children = [
+            <DropDownFilter
                 label="status"
                 paramName="status"
                 possibleValues={['enable', 'disable', 'inactive']}
                 key="1"
             />,
             <RangeFilter
-        label="Bill Amount"
-        paramName="billAmount"
-        key="2"
+                label="Bill Amount"
+                paramName="billAmount"
+                key="2"
             />,
             <DateRangeFilter
                 label="Date Created"
@@ -65,17 +64,18 @@ describe('Test Pagedlist Filters', () => {
                 key="3"
             />,
             <DropDownFilter
-        label="types"
-        paramName="types"
-        possibleValues={['Zoo', 'Jungle', 'Forest']}
-        key="4"
-        />,
-        <QueryFilter
-            label="Search"
-            paramName="query"
-            placeholder={['First Name', 'Last Name', 'Email']}
-            key="5"
-        />];
+                label="types"
+                paramName="types"
+                possibleValues={['Zoo', 'Jungle', 'Forest']}
+                key="4"
+            />,
+            <QueryFilter
+                label="Search"
+                paramName="query"
+                placeholder={['First Name', 'Last Name', 'Email']}
+                key="5"
+            />
+        ];
         renderer.render(
             <PagedListFilters>
                 {children}
