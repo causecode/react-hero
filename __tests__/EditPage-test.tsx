@@ -70,7 +70,7 @@ describe('Test EditPage', () => {
 
     });
 
-    it('renders an EditPage with user implemented EditPage registered', () => {
+    it('renders an EditPage with user implemented EditPage and Model registered', () => {
         class TestEditPage extends React.Component<{}, {}> {
             render() {
                 return(
@@ -78,14 +78,22 @@ describe('Test EditPage', () => {
                 );
             }
         }
+        class TestModel extends BaseModel {
+            constructor(data) {
+                super(data);
+            }
+        }
 
+        ModelService.register(TestModel);
         ComponentService.register(TestEditPage);
 
+        expect(resolver.has('testmodel')).toEqual(true);
+        expect(resolver.get('testmodel')).toEqual(TestModel);
         expect(resolver.has('testeditpage')).toEqual(true);
         expect(resolver.get('testeditpage')).toEqual(TestEditPage);
 
         renderer.render(
-            <EditPageImpl params={{resource: resource}} instances={instances} />
+            <EditPageImpl params={{resource: resource}}  />
         );
 
         let page = renderer.getRenderOutput();
@@ -93,7 +101,7 @@ describe('Test EditPage', () => {
 
         let renderedPage = ShallowTestUtils.findWithType(page, TestEditPage);
         expect(renderedPage).toBeTruthy();
-        expect(renderedPage.props.instance).toEqual(instances[resource]);
+        expect(renderedPage.props.instance).toEqual(new TestModel({}));
         expect(renderedPage.props.resource).toEqual(resource);
         expect(renderedPage.props.handleSubmit.toString()).toEqual(handleSubmit.toString());
         expect(renderedPage.props.handleDelete.toString()).toEqual(handleDelete.toString());

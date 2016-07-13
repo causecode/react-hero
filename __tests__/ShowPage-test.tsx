@@ -67,14 +67,22 @@ describe('Test ShowPage', () => {
                 );
             }
         }
+        class TestModel extends BaseModel {
+            constructor(data) {
+                super(data);
+            }
+        }
 
+        ModelService.register(TestModel);
         ComponentService.register(TestShowPage);
 
+        expect(resolver.has('testmodel')).toEqual(true);
+        expect(resolver.get('testmodel')).toEqual(TestModel);
         expect(resolver.has('testshowpage')).toEqual(true);
         expect(resolver.get('testshowpage')).toEqual(TestShowPage);
 
         renderer.render(
-            <ShowPageImpl params={{resource: resource}} instances={instances} />
+            <ShowPageImpl params={{resource: resource}} />
         );
 
         let page = renderer.getRenderOutput();
@@ -82,7 +90,7 @@ describe('Test ShowPage', () => {
 
         let renderedPage = ShallowTestUtils.findWithType(page, TestShowPage);
         expect(renderedPage).toBeTruthy();
-        expect(renderedPage.props.instance).toEqual(instances[resource]);
+        expect(renderedPage.props.instance).toEqual(new TestModel({}));
         expect(renderedPage.props.resource).toEqual(resource);
 
     });

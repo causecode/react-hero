@@ -10,6 +10,7 @@ import {ComponentService} from '../src/utils/componentService';
 import {resolver} from '../src/resolver';
 import TestUtils = require('react-addons-test-utils');
 import ICreatePageProps from '../src/containers/CreatePage';
+import {ModelService} from '../src/utils/modelService';
 
 describe('test CreatePage', () => {
     let renderer, instances, resource, fetchInstanceData,
@@ -30,7 +31,7 @@ describe('test CreatePage', () => {
     });
 
     it('renders a simple Create Page', () => {
-        let test = renderer.render(
+        renderer.render(
             <CreatePageImpl
                 instances={instances}
                 params={{resource: resource}}
@@ -76,14 +77,22 @@ describe('test CreatePage', () => {
                 );
             }
         }
+        class TestModel extends BaseModel {
+            constructor(data) {
+                super(data);
+            }
+        }
 
+        ModelService.register(TestModel);
         ComponentService.register(TestCreatePage);
 
+        expect(resolver.has('testmodel')).toEqual(true);
+        expect(resolver.get('testmodel')).toEqual(TestModel);
         expect(resolver.has('testcreatepage')).toEqual(true);
         expect(resolver.get('testcreatepage')).toEqual(TestCreatePage);
 
         renderer.render(
-            <CreatePageImpl params={{resource: resource}} instances={instances} />
+            <CreatePageImpl params={{resource: resource}} />
         );
 
         let page = renderer.getRenderOutput();
@@ -91,7 +100,7 @@ describe('test CreatePage', () => {
 
         let renderedPage = ShallowTestUtils.findWithType(page, TestCreatePage);
         expect(renderedPage).toBeTruthy();
-        expect(renderedPage.props.instance).toEqual(instances[resource]);
+        expect(renderedPage.props.instance).toEqual(new TestModel({}));
         expect(renderedPage.props.resource).toEqual(resource);
         expect(renderedPage.props.handleSubmit.toString()).toEqual(handleSubmit.toString());
         expect(renderedPage.props.handleDelete).toBeUndefined();
