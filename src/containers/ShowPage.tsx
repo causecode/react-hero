@@ -1,7 +1,7 @@
 /// <reference path='../components/CRUD/crudInterfaces.d.ts' />
 import * as React from 'react';
 import {fetchInstanceData} from '../actions/instanceActions';
-import {connect} from 'react-redux';
+const connect: any = require<any>('react-redux').connect;
 import {Table, Row, Col} from 'react-bootstrap';
 import BaseModel from '../models/BaseModel';
 import {ComponentService} from '../utils/componentService';
@@ -16,7 +16,7 @@ class ShowPage extends React.Component<IInstanceContainerProps, {}> {
 
     render() {
         const { resource, resourceID } = this.props.params;
-        const instance: IBaseModel = this.props.instances[resource] ? this.props.instances[resource] : {};
+        const instance: IBaseModel = this.props.instances[resource] || new BaseModel({});
         const childProps = {instance: instance, resource: resource};
         let Page: new() => React.Component<{}, {}> = ComponentService.getShowPage(resource);
         return (

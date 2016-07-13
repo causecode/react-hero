@@ -8,11 +8,17 @@ import GenericEditPage from './../components/CRUD/GenericEditPage';
 import {ComponentService} from '../utils/componentService';
 const connect = require<any>('react-redux').connect;
 
-interface IInstanceContainerState {
+export interface IInstanceContainerState {
     instance: IBaseModel;
 }
 
-class EditPage extends React.Component<IInstanceContainerProps, IInstanceContainerState> {
+export class EditPageImpl extends React.Component<IInstanceContainerProps, IInstanceContainerState> {
+
+    static defaultProps: IInstanceContainerProps = {
+        fetchInstanceData: (resource, resourceID) => { },
+        instances: [],
+        params: {resource: '', resourceID: ''}
+    };
 
     componentWillMount() {
         const { resource, resourceID } = this.props.params;
@@ -30,7 +36,7 @@ class EditPage extends React.Component<IInstanceContainerProps, IInstanceContain
 
     render() {
         const resource = this.props.params.resource;
-        const instance: IBaseModel = this.props.instances[resource] ? this.props.instances[resource] : {};
+        const instance: IBaseModel = this.props.instances[resource] || new BaseModel({});
         const childProps = {resource: resource, handleSubmit: this.handleSubmit, handleDelete: this.handleDelete,
                 instance: instance};
         let Page: new() => React.Component<{}, {}> = ComponentService.getEditPage(resource);
@@ -40,14 +46,14 @@ class EditPage extends React.Component<IInstanceContainerProps, IInstanceContain
     }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state): {instances: JSON} {
     let instances: JSON = state.instances.toJS();
     return {
         instances: instances
     };
 }
 
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps(dispatch): {fetchInstanceData: (resource: string, resourceID: string) => void } {
     return {
         fetchInstanceData: (resource: string, resourceID: string) => {
             dispatch(fetchInstanceData(resource, resourceID));
@@ -58,4 +64,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(EditPage);
+)(EditPageImpl);

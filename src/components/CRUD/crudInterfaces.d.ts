@@ -6,7 +6,7 @@ declare interface IRouteParams {
 declare interface IInstanceContainerProps {
     params: IRouteParams;
     fetchInstanceData: (resource: string, resourceID: string) => void;
-    instances: JSON;
+    instances: IBaseModel[];
 }
 
 declare interface IGenericEditPageState {

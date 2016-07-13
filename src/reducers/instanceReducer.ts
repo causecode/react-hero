@@ -20,24 +20,27 @@ export default function instanceReducer(state = INITIAL_STATE, action) {
             return INITIAL_STATE;
 
         case FETCH_INSTANCE_DATA_SUCCESS:
-
             let key;
             key = action.resource;
             Model = ModelService.getModel(key);
-
             let instance = action.payload[`${action.resource}Instance`];
             return state.set(action.resource, InstanceLoader.instantiate<BaseModel>(Model, instance));
+
         case FETCH_INSTANCE_DATA_ERROR:
             return state.merge(fromJS({
                 hasError: true,
                 isLoading: false,
             }));
+
         case SAVE_INSTANCE:
             return state.set(instanceKey, action.instance);
+
         case UPDATE_INSTANCE:
             return state.set(instanceKey, action.instance);
+
         case DELETE_INSTANCE:
             return state.delete(instanceKey);
+
         default:
             return state;
     }

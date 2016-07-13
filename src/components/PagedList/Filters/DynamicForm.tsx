@@ -8,7 +8,7 @@ const classNames: any = require<any>('classnames');
 export class FilterForm extends React.Component<IPagedListFiltersProps, {}> {
 
     static defaultProps = {
-        sendFilters: (e) => {e.preventDefault(); },
+        sendFilters: (e) => { e.preventDefault(); },
         filtersOpen: false,
         fields: []
     };
