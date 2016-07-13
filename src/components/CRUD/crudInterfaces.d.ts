@@ -5,7 +5,7 @@ declare interface IRouteParams {
 
 declare interface IInstanceContainerProps {
     params: IRouteParams;
-    fetchInstanceData: (resource: string, resourceID: string) => void;
+    fetchInstanceData: (resource: string, resourceID?: string) => void;
     instances: IBaseModel[];
 }
 

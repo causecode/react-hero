@@ -4,6 +4,7 @@ import BaseModel from '../models/BaseModel';
 import GenericEditPage from './../components/CRUD/GenericEditPage';
 import {ComponentService} from '../utils/componentService';
 const connect: any = require<any>('react-redux').connect;
+import {ModelService} from '../utils/modelService';
 
 export interface IInstanceContainerState {
     instance: IBaseModel;
@@ -33,7 +34,8 @@ export class EditPageImpl extends React.Component<IInstanceContainerProps, IInst
 
     render() {
         const resource = this.props.params.resource;
-        const instance: IBaseModel = this.props.instances[resource] || new BaseModel({});
+        let Model: new(Object) => BaseModel = ModelService.getModel(resource);
+        const instance: IBaseModel = this.props.instances[resource] || new Model({});
         const childProps = {resource: resource, handleSubmit: this.handleSubmit, handleDelete: this.handleDelete,
                 instance: instance};
         let Page: new() => React.Component<{}, {}> = ComponentService.getEditPage(resource);

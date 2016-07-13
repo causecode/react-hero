@@ -4,6 +4,7 @@ import BaseModel from '../models/BaseModel';
 import GenericShowPage from './../components/CRUD/GenericShowPage';
 import {ComponentService} from '../utils/componentService';
 const connect: any = require<any>('react-redux').connect;
+import {ModelService} from '../utils/modelService';
 
 export class ShowPageImpl extends React.Component<IInstanceContainerProps, {}> {
 
@@ -20,7 +21,8 @@ export class ShowPageImpl extends React.Component<IInstanceContainerProps, {}> {
 
     render() {
         const resource = this.props.params.resource;
-        const instance: IBaseModel = this.props.instances[resource] || new BaseModel({});
+        let Model: new(Object) => BaseModel = ModelService.getModel(resource);
+        const instance: IBaseModel = this.props.instances[resource] || new Model({});
         const childProps = {instance: instance, resource: resource};
         let Page: new() => React.Component<{}, {}> = ComponentService.getShowPage(resource);
         return (

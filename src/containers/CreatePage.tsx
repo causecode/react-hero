@@ -1,10 +1,11 @@
 import * as React from 'react';
 import {ModelService} from '../utils/modelService';
 import {IRoute} from 'react-router';
-import {fetchInstanceData} from '../actions/data';
+import {fetchInstanceData} from '../actions/instanceActions';
 import BaseModel from '../models/BaseModel';
 import GenericEditPage from '../components/CRUD/GenericEditPage';
 import {connect} from 'react-redux';
+import {ComponentService} from '../utils/componentService';
 
 export interface ICreatePageProps {
     params: IRouteParams;
@@ -12,12 +13,18 @@ export interface ICreatePageProps {
     fetchInstanceData: (resource: string) => void;
 }
 
-class CreatePage extends React.Component<ICreatePageProps, {}> {
+export class CreatePageImpl extends React.Component<IInstanceContainerProps, {}> {
 
-    handleSubmit(instance: any, e) {
+    static defaultProps: IInstanceContainerProps = {
+        fetchInstanceData: (resource: string, resourceID: string): void => { },
+        instances: [],
+        params: {resource: '', resourceID: ''}
+    };
+
+    handleSubmit = (instance: BaseModel, e: Event): void => {
         e.preventDefault();
         instance.$save();
-    }
+    };
 
     componentWillMount() {
         this.props.fetchInstanceData(this.props.params.resource);
@@ -25,16 +32,18 @@ class CreatePage extends React.Component<ICreatePageProps, {}> {
 
     render() {
         // TODO handle case where No Instance has yet been created.
-        let Model = ModelService.getModel(this.props.params.resource);
-        const instance = this.props.instances ? this.props.instances[this.props.params.resource] : new Model({});
+        let resource: string = this.props.params.resource;
+        let Model: new(Object) => BaseModel = ModelService.getModel(resource);
+        const instance = this.props.instances[resource] || new Model({});
         if (instance) {
             for (let key of Object.keys(instance.instanceData)) {
                 instance.instanceData[key] = '';
             }
         }
-        const childProps = {handleSubmit: this.handleSubmit, instance: instance, resource: this.props.params.resource};
+        const childProps = {handleSubmit: this.handleSubmit, instance: instance, resource: resource};
+        let Page: new() => React.Component<{}, {}> = ComponentService.getCreatePage(resource);
         return (
-            <GenericEditPage {...childProps}/>
+            <Page {...childProps}/>
         );
     }
 }
@@ -56,4 +65,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(CreatePage);
+)(CreatePageImpl);

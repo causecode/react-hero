@@ -10,13 +10,13 @@ import DateRangeFilter from '../src/components/PagedList/Filters/DateRangeFilter
 import DropDownFilter from '../src/components/PagedList/Filters/DropDownFilter';
 import QueryFilter from '../src/components/PagedList/Filters/QueryFilter';
 import RangeFilter from '../src/components/PagedList/Filters/RangeFilter';
-import render = __React.__DOM.render;
+import {IInitializerData} from './initializeTestCase';
 
 describe('Test Pagedlist Filters', () => {
-    let renderer: React.ShallowRenderer, resource: string, toggleFilters;
+    let renderer: React.ShallowRenderer, resource: string;
 
     beforeEach(() => {
-        let data: {renderer: React.ShallowRenderer, resource: string} = initializeTestCase();
+        let data: IInitializerData = initializeTestCase();
         renderer = data.renderer;
         resource = data.resource;
     });

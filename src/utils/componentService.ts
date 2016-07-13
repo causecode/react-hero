@@ -9,8 +9,9 @@ export type ComponentWithName = (new() => React.Component<any, any> | StatelessC
 
 module ComponentService {
 
-    const warn = (name: string, type: string) => console.warn('Cannot find Component ' + name + ', ' +
-            'Make sure you have registered it. Using Generic ' + type.capitalize() + ' instead.');
+    const warn = (name: string, type: string) => console.warn(`Cannot find Component ` +
+            `${name.capitalize()}${type.capitalize()}, Make sure you have registered it.` +
+            ` Using Generic${type.capitalize()} instead.`);
 
     export function register(component: ComponentWithName ) {
         resolver.set(component.name.toLowerCase(), component);
@@ -36,6 +37,10 @@ module ComponentService {
 
     export function hasShowPage(name: string) {
         return hasComponent(name, 'showpage');
+    }
+
+    export function hasCreatePage(name: string) {
+        return hasComponent(name, 'createpage');
     }
 
     export function getListPage(name: string) {
@@ -68,6 +73,15 @@ module ComponentService {
         }
     }
 
+    export function getCreatePage(name: string) {
+        const type: string = 'createpage';
+        if (hasCreatePage(name)) {
+            return getComponent(name, type);
+        } else {
+            warn(name, type);
+            return GenericEditPage;
+        }
+    }
 }
 
 export {ComponentService};

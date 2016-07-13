@@ -6,10 +6,11 @@ import * as TestUtils from 'react-addons-test-utils';
 const ShallowTestUtils: IShallowTestUtils = require<IShallowTestUtils>('react-shallow-testutils');
 import {initializeTestCase} from './initializeTestCase';
 import BaseModel from '../src/models/BaseModel';
-import {fetchInstanceData} from '../src/actions/data';
+import {fetchInstanceData} from '../src/actions/instanceActions';
 import {ComponentService} from '../src/utils/componentService';
 import {ModelService} from '../src/utils/modelService';
 import {resolver} from '../src/resolver';
+import {IInitializerData} from './initializeTestCase';
 
 describe('Test EditPage', () => {
     let renderer: React.ShallowRenderer, resource: string, instances: Object,
