@@ -33,7 +33,7 @@ export function fetchInstanceList(resource: string, offset: number) {
     };
 };
 
-export function fetchInstanceData(resource: string, resourceID: string) {
+/*export function fetchInstanceData(resource: string, resourceID: string) {
     let path: string = `${resource}/show/${resourceID}`;
     return (dispatch) => {
         return dispatch({
@@ -51,7 +51,7 @@ export function fetchInstanceData(resource: string, resourceID: string) {
             resource: resource
         });
     };
-};
+};*/
 
 export const setPage = (pageNumber: number) => {
     return {

@@ -3,7 +3,7 @@ jest.unmock('../src/components/PagedList/Filters/PagedListFilter');
 import {PagedListFilters} from '../src/components/PagedList/Filters/PagedListFilter';
 import * as React from 'react';
 import * as TestUtils from 'react-addons-test-utils';
-import initializeTestCase from './initializeTestCase';
+import {initializeTestCase} from './initializeTestCase';
 const ShallowTestUtils: any = require<any>('react-shallow-testutils');
 import {Button} from 'react-bootstrap';
 import DateRangeFilter from '../src/components/PagedList/Filters/DateRangeFilter';

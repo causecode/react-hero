@@ -1,13 +1,17 @@
-/// <reference path='../components/CRUD/crudInterfaces.d.ts' />
 import * as React from 'react';
-import {fetchInstanceData} from '../actions/instanceActions';
-const connect: any = require<any>('react-redux').connect;
-import {Table, Row, Col} from 'react-bootstrap';
+import { fetchInstanceData } from '../actions/instanceActions';
 import BaseModel from '../models/BaseModel';
-import {ComponentService} from '../utils/componentService';
 import GenericShowPage from './../components/CRUD/GenericShowPage';
+import {ComponentService} from '../utils/componentService';
+const connect: any = require<any>('react-redux').connect;
 
-class ShowPage extends React.Component<IInstanceContainerProps, {}> {
+export class ShowPageImpl extends React.Component<IInstanceContainerProps, {}> {
+
+    static defaultProps: IInstanceContainerProps = {
+        fetchInstanceData: (resource, resourceID) => { },
+        instances: [],
+        params: {resource: '', resourceID: ''}
+    };
 
     componentWillMount() {
         const { resource, resourceID } = this.props.params;
@@ -15,7 +19,7 @@ class ShowPage extends React.Component<IInstanceContainerProps, {}> {
     }
 
     render() {
-        const { resource, resourceID } = this.props.params;
+        const resource = this.props.params.resource;
         const instance: IBaseModel = this.props.instances[resource] || new BaseModel({});
         const childProps = {instance: instance, resource: resource};
         let Page: new() => React.Component<{}, {}> = ComponentService.getShowPage(resource);
@@ -25,14 +29,14 @@ class ShowPage extends React.Component<IInstanceContainerProps, {}> {
     }
 }
 
-function mapStateToProps(state) {
-    let instances: JSON = state.instances.toJS();
+function mapStateToProps(state): {instances: IBaseModel[]} {
+    let instances: IBaseModel[] = state.instances.toJS();
     return {
         instances: instances
     };
 }
 
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps(dispatch): {fetchInstanceData: (resource: string, resourceID: string) => void } {
     return {
         fetchInstanceData: (resource: string, resourceID: string) => {
             dispatch(fetchInstanceData(resource, resourceID));
@@ -43,4 +47,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(ShowPage);
+)(ShowPageImpl);

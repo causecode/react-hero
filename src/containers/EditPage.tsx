@@ -1,12 +1,9 @@
-/// <reference path='../components/CRUD/crudInterfaces.d.ts' />
 import * as React from 'react';
-import { fetchInstanceData } from '../actions/data';
-import { Grid, Col, Row, FormGroup, FormControl, ControlLabel, Button } from 'react-bootstrap';
-import { Link } from 'react-router';
+import { fetchInstanceData } from '../actions/instanceActions';
 import BaseModel from '../models/BaseModel';
 import GenericEditPage from './../components/CRUD/GenericEditPage';
 import {ComponentService} from '../utils/componentService';
-const connect = require<any>('react-redux').connect;
+const connect: any = require<any>('react-redux').connect;
 
 export interface IInstanceContainerState {
     instance: IBaseModel;
@@ -46,8 +43,8 @@ export class EditPageImpl extends React.Component<IInstanceContainerProps, IInst
     }
 }
 
-function mapStateToProps(state): {instances: JSON} {
-    let instances: JSON = state.instances.toJS();
+function mapStateToProps(state): {instances: IBaseModel[]} {
+    let instances: IBaseModel[] = state.instances.toJS();
     return {
         instances: instances
     };
