@@ -15,8 +15,7 @@ export module HTTP {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(data)
-        })
-            .then(response => response.json());
+        }).then(response => response.json());
     };
 
     let serialize = function (obj, prefix?) {
@@ -36,7 +35,7 @@ export module HTTP {
         let params = serialize(data);
         return fetch(BASE_URL + path + `?${params}`)
             .then(response => response.json());
-    };
+    }
 
     export function putRequest(path: string, data: JSON) {
         return axios({

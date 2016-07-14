@@ -1,8 +1,8 @@
-/// <reference path="../interfaces/IBaseModel.d.ts" />
 import {store} from '../store/store';
 import {saveInstance, updateInstance, deleteInstance} from '../actions/instanceActions';
 import {resolver} from '../resolver';
 import {HTTP} from '../api/server/index';
+import {InvalidInstanceDataError} from '../errors/InvalidInstanceDataError';
 
 export default class BaseModel implements IBaseModel {
     resourceName: string;
@@ -32,7 +32,7 @@ export default class BaseModel implements IBaseModel {
             successCallBack = ( (...args: any[]) => {} ),
             failureCallBack = ( (...args: any[]) => {} )) {
         if (flush) {
-            HTTP.putRequest(`${this.resourceName}/update`, {} as JSON)
+            HTTP.putRequest(`${this.resourceName}/update`, this.instanceData)
                 .then((response) => {
                     successCallBack(response);
                 }).catch((err) => {

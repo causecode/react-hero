@@ -6,12 +6,34 @@ import promiseMiddleware from '../middleware/promise-middleware';
 import logger from './logger';
 const persistState = require<any>('redux-localstorage');
 const thunk = require<any>('redux-thunk').default;
+const MockStore = require<any>('redux-mock-store');
 
-function configureStore(initialState) {
-    const store = compose(
-        _getMiddleware(),
-        ..._getEnhancers()
-    )(createStore)(rootReducer, initialState);
+// declaring this module here the node typings have an error.
+declare module process {
+    export module env {
+        let NODE_ENV: string;
+    }
+}
+
+// MockStore interface copied from redux-mock-store index.d.ts file since interface is not exported.
+export interface IMockStore extends Store {
+    getState(): any;
+    getActions(): Array<any>;
+    dispatch(action: any): any;
+    clearActions(): void;
+    subscribe(): any;
+}
+
+function configureStore(initialState): Store | IMockStore {
+    let store: Store | IMockStore;
+    if (process.env.NODE_ENV === 'test') {
+         store = (MockStore as Function)()(_getMiddleware());
+    } else {
+        store = compose(
+            _getMiddleware(),
+            ..._getEnhancers()
+        )(createStore)(rootReducer, initialState);
+    }
 
     return store;
 }
@@ -23,7 +45,9 @@ function _getMiddleware() {
     ];
 
     // TODO add logs only for dev env
-    middleware = [...middleware, logger];
+    if (process.env.NODE_ENV === 'development') {
+        middleware.push(logger);
+    }
 
     return applyMiddleware(...middleware);
 }
@@ -51,5 +75,5 @@ function _getStorageConfig() {
     };
 }
 
-export const store = configureStore({});
+export const store: Store | IMockStore = configureStore({});
 export default configureStore;

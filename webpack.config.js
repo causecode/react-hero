@@ -33,6 +33,12 @@ if (isProduction) {
         'webpack-dev-server/client?http://localhost:8080',
         'webpack/hot/only-dev-server'  // Used to enable hot reloading in webpack.
     )
+
+    new webpack.DefinePlugin({
+        'process.env': {
+            'NODE_ENV': JSON.stringify('development')
+        }
+    })
 }
 
 plugins.push(
