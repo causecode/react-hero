@@ -33,7 +33,7 @@ export class CreatePageImpl extends React.Component<IInstanceContainerProps, {}>
     render() {
         // TODO handle case where No Instance has yet been created.
         let resource: string = this.props.params.resource;
-        let Model: new(Object) => BaseModel = ModelService.getModel(resource);
+        let Model: new(Object) => IBaseModel = ModelService.getModel(resource);
         const instance = this.props.instances[resource] || new Model({});
         if (instance) {
             for (let key of Object.keys(instance.instanceData)) {

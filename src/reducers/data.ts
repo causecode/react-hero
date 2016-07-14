@@ -6,11 +6,10 @@ import {
 } from '../constants/index';
 
 import {SET_PAGE} from '../actions/actions';
-import { fromJS } from 'immutable';
+import {fromJS} from 'immutable';
 import {TOGGLE_FILTERS} from '../actions/data';
 import {resolver} from '../resolver';
 import BaseModel from '../models/BaseModel';
-import InstanceLoader from '../utils/instanceLoader';
 import {ModelService} from '../utils/modelService';
 
 const INITIAL_STATE = fromJS({
@@ -24,7 +23,7 @@ const INITIAL_STATE = fromJS({
 });
 
 function dataReducer(state = INITIAL_STATE, action ) {
-    let Model;
+    let Model: new(instanceData) => IBaseModel;
     let key: string;
 
     switch (action.type) {
@@ -38,7 +37,7 @@ function dataReducer(state = INITIAL_STATE, action ) {
             let instanceList;
             if (action.payload && action.payload.instanceList) {
                 instanceList = action.payload.instanceList.map(instance => {
-                    return InstanceLoader.instantiate<BaseModel>(Model, instance);
+                    return new Model(instance);
                 });
             } else {
                 throw new Error(`No Data in the Action Payload. Please make sure you are returning an instanceList from

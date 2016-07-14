@@ -11,7 +11,7 @@ module ModelService {
         resolver.set(model.name.toLowerCase(), model);
     }
 
-    export function getModel(name: string) {
+    export function getModel(name: string): new(instanceData) => IBaseModel {
         name = name.toLowerCase();
         name = (name.indexOf('model') === -1) ? `${name}model` : name;
         if (hasModel(name)) {

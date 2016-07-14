@@ -21,7 +21,7 @@ export class ShowPageImpl extends React.Component<IInstanceContainerProps, {}> {
 
     render() {
         const resource = this.props.params.resource;
-        let Model: new(Object) => BaseModel = ModelService.getModel(resource);
+        let Model: new(instanceData) => IBaseModel = ModelService.getModel(resource);
         const instance: IBaseModel = this.props.instances[resource] || new Model({});
         const childProps = {instance: instance, resource: resource};
         let Page: new() => React.Component<{}, {}> = ComponentService.getShowPage(resource);

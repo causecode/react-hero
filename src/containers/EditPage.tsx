@@ -34,7 +34,7 @@ export class EditPageImpl extends React.Component<IInstanceContainerProps, IInst
 
     render() {
         const resource = this.props.params.resource;
-        let Model: new(Object) => BaseModel = ModelService.getModel(resource);
+        let Model: new(Object) => IBaseModel = ModelService.getModel(resource);
         const instance: IBaseModel = this.props.instances[resource] || new Model({});
         const childProps = {resource: resource, handleSubmit: this.handleSubmit, handleDelete: this.handleDelete,
                 instance: instance};

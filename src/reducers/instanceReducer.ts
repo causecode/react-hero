@@ -6,14 +6,13 @@ import {
     FETCH_INSTANCE_DATA_START,
     FETCH_INSTANCE_DATA_SUCCESS,
     FETCH_INSTANCE_DATA_ERROR} from '../actions/instanceActions';
-import InstanceLoader from '../utils/instanceLoader';
 import BaseModel from '../models/BaseModel';
 import {resolver} from '../resolver';
 import {ModelService} from '../utils/modelService';
 const INITIAL_STATE = fromJS({});
 
 export default function instanceReducer(state = INITIAL_STATE, action) {
-    let Model;
+    let Model: new(instanceData) => IBaseModel;
     let instanceKey = action.instance ? `${action.instance.resourceName}Model` : '';
     switch (action.type) {
         case FETCH_INSTANCE_DATA_START:
@@ -24,7 +23,7 @@ export default function instanceReducer(state = INITIAL_STATE, action) {
             key = action.resource;
             Model = ModelService.getModel(key);
             let instance = action.payload[`${action.resource}Instance`];
-            return state.set(action.resource, InstanceLoader.instantiate<BaseModel>(Model, instance));
+            return state.set(action.resource, new Model(instance));
 
         case FETCH_INSTANCE_DATA_ERROR:
             return state.merge(fromJS({
