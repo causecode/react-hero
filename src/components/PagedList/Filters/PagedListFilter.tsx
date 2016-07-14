@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {DynamicForm} from './DynamicForm';
 import { Form, Button, Grid, Row } from 'react-bootstrap';
-import {DatePicker} from '../../Widgets';
 import {IFilter} from './IFilters';
 import DropDownFilter from './DropDownFilter';
 import {fetchInstanceList} from '../../../actions/data';

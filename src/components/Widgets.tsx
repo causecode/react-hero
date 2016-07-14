@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {FormControl} from 'react-bootstrap';
+const classNames: any = require<any>('classnames');
 
 export const Title = (props) => {
     return (
@@ -20,34 +21,22 @@ export const Content = (props) => {
 };
 
 export const ButtonList = (props) => {
-    let classes = 'button-list ';
-    classes += props.highlightOnHover ? 'highlight' : '';
+    let classes : string[] = ['button-list '];
+    if (props.highlightOnHover) {
+        classes.push('highlight');
+    }
     return (
-        <ul className={classes}>{props.children}</ul>
+        <ul className={classNames(classes)}>{props.children}</ul>
     );
 };
 
 export const ButtonListItem = (props) => {
-    let classes = 'button-list-item ';
-    classes += props.highlightOnHover ? 'highlight-on-hover' : '';
+    let classes = ['button-list-item '];
+    if (props.highlightOnHover) {
+        classes.push('highlight-on-hover');
+    }
     return (
-        <li className={classes}>{props.children}</li>
+        <li className={classNames((classes))}>{props.children}</li>
     );
 };
 
-export class DatePicker extends React.Component<{name?: string, fields?: any}, {date: any}> {
-
-    constructor() {
-        super();
-        this.state = {date: new Date()};
-    }
-
-    setDate = (date?: any) => {
-        this.setState({date: date});
-    };
-
-    render() {
-        let attribute = this.props.name ? {name: this.props.name} : this.props.fields;
-        return ( <FormControl type="date" val={this.state.date} onChange={this.setDate} {...attribute}/> );
-    }
-}

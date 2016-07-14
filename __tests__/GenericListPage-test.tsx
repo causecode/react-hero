@@ -1,4 +1,3 @@
-import ComponentClass = __React.ComponentClass;
 jest.unmock('../src/components/CRUD/GenericListPage');
 jest.mock('../src/containers/PagedList');
 import GenericListPage from '../src/components/CRUD/GenericListPage';
