@@ -2,22 +2,26 @@ import * as React from 'react';
 import {ComponentService} from '../utils/componentService';
 import {PagedList} from './PagedList';
 
-export interface IListPage {
+export interface IListPage extends React.Props<{}> {
     params?: IRouteParams;
 }
 
 export class ListPage extends React.Component<IListPage, {}> {
 
-    listPage: JSX.Element;
+    static defaultProps: IListPage = {
+        params: {resource: ''}
+    };
 
     constructor() {
         super();
     }
 
     render() {
-        let Page: new() => React.Component<any, any> = ComponentService.getListPage(this.props.params.resource);
+        let resource: string = this.props.params.resource;
+        let Page: new() => React.Component<{}, {}> = ComponentService.getListPage(resource);
+        let childProps = {resource: resource};
         return (
-            <Page {...this.props} />
+            <Page {...childProps} />
         );
     }
 }

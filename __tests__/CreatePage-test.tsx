@@ -8,13 +8,14 @@ import BaseModel from '../src/models/BaseModel';
 const ShallowTestUtils: IShallowTestUtils = require<IShallowTestUtils>('react-shallow-testutils');
 import {ComponentService} from '../src/utils/componentService';
 import {resolver} from '../src/resolver';
-import TestUtils = require('react-addons-test-utils');
+import * as TestUtils from 'react-addons-test-utils';
 import ICreatePageProps from '../src/containers/CreatePage';
 import {ModelService} from '../src/utils/modelService';
 
 describe('test CreatePage', () => {
-    let renderer, instances, resource, fetchInstanceData,
-            handleSubmit: Function, handleDelete: Function;
+    let renderer: React.ShallowRenderer, resource: string, instances: Object,
+        fetchInstanceData: (...args: any[]) => void, handleSubmit: Function, handleDelete: Function;
+
     beforeEach(() => {
         let data = initializeTestCase();
         renderer = data.renderer;

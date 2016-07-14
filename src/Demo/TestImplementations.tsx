@@ -67,12 +67,12 @@ export class NewPage extends React.Component<any, any> {
     }
 }
 
-class BlogListPage extends React.Component<{params: any}, any> {
+class BlogListPage extends React.Component<{resource: string}, any> {
     render() {
         return (
             <div>
                 <h1>This is a list page</h1>
-                <PagedList resource={this.props.params.resource}>
+                <PagedList resource={this.props.resource}>
                     <DropDownFilter
                         label="status"
                         paramName="status"

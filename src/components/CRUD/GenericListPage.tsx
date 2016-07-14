@@ -1,16 +1,20 @@
-import {IListPage} from '../../containers/ListPage';
 import {PagedList} from '../../containers/PagedList';
 import * as React from 'react';
 
-export interface IListPage {
-    params?: IRouteParams;
+export interface IGenericListPage extends React.Props<{}> {
+    resource: string;
 }
 
-export default class GenericListPage extends React.Component<IListPage, {}> {
+export default class GenericListPage extends React.Component<IGenericListPage, {}> {
+
+    static defaultProps: IGenericListPage = {
+        resource: ''
+    };
+
     render() {
         return (
             <div className="listPage">
-                <PagedList resource={this.props.params.resource}/>
+                <PagedList resource={this.props.resource}/>
             </div>
         );
     }
