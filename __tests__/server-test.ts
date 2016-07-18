@@ -46,7 +46,7 @@ describe('Test server api methods', () => {
 
     });
 
-    describe('Test postRequest method', async () => {
+    describe('Test postRequest method', () => {
         let postConfig: {method: string, headers: {'Accept': string, 'Content-Type': string}, body?: string};
         beforeEach(() => {
             postConfig = {
@@ -59,18 +59,18 @@ describe('Test server api methods', () => {
             };
         });
 
-        it('calls getRequest with all the parameters', async () => {
+        it('calls postRequest with all the parameters', async () => {
             HTTP.postRequest(successPath, data);
             expect(fetch).toBeCalledWith(BASE_URL + successPath, postConfig);
         });
 
-        it('calls getRequest with empty params', async () => {
+        it('calls postRequest with empty params', async () => {
             postConfig.body = JSON.stringify({});
             HTTP.postRequest('', {});
             expect(fetch).toBeCalledWith(BASE_URL, postConfig);
         });
 
-        it('calls getRequest with url', async() => {
+        it('calls postRequest with url', async() => {
             postConfig.body = JSON.stringify({});
             HTTP.postRequest('');
             expect(fetch).toBeCalledWith(BASE_URL, postConfig);
