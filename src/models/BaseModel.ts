@@ -20,8 +20,7 @@ export default class BaseModel implements IBaseModel {
             HTTP.postRequest(`${this.resourceName}/save`, this.instanceData)
                 .then((response) => {
                     successCallBack(response);
-                })
-                .catch((err) => {
+                }, (err) => {
                     failureCallBack(err);
                 });
         }
@@ -35,7 +34,7 @@ export default class BaseModel implements IBaseModel {
             HTTP.putRequest(`${this.resourceName}/update`, this.instanceData)
                 .then((response) => {
                     successCallBack(response);
-                }).catch((err) => {
+                }, (err) => {
                     failureCallBack(err);
                 });
         }
@@ -49,8 +48,7 @@ export default class BaseModel implements IBaseModel {
             HTTP.deleteRequest(`${this.resourceName}/delete/${this.instanceData.id}`)
                 .then((response) => {
                     successCallBack(response);
-                })
-                .catch((err) => {
+                }, (err) => {
                     failureCallBack(err);
                 });
         }

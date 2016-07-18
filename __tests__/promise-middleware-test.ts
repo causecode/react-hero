@@ -92,8 +92,4 @@ describe('Test promise middleware', () => {
         expect(dispatchCalls[1][0].payload).toEqual(failureObject);
     });
 
-    it('executes middleware with empty arguments', async() => {
-        await promiseMiddleware({})()();
-    });
-
 });
