@@ -16,7 +16,7 @@ export module HTTP {
             },
             body: JSON.stringify(data)
         }).then(response => response.json());
-    };
+    }
 
     let serialize = function (obj, prefix?) {
         let str = [];

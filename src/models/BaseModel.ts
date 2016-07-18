@@ -7,7 +7,7 @@ import {InvalidInstanceDataError} from '../errors/InvalidInstanceDataError';
 export default class BaseModel implements IBaseModel {
     resourceName: string;
     constructor(public instanceData) {
-        let className: string = (this.constructor as IFunction).name;
+        let className: string = (this.constructor as Function & {name: string}).name;
         // Dynamically assigning resource name from class Name
         this.resourceName = className.substr(0, className.indexOf('Model')).toLowerCase();
         this.instanceData = instanceData;
