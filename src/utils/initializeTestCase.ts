@@ -1,6 +1,6 @@
 import * as TestUtils from 'react-addons-test-utils';
 import * as React from 'react';
-import BaseModel from '../src/models/BaseModel';
+import BaseModel from '../models/BaseModel';
 
 export interface IInitializerData {
     renderer: React.ShallowRenderer;

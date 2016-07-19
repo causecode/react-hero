@@ -4,7 +4,7 @@ import DataGrid from '../src/components/PagedList/DataGrid';
 import * as React from 'react';
 import * as TestUtils from 'react-addons-test-utils';
 import {Link} from 'react-router';
-import {Wrapper} from './Wrapper';
+import {Wrapper} from './../src/utils/Wrapper';
 import * as ReactDOM from 'react-dom';
 import {MissingInstanceListError} from '../src/errors/MissingInstanceListError';
 import {fetchInstanceDataFromApi} from '../src/api/auth/index';

@@ -12,7 +12,7 @@ jest.mock('../src/store/store');
 import {store} from '../src/store/store';
 import {Provider} from 'react-redux';
 import {PagedListFilters} from '../src/components/PagedList/Filters/PagedListFilter';
-import {Wrapper} from './Wrapper';
+import {Wrapper} from './../src/utils/Wrapper';
 
 const ShallowTestUtils: IShallowTestUtils = require<IShallowTestUtils>('react-shallow-testutils');
 

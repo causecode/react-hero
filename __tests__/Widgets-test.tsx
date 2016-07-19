@@ -1,13 +1,13 @@
 import {FormControl} from 'react-bootstrap';
 jest.unmock('../src/components/Widgets');
-import {initializeTestCase} from './initializeTestCase';
+import {initializeTestCase} from './../src/utils/initializeTestCase';
 import * as Widgets from '../src/components/Widgets';
-import {IInitializerData} from './initializeTestCase';
+import {IInitializerData} from './../src/utils/initializeTestCase';
 import * as React from 'react';
 const ShallowTestUtils: IShallowTestUtils = require<IShallowTestUtils>('react-shallow-testutils');
 import * as TestUtils from 'react-addons-test-utils';
 import * as ReactDOM from 'react-dom';
-import {Wrapper} from './Wrapper';
+import {Wrapper} from './../src/utils/Wrapper';
 
 describe('Test Widgets', () => {
     let renderer: React.ShallowRenderer;

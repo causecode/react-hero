@@ -4,13 +4,13 @@ import {ShowPageImpl} from '../src/containers/ShowPage';
 import * as React from 'react';
 import * as TestUtils from 'react-addons-test-utils';
 const ShallowTestUtils: IShallowTestUtils = require<IShallowTestUtils>('react-shallow-testutils');
-import {initializeTestCase} from './initializeTestCase';
+import {initializeTestCase} from './../src/utils/initializeTestCase';
 import BaseModel from '../src/models/BaseModel';
 import {fetchInstanceData} from '../src/actions/instanceActions';
 import {ComponentService} from '../src/utils/componentService';
 import {ModelService} from '../src/utils/modelService';
 import {resolver} from '../src/resolver';
-import {IInitializerData} from './initializeTestCase';
+import {IInitializerData} from './../src/utils/initializeTestCase';
 
 describe('Test ShowPage', () => {
     let renderer: React.ShallowRenderer, resource: string, instances: Object,
