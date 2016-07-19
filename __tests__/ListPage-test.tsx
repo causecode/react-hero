@@ -3,7 +3,7 @@ jest.unmock('../src/containers/ListPage');
 import {ListPage} from '../src/containers/ListPage';
 import * as React from 'react';
 import {initializeTestCase} from './../src/utils/initializeTestCase';
-import GenericListPage from '../src/components/CRUD/GenericListPage';
+import {GenericListPage} from '../src/components/CRUD/GenericListPage';
 const ShallowTestUtils: IShallowTestUtils = require<IShallowTestUtils>('react-shallow-testutils');
 import {ComponentService} from '../src/utils/componentService';
 

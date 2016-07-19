@@ -4,17 +4,18 @@ import {combineReducers} from 'redux';
 jest.mock('../src/store/store');
 const formReducer = require<any>('redux-form').reducer;
 import {routerReducer} from 'react-router-redux';
-import instances from '../src/reducers/instanceReducer';
-import data from '../src/reducers/data';
-import open from '../src/reducers/open';
+import {instanceReducer as instances} from '../src/reducers/instanceReducer';
+import {dataReducer as data} from '../src/reducers/data';
+import {open} from '../src/reducers/open';
 
 describe('Test Add reducers', () => {
 
     it('calls AddReducers', () => {
         combineReducers = jest.fn<Function>();
-        let testReducer: jest.Mock<Reducer> = jest.fn<Reducer>();
 
-        addReducers(testReducer);
+        let testReducer = (state, action) => { return; } ;
+
+        addReducers(testReducer as Reducer);
 
         expect(combineReducers).toBeCalledWith({
             userReducer: testReducer,

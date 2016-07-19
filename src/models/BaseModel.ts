@@ -4,7 +4,7 @@ import {resolver} from '../resolver';
 import {HTTP} from '../api/server/index';
 import {InvalidInstanceDataError} from '../errors/InvalidInstanceDataError';
 
-export default class BaseModel implements IBaseModel {
+export class BaseModel implements IBaseModel {
     resourceName: string;
     constructor(public instanceData) {
         let className: string = (this.constructor as Function & {name: string}).name;

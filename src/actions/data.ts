@@ -1,17 +1,17 @@
 import { fetchInstanceListFromApi } from '../api/auth/index';
-import {
-    FETCH_INSTANCE_LIST_START,
-    FETCH_INSTANCE_LIST_SUCCESS,
-    FETCH_INSTANCE_LIST_ERROR,
-} from '../constants/index';
+
 import {SET_PAGE} from './actions';
 import {IFilter} from '../components/PagedList/Filters/IFilters';
 import {fetchInstanceDataFromApi} from '../api/auth/index';
-import BaseModel from '../models/BaseModel';
+import {BaseModel} from '../models/BaseModel';
 import {FETCH_INSTANCE_DATA_START} from './instanceActions';
 import {FETCH_INSTANCE_DATA_SUCCESS} from './instanceActions';
 import {FETCH_INSTANCE_DATA_ERROR} from './instanceActions';
 
+export const FETCH_INSTANCE_LIST_START = 'App/FETCH_INSTANCE_LIST_START';
+export const FETCH_INSTANCE_LIST_SUCCESS = 'App/FETCH_INSTANCE_LIST_SUCCESS';
+export const FETCH_INSTANCE_LIST_ERROR = 'App/FETCH_INSTANCE_LIST_ERROR';
+export const DELETE_INSTANCE_LIST = 'App/DELETE_INSTANCE_LIST';
 export const TOGGLE_FILTERS = 'TOGGLE_FILTERS';
 
 export function fetchInstanceList(resource: string, offset: number) {
@@ -32,26 +32,6 @@ export function fetchInstanceList(resource: string, offset: number) {
         });
     };
 };
-
-/*export function fetchInstanceData(resource: string, resourceID: string) {
-    let path: string = `${resource}/show/${resourceID}`;
-    return (dispatch) => {
-        return dispatch({
-            types: [
-                FETCH_INSTANCE_DATA_START,
-                FETCH_INSTANCE_DATA_SUCCESS,
-                FETCH_INSTANCE_DATA_ERROR,
-            ],
-            payload: {
-                promise: fetchInstanceDataFromApi(path)
-                .then((response) => {
-                    return response;
-                }),
-            },
-            resource: resource
-        });
-    };
-};*/
 
 export const setPage = (pageNumber: number) => {
     return {

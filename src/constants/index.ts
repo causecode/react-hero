@@ -1,4 +1,4 @@
-export const FETCH_INSTANCE_LIST_START = 'App/FETCH_INSTANCE_LIST_START';
+/*export const FETCH_INSTANCE_LIST_START = 'App/FETCH_INSTANCE_LIST_START';
 export const FETCH_INSTANCE_LIST_SUCCESS = 'App/FETCH_INSTANCE_LIST_SUCCESS';
 export const FETCH_INSTANCE_LIST_ERROR = 'App/FETCH_INSTANCE_LIST_ERROR';
 export const DELETE_INSTANCE_LIST = 'App/DELETE_INSTANCE_LIST';
@@ -11,4 +11,4 @@ export function makeActionCreator(type, ...argNames) {
         });
         return action;
     };
-}
+}*/

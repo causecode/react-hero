@@ -6,12 +6,12 @@ import {
     FETCH_INSTANCE_DATA_START,
     FETCH_INSTANCE_DATA_SUCCESS,
     FETCH_INSTANCE_DATA_ERROR} from '../actions/instanceActions';
-import BaseModel from '../models/BaseModel';
+import {BaseModel} from '../models/BaseModel';
 import {resolver} from '../resolver';
 import {ModelService} from '../utils/modelService';
 const INITIAL_STATE = fromJS({});
 
-export default function instanceReducer(state = INITIAL_STATE, action) {
+export function instanceReducer(state = INITIAL_STATE, action) {
     let Model: new(instanceData) => IBaseModel;
     let instanceKey = action.instance ? `${action.instance.resourceName}Model` : '';
     switch (action.type) {

@@ -3,7 +3,7 @@ import * as React from 'react';
 import {NavMenuLauncherIcon} from './NavMenuLauncherIcon';
 import * as Bootstrap from 'react-bootstrap';
 import {Motion, spring} from 'react-motion';
-import { toggleNav } from '../actions/actions';
+import {toggleNav} from '../actions/actions';
 import {MapStateToProps} from 'react-redux';
 
 // Importing connect this way because of bug in react-redux type definition
@@ -174,7 +174,9 @@ export class HeaderFooterLayoutImpl extends React.Component<IHeaderFooterLayoutP
     }
 }
 
-export default connect(
+let HeaderFooterLayout =  connect(
     mapStateToProps,
     mapDispatchToProps
 )(HeaderFooterLayoutImpl);
+
+export {HeaderFooterLayout};

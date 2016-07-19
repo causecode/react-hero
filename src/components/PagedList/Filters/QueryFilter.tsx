@@ -7,7 +7,7 @@ export interface IQueryFilter extends IFilter {
     placeholder: Array<string>;
 }
 
-export default function QueryFilter ({ label, placeholder, fields, paramName }: IQueryFilter, {}) {
+export function QueryFilter ({ label, placeholder, fields, paramName }: IQueryFilter, {}) {
 
     label = label ? label : paramName;
     return (

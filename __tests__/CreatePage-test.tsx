@@ -3,13 +3,13 @@ jest.unmock('../src/containers/CreatePage');
 import {CreatePageImpl} from '../src/containers/CreatePage';
 import {initializeTestCase} from './../src/utils/initializeTestCase';
 import * as React from 'react';
-import GenericEditPage from '../src/components/CRUD/GenericEditPage';
-import BaseModel from '../src/models/BaseModel';
+import {GenericEditPage} from '../src/components/CRUD/GenericEditPage';
+import {BaseModel} from '../src/models/BaseModel';
 const ShallowTestUtils: IShallowTestUtils = require<IShallowTestUtils>('react-shallow-testutils');
 import {ComponentService} from '../src/utils/componentService';
 import {resolver} from '../src/resolver';
 import * as TestUtils from 'react-addons-test-utils';
-import ICreatePageProps from '../src/containers/CreatePage';
+import {ICreatePageProps} from '../src/containers/CreatePage';
 import {ModelService} from '../src/utils/modelService';
 
 describe('test CreatePage', () => {

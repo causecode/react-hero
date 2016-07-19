@@ -1,5 +1,6 @@
 jest.unmock('../src/components/HeaderFooterLayout');
-import HeaderFooterLayout , {
+import {
+    HeaderFooterLayout,
     NavigationMenu,
     HeaderView,
     FooterView,

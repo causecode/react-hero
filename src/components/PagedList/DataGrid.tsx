@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { Table } from 'react-bootstrap';
-import { Link } from 'react-router';
+import {Table} from 'react-bootstrap';
+import {Link} from 'react-router';
 import {MissingInstanceListError} from '../../errors/MissingInstanceListError';
 
 export interface IDataGridProps extends React.Props<{}> {
@@ -9,7 +9,7 @@ export interface IDataGridProps extends React.Props<{}> {
     resource?: string;
 }
 
-export default function DataGrid( { instanceList, properties, resource }: IDataGridProps) {
+export function DataGrid( { instanceList, properties, resource }: IDataGridProps) {
     if (!instanceList) {
         throw new MissingInstanceListError();
     }

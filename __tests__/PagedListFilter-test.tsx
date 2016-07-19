@@ -6,10 +6,10 @@ import * as TestUtils from 'react-addons-test-utils';
 import {initializeTestCase} from './../src/utils/initializeTestCase';
 const ShallowTestUtils: any = require<any>('react-shallow-testutils');
 import {Button} from 'react-bootstrap';
-import DateRangeFilter from '../src/components/PagedList/Filters/DateRangeFilter';
-import DropDownFilter from '../src/components/PagedList/Filters/DropDownFilter';
-import QueryFilter from '../src/components/PagedList/Filters/QueryFilter';
-import RangeFilter from '../src/components/PagedList/Filters/RangeFilter';
+import {DateRangeFilter} from '../src/components/PagedList/Filters/DateRangeFilter';
+import {DropDownFilter} from '../src/components/PagedList/Filters/DropDownFilter';
+import {QueryFilter} from '../src/components/PagedList/Filters/QueryFilter';
+import {RangeFilter} from '../src/components/PagedList/Filters/RangeFilter';
 import {IInitializerData} from './../src/utils/initializeTestCase';
 
 describe('Test Pagedlist Filters', () => {

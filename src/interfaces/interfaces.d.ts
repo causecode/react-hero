@@ -1,3 +1,8 @@
+declare interface IBaseModel {
+    instanceData: any;
+    resourceName: string;
+}
+
 declare interface String {
     capitalize(): string;
 }

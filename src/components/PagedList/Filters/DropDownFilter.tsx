@@ -7,7 +7,7 @@ export interface IDropDownFilter extends IFilter {
     possibleValues: Array<string>;
 }
 
-export default function DropDownFilter({ label, paramName, possibleValues, fields }: IDropDownFilter, {}) {
+export function DropDownFilter({ label, paramName, possibleValues, fields }: IDropDownFilter, {}) {
 
     label = label ? label : paramName;
     // TODO Reset Dropdown.

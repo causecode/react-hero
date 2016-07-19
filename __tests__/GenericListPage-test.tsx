@@ -1,6 +1,6 @@
 jest.unmock('../src/components/CRUD/GenericListPage');
 jest.mock('../src/containers/PagedList');
-import GenericListPage from '../src/components/CRUD/GenericListPage';
+import {GenericListPage} from '../src/components/CRUD/GenericListPage';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import * as TestUtils from 'react-addons-test-utils';

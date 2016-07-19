@@ -1,4 +1,4 @@
-import BaseModel from '../src/models/BaseModel';
+import {BaseModel} from '../src/models/BaseModel';
 jest.unmock('../src/utils/modelService');
 import {ModelService} from '../src/utils/modelService';
 import {resolver} from '../src/resolver';

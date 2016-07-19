@@ -9,7 +9,7 @@ export interface IGenericEditPageProps extends IInstancePageProps {
     handleDelete?: (instance: IBaseModel) => void;
 }
 
-export default class GenericEditPage extends React.Component<IGenericEditPageProps, IGenericEditPageState> {
+export class GenericEditPage extends React.Component<IGenericEditPageProps, IGenericEditPageState> {
 
     constructor(props: IGenericEditPageProps) {
         super();

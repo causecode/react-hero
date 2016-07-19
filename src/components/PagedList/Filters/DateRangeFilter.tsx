@@ -3,7 +3,7 @@ import {FormGroup, ControlLabel, FormControl} from 'react-bootstrap';
 import {IFilter} from './IFilters';
 import '../../../utils/appService';
 
-export default function DateRangeFilter({ label, paramName, fields }: IFilter, {}) {
+export function DateRangeFilter({ label, paramName, fields }: IFilter, {}) {
 
     label = label ? label : paramName;
     return (

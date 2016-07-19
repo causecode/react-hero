@@ -1,6 +1,6 @@
-import BaseModel from '../src/models/BaseModel';
+import {BaseModel} from '../src/models/BaseModel';
 jest.unmock('../src/components/PagedList/DataGrid');
-import DataGrid from '../src/components/PagedList/DataGrid';
+import {DataGrid} from '../src/components/PagedList/DataGrid';
 import * as React from 'react';
 import * as TestUtils from 'react-addons-test-utils';
 import {Link} from 'react-router';

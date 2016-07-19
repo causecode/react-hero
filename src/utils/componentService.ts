@@ -1,7 +1,7 @@
 import {resolver} from '../resolver';
-import GenericListPage from '../components/CRUD/GenericListPage';
-import GenericEditPage from '../components/CRUD/GenericEditPage';
-import GenericShowPage from '../components/CRUD/GenericShowPage';
+import {GenericListPage} from '../components/CRUD/GenericListPage';
+import {GenericEditPage} from '../components/CRUD/GenericEditPage';
+import {GenericShowPage} from '../components/CRUD/GenericShowPage';
 import * as React from 'react';
 import {StatelessComponent} from 'react';
 

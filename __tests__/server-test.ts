@@ -1,11 +1,7 @@
 jest.unmock('../src/api/server/index');
-import {HTTP, BASE_URL} from '../src/api/server/index';
+import { HTTP, BASE_URL } from '../src/api/server/index';
 import 'babel-polyfill';
 let axios = require('axios');
-interface AxiosConfig {
-    url?: string;
-    method: string;
-}
 
 describe('Test server api methods', () => {
     let successPath: string, failurePath: string, successObject: {success: boolean}, failureObject: {success: boolean},

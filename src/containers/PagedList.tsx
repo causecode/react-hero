@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { Table, Pagination } from 'react-bootstrap';
-import QueryFilter from '../components/PagedList/Filters/QueryFilter';
-import DropDownFilter from '../components/PagedList/Filters/DropDownFilter';
-import RangeFilter from '../components/PagedList/Filters/RangeFilter';
-import DateRangeFilter from '../components/PagedList/Filters/DateRangeFilter';
+import {QueryFilter} from '../components/PagedList/Filters/QueryFilter';
+import {DropDownFilter} from '../components/PagedList/Filters/DropDownFilter';
+import {RangeFilter} from '../components/PagedList/Filters/RangeFilter';
+import {DateRangeFilter} from '../components/PagedList/Filters/DateRangeFilter';
 import {PagedListFilters} from '../components/PagedList/Filters/PagedListFilter';
-import DataGrid from '../components/PagedList/DataGrid';
-import { fetchInstanceList } from '../actions/data';
+import {DataGrid} from '../components/PagedList/DataGrid';
+import {fetchInstanceList} from '../actions/data';
 import {setPage} from '../actions/data';
 import {Link} from 'react-router';
 import {IFilter} from '../components/PagedList/Filters/IFilters';

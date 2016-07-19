@@ -1,16 +1,15 @@
-import {
-  FETCH_INSTANCE_LIST_START,
-  FETCH_INSTANCE_LIST_SUCCESS,
-  FETCH_INSTANCE_LIST_ERROR,
-  DELETE_INSTANCE_LIST,
-} from '../constants/index';
-
 import {SET_PAGE} from '../actions/actions';
 import {fromJS} from 'immutable';
 import {TOGGLE_FILTERS} from '../actions/data';
 import {resolver} from '../resolver';
-import BaseModel from '../models/BaseModel';
+import {BaseModel} from '../models/BaseModel';
 import {ModelService} from '../utils/modelService';
+import {
+    FETCH_INSTANCE_LIST_START,
+    FETCH_INSTANCE_LIST_SUCCESS,
+    FETCH_INSTANCE_LIST_ERROR,
+    DELETE_INSTANCE_LIST
+} from '../actions/data';
 
 const INITIAL_STATE = fromJS({
     totalCount: 0,
@@ -71,4 +70,4 @@ function dataReducer(state = INITIAL_STATE, action ) {
         }
 }
 
-export default dataReducer;
+export {dataReducer};

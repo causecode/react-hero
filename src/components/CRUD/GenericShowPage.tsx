@@ -2,7 +2,7 @@ import * as React from 'react';
 import {Table, Row, Col} from 'react-bootstrap';
 import {MissingInstanceError} from '../../errors/MissingInstanceError';
 
-export default class GenericShowPage extends React.Component<IInstancePageProps, {}> {
+export class GenericShowPage extends React.Component<IInstancePageProps, {}> {
 
     constructor(props: IInstancePageProps) {
         super();

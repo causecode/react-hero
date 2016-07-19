@@ -33,7 +33,7 @@ export module HTTP {
 
     export function getRequest(path: string, data = {}) {
         let params: string = serialize(data);
-        let url: string = Object.keys(data).length ? BASE_URL + path + `?${params}` : BASE_URL;
+        let url: string = Object.keys(data).length ? BASE_URL + path + `?${params}` : BASE_URL + path;
         return fetch(url)
             .then(response => response.json());
     }
@@ -57,7 +57,7 @@ export module HTTP {
         }).then((response) => {
             return response;
         }).catch((err) => {
-            throw new Error(`Server responded with, ${JSON.stringify(err)}`);
+            throw new Error(`Server responded with, ${err}`);
         });
     }
 

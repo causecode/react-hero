@@ -1,4 +1,4 @@
-import promiseMiddleware from '../src/middleware/promise-middleware';
+import {promiseMiddleware} from '../src/middleware/promise-middleware';
 import {Store} from 'redux';
 import 'babel-polyfill';
 

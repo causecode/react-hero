@@ -22,7 +22,7 @@ export class DeviceTypes {
 
     constructor(public id: number, public name: string) {
         if (DeviceTypes.allDeviceTypes && DeviceTypes.allDeviceTypes.length) {
-            throw new Error(`Error: Instantiation Failed: Trying to create a new instance of DeviceTypes. Please use
+            throw new Error(`Instantiation Failed: Trying to create a new instance of DeviceTypes. Please use
                     one of the predefined Device types.`);
         }
         this.id = id;

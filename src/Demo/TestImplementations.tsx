@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {HeaderView, FooterView, ContentView, NavigationMenu} from './../components/HeaderFooterLayout';
-import HeaderFooterLayout from './../components/HeaderFooterLayout';
+import {HeaderFooterLayout} from './../components/HeaderFooterLayout';
 import {ResponsiveView} from './../components/ResponsiveView';
 import {Title, Description, Content, ButtonList, ButtonListItem} from './../components/Widgets';
 import {NavMenuLauncherIcon} from './../components/NavMenuLauncherIcon';
@@ -8,16 +8,16 @@ import {Router, Route, Link} from 'react-router';
 import {hashHistory} from 'react-router';
 import {PagedList} from '../containers/PagedList';
 import {ListPage} from '../containers/ListPage';
-import DropDownFilter from '../components/PagedList/Filters/DropDownFilter';
-import DateRangeFilter from '../components/PagedList/Filters/DateRangeFilter';
-import RangeFilter from '../components/PagedList/Filters/RangeFilter';
-import QueryFilter from '../components/PagedList/Filters/QueryFilter';
-import ShowPage from './../containers/ShowPage';
-import EditPage from './../containers/EditPage';
+import {DropDownFilter} from '../components/PagedList/Filters/DropDownFilter';
+import {DateRangeFilter} from '../components/PagedList/Filters/DateRangeFilter';
+import {RangeFilter} from '../components/PagedList/Filters/RangeFilter';
+import {QueryFilter} from '../components/PagedList/Filters/QueryFilter';
+import {ShowPage} from './../containers/ShowPage';
+import {EditPage} from './../containers/EditPage';
 import {ComponentService} from '../utils/componentService';
 import {ModelService} from '../utils/modelService';
 import {BlogModel, UserModel} from './TestModel';
-import CreatePage from '../containers/CreatePage';
+import {CreatePage} from '../containers/CreatePage';
 
 export class NewPage extends React.Component<any, any> {
 

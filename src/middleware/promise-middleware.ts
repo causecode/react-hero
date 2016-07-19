@@ -6,7 +6,7 @@ function isPromise(value) {
     }
 }
 
-export default function promiseMiddleware({ dispatch }) {
+export function promiseMiddleware({ dispatch }) {
     return next => action => {
         if (!isPromise(action.payload)) {
             return next(action);

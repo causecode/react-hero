@@ -1,7 +1,7 @@
-import BaseModel from '../src/models/BaseModel';
+import {BaseModel} from '../src/models/BaseModel';
 jest.unmock('../src/components/CRUD/GenericEditPage');
 jest.unmock('react-bootstrap');
-import GenericEditPage from '../src/components/CRUD/GenericEditPage';
+import {GenericEditPage} from '../src/components/CRUD/GenericEditPage';
 import * as TestUtils from 'react-addons-test-utils';
 import {Grid} from 'react-bootstrap';
 import * as React from 'react';

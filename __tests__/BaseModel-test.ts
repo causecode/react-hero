@@ -1,6 +1,6 @@
 import {IInstanceAction} from '../src/actions/instanceActions';
 jest.unmock('../src/models/BaseModel');
-import BaseModel from '../src/models/BaseModel';
+import {BaseModel} from '../src/models/BaseModel';
 import {IMockStore} from '../src/store/store';
 const store: IMockStore = require<IMockStore>('../src/store/store').store as IMockStore;
 import {saveInstance, updateInstance, deleteInstance} from '../src/actions/instanceActions';
@@ -22,16 +22,14 @@ describe('Test Base Model', () => {
         instanceData = {id: 1, author: 'abc'};
         ModelInstance = new BaseModel(instanceData);
         HTTP.postRequest = HTTP.getRequest = HTTP.putRequest = jest.fn((path: string, data) => {
-            return new Promise((resolve, reject) => {
+            return new Promise((resolve, reject): void => {
                 resolve(successObject);
             });
         });
         HTTP.deleteRequest = jest.fn((path: string) => {
-            let promise: Promise = Promise.resolve({success: true});
-            promise.then((response) => {
-                return response;
+            return new Promise((resolve, reject): void => {
+                resolve(successObject);
             });
-            return promise;
         });
 
         successCallback = jest.fn<Function>();
@@ -88,7 +86,7 @@ describe('Test Base Model', () => {
 
         it('calls the $save method with flush true and promise failure condition', async () => {
             HTTP.postRequest = jest.fn((path: string, data) => {
-                return new Promise((resolve, reject) => {
+                return new Promise((resolve, reject): void => {
                     reject(failureObject);
                 });
             });

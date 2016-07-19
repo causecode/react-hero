@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { fetchInstanceData } from '../actions/instanceActions';
-import BaseModel from '../models/BaseModel';
-import GenericShowPage from './../components/CRUD/GenericShowPage';
+import {BaseModel} from '../models/BaseModel';
+import {GenericShowPage} from './../components/CRUD/GenericShowPage';
 import {ComponentService} from '../utils/componentService';
 const connect: any = require<any>('react-redux').connect;
 import {ModelService} from '../utils/modelService';
@@ -46,7 +46,9 @@ function mapDispatchToProps(dispatch): {fetchInstanceData: (resource: string, re
     };
 }
 
-export default connect(
+let ShowPage = connect(
     mapStateToProps,
     mapDispatchToProps
 )(ShowPageImpl);
+
+export {ShowPage};

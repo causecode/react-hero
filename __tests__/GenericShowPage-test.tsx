@@ -1,8 +1,8 @@
 import {MissingInstanceError} from '../src/errors/MissingInstanceError';
 jest.unmock('../src/components/CRUD/GenericShowPage');
-import BaseModel from '../src/models/BaseModel';
-import GenericListPage from '../src/components/CRUD/GenericShowPage';
-import GenericShowPage from '../src/components/CRUD/GenericShowPage';
+import {BaseModel} from '../src/models/BaseModel';
+import {GenericListPage} from '../src/components/CRUD/GenericListPage';
+import {GenericShowPage} from '../src/components/CRUD/GenericShowPage';
 import * as TestUtils from 'react-addons-test-utils';
 import * as React from 'react';
 

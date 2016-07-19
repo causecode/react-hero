@@ -1,11 +1,11 @@
-import GenericEditPage from '../src/components/CRUD/GenericEditPage';
+import {GenericEditPage} from '../src/components/CRUD/GenericEditPage';
 jest.unmock('../src/containers/EditPage');
 import {EditPageImpl} from '../src/containers/EditPage';
 import * as React from 'react';
 import * as TestUtils from 'react-addons-test-utils';
 const ShallowTestUtils: IShallowTestUtils = require<IShallowTestUtils>('react-shallow-testutils');
 import {initializeTestCase} from './../src/utils/initializeTestCase';
-import BaseModel from '../src/models/BaseModel';
+import {BaseModel} from '../src/models/BaseModel';
 import {fetchInstanceData} from '../src/actions/instanceActions';
 import {ComponentService} from '../src/utils/componentService';
 import {ModelService} from '../src/utils/modelService';

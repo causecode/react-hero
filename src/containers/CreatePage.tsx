@@ -2,8 +2,8 @@ import * as React from 'react';
 import {ModelService} from '../utils/modelService';
 import {IRoute} from 'react-router';
 import {fetchInstanceData} from '../actions/instanceActions';
-import BaseModel from '../models/BaseModel';
-import GenericEditPage from '../components/CRUD/GenericEditPage';
+import {BaseModel} from '../models/BaseModel';
+import {GenericEditPage} from '../components/CRUD/GenericEditPage';
 import {connect} from 'react-redux';
 import {ComponentService} from '../utils/componentService';
 
@@ -62,7 +62,9 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(
+let CreatePage = connect(
     mapStateToProps,
     mapDispatchToProps
 )(CreatePageImpl);
+
+export {CreatePage};

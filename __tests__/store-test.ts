@@ -17,7 +17,7 @@ describe('tests store methods', () => {
         expect(testStore.getActions).toBeTruthy();
     });
 
-    it('calls the configur Store method in development environment', () => {
+    it('calls the configure Store method in development environment', () => {
         process.env.NODE_ENV = 'development';
         compose = jest.fn();
         let testStore: any = configureStore({});

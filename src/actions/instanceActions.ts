@@ -1,4 +1,4 @@
-import BaseModel from '../models/BaseModel';
+import {BaseModel} from '../models/BaseModel';
 import {fetchInstanceDataFromApi} from '../api/auth/index';
 
 export const SAVE_INSTANCE: string = 'SAVE_INSTANCE';
