@@ -1,10 +1,8 @@
 import { Store, compose, createStore, applyMiddleware } from 'redux';
 import { fromJS } from 'immutable';
-import { IStore } from '~react-router-redux~redux/redux';
 import rootReducer from './../reducers/rootReducer';
 import promiseMiddleware from '../middleware/promise-middleware';
 import logger from './logger';
-const persistState = require<any>('redux-localstorage');
 const thunk = require<any>('redux-thunk').default;
 const MockStore = require<any>('redux-mock-store');
 
@@ -44,7 +42,6 @@ function _getMiddleware() {
         thunk,
     ];
 
-    // TODO add logs only for dev env
     if (process.env.NODE_ENV === 'development') {
         middleware.push(logger);
     }
@@ -60,19 +57,6 @@ function _getEnhancers() {
     }
 
     return enhancers;
-}
-
-function _getStorageConfig() {
-    return {
-        key: 'react-redux-seed',
-        serialize: (store) => {
-            return store && store.session ?
-                JSON.stringify(store.session.toJS()) : store;
-        },
-        deserialize: (state) => ({
-            session: state ? fromJS(JSON.parse(state)) : fromJS({}),
-        }),
-    };
 }
 
 export const store: Store | IMockStore = configureStore({});
