@@ -2,7 +2,7 @@ import {store} from '../store/store';
 import {saveInstance, updateInstance, deleteInstance} from '../actions/instanceActions';
 import {resolver} from '../resolver';
 import {HTTP} from '../api/server/index';
-import {InvalidInstanceDataError} from '../errors/InvalidInstanceDataError';
+import {InvalidInstanceDataError} from '../errors/invalidInstanceDataError';
 
 export class BaseModel implements IBaseModel {
     resourceName: string;

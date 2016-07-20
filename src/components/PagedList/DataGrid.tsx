@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Table} from 'react-bootstrap';
 import {Link} from 'react-router';
-import {MissingInstanceListError} from '../../errors/MissingInstanceListError';
+import {MissingInstanceListError} from '../../errors/missingInstanceListError';
 
 export interface IDataGridProps extends React.Props<{}> {
     instanceList: IBaseModel[];

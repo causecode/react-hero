@@ -12,12 +12,12 @@ describe('Test server api methods', () => {
         failurePath = 'failurePath';
         successObject = {success: true};
         data = {id: 1, author: 'abc'};
-        fetch = <any>jest.fn((config: any) => {
+        fetch = <any>jest.fn((path, config: any) => {
             return new Promise((resolve, reject) => {
-                if (config.url === successPath) {
-                    resolve({successObject});
-                } else {
+                if (path.toLowerCase().indexOf('failure') > -1) {
                     reject({failureObject});
+                } else {
+                    resolve({successObject, json: () => {}});
                 }
             });
         });
@@ -26,17 +26,22 @@ describe('Test server api methods', () => {
     describe('Test getRequest method', () => {
 
         it('calls getRequest with all the parameters', async () => {
-            HTTP.getRequest(successPath, data);
+            await HTTP.getRequest(successPath, data);
             expect(fetch).toBeCalledWith(BASE_URL + successPath + '?' + HTTP.serialize(data));
         });
 
+        it('calls getRequest with path and empty data', async () => {
+            await HTTP.getRequest(successPath, {});
+            expect(fetch).toBeCalledWith(BASE_URL + successPath);
+        });
+
         it('calls getRequest with empty params', async () => {
-            HTTP.getRequest('', {});
+            await HTTP.getRequest('', {});
             expect(fetch).toBeCalledWith(BASE_URL);
         });
 
-        it('calls getRequest with url', async() => {
-            HTTP.getRequest('');
+        it('calls getRequest with url', async () => {
+            await HTTP.getRequest('');
             expect(fetch).toBeCalledWith(BASE_URL);
         });
 
@@ -56,19 +61,25 @@ describe('Test server api methods', () => {
         });
 
         it('calls postRequest with all the parameters', async () => {
-            HTTP.postRequest(successPath, data);
+            await HTTP.postRequest(successPath, data);
             expect(fetch).toBeCalledWith(BASE_URL + successPath, postConfig);
         });
 
         it('calls postRequest with empty params', async () => {
             postConfig.body = JSON.stringify({});
-            HTTP.postRequest('', {});
+            await HTTP.postRequest(successPath, {});
+            expect(fetch).toBeCalledWith(BASE_URL + successPath, postConfig);
+        });
+
+        it('calls postRequest with empty params', async () => {
+            postConfig.body = JSON.stringify({});
+            await HTTP.postRequest('', {});
             expect(fetch).toBeCalledWith(BASE_URL, postConfig);
         });
 
         it('calls postRequest with url', async() => {
             postConfig.body = JSON.stringify({});
-            HTTP.postRequest('');
+            await HTTP.postRequest('');
             expect(fetch).toBeCalledWith(BASE_URL, postConfig);
         });
     });
@@ -85,23 +96,30 @@ describe('Test server api methods', () => {
 
         it('calls putRequest with all the parameters', async () => {
             putConfig.url = BASE_URL + successPath;
-            HTTP.putRequest(successPath, data).then((resp) => {
+            await HTTP.putRequest(successPath, data).then((resp) => {
                 expect(resp).toEqual(successObject);
             });
+            expect(axios).toBeCalledWith(putConfig);
+        });
+
+        it('calls putRequest with empty params and successPath', async () => {
+            putConfig.url = BASE_URL + successPath;
+            putConfig.data = {};
+            await HTTP.putRequest(successPath, {});
             expect(axios).toBeCalledWith(putConfig);
         });
 
         it('calls putRequest with empty params', async () => {
             putConfig.url = BASE_URL;
             putConfig.data = {};
-            HTTP.putRequest('', {});
+            await HTTP.putRequest('', {});
             expect(axios).toBeCalledWith(putConfig);
         });
 
         it('calls putRequest with url', async() => {
             putConfig.url = BASE_URL;
             putConfig.data = {};
-            HTTP.putRequest('');
+            await HTTP.putRequest('');
             expect(axios).toBeCalledWith(putConfig);
         });
     });
@@ -117,7 +135,7 @@ describe('Test server api methods', () => {
 
         it('calls deleteRequest with all params', async () => {
             deleteConfig.url = BASE_URL + successPath;
-            HTTP.deleteRequest(successPath).then((response) => {
+            await HTTP.deleteRequest(successPath).then((response) => {
                 expect(response).toEqual(successObject);
             });
 
@@ -126,7 +144,7 @@ describe('Test server api methods', () => {
 
         it('calls deleteRequest with empty params', async () => {
             deleteConfig.url = BASE_URL;
-            HTTP.deleteRequest('');
+            await HTTP.deleteRequest('');
             expect(axios).toBeCalledWith(deleteConfig);
         });
 

@@ -2,7 +2,7 @@
 import * as React from 'react';
 import { Grid, Col, Row, FormGroup, FormControl, ControlLabel, Button } from 'react-bootstrap';
 import { Link } from 'react-router';
-import {MissingInstanceError} from '../../errors/MissingInstanceError';
+import {MissingInstanceError} from '../../errors/missingInstanceError';
 
 export interface IGenericEditPageProps extends IInstancePageProps {
     handleSubmit: (instance: IBaseModel, e: Event) => void;

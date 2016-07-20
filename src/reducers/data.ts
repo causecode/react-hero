@@ -39,8 +39,8 @@ function dataReducer(state = INITIAL_STATE, action ) {
                     return new Model(instance);
                 });
             } else {
-                throw new Error(`No Data in the Action Payload. Please make sure you are returning an instanceList from
-                        the server.`);
+                throw new Error('No Data in the Action Payload. Please make sure you are returning an instanceList' +
+                    ' from the server.');
             }
             return state.merge(fromJS({
                 totalCount: action.payload.totalCount,

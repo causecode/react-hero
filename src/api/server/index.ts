@@ -29,7 +29,7 @@ export module HTTP {
             }
         }
         return str.join('&');
-    };
+    }
 
     export function getRequest(path: string, data = {}) {
         let params: string = serialize(data);
@@ -43,10 +43,6 @@ export module HTTP {
             method: 'put',
             url: BASE_URL + path,
             data: data,
-        }).then((response) => {
-            return response;
-        }).catch((err) => {
-            throw new Error(`Server responded with, ${err}`);
         });
     }
 
@@ -54,10 +50,6 @@ export module HTTP {
         return axios({
             method: 'delete',
             url: BASE_URL + path,
-        }).then((response) => {
-            return response;
-        }).catch((err) => {
-            throw new Error(`Server responded with, ${err}`);
         });
     }
 

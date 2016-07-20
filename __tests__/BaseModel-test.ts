@@ -7,7 +7,7 @@ import {saveInstance, updateInstance, deleteInstance} from '../src/actions/insta
 import {SAVE_INSTANCE, DELETE_INSTANCE, UPDATE_INSTANCE} from '../src/actions/instanceActions';
 import {HTTP} from '../src/api/server/index';
 import {BASE_URL} from '../src/api/server/index';
-import {InvalidInstanceDataError} from '../src/errors/InvalidInstanceDataError';
+import {InvalidInstanceDataError} from '../src/errors/invalidInstanceDataError.ts';
 import 'babel-polyfill';
 
 

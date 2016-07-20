@@ -13,17 +13,23 @@ export function fetchInstanceListFromApi(path: string, offset: number) {
         objectAssign(filters, filterFormData);
         return HTTP.getRequest(path, filters)
             .then((response) => {
-                return resolve(response);
-        })
-        .then(null, (err) => reject(new Error(FETCH_ERR_MSG)));
+                resolve(response);
+            })
+            .then(null, (err) =>
+                reject(new Error(FETCH_ERR_MSG))
+            );
     });
 }
 
 export function fetchInstanceDataFromApi(path: string) {
     return new Promise((resolve, reject) => {
-        return HTTP.getRequest(path).then((response) => {
-            return resolve(response);
-        }).then(null, (err) => reject(new Error(FETCH_ERR_MSG)));
+        return HTTP.getRequest(path)
+            .then((response) => {
+                resolve(response);
+            })
+            .then(null, (err) =>
+                reject(new Error(FETCH_ERR_MSG))
+            );
     });
 
 }
