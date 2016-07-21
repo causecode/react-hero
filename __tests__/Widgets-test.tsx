@@ -8,6 +8,7 @@ const ShallowTestUtils: IShallowTestUtils = require<IShallowTestUtils>('react-sh
 import * as TestUtils from 'react-addons-test-utils';
 import * as ReactDOM from 'react-dom';
 import {Wrapper} from './../src/utils/Wrapper';
+import {IShallowTestUtils} from '../src/interfaces/interfaces';
 
 describe('Test Widgets', () => {
     let renderer: React.ShallowRenderer;

@@ -13,6 +13,8 @@ import {store} from '../src/store/store';
 import {Provider} from 'react-redux';
 import {PagedListFilters} from '../src/components/PagedList/Filters/PagedListFilter';
 import {Wrapper} from './../src/utils/Wrapper';
+import {IShallowTestUtils} from '../src/interfaces/interfaces';
+import {IBaseModel} from '../src/interfaces/interfaces';
 
 const ShallowTestUtils: IShallowTestUtils = require<IShallowTestUtils>('react-shallow-testutils');
 

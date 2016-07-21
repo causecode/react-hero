@@ -5,6 +5,7 @@ import {GenericListPage} from '../src/components/CRUD/GenericListPage';
 import {GenericShowPage} from '../src/components/CRUD/GenericShowPage';
 import * as TestUtils from 'react-addons-test-utils';
 import * as React from 'react';
+import {IBaseModel} from '../src/interfaces/interfaces';
 
 describe('Test Generic Show Page', () => {
     let ModelInstance: IBaseModel, keys: string[];

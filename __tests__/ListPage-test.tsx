@@ -6,6 +6,7 @@ import {initializeTestCase} from './../src/utils/initializeTestCase';
 import {GenericListPage} from '../src/components/CRUD/GenericListPage';
 const ShallowTestUtils: IShallowTestUtils = require<IShallowTestUtils>('react-shallow-testutils');
 import {ComponentService} from '../src/utils/componentService';
+import {IShallowTestUtils} from '../src/interfaces/interfaces';
 
 describe('test List Page', () => {
     let renderer: React.ShallowRenderer, resource: string, instances: Object,

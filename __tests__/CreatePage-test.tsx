@@ -11,6 +11,8 @@ import {resolver} from '../src/resolver';
 import * as TestUtils from 'react-addons-test-utils';
 import {ICreatePageProps} from '../src/containers/CreatePage';
 import {ModelService} from '../src/utils/modelService';
+import {IShallowTestUtils} from '../src/interfaces/interfaces';
+import {IInstanceContainerProps} from '../src/interfaces/interfaces';
 
 describe('test CreatePage', () => {
     let renderer: React.ShallowRenderer, resource: string, instances: Object,

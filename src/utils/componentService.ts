@@ -4,7 +4,7 @@ import {GenericEditPage} from '../components/CRUD/GenericEditPage';
 import {GenericShowPage} from '../components/CRUD/GenericShowPage';
 import * as React from 'react';
 import {StatelessComponent, ComponentClass, Component} from 'react';
-import ReactElement = __React.ReactElement;
+import '../utils/appService';
 
 export type ComponentType = (ComponentClass<{}> | StatelessComponent<{}>);
 

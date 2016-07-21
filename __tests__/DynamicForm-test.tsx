@@ -10,6 +10,7 @@ const ShallowTestUtils: IShallowTestUtils = require<IShallowTestUtils>('react-sh
 import {initializeTestCase} from './../src/utils/initializeTestCase';
 import * as React from 'react';
 import {Button} from 'react-bootstrap';
+import {IShallowTestUtils} from '../src/interfaces/interfaces';
 
 describe('render a simple FilterForm', () => {
     let renderer: React.ShallowRenderer, fields: string[], resource: string,

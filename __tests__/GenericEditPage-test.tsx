@@ -11,6 +11,7 @@ import * as ReactDOM from 'react-dom';
 import {Row, Button} from 'react-bootstrap';
 import {MissingInstanceError} from '../src/errors/missingInstanceError';
 import {Link} from 'react-router';
+import {IBaseModel} from '../src/interfaces/interfaces.ts';
 
 describe('Test Generic Edit Page', () => {
     let resource, handleSubmit, handleDelete, ModelInstance, keys, submit, del;

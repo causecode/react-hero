@@ -11,6 +11,8 @@ import {ComponentService} from '../src/utils/componentService';
 import {ModelService} from '../src/utils/modelService';
 import {resolver} from '../src/resolver';
 import {IInitializerData} from './../src/utils/initializeTestCase';
+import {IShallowTestUtils} from '../src/interfaces/interfaces';
+import {IInstanceContainerProps} from '../src/interfaces/interfaces';
 
 describe('Test ShowPage', () => {
     let renderer: React.ShallowRenderer, resource: string, instances: Object,

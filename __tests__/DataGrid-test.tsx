@@ -8,6 +8,7 @@ import {Wrapper} from './../src/utils/Wrapper';
 import * as ReactDOM from 'react-dom';
 import {MissingInstanceListError} from '../src/errors/missingInstanceListError';
 import {fetchInstanceDataFromApi} from '../src/api/auth/index';
+import {IBaseModel} from '../src/interfaces/interfaces';
 
 interface ITestData {
     id: string;
