@@ -11,7 +11,7 @@ export class GenericListPage extends React.Component<IGenericListPage, {}> {
         resource: ''
     };
 
-    render() {
+    render(): JSX.Element {
         return (
             <div className="listPage">
                 <PagedList resource={this.props.resource}/>

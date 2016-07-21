@@ -10,6 +10,7 @@ import {
     FETCH_INSTANCE_LIST_ERROR,
     DELETE_INSTANCE_LIST
 } from '../actions/data';
+import {IBaseModel} from '../interfaces/interfaces';
 
 const INITIAL_STATE = fromJS({
     totalCount: 0,

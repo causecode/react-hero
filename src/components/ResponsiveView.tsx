@@ -10,7 +10,7 @@ export class DeviceTypes {
     static MOBILE_PORTRAIT: DeviceTypes = new DeviceTypes(5, 'mobileportrait');
     static MOBILE_LANDSCAPE: DeviceTypes = new DeviceTypes(6, 'mobilelandscape');
 
-    private static allDeviceTypes = [
+    private static allDeviceTypes: DeviceTypes[] = [
         DeviceTypes.MOBILE,
         DeviceTypes.MOBILE_PORTRAIT,
         DeviceTypes.MOBILE_LANDSCAPE,
@@ -58,7 +58,7 @@ export class DeviceTypes {
         return DeviceTypes.getDeviceTypeFromIdOrString(deviceId);
     }
 
-    static getDeviceTypeFromIdOrString( identifier: number | string) {
+    static getDeviceTypeFromIdOrString( identifier: number | string): DeviceTypes {
 
         if (typeof identifier === 'string') {
             identifier = (identifier as string).toLowerCase();
@@ -86,11 +86,7 @@ export interface IResponsiveView {
 // TODO call renderTablet if only renderTabletPortrait is defined and not renderTablet. Same goes for mobile.
 export abstract class ResponsiveView<P, S> extends React.Component<P, S> {
 
-    constructor() {
-        super();
-    }
-
-    render() {
+    render(): JSX.Element {
         let currentDeviceType: DeviceTypes = DeviceTypes.getCurrentDevice();
         let deviceSpecificRenderFunction: string = `render${currentDeviceType.getName().capitalize()}`;
         return (

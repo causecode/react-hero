@@ -9,6 +9,7 @@ import {
 import {BaseModel} from '../models/BaseModel';
 import {resolver} from '../resolver';
 import {ModelService} from '../utils/modelService';
+import {IBaseModel} from '../interfaces/interfaces';
 const INITIAL_STATE = fromJS({});
 
 export function instanceReducer(state = INITIAL_STATE, action) {

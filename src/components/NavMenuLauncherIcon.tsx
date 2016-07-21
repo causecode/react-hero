@@ -13,11 +13,11 @@ export class NavMenuLauncherIcon extends React.Component<INavMenuLauncherIconPro
         position: 'left'
     };
 
-    handleClick = () => {
+    handleClick = (): void => {
         this.props.onClick();
     };
 
-    render() {
+    render(): JSX.Element {
         return(
             <span className={`burger-icon highlight-on-hover float-${this.props.position}`} onClick={this.handleClick}>
                 <span className="fa fa-bars" />

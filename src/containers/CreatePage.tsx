@@ -6,6 +6,9 @@ import {BaseModel} from '../models/BaseModel';
 import {GenericEditPage} from '../components/CRUD/GenericEditPage';
 import {connect} from 'react-redux';
 import {ComponentService} from '../utils/componentService';
+import {IBaseModel} from '../interfaces/interfaces';
+import {IInstanceContainerProps} from '../interfaces/interfaces';
+import {IRouteParams} from '../interfaces/interfaces';
 
 export interface ICreatePageProps {
     params: IRouteParams;
@@ -41,7 +44,7 @@ export class CreatePageImpl extends React.Component<IInstanceContainerProps, {}>
             }
         }
         const childProps = {handleSubmit: this.handleSubmit, instance: instance, resource: resource};
-        let Page: new() => React.Component<{}, {}> = ComponentService.getCreatePage(resource);
+        let Page: React.ComponentClass<{}> = ComponentService.getCreatePage(resource) as React.ComponentClass<{}>;
         return (
             <Page {...childProps}/>
         );

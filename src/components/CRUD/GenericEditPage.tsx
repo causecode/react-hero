@@ -1,8 +1,11 @@
-/// <reference path='crudInterfaces.d.ts' />
 import * as React from 'react';
 import { Grid, Col, Row, FormGroup, FormControl, ControlLabel, Button } from 'react-bootstrap';
 import { Link } from 'react-router';
 import {MissingInstanceError} from '../../errors/missingInstanceError';
+import {IBaseModel} from '../../interfaces/interfaces';
+import {Stub} from '../../interfaces/interfaces';
+import {IInstancePageProps} from '../../interfaces/interfaces';
+import {IGenericEditPageState} from '../../interfaces/interfaces';
 
 export interface IGenericEditPageProps extends IInstancePageProps {
     handleSubmit: (instance: IBaseModel, e: Event) => void;
@@ -16,13 +19,13 @@ export class GenericEditPage extends React.Component<IGenericEditPageProps, IGen
         this.state = { instance: props.instance };
     }
 
-    handleChange = (key: string, event: Event & {target: {value: string}})  => {
+    handleChange = (key: string, event: Event & {target: {value: string}}): void  => {
         let instance = this.state.instance;
         instance.instanceData[key] = event.target.value;
         this.setState({instance: instance});
     };
 
-    render() {
+    render(): JSX.Element {
         let { instance, handleSubmit, handleDelete } = this.props;
         let stubFunction: Stub = (...args: any[]) => { return; };
         if (!handleSubmit) {

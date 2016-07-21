@@ -7,7 +7,7 @@ import * as React from 'react';
  */
 
 export class Wrapper extends React.Component<{}, {}> {
-    render() {
+    render(): JSX.Element {
         return(
             <div>
                 {this.props.children}

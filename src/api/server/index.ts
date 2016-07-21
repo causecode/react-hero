@@ -7,7 +7,10 @@ import * as axios from 'axios';
 
 export module HTTP {
 
-    export function postRequest(path: string, data = {}) {
+    import AxiosInstance = Axios.AxiosInstance;
+    import IPromise = Axios.IPromise;
+    import AxiosXHR = Axios.AxiosXHR;
+    export function postRequest(path: string, data = {}): Promise<{}> {
         return fetch(BASE_URL + path, {
             method: 'post',
             headers: {
@@ -31,14 +34,14 @@ export module HTTP {
         return str.join('&');
     }
 
-    export function getRequest(path: string, data = {}) {
+    export function getRequest(path: string, data = {}): Promise<{}> {
         let params: string = serialize(data);
         let url: string = Object.keys(data).length ? BASE_URL + path + `?${params}` : BASE_URL + path;
         return fetch(url)
             .then(response => response.json());
     }
 
-    export function putRequest(path: string, data = {}) {
+    export function putRequest(path: string, data = {}): IPromise<AxiosXHR<{}>> {
         return axios({
             method: 'put',
             url: BASE_URL + path,
@@ -46,7 +49,7 @@ export module HTTP {
         });
     }
 
-    export function deleteRequest(path: string) {
+    export function deleteRequest(path: string): IPromise<AxiosXHR<{}>> {
         return axios({
             method: 'delete',
             url: BASE_URL + path,

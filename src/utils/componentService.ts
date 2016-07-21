@@ -3,9 +3,10 @@ import {GenericListPage} from '../components/CRUD/GenericListPage';
 import {GenericEditPage} from '../components/CRUD/GenericEditPage';
 import {GenericShowPage} from '../components/CRUD/GenericShowPage';
 import * as React from 'react';
-import {StatelessComponent} from 'react';
+import {StatelessComponent, ComponentClass, Component} from 'react';
+import ReactElement = __React.ReactElement;
 
-export type ComponentWithName = (new() => React.Component<any, any> | StatelessComponent<any>) & {name?: string};
+export type ComponentType = (ComponentClass<{}> | StatelessComponent<{}>);
 
 module ComponentService {
 
@@ -13,11 +14,11 @@ module ComponentService {
             `${name.capitalize()}${type.capitalize()}, Make sure you have registered it.` +
             ` Using Generic${type.capitalize()} instead.`);
 
-    export function register(component: ComponentWithName ) {
+    export function register(component: ComponentType & {name?: string} ) {
         resolver.set(component.name.toLowerCase(), component);
     }
 
-    export function getComponent(name: string, type: string = '') {
+    export function getComponent(name: string, type: string = ''): ComponentType {
         name = (type.length && (name.indexOf(type) === -1)) ? `${name}${type}`.toLowerCase() : name.toLowerCase();
         return resolver.get(name);
     }
@@ -27,23 +28,23 @@ module ComponentService {
         return resolver.has(name);
     }
 
-    export function hasListPage(name: string) {
+    export function hasListPage(name: string): boolean {
         return hasComponent(name, 'listpage');
     }
 
-    export function hasEditPage(name: string) {
+    export function hasEditPage(name: string): boolean {
         return hasComponent(name, 'editpage');
     }
 
-    export function hasShowPage(name: string) {
+    export function hasShowPage(name: string): boolean {
         return hasComponent(name, 'showpage');
     }
 
-    export function hasCreatePage(name: string) {
+    export function hasCreatePage(name: string): boolean {
         return hasComponent(name, 'createpage');
     }
 
-    export function getListPage(name: string) {
+    export function getListPage(name: string): ComponentType {
         const type: string = 'listpage';
         if (hasListPage(name)) {
             return getComponent(name, type);
@@ -53,7 +54,7 @@ module ComponentService {
         }
     }
 
-    export function getEditPage(name: string) {
+    export function getEditPage(name: string): ComponentType {
         const type: string = 'editpage';
         if (hasEditPage(name)) {
             return getComponent(name, type);
@@ -63,7 +64,7 @@ module ComponentService {
         }
     }
 
-    export function getShowPage(name: string) {
+    export function getShowPage(name: string): ComponentType {
         const type: string = 'showpage';
         if (hasShowPage(name)) {
             return getComponent(name, type);
@@ -73,7 +74,7 @@ module ComponentService {
         }
     }
 
-    export function getCreatePage(name: string) {
+    export function getCreatePage(name: string): ComponentType {
         const type: string = 'createpage';
         if (hasCreatePage(name)) {
             return getComponent(name, type);

@@ -1,24 +1,24 @@
 import * as React from 'react';
-import {IPagedListFiltersProps} from './IFilters';
 import {Button} from 'react-bootstrap';
 import {fetchInstanceList} from '../../../actions/data';
+import {IPagedListFiltersProps} from '../../../interfaces/interfaces';
 const ReduxForm: any = require<any>('redux-form');
 const classNames: any = require<any>('classnames');
 
 export class FilterForm extends React.Component<IPagedListFiltersProps, {}> {
 
-    static defaultProps = {
-        sendFilters: (e) => { e.preventDefault(); },
+    static defaultProps: IPagedListFiltersProps = {
+        sendFilters: () => {},
         filtersOpen: false,
         fields: []
     };
 
-    handleSubmit = (e) => {
+    handleSubmit = (e): void => {
         e.preventDefault();
         this.props.sendFilters(this.props.resource);
     };
 
-    render() {
+    render(): JSX.Element {
         const { filtersOpen, children, fields } = this.props;
         const childrenWithProps = React.Children.map(children,
             (child: any) => {
@@ -45,9 +45,9 @@ export class FilterForm extends React.Component<IPagedListFiltersProps, {}> {
                 }
             });
 
-        let hideClasses = filtersOpen ? '' : 'hide';
+        let hideClass: string = filtersOpen ? '' : 'hide';
         return (
-            <form className={classNames('form-inline', 'filter-form', 'stick-left', hideClasses)}
+            <form className={classNames('form-inline', 'filter-form', 'stick-left', hideClass)}
                   onSubmit={this.handleSubmit}>
                 {childrenWithProps}
                 <Button className="filter-button" bsStyle="primary" type="submit">Submit</Button>
@@ -56,13 +56,13 @@ export class FilterForm extends React.Component<IPagedListFiltersProps, {}> {
     }
 }
 
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps(dispatch): {sendFilters: (resource: string) => void} {
     return {
         sendFilters: (resource: string) => dispatch(fetchInstanceList(resource, 0)),
     };
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state): {filtersOpen: boolean} {
     return {
         filtersOpen: state.data.get('filtersOpen')
     };

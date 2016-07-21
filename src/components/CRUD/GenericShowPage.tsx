@@ -1,14 +1,11 @@
 import * as React from 'react';
 import {Table, Row, Col} from 'react-bootstrap';
 import {MissingInstanceError} from '../../errors/missingInstanceError';
+import {IInstancePageProps} from '../../interfaces/interfaces';
 
 export class GenericShowPage extends React.Component<IInstancePageProps, {}> {
 
-    constructor(props: IInstancePageProps) {
-        super();
-    }
-
-    render() {
+    render(): JSX.Element {
         const { instance } =  this.props;
         let resource = this.props.resource;
         if (!resource) {

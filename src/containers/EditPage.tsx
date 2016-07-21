@@ -5,6 +5,8 @@ import {GenericEditPage} from './../components/CRUD/GenericEditPage';
 import {ComponentService} from '../utils/componentService';
 const connect: any = require<any>('react-redux').connect;
 import {ModelService} from '../utils/modelService';
+import {IBaseModel} from '../interfaces/interfaces';
+import {IInstanceContainerProps} from '../interfaces/interfaces';
 
 export interface IInstanceContainerState {
     instance: IBaseModel;
@@ -18,7 +20,7 @@ export class EditPageImpl extends React.Component<IInstanceContainerProps, IInst
         params: {resource: '', resourceID: ''}
     };
 
-    componentWillMount() {
+    componentWillMount(): void {
         const { resource, resourceID } = this.props.params;
         this.props.fetchInstanceData(resource, resourceID);
     }
@@ -32,13 +34,13 @@ export class EditPageImpl extends React.Component<IInstanceContainerProps, IInst
         instance.$delete();
     };
 
-    render() {
+    render(): JSX.Element {
         const resource = this.props.params.resource;
         let Model: new(Object) => IBaseModel = ModelService.getModel(resource);
         const instance: IBaseModel = this.props.instances[resource] || new Model({});
         const childProps = {resource: resource, handleSubmit: this.handleSubmit, handleDelete: this.handleDelete,
                 instance: instance};
-        let Page: new() => React.Component<{}, {}> = ComponentService.getEditPage(resource);
+        let Page: React.ComponentClass<{}> = ComponentService.getEditPage(resource) as React.ComponentClass<{}>;
         return(
             <Page {...childProps}/>
         );

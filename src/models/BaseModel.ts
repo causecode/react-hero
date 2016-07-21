@@ -3,6 +3,7 @@ import {saveInstance, updateInstance, deleteInstance} from '../actions/instanceA
 import {resolver} from '../resolver';
 import {HTTP} from '../api/server/index';
 import {InvalidInstanceDataError} from '../errors/invalidInstanceDataError';
+import {IBaseModel} from '../interfaces/interfaces';
 
 export class BaseModel implements IBaseModel {
     resourceName: string;
@@ -15,7 +16,7 @@ export class BaseModel implements IBaseModel {
 
     $save(flush: boolean = true,
             successCallBack = ( (...args: any[]) => {} ),
-            failureCallBack = ( (...args: any[]) => {} )) {
+            failureCallBack = ( (...args: any[]) => {} )): void {
         if (flush) {
             HTTP.postRequest(`${this.resourceName}/save`, this.instanceData)
                 .then((response) => {
@@ -29,7 +30,7 @@ export class BaseModel implements IBaseModel {
 
     $update(flush: boolean = true,
             successCallBack = ( (...args: any[]) => {} ),
-            failureCallBack = ( (...args: any[]) => {} )) {
+            failureCallBack = ( (...args: any[]) => {} )): void {
         if (flush) {
             HTTP.putRequest(`${this.resourceName}/update`, this.instanceData)
                 .then((response) => {
@@ -43,7 +44,7 @@ export class BaseModel implements IBaseModel {
 
     $delete(flush: boolean = true,
             successCallBack = ( (...args: any[]) => {} ),
-            failureCallBack = ( (...args: any[]) => {} )) {
+            failureCallBack = ( (...args: any[]) => {} )): void {
         if (flush) {
             HTTP.deleteRequest(`${this.resourceName}/delete/${this.instanceData.id}`)
                 .then((response) => {

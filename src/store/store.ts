@@ -36,7 +36,7 @@ function configureStore(initialState): Store | IMockStore {
     return store;
 }
 
-function _getMiddleware() {
+function _getMiddleware(): Function {
     let middleware = [
         promiseMiddleware,
         thunk,

@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap';
-import {IFilter} from './IFilters';
 import '../../../utils/appService';
+import {IFilter} from '../../../interfaces/interfaces';
 
 export interface IDropDownFilter extends IFilter {
     possibleValues: Array<string>;
 }
 
-export function DropDownFilter({ label, paramName, possibleValues, fields }: IDropDownFilter, {}) {
+export function DropDownFilter({ label, paramName, possibleValues, fields }: IDropDownFilter, {}): JSX.Element {
 
     label = label ? label : paramName;
     // TODO Reset Dropdown.

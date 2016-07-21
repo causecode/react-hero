@@ -1,13 +1,10 @@
 import {resolver} from '../resolver';
 import {BaseModel} from '../models/BaseModel';
-
-declare interface Function {
-    name: string;
-}
+import {IBaseModel} from '../interfaces/interfaces';
 
 module ModelService {
 
-    export function register(model: (new(instanceData: JSON) => IBaseModel) & {name?: string}) {
+    export function register(model: (new(instanceData: JSON) => IBaseModel) & {name?: string}): void {
         resolver.set(model.name.toLowerCase(), model);
     }
 

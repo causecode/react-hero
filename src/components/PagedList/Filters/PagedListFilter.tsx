@@ -1,20 +1,20 @@
 import * as React from 'react';
 import {DynamicForm} from './DynamicForm';
 import { Form, Button, Grid, Row } from 'react-bootstrap';
-import {IFilter} from './IFilters';
 import {DropDownFilter} from './DropDownFilter';
 import {fetchInstanceList} from '../../../actions/data';
 import {store} from '../../../store/store';
 import * as Actions from '../../../actions/data';
 import {spring} from 'react-motion';
-import {IPagedListFiltersProps} from './IFilters';
+import {IFilter} from '../../../interfaces/interfaces';
+import {IPagedListFiltersProps} from '../../../interfaces/interfaces';
 
-export function PagedListFilters ({ children, resource }: IPagedListFiltersProps) {
-    let filterProps = [];
+export function PagedListFilters ({ children, resource }: IPagedListFiltersProps): JSX.Element {
+    let filterProps: string[] = [];
     if (!resource) {
         resource = '';
     }
-    React.Children.forEach(children, (child: any) => {
+    React.Children.forEach(children, (child: React.ReactElement<IFilter> & {type: {name: string}}) => {
         let paramName = child.props.paramName;
         let filterName = child.type.name;
         if (['RangeFilter', 'DateRangeFilter'].indexOf(filterName) !== -1) {
@@ -25,7 +25,7 @@ export function PagedListFilters ({ children, resource }: IPagedListFiltersProps
     });
 
     // TODO use connect and mapDispatchToProps for this.
-    let toggleFilters = () => {
+    let toggleFilters = (): void => {
         store.dispatch(Actions.toggleFilters());
     };
 

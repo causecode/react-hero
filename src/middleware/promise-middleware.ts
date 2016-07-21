@@ -1,6 +1,6 @@
 const objectAssign: any = require<any>('object-assign');
 
-function isPromise(value) {
+function isPromise(value): boolean {
     if (value !== null && typeof value === 'object') {
         return value.promise && typeof value.promise.then === 'function';
     }

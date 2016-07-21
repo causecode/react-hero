@@ -17,28 +17,28 @@ require<any>('font-awesome/css/font-awesome.min.css');
 
 export class HeaderView extends React.Component<{}, {}> {
     // TODO Add Header specific behaviour.
-    render() {
+    render(): JSX.Element {
         return <div>{this.props.children}</div>;
     }
 }
 
 export class FooterView extends React.Component<{}, {}> {
     // TODO Add Footer specific behaviour.
-    render() {
+    render(): JSX.Element {
         return <div>{this.props.children}</div>;
     }
 }
 
 export class ContentView extends React.Component<{}, {}> {
     // TODO Add Content specific behaviour.
-    render() {
+    render(): JSX.Element {
         return <div>{this.props.children}</div>;
     }
 }
 
 export class NavigationMenu extends React.Component<{}, {}> {
     // TODO Add NavigationMenu specific behaviour.
-    render() {
+    render(): JSX.Element {
         return <div>{this.props.children}</div>;
     }
 }
@@ -51,7 +51,7 @@ export interface IHeaderFooterLayoutProps {
     toggleNav?: () => void;
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state): {open: boolean}  => {
     return {
         open: state.open
     };
@@ -71,7 +71,7 @@ export class HeaderFooterLayoutImpl extends React.Component<IHeaderFooterLayoutP
     nav: JSX.Element;
     private isNavBarPresent: boolean = false;
 
-    parseChild = (child) => {
+    parseChild = (child): void => {
         switch (child.type.name) {
             case 'HeaderView':
                 this.header = child;
@@ -103,30 +103,30 @@ export class HeaderFooterLayoutImpl extends React.Component<IHeaderFooterLayoutP
         }
     }
 
-    protected setHeader(headerImpl: JSX.Element) {
+    protected setHeader(headerImpl: JSX.Element): void {
         this.header = headerImpl;
     }
 
-    protected setContent(contentImpl: JSX.Element) {
+    protected setContent(contentImpl: JSX.Element): void {
         this.content = contentImpl;
     }
 
-    protected setFooter(footerImpl: JSX.Element) {
+    protected setFooter(footerImpl: JSX.Element): void {
         this.footer = footerImpl;
     }
 
-    protected setNav(NavImpl: JSX.Element) {
+    protected setNav(NavImpl: JSX.Element): void {
         this.isNavBarPresent = true;
         this.nav = NavImpl;
     }
 
-    componentWillMount() {
+    componentWillMount(): void {
         if (this.isNavBarPresent && !this.props.menuPosition) {
             throw new Error('The prop menuPosition has not been defined.');
         }
     }
 
-    render() {
+    render(): JSX.Element {
         const { toggleNav, menuPosition } = this.props;
         let navMenuClasses = `nav-menu ${menuPosition}`;
         let menuClosePosition = (menuPosition === 'left') ? -100 : 100;
@@ -174,7 +174,7 @@ export class HeaderFooterLayoutImpl extends React.Component<IHeaderFooterLayoutP
     }
 }
 
-let HeaderFooterLayout =  connect(
+let HeaderFooterLayout = connect(
     mapStateToProps,
     mapDispatchToProps
 )(HeaderFooterLayoutImpl);

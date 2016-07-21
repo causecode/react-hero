@@ -1,7 +1,5 @@
 import { fetchInstanceListFromApi } from '../api/auth/index';
-
 import {SET_PAGE} from './actions';
-import {IFilter} from '../components/PagedList/Filters/IFilters';
 import {fetchInstanceDataFromApi} from '../api/auth/index';
 import {BaseModel} from '../models/BaseModel';
 import {FETCH_INSTANCE_DATA_START} from './instanceActions';
@@ -33,14 +31,14 @@ export function fetchInstanceList(resource: string, offset: number) {
     };
 };
 
-export const setPage = (pageNumber: number) => {
+export const setPage = (pageNumber: number): {type: string, pageNumber: number} => {
     return {
         type: SET_PAGE,
         pageNumber: pageNumber
     };
 };
 
-export const toggleFilters = () => {
+export const toggleFilters = (): {type: string} => {
     return {
         type: TOGGLE_FILTERS
     };
