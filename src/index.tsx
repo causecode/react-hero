@@ -5,4 +5,3 @@ export * from './api/server/index';
 export * from './containers/index';
 export * from './models/BaseModel';
 export * from './errors/index';
-export * from './store/store';
