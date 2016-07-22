@@ -1,7 +1,8 @@
 import 'whatwg-fetch';
 import * as axios from 'axios';
+import {config} from '../../config';
 
- export const BASE_URL = 'http://localhost:3000/';
+export const BASE_URL = config.serverUrl;
 // export const BASE_URL = 'http://192.168.1.219:8080/be/';
 // export const BASE_URL_TEMP = 'http://192.168.2.10:8090/be';        // http://localhost:8090/api/v1/blog/action/index
 

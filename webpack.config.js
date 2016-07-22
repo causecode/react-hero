@@ -60,7 +60,7 @@ var config = {
         root: [
             path.resolve('./src')
         ],
-        extensions: ["", ".webpack.js", ".web.js", ".ts", ".tsx", ".js", ".css"]
+        extensions: ["", ".webpack.js", ".web.js", ".ts", ".tsx", ".js", ".css", ".json"]
     },
     module: {
         preLoaders: [
@@ -69,7 +69,8 @@ var config = {
         loaders: [
             {test: /\.tsx?$/, exclude: /node_modules/, loaders: ["react-hot", "ts-loader"]},
             {test: /\.css$/, loader: ExtractTextPlugin.extract("style-loader", "css-loader")},
-            {test: /.(png|woff(2)?|eot|ttf|svg)(\?[a-z0-9=\.]+)?$/, loader: 'url-loader?limit=100000'}
+            {test: /.(png|woff(2)?|eot|ttf|svg)(\?[a-z0-9=\.]+)?$/, loader: 'url-loader?limit=100000'},
+            {test: /\.json$/, loader: "json-loader" }
         ]
     },
     plugins: plugins

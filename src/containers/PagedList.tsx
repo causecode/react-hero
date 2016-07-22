@@ -7,7 +7,7 @@ import {setPage} from '../actions/data';
 import {Link} from 'react-router';
 import {IBaseModel} from '../interfaces/interfaces';
 const connect = require<any>('react-redux').connect;
-import '../utils/appService.ts';
+import '../utils/appService';
 
 export interface IPagedListProps extends React.Props<{}> {
     properties: string[];
