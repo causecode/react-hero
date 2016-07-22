@@ -1,4 +1,9 @@
 let config: {
-    serverUrl: string;
-} = require<any>('../../../package.json').reactHero;
-export {config};
+    reactHero: {
+        serverUrl: string;
+    };
+} = require<any>('../../../package.json');
+
+let reactHeroConfig = config.reactHero;
+
+export {reactHeroConfig as config};
