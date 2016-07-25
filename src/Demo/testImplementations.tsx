@@ -16,7 +16,7 @@ import {ShowPage} from './../containers/ShowPage';
 import {EditPage} from './../containers/EditPage';
 import {ComponentService} from '../utils/componentService';
 import {ModelService} from '../utils/modelService';
-import {BlogModel, UserModel} from './TestModel';
+import {BlogModel, UserModel} from './testModel';
 import {CreatePage} from '../containers/CreatePage';
 
 export class NewPage extends React.Component<any, any> {

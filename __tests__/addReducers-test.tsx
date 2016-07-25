@@ -1,4 +1,4 @@
-import {addReducers} from '../src/utils/AddReducers';
+import {addReducers} from '../src/utils/addReducers';
 import {Reducer} from 'redux';
 import {combineReducers} from 'redux';
 jest.mock('../src/store/store');

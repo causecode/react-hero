@@ -1,5 +1,5 @@
 import {store} from './store/store';
-import {NewPage} from './Demo/TestImplementations';
+import {NewPage} from './Demo/testImplementations';
 import {Router, Route, hashHistory} from 'react-router';
 import * as React from 'react';
 import {render} from 'react-dom';
