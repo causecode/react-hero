@@ -1,13 +1,13 @@
-import {IInstanceAction} from '../src/actions/instanceActions';
+import {IInstanceAction} from '../src/actions/modelActions';
 jest.unmock('../src/models/BaseModel');
 import {BaseModel} from '../src/models/BaseModel';
 import {IMockStore} from '../src/store/store';
 const store: IMockStore = require<IMockStore>('../src/store/store').store as IMockStore;
-import {saveInstance, updateInstance, deleteInstance} from '../src/actions/instanceActions';
-import {SAVE_INSTANCE, DELETE_INSTANCE, UPDATE_INSTANCE} from '../src/actions/instanceActions';
+import {saveInstance, updateInstance, deleteInstance} from '../src/actions/modelActions';
+import {SAVE_INSTANCE, DELETE_INSTANCE, UPDATE_INSTANCE} from '../src/actions/modelActions';
 import {HTTP} from '../src/api/server/index';
 import {BASE_URL} from '../src/api/server/index';
-import {InvalidInstanceDataError} from '../src/errors/invalidInstanceDataError.ts';
+import {InvalidInstanceDataError} from '../src/errors/InvalidInstanceDataError';
 import 'babel-polyfill';
 
 
@@ -95,17 +95,15 @@ describe('Test Base Model', () => {
             expect(HTTP.postRequest).toBeCalledWith(`${ModelInstance.resourceName}/save`, ModelInstance.instanceData);
             expect(failureCallback).toBeCalledWith(failureObject);
             expect(successCallback).not.toBeCalled();
-            let action: IInstanceAction = store.getActions()[0];
-            expect(action.type).toEqual(SAVE_INSTANCE);
-            expect(action.instance).toEqual(ModelInstance);
+            expect(store.getActions().length).toBeFalsy();
         });
 
     });
 
     describe('Test $update method on the instance', () => {
 
-        it('calls the $update method without any params', () => {
-            ModelInstance.$update();
+        it('calls the $update method without any params', async () => {
+            await ModelInstance.$update();
 
             expect(HTTP.putRequest).toBeCalledWith(`${ModelInstance.resourceName}/update`, ModelInstance.instanceData);
 
@@ -158,17 +156,15 @@ describe('Test Base Model', () => {
             expect(HTTP.putRequest).toBeCalledWith(`${ModelInstance.resourceName}/update`, ModelInstance.instanceData);
             expect(failureCallback).toBeCalledWith(failureObject);
             expect(successCallback).not.toBeCalled();
-            let action: IInstanceAction = store.getActions()[0];
-            expect(action.type).toEqual(UPDATE_INSTANCE);
-            expect(action.instance).toEqual(ModelInstance);
+            expect(store.getActions()[0]).toBeFalsy();
         });
 
     });
 
     describe('Test $delete method on the instance', () => {
 
-        it('calls the $delete method without any params', () => {
-            ModelInstance.$delete();
+        it('calls the $delete method without any params', async () => {
+            await ModelInstance.$delete();
 
             expect(HTTP.deleteRequest)
                 .toBeCalledWith(`${ModelInstance.resourceName}/delete/${ModelInstance.instanceData.id}`);
@@ -224,9 +220,7 @@ describe('Test Base Model', () => {
                     .toBeCalledWith(`${ModelInstance.resourceName}/delete/${ModelInstance.instanceData.id}`);
             expect(failureCallback).toBeCalledWith(failureObject);
             expect(successCallback).not.toBeCalled();
-            let action: IInstanceAction = store.getActions()[0];
-            expect(action.type).toEqual(DELETE_INSTANCE);
-            expect(action.instance).toEqual(ModelInstance);
+            expect(store.getActions()[0]).toBeFalsy();
         });
 
     });

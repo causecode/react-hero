@@ -9,7 +9,7 @@ import {FormControl} from 'react-bootstrap';
 import {Input} from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
 import {Row, Button} from 'react-bootstrap';
-import {MissingInstanceError} from '../src/errors/missingInstanceError';
+import {MissingInstanceError} from '../src/errors/MissingInstanceError';
 import {Link} from 'react-router';
 import {IBaseModel} from '../src/interfaces/interfaces.ts';
 

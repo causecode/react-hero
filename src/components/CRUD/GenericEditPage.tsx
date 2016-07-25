@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Grid, Col, Row, FormGroup, FormControl, ControlLabel, Button } from 'react-bootstrap';
 import { Link } from 'react-router';
-import {MissingInstanceError} from '../../errors/missingInstanceError';
+import {MissingInstanceError} from '../../errors/MissingInstanceError';
 import {IBaseModel} from '../../interfaces/interfaces';
 import {Stub} from '../../interfaces/interfaces';
 import {IInstancePageProps} from '../../interfaces/interfaces';

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Table, Row, Col} from 'react-bootstrap';
-import {MissingInstanceError} from '../../errors/missingInstanceError';
+import {MissingInstanceError} from '../../errors/MissingInstanceError';
 import {IInstancePageProps} from '../../interfaces/interfaces';
 
 export class GenericShowPage extends React.Component<IInstancePageProps, {}> {

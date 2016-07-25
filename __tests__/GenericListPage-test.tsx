@@ -1,12 +1,12 @@
 jest.unmock('../src/components/CRUD/GenericListPage');
-jest.mock('../src/containers/PagedList');
+jest.mock('../src/components-stateful/PagedList');
 import {GenericListPage} from '../src/components/CRUD/GenericListPage';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import * as TestUtils from 'react-addons-test-utils';
 import {store} from '../src/store/store';
 import {Provider} from 'react-redux';
-import {PagedList} from '../src/containers/PagedList';
+import {PagedList} from '../src/components-stateful/PagedList';
 
 describe('Test Generic List Page', () => {
 

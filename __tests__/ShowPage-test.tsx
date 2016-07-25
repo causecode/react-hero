@@ -1,12 +1,12 @@
 import {GenericShowPage} from '../src/components/CRUD/GenericShowPage';
-jest.unmock('../src/containers/ShowPage');
-import {ShowPageImpl} from '../src/containers/ShowPage';
+jest.unmock('../src/components-stateful/ShowPage');
+import {ShowPageImpl} from '../src/components-stateful/ShowPage';
 import * as React from 'react';
 import * as TestUtils from 'react-addons-test-utils';
 const ShallowTestUtils: IShallowTestUtils = require<IShallowTestUtils>('react-shallow-testutils');
 import {initializeTestCase} from './../src/utils/initializeTestCase';
 import {BaseModel} from '../src/models/BaseModel';
-import {fetchInstanceData} from '../src/actions/instanceActions';
+import {fetchInstanceData} from '../src/actions/modelActions';
 import {ComponentService} from '../src/utils/componentService';
 import {ModelService} from '../src/utils/modelService';
 import {resolver} from '../src/resolver';

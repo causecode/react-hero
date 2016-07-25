@@ -1,6 +1,6 @@
 import {IInitializerData} from './../src/utils/initializeTestCase';
-jest.unmock('../src/containers/ListPage');
-import {ListPage} from '../src/containers/ListPage';
+jest.unmock('../src/components-stateful/ListPage');
+import {ListPage} from '../src/components-stateful/ListPage';
 import * as React from 'react';
 import {initializeTestCase} from './../src/utils/initializeTestCase';
 import {GenericListPage} from '../src/components/CRUD/GenericListPage';

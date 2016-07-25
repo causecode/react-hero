@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {ModelService} from '../utils/modelService';
 import {IRoute} from 'react-router';
-import {fetchInstanceData} from '../actions/instanceActions';
+import {fetchInstanceData} from '../actions/modelActions';
 import {BaseModel} from '../models/BaseModel';
 import {GenericEditPage} from '../components/CRUD/GenericEditPage';
 import {connect} from 'react-redux';

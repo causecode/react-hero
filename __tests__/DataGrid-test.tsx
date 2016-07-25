@@ -6,7 +6,7 @@ import * as TestUtils from 'react-addons-test-utils';
 import {Link} from 'react-router';
 import {Wrapper} from './../src/utils/Wrapper';
 import * as ReactDOM from 'react-dom';
-import {MissingInstanceListError} from '../src/errors/missingInstanceListError';
+import {MissingInstanceListError} from '../src/errors/MissingInstanceListError';
 import {fetchInstanceDataFromApi} from '../src/api/auth/index';
 import {IBaseModel} from '../src/interfaces/interfaces';
 

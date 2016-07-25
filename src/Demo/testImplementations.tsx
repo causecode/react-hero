@@ -6,18 +6,18 @@ import {Title, Description, Content, ButtonList, ButtonListItem} from './../comp
 import {NavMenuLauncherIcon} from './../components/NavMenuLauncherIcon';
 import {Router, Route, Link} from 'react-router';
 import {hashHistory} from 'react-router';
-import {PagedList} from '../containers/PagedList';
-import {ListPage} from '../containers/ListPage';
+import {PagedList} from '../components-stateful/PagedList';
+import {ListPage} from '../components-stateful/ListPage';
 import {DropDownFilter} from '../components/PagedList/Filters/DropDownFilter';
 import {DateRangeFilter} from '../components/PagedList/Filters/DateRangeFilter';
 import {RangeFilter} from '../components/PagedList/Filters/RangeFilter';
 import {QueryFilter} from '../components/PagedList/Filters/QueryFilter';
-import {ShowPage} from './../containers/ShowPage';
-import {EditPage} from './../containers/EditPage';
+import {ShowPage} from './../components-stateful/ShowPage';
+import {EditPage} from './../components-stateful/EditPage';
 import {ComponentService} from '../utils/componentService';
 import {ModelService} from '../utils/modelService';
 import {BlogModel, UserModel} from './testModel';
-import {CreatePage} from '../containers/CreatePage';
+import {CreatePage} from '../components-stateful/CreatePage';
 
 export class NewPage extends React.Component<any, any> {
 

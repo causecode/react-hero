@@ -1,4 +1,4 @@
-import {PagedList} from '../../containers/PagedList';
+import {PagedList} from '../../components-stateful/PagedList';
 import * as React from 'react';
 
 export interface IGenericListPage extends React.Props<{}> {

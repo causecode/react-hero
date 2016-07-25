@@ -4,7 +4,7 @@ import {combineReducers} from 'redux';
 jest.mock('../src/store/store');
 const formReducer = require<any>('redux-form').reducer;
 import {routerReducer} from 'react-router-redux';
-import {instanceReducer as instances} from '../src/reducers/instanceReducer';
+import {modelReducer} from '../src/reducers/modelReducer';
 import {dataReducer as data} from '../src/reducers/data';
 import {open} from '../src/reducers/open';
 
@@ -22,7 +22,7 @@ describe('Test Add reducers', () => {
             open: open,
             form: formReducer,
             routing: routerReducer,
-            instances: instances,
+            instances: modelReducer,
             data: data
         });
 

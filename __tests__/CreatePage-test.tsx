@@ -1,6 +1,6 @@
 import {IInitializerData} from './../src/utils/initializeTestCase';
-jest.unmock('../src/containers/CreatePage');
-import {CreatePageImpl} from '../src/containers/CreatePage';
+jest.unmock('../src/components-stateful/CreatePage');
+import {CreatePageImpl} from '../src/components-stateful/CreatePage';
 import {initializeTestCase} from './../src/utils/initializeTestCase';
 import * as React from 'react';
 import {GenericEditPage} from '../src/components/CRUD/GenericEditPage';
@@ -9,7 +9,7 @@ const ShallowTestUtils: IShallowTestUtils = require<IShallowTestUtils>('react-sh
 import {ComponentService} from '../src/utils/componentService';
 import {resolver} from '../src/resolver';
 import * as TestUtils from 'react-addons-test-utils';
-import {ICreatePageProps} from '../src/containers/CreatePage';
+import {ICreatePageProps} from '../src/components-stateful/CreatePage';
 import {ModelService} from '../src/utils/modelService';
 import {IShallowTestUtils} from '../src/interfaces/interfaces';
 import {IInstanceContainerProps} from '../src/interfaces/interfaces';

@@ -1,18 +1,18 @@
-import {SAVE_INSTANCE} from '../actions/instanceActions';
-import {UPDATE_INSTANCE} from '../actions/instanceActions';
+import {SAVE_INSTANCE} from '../actions/modelActions';
+import {UPDATE_INSTANCE} from '../actions/modelActions';
 import {fromJS} from 'immutable';
-import {DELETE_INSTANCE} from '../actions/instanceActions';
+import {DELETE_INSTANCE} from '../actions/modelActions';
 import {
     FETCH_INSTANCE_DATA_START,
     FETCH_INSTANCE_DATA_SUCCESS,
-    FETCH_INSTANCE_DATA_ERROR} from '../actions/instanceActions';
+    FETCH_INSTANCE_DATA_ERROR} from '../actions/modelActions';
 import {BaseModel} from '../models/BaseModel';
 import {resolver} from '../resolver';
 import {ModelService} from '../utils/modelService';
 import {IBaseModel} from '../interfaces/interfaces';
 const INITIAL_STATE = fromJS({});
 
-export function instanceReducer(state = INITIAL_STATE, action) {
+export function modelReducer(state = INITIAL_STATE, action) {
     let Model: new(instanceData) => IBaseModel;
     let instanceKey = action.instance ? `${action.instance.resourceName}Model` : '';
     switch (action.type) {

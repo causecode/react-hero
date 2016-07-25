@@ -2,9 +2,9 @@ import { fetchInstanceListFromApi } from '../api/auth/index';
 import {SET_PAGE} from './actions';
 import {fetchInstanceDataFromApi} from '../api/auth/index';
 import {BaseModel} from '../models/BaseModel';
-import {FETCH_INSTANCE_DATA_START} from './instanceActions';
-import {FETCH_INSTANCE_DATA_SUCCESS} from './instanceActions';
-import {FETCH_INSTANCE_DATA_ERROR} from './instanceActions';
+import {FETCH_INSTANCE_DATA_START} from './modelActions';
+import {FETCH_INSTANCE_DATA_SUCCESS} from './modelActions';
+import {FETCH_INSTANCE_DATA_ERROR} from './modelActions';
 
 export const FETCH_INSTANCE_LIST_START = 'App/FETCH_INSTANCE_LIST_START';
 export const FETCH_INSTANCE_LIST_SUCCESS = 'App/FETCH_INSTANCE_LIST_SUCCESS';

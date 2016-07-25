@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { fetchInstanceData } from '../actions/instanceActions';
+import { fetchInstanceData } from '../actions/modelActions';
 import {BaseModel} from '../models/BaseModel';
 import {GenericShowPage} from './../components/CRUD/GenericShowPage';
 import {ComponentService} from '../utils/componentService';

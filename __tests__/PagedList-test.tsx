@@ -1,9 +1,9 @@
 import {BaseModel} from '../src/models/BaseModel';
-jest.unmock('../src/containers/PagedList');
+jest.unmock('../src/components-stateful/PagedList');
 jest.mock('react-bootstrap');
 import {Pagination} from 'react-bootstrap';
 import {DataGrid} from '../src/components/PagedList/DataGrid';
-import {PagedListImpl} from '../src/containers/PagedList';
+import {PagedListImpl} from '../src/components-stateful/PagedList';
 import * as React from 'react';
 import * as TestUtils from 'react-addons-test-utils';
 import {Link} from 'react-router';
