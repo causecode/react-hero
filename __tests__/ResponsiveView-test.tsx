@@ -4,7 +4,14 @@ import {ResponsiveView} from '../src/components/ResponsiveView';
 import * as TestUtils from 'react-addons-test-utils';
 import * as ReactDOM from 'react-dom';
 import * as React from 'react';
-import mock = jest.mock;
+
+const DesktopMockID = 0;
+const TabletMockID = 1;
+const TabletPortraitMockID = 2;
+const TabletLandscapeMockID = 3;
+const MobileMockID = 4;
+const MobilePortraitMockID = 5;
+const MobileLandscapeMockID = 6;
 
 describe('Test Device Types enum', () => {
     let mockWindow: (propertyValue: number) => {}, oldGetComputedStyle: typeof window.getComputedStyle;
@@ -76,25 +83,25 @@ describe('Test Device Types enum', () => {
     });
 
     it('gets the current device', () => {
-        mockWindow(0);
+        mockWindow(DesktopMockID);
         expect(DeviceTypes.getCurrentDevice()).toBe(DeviceTypes.DESKTOP);
 
-        mockWindow(1);
+        mockWindow(TabletMockID);
         expect(DeviceTypes.getCurrentDevice()).toBe(DeviceTypes.TABLET);
 
-        mockWindow(2);
+        mockWindow(TabletPortraitMockID);
         expect(DeviceTypes.getCurrentDevice()).toBe(DeviceTypes.TABLET_PORTRAIT);
 
-        mockWindow(3);
+        mockWindow(TabletLandscapeMockID);
         expect(DeviceTypes.getCurrentDevice()).toBe(DeviceTypes.TABLET_LANDSCAPE);
 
-        mockWindow(4);
+        mockWindow(MobileMockID);
         expect(DeviceTypes.getCurrentDevice()).toBe(DeviceTypes.MOBILE);
 
-        mockWindow(5);
+        mockWindow(MobilePortraitMockID);
         expect(DeviceTypes.getCurrentDevice()).toBe(DeviceTypes.MOBILE_PORTRAIT);
 
-        mockWindow(6);
+        mockWindow(MobileLandscapeMockID);
         expect(DeviceTypes.getCurrentDevice()).toBe(DeviceTypes.MOBILE_LANDSCAPE);
 
         mockWindow(7);
@@ -102,71 +109,71 @@ describe('Test Device Types enum', () => {
     });
 
     it('checks if currentDevice is a Mobile Device', () => {
-        mockWindow(0);
+        mockWindow(DesktopMockID);
         expect(DeviceTypes.isMobile()).toEqual(false);
 
-        mockWindow(1);
+        mockWindow(TabletMockID);
         expect(DeviceTypes.isMobile()).toEqual(false);
 
-        mockWindow(2);
+        mockWindow(TabletPortraitMockID);
         expect(DeviceTypes.isMobile()).toEqual(false);
 
-        mockWindow(3);
+        mockWindow(TabletLandscapeMockID);
         expect(DeviceTypes.isMobile()).toEqual(false);
 
-        mockWindow(4);
+        mockWindow(MobileMockID);
         expect(DeviceTypes.isMobile()).toEqual(true);
 
-        mockWindow(5);
+        mockWindow(MobilePortraitMockID);
         expect(DeviceTypes.isMobile()).toEqual(true);
 
-        mockWindow(6);
+        mockWindow(MobileLandscapeMockID);
         expect(DeviceTypes.isMobile()).toEqual(true);
     });
 
     it('checks if currentDevice is a Tablet Device', () => {
-        mockWindow(0);
+        mockWindow(DesktopMockID);
         expect(DeviceTypes.isTablet()).toEqual(false);
 
-        mockWindow(1);
+        mockWindow(TabletMockID);
         expect(DeviceTypes.isTablet()).toEqual(true);
 
-        mockWindow(2);
+        mockWindow(TabletPortraitMockID);
         expect(DeviceTypes.isTablet()).toEqual(true);
 
-        mockWindow(3);
+        mockWindow(TabletLandscapeMockID);
         expect(DeviceTypes.isTablet()).toEqual(true);
 
-        mockWindow(4);
+        mockWindow(MobileMockID);
         expect(DeviceTypes.isTablet()).toEqual(false);
 
-        mockWindow(5);
+        mockWindow(MobilePortraitMockID);
         expect(DeviceTypes.isTablet()).toEqual(false);
 
-        mockWindow(6);
+        mockWindow(MobileLandscapeMockID);
         expect(DeviceTypes.isTablet()).toEqual(false);
     });
 
     it('checks if currentDevice is a Desktop Device', () => {
-        mockWindow(0);
+        mockWindow(DesktopMockID);
         expect(DeviceTypes.isDesktop()).toEqual(true);
 
-        mockWindow(1);
+        mockWindow(TabletMockID);
         expect(DeviceTypes.isDesktop()).toEqual(false);
 
-        mockWindow(2);
+        mockWindow(TabletPortraitMockID);
         expect(DeviceTypes.isDesktop()).toEqual(false);
 
-        mockWindow(3);
+        mockWindow(TabletLandscapeMockID);
         expect(DeviceTypes.isDesktop()).toEqual(false);
 
-        mockWindow(4);
+        mockWindow(MobileMockID);
         expect(DeviceTypes.isDesktop()).toEqual(false);
 
-        mockWindow(5);
+        mockWindow(MobilePortraitMockID);
         expect(DeviceTypes.isDesktop()).toEqual(false);
 
-        mockWindow(6);
+        mockWindow(MobileLandscapeMockID);
         expect(DeviceTypes.isDesktop()).toEqual(false);
     });
 
@@ -236,55 +243,55 @@ describe('Test Responsive View', () => {
     describe('Test Responsive View with the mocked window', () => {
 
         it('renders in Desktop device', () => {
-            mockWindow(0);
+            mockWindow(DesktopMockID);
             let view: React.Component<{}, {}> = TestUtils.renderIntoDocument<React.Component<{}, {}>>(
                 <ResponsiveViewImpl />
             );
             expect(TestUtils.scryRenderedDOMComponentsWithTag(view, 'div')[0].textContent).toBe('Default');
         });
 
-        it('renders in Desktop device', () => {
-            mockWindow(1);
+        it('renders in Tablet device', () => {
+            mockWindow(TabletMockID);
             let view: React.Component<{}, {}> = TestUtils.renderIntoDocument<React.Component<{}, {}>>(
                 <ResponsiveViewImpl />
             );
             expect(TestUtils.scryRenderedDOMComponentsWithTag(view, 'div')[0].textContent).toBe('Tablet');
         });
 
-        it('renders in Desktop device', () => {
-            mockWindow(2);
+        it('renders in Tablet Portrait device', () => {
+            mockWindow(TabletPortraitMockID);
             let view: React.Component<{}, {}> = TestUtils.renderIntoDocument<React.Component<{}, {}>>(
                 <ResponsiveViewImpl />
             );
             expect(TestUtils.scryRenderedDOMComponentsWithTag(view, 'div')[0].textContent).toBe('Tablet Portrait');
         });
 
-        it('renders in Desktop device', () => {
-            mockWindow(3);
+        it('renders in Tablet Landscape device', () => {
+            mockWindow(TabletLandscapeMockID);
             let view: React.Component<{}, {}> = TestUtils.renderIntoDocument<React.Component<{}, {}>>(
                 <ResponsiveViewImpl />
             );
             expect(TestUtils.scryRenderedDOMComponentsWithTag(view, 'div')[0].textContent).toBe('Tablet Landscape');
         });
 
-        it('renders in Desktop device', () => {
-            mockWindow(4);
+        it('renders in Mobile device', () => {
+            mockWindow(MobileMockID);
             let view: React.Component<{}, {}> = TestUtils.renderIntoDocument<React.Component<{}, {}>>(
                 <ResponsiveViewImpl />
             );
             expect(TestUtils.scryRenderedDOMComponentsWithTag(view, 'div')[0].textContent).toBe('Mobile');
         });
 
-        it('renders in Desktop device', () => {
-            mockWindow(5);
+        it('renders in Mobile Portrait device', () => {
+            mockWindow(MobilePortraitMockID);
             let view: React.Component<{}, {}> = TestUtils.renderIntoDocument<React.Component<{}, {}>>(
                 <ResponsiveViewImpl />
             );
             expect(TestUtils.scryRenderedDOMComponentsWithTag(view, 'div')[0].textContent).toBe('Mobile Portrait');
         });
 
-        it('renders in Desktop device', () => {
-            mockWindow(6);
+        it('renders in Mobile Landscape device', () => {
+            mockWindow(MobileLandscapeMockID);
             let view: React.Component<{}, {}> = TestUtils.renderIntoDocument<React.Component<{}, {}>>(
                 <ResponsiveViewImpl />
             );
@@ -310,7 +317,7 @@ describe('Test Responsive View', () => {
             }
 
             it('renders on Desktop device', () => {
-                mockWindow(0);
+                mockWindow(DesktopMockID);
                 let view: React.Component<{}, {}> = TestUtils.renderIntoDocument<React.Component<{}, {}>>(
                     <TestView />
                 );
@@ -318,7 +325,7 @@ describe('Test Responsive View', () => {
             });
 
             it('renders on Tablet device', () => {
-                mockWindow(1);
+                mockWindow(TabletMockID);
                 let view: React.Component<{}, {}> = TestUtils.renderIntoDocument<React.Component<{}, {}>>(
                     <TestView />
                 );
@@ -326,7 +333,7 @@ describe('Test Responsive View', () => {
             });
 
             it('renders on Tablet Portrait device', () => {
-                mockWindow(2);
+                mockWindow(TabletPortraitMockID);
                 let view: React.Component<{}, {}> = TestUtils.renderIntoDocument<React.Component<{}, {}>>(
                     <TestView />
                 );
@@ -334,7 +341,7 @@ describe('Test Responsive View', () => {
             });
 
             it('renders on Tablet Landscape device', () => {
-                mockWindow(3);
+                mockWindow(TabletLandscapeMockID);
                 let view: React.Component<{}, {}> = TestUtils.renderIntoDocument<React.Component<{}, {}>>(
                     <TestView />
                 );
@@ -342,7 +349,7 @@ describe('Test Responsive View', () => {
             });
 
             it('renders on Mobile device', () => {
-                mockWindow(4);
+                mockWindow(MobileMockID);
                 let view: React.Component<{}, {}> = TestUtils.renderIntoDocument<React.Component<{}, {}>>(
                     <TestView />
                 );
@@ -350,7 +357,7 @@ describe('Test Responsive View', () => {
             });
 
             it('renders on Mobile Portrait device', () => {
-                mockWindow(5);
+                mockWindow(MobilePortraitMockID);
                 let view: React.Component<{}, {}> = TestUtils.renderIntoDocument<React.Component<{}, {}>>(
                     <TestView />
                 );
@@ -358,7 +365,7 @@ describe('Test Responsive View', () => {
             });
 
             it('renders on Mobile Landscape device', () => {
-                mockWindow(6);
+                mockWindow(MobileLandscapeMockID);
                 let view: React.Component<{}, {}> = TestUtils.renderIntoDocument<React.Component<{}, {}>>(
                     <TestView />
                 );
@@ -376,7 +383,7 @@ describe('Test Responsive View', () => {
         }
 
         it('renders on Desktop device', () => {
-            mockWindow(0);
+            mockWindow(DesktopMockID);
             let view: React.Component<{}, {}> = TestUtils.renderIntoDocument<React.Component<{}, {}>>(
                 <DefaultView />
             );
@@ -384,7 +391,7 @@ describe('Test Responsive View', () => {
         });
 
         it('renders on Tablet device', () => {
-            mockWindow(1);
+            mockWindow(TabletMockID);
             let view: React.Component<{}, {}> = TestUtils.renderIntoDocument<React.Component<{}, {}>>(
                 <DefaultView />
             );
@@ -392,7 +399,7 @@ describe('Test Responsive View', () => {
         });
 
         it('renders on Tablet Portrait device', () => {
-            mockWindow(2);
+            mockWindow(TabletPortraitMockID);
             let view: React.Component<{}, {}> = TestUtils.renderIntoDocument<React.Component<{}, {}>>(
                 <DefaultView />
             );
@@ -400,7 +407,7 @@ describe('Test Responsive View', () => {
         });
 
         it('renders on Tablet Landscape device', () => {
-            mockWindow(3);
+            mockWindow(TabletLandscapeMockID);
             let view: React.Component<{}, {}> = TestUtils.renderIntoDocument<React.Component<{}, {}>>(
                 <DefaultView />
             );
@@ -408,7 +415,7 @@ describe('Test Responsive View', () => {
         });
 
         it('renders on Mobile device', () => {
-            mockWindow(4);
+            mockWindow(MobileMockID);
             let view: React.Component<{}, {}> = TestUtils.renderIntoDocument<React.Component<{}, {}>>(
                 <DefaultView />
             );
@@ -416,7 +423,7 @@ describe('Test Responsive View', () => {
         });
 
         it('renders on Mobile Portrait device', () => {
-            mockWindow(5);
+            mockWindow(MobilePortraitMockID);
             let view: React.Component<{}, {}> = TestUtils.renderIntoDocument<React.Component<{}, {}>>(
                 <DefaultView />
             );
@@ -424,7 +431,7 @@ describe('Test Responsive View', () => {
         });
 
         it('renders on Mobile Landscape device', () => {
-            mockWindow(6);
+            mockWindow(MobileLandscapeMockID);
             let view: React.Component<{}, {}> = TestUtils.renderIntoDocument<React.Component<{}, {}>>(
                 <DefaultView />
             );
@@ -432,7 +439,5 @@ describe('Test Responsive View', () => {
         });
 
     });
-
-
 
 });
