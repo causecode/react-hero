@@ -9,28 +9,35 @@ import {HTTP} from '../src/api/server/index';
 import {BASE_URL} from '../src/api/server/index';
 import {InvalidInstanceDataError} from '../src/errors/InvalidInstanceDataError';
 import 'babel-polyfill';
-
+import {IBaseModel} from '../src/interfaces/interfaces';
 
 describe('Test Base Model', () => {
-    let ModelInstance: BaseModel, instanceData, successCallback: jest.Mock<Function>,
-        failureCallback: jest.Mock<Function>, successObject: {success: boolean},
-        failureObject: {success: boolean};
+    let successCallback: jest.Mock<Function>, failureCallback: jest.Mock<Function>;
+    let successObject: {success: boolean} = {success: true};
+    let failureObject: {success: boolean} = {success: false};
+    let instanceData = {id: 1, author: 'abc'};
+    let ModelInstance: BaseModel = new BaseModel(instanceData);
+
+    async function verifyActions(type: string, instance: IBaseModel): void {
+        let action: IInstanceAction = store.getActions()[0];
+        expect(action.type).toEqual(type);
+        expect(action.instance).toEqual(instance);
+    }
 
     beforeEach(() => {
-        successObject = {success: true};
-        failureObject = {success: false};
-        instanceData = {id: 1, author: 'abc'};
-        ModelInstance = new BaseModel(instanceData);
-        HTTP.postRequest = HTTP.getRequest = HTTP.putRequest = jest.fn((path: string, data) => {
-            return new Promise((resolve, reject): void => {
-                resolve(successObject);
+
+        function getNewHTTPMock() {
+            return jest.fn((path: string, data?) => {
+                return new Promise((resolve, reject): void => {
+                    resolve(successObject);
+                });
             });
-        });
-        HTTP.deleteRequest = jest.fn((path: string) => {
-            return new Promise((resolve, reject): void => {
-                resolve(successObject);
-            });
-        });
+        }
+
+        HTTP.getRequest = getNewHTTPMock();
+        HTTP.postRequest = getNewHTTPMock();
+        HTTP.putRequest = getNewHTTPMock();
+        HTTP.deleteRequest = getNewHTTPMock();
 
         successCallback = jest.fn<Function>();
         failureCallback = jest.fn<Function>();
@@ -41,188 +48,104 @@ describe('Test Base Model', () => {
         store.clearActions();
     });
 
+    async function testWithoutParams(instance: IBaseModel, functionName: string,
+            HTTPMethod: Function, requestParams: Object): void {
+        store.clearActions();
+        await instance['$' + functionName]();
+
+        expect(HTTPMethod).toBeCalledWith(...requestParams);
+
+        verifyActions(`${functionName.toUpperCase()}_INSTANCE`, instance);
+    }
+
+    async function testWithFlush(instance: IBaseModel, functionName: string,
+            HTTPMethod: Function, requestParams: Object): void {
+        store.clearActions();
+        await instance[`$${functionName}`](true, successCallback, failureCallback);
+
+        expect(HTTPMethod).toBeCalledWith(...requestParams);
+        expect(successCallback).toBeCalledWith(successObject);
+        expect(failureCallback).not.toBeCalled();
+        verifyActions(`${functionName.toUpperCase()}_INSTANCE`, instance);
+    }
+
+    async function testWithFlushFalse(instance: IBaseModel, functionName: string,
+            HTTPMethod: Function): void {
+        store.clearActions();
+        await instance[`$${functionName}`](false);
+
+        expect(HTTPMethod).not.toBeCalled();
+        verifyActions(`${functionName.toUpperCase()}_INSTANCE`, instance);
+    }
+
+    async function testWithFlushFalseAndCallbacks(instance: IBaseModel, functionName: string,
+            HTTPMethod: Function): void {
+        store.clearActions();
+        await instance[`$${functionName}`](false, successCallback, failureCallback);
+
+        expect(HTTPMethod).not.toBeCalled();
+        expect(successCallback).not.toBeCalled();
+        expect(failureCallback).not.toBeCalled();
+        verifyActions(`${functionName.toUpperCase()}_INSTANCE`, instance);
+    }
+
+    async function testWithFlushAndPromiseFailure(instance: IBaseModel, functionName: string,
+            HTTPMethod: Function, requestParams: Object): void {
+        store.clearActions();
+
+        await instance[`$${functionName}`](true, successCallback, failureCallback);
+        expect(HTTPMethod).toBeCalledWith(...requestParams);
+        expect(failureCallback).toBeCalledWith(failureObject);
+        expect(successCallback).not.toBeCalled();
+        expect(store.getActions().length).toBeFalsy();
+    }
+
     describe('Test $save method on the instance', () => {
 
-        it('calls the $save method without any params', async () => {
-            await ModelInstance.$save();
-
-            expect(HTTP.postRequest).toBeCalledWith(`${ModelInstance.resourceName}/save`, ModelInstance.instanceData);
-
-            let action: IInstanceAction = store.getActions()[0];
-            expect(action.type).toEqual(SAVE_INSTANCE);
-            expect(action.instance).toEqual(ModelInstance);
+        it('calls the #type Model method without any params',
+                async () => {
+            await testWithoutParams(ModelInstance, 'save', HTTP.postRequest,
+                    [`${ModelInstance.resourceName}/save`, ModelInstance.instanceData]);
+            await testWithoutParams(ModelInstance, 'update', HTTP.putRequest,
+                    [`${ModelInstance.resourceName}/update`, ModelInstance.instanceData]);
+            await testWithoutParams(ModelInstance, 'delete', HTTP.deleteRequest,
+                    [`${ModelInstance.resourceName}/delete/${ModelInstance.instanceData.id}`]);
         });
 
-        it('calls the $save method with flush', async () => {
-            await ModelInstance.$save(true, successCallback, failureCallback);
-
-            expect(HTTP.postRequest).toBeCalledWith(`${ModelInstance.resourceName}/save`, ModelInstance.instanceData);
-            expect(successCallback).toBeCalledWith(successObject);
-            expect(failureCallback).not.toBeCalled();
-            let action: IInstanceAction = store.getActions()[0];
-            expect(action.type).toEqual(SAVE_INSTANCE);
-            expect(action.instance).toEqual(ModelInstance);
+        it('calls the methods with flush', async () => {
+            await testWithFlush(ModelInstance, 'save', HTTP.postRequest,
+                    [`${ModelInstance.resourceName}/save`, ModelInstance.instanceData]);
+            await testWithFlush(ModelInstance, 'update', HTTP.putRequest,
+                    [`${ModelInstance.resourceName}/update`, ModelInstance.instanceData]);
+            await testWithFlush(ModelInstance, 'delete', HTTP.deleteRequest,
+                    [`${ModelInstance.resourceName}/delete/${ModelInstance.instanceData.id}`]);
         });
 
-        it('calls the $save method with flush false', async() => {
-            await ModelInstance.$save(false);
-
-            expect(HTTP.postRequest).not.toBeCalled();
-            let action: IInstanceAction = store.getActions()[0];
-            expect(action.type).toEqual(SAVE_INSTANCE);
-            expect(action.instance).toEqual(ModelInstance);
+        it('calls the methods with flush false', async() => {
+            await testWithFlushFalse(ModelInstance, 'save', HTTP.postRequest);
+            await testWithFlushFalse(ModelInstance, 'update', HTTP.putRequest);
+            await testWithFlushFalse(ModelInstance, 'delete', HTTP.deleteRequest);
         });
 
-        it('calls the $save method with flush false and callbacks', async () => {
-            await ModelInstance.$save(false, successCallback, failureCallback);
-
-            expect(HTTP.postRequest).not.toBeCalled();
-            expect(successCallback).not.toBeCalled();
-            expect(failureCallback).not.toBeCalled();
-            let action: IInstanceAction = store.getActions()[0];
-            expect(action.type).toEqual(SAVE_INSTANCE);
-            expect(action.instance).toEqual(ModelInstance);
+        it('calls the methods with flush false and callbacks', async () => {
+            await testWithFlushFalseAndCallbacks(ModelInstance, 'save', HTTP.postRequest);
+            await testWithFlushFalseAndCallbacks(ModelInstance, 'update', HTTP.putRequest);
+            await testWithFlushFalseAndCallbacks(ModelInstance, 'delete', HTTP.deleteRequest);
         });
 
-        it('calls the $save method with flush true and promise failure condition', async () => {
-            HTTP.postRequest = jest.fn((path: string, data) => {
+        it('calls the methods with flush true and promise failure condition', async () => {
+            HTTP.deleteRequest = HTTP.putRequest = HTTP.postRequest = jest.fn((path: string, data) => {
                 return new Promise((resolve, reject): void => {
                     reject(failureObject);
                 });
             });
-
-            await ModelInstance.$save(true, successCallback, failureCallback);
-            expect(HTTP.postRequest).toBeCalledWith(`${ModelInstance.resourceName}/save`, ModelInstance.instanceData);
-            expect(failureCallback).toBeCalledWith(failureObject);
-            expect(successCallback).not.toBeCalled();
-            expect(store.getActions().length).toBeFalsy();
+            await testWithFlushAndPromiseFailure(ModelInstance, 'save', HTTP.postRequest,
+                    [`${ModelInstance.resourceName}/save`, ModelInstance.instanceData]);
+            await testWithFlushAndPromiseFailure(ModelInstance, 'update', HTTP.putRequest,
+                    [`${ModelInstance.resourceName}/update`, ModelInstance.instanceData]);
+            await testWithFlushAndPromiseFailure(ModelInstance, 'delete', HTTP.deleteRequest,
+                    [`${ModelInstance.resourceName}/delete/${ModelInstance.instanceData.id}`]);
         });
 
     });
-
-    describe('Test $update method on the instance', () => {
-
-        it('calls the $update method without any params', async () => {
-            await ModelInstance.$update();
-
-            expect(HTTP.putRequest).toBeCalledWith(`${ModelInstance.resourceName}/update`, ModelInstance.instanceData);
-
-            let action: IInstanceAction = store.getActions()[0];
-            expect(action.type).toEqual(UPDATE_INSTANCE);
-            expect(action.instance).toEqual(ModelInstance);
-        });
-
-        it('calls the $update method with flush', async () => {
-            await ModelInstance.$update(true, successCallback, failureCallback);
-
-            expect(HTTP.putRequest).toBeCalledWith(`${ModelInstance.resourceName}/update`, ModelInstance.instanceData);
-
-            let action: IInstanceAction = store.getActions()[0];
-            expect(successCallback).toBeCalledWith(successObject);
-            expect(failureCallback).not.toBeCalled();
-            expect(action.type).toEqual(UPDATE_INSTANCE);
-            expect(action.instance).toEqual(ModelInstance);
-        });
-
-        it('calls the $update method with flush false', () => {
-            ModelInstance.$update(false);
-
-            expect(HTTP.putRequest).not.toBeCalled();
-
-            let action: IInstanceAction = store.getActions()[0];
-            expect(action.type).toEqual(UPDATE_INSTANCE);
-            expect(action.instance).toEqual(ModelInstance);
-        });
-
-        it('calls the $update method with flush false and callbacks', async () => {
-            await ModelInstance.$update(false, successCallback, failureCallback);
-
-            expect(HTTP.putRequest).not.toBeCalled();
-            expect(successCallback).not.toBeCalled();
-            expect(failureCallback).not.toBeCalled();
-            let action: IInstanceAction = store.getActions()[0];
-            expect(action.type).toEqual(UPDATE_INSTANCE);
-            expect(action.instance).toEqual(ModelInstance);
-        });
-
-        it('calls the $update method with flush true and promise failure condition', async () => {
-            HTTP.putRequest = jest.fn((path: string, data) => {
-                return new Promise((resolve, reject) => {
-                    reject(failureObject);
-                });
-            });
-
-            await ModelInstance.$update(true, successCallback, failureCallback);
-            expect(HTTP.putRequest).toBeCalledWith(`${ModelInstance.resourceName}/update`, ModelInstance.instanceData);
-            expect(failureCallback).toBeCalledWith(failureObject);
-            expect(successCallback).not.toBeCalled();
-            expect(store.getActions()[0]).toBeFalsy();
-        });
-
-    });
-
-    describe('Test $delete method on the instance', () => {
-
-        it('calls the $delete method without any params', async () => {
-            await ModelInstance.$delete();
-
-            expect(HTTP.deleteRequest)
-                .toBeCalledWith(`${ModelInstance.resourceName}/delete/${ModelInstance.instanceData.id}`);
-
-            let action: IInstanceAction = store.getActions()[0];
-            expect(action.type).toEqual(DELETE_INSTANCE);
-            expect(action.instance).toEqual(ModelInstance);
-        });
-
-        it('calls the $delete method with flush', async () => {
-            await ModelInstance.$delete(true, successCallback, failureCallback);
-
-            expect(HTTP.deleteRequest)
-                .toBeCalledWith(`${ModelInstance.resourceName}/delete/${ModelInstance.instanceData.id}`);
-
-            let action: IInstanceAction = store.getActions()[0];
-            expect(successCallback).toBeCalledWith(successObject);
-            expect(failureCallback).not.toBeCalled();
-            expect(action.type).toEqual(DELETE_INSTANCE);
-            expect(action.instance).toEqual(ModelInstance);
-        });
-
-        it('calls the $delete method with flush false', () => {
-            ModelInstance.$delete(false);
-
-            expect(HTTP.deleteRequest).not.toBeCalled();
-
-            let action: IInstanceAction = store.getActions()[0];
-            expect(action.type).toEqual(DELETE_INSTANCE);
-            expect(action.instance).toEqual(ModelInstance);
-        });
-
-        it('calls the $delete method with flush false and callbacks', async () => {
-            await ModelInstance.$delete(false, successCallback, failureCallback);
-
-            expect(HTTP.deleteRequest).not.toBeCalled();
-            expect(successCallback).not.toBeCalled();
-            expect(failureCallback).not.toBeCalled();
-            let action: IInstanceAction = store.getActions()[0];
-            expect(action.type).toEqual(DELETE_INSTANCE);
-            expect(action.instance).toEqual(ModelInstance);
-        });
-
-        it('calls the $delete method with flush true and promise failure condition', async () => {
-            HTTP.deleteRequest = jest.fn((path: string, data) => {
-                return new Promise((resolve, reject) => {
-                    reject(failureObject);
-                });
-            });
-
-            await ModelInstance.$delete(true, successCallback, failureCallback);
-            expect(HTTP.deleteRequest)
-                    .toBeCalledWith(`${ModelInstance.resourceName}/delete/${ModelInstance.instanceData.id}`);
-            expect(failureCallback).toBeCalledWith(failureObject);
-            expect(successCallback).not.toBeCalled();
-            expect(store.getActions()[0]).toBeFalsy();
-        });
-
-    });
-
 });

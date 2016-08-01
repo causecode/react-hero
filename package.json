@@ -102,6 +102,7 @@
     "redux-localstorage": "^0.4.1",
     "rimraf": "^2.5.2",
     "stylelint": "^6.6.0",
-    "stylelint-webpack-plugin": "^0.2.0"
+    "stylelint-webpack-plugin": "^0.2.0",
+    "unroll": "git+ssh://git@bitbucket.org/causecode/unroll.git#remove-title-dependency"
   }
 }

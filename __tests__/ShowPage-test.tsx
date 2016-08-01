@@ -13,18 +13,27 @@ import {resolver} from '../src/resolver';
 import {IInitializerData} from './../src/utils/initializeTestCase';
 import {IShallowTestUtils} from '../src/interfaces/interfaces';
 import {IInstanceContainerProps} from '../src/interfaces/interfaces';
+import {IBaseModel} from '../src/interfaces/interfaces';
 
 describe('Test ShowPage', () => {
-    let renderer: React.ShallowRenderer, resource: string, instances: Object,
-        fetchInstanceData: (...args: any[]) => void, handleSubmit: Function, handleDelete: Function;
+    let initializerData: IInitializerData = initializeTestCase();
+    let renderer: React.ShallowRenderer = initializerData.renderer;
+    let resource: string = initializerData.resource;
+    let instances: Object = initializerData.instances;
+    let fetchInstanceData: (...args: any[]) => void;
 
     beforeEach(() => {
-        let data: IInitializerData = initializeTestCase();
-        renderer = data.renderer;
-        resource = data.resource;
-        instances = data.instances;
         fetchInstanceData = jest.fn<(...args: any[]) => void>();
     });
+
+    function testRenderedPageProps(page: React.ReactElement<IInstanceContainerProps>, instance: IBaseModel
+            , resourceParam: string) {
+        let renderedPage = ShallowTestUtils.findWithType(page, GenericShowPage);
+
+        expect(renderedPage).toBeTruthy();
+        expect(renderedPage.props.resource).toEqual(resourceParam);
+        expect(renderedPage.props.instance).toEqual(instance);
+    }
 
     it('renders a simple Show Page', () => {
         renderer.render(
@@ -38,10 +47,7 @@ describe('Test ShowPage', () => {
         let page: React.ReactElement<IInstanceContainerProps> = renderer.getRenderOutput();
 
         expect(page).toBeTruthy();
-        let renderedPage = ShallowTestUtils.findWithType(page, GenericShowPage);
-        expect(renderedPage).toBeTruthy();
-        expect(renderedPage.props.resource).toEqual(resource);
-        expect(renderedPage.props.instance).toEqual(instances[resource]);
+        testRenderedPageProps(page, instances[resource], resource);
         expect(fetchInstanceData).toBeCalled();
 
     });
@@ -53,22 +59,12 @@ describe('Test ShowPage', () => {
 
         let page: React.ReactElement<IInstanceContainerProps> = renderer.getRenderOutput();
         expect(page).toBeTruthy();
-
-        let renderedPage = ShallowTestUtils.findWithType(page, GenericShowPage);
-        expect(renderedPage).toBeTruthy();
-        expect(renderedPage.props.instance).toEqual(new BaseModel({}));
-        expect(renderedPage.props.resource).toEqual('');
+        testRenderedPageProps(page, new BaseModel({}), '');
 
     });
 
     it('renders an ShowPage with user implemented ShowPage registered', () => {
-        class TestShowPage extends React.Component<{}, {}> {
-            render() {
-                return(
-                    <div></div>
-                );
-            }
-        }
+        class TestShowPage extends React.Component<{}, {}> {}
         class TestModel extends BaseModel {
             constructor(data) {
                 super(data);

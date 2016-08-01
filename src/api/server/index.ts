@@ -3,14 +3,9 @@ import * as axios from 'axios';
 import {config} from '../../config';
 
 export const BASE_URL = config.serverUrl;
-// export const BASE_URL = 'http://192.168.1.219:8080/be/';
-// export const BASE_URL_TEMP = 'http://192.168.2.10:8090/be';        // http://localhost:8090/api/v1/blog/action/index
 
 export module HTTP {
 
-    import AxiosInstance = Axios.AxiosInstance;
-    import IPromise = Axios.IPromise;
-    import AxiosXHR = Axios.AxiosXHR;
     export function postRequest(path: string, data = {}): Promise<{}> {
         return fetch(BASE_URL + path, {
             method: 'post',
@@ -22,11 +17,11 @@ export module HTTP {
         }).then(response => response.json());
     }
 
-    export function serialize(obj, prefix?) {
-        let str = [];
-        for (let p in obj) {
-            if (obj.hasOwnProperty(p)) {
-                let k = prefix ? prefix + '[' + p + ']' : p, v = obj[p];
+    export function serialize(object: Object, prefix?: string): string {
+        let str: string[] = [];
+        for (let property in object) {
+            if (object.hasOwnProperty(property)) {
+                let k = prefix ? `${prefix}[${property}]` : property, v = object[property];
                 str.push(typeof v === 'object' ?
                     serialize(v, k) :
                 encodeURIComponent(k) + '=' + encodeURIComponent(v));
@@ -42,7 +37,7 @@ export module HTTP {
             .then(response => response.json());
     }
 
-    export function putRequest(path: string, data = {}): IPromise<AxiosXHR<{}>> {
+    export function putRequest(path: string, data = {}): Axios.IPromise<Axios.AxiosXHR<{}>> {
         return axios({
             method: 'put',
             url: BASE_URL + path,
@@ -50,7 +45,7 @@ export module HTTP {
         });
     }
 
-    export function deleteRequest(path: string): IPromise<AxiosXHR<{}>> {
+    export function deleteRequest(path: string): Axios.IPromise<Axios.AxiosXHR<{}>> {
         return axios({
             method: 'delete',
             url: BASE_URL + path,

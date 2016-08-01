@@ -5,37 +5,28 @@ import * as React from 'react';
 import {GenericListPage} from '../src/components/CRUD/GenericListPage';
 import {GenericShowPage} from '../src/components/CRUD/GenericShowPage';
 import {GenericEditPage} from '../src/components/CRUD/GenericEditPage';
+const unroll: any = require<any>('unroll');
+
+unroll.use(it);
+
+class TestComponent extends React.Component<void, void> {}
+class TestListPage extends React.Component<void, void> {}
+class TestEditPage extends React.Component<void, void> {}
+class TestShowPage extends React.Component<void, void> {}
+class TestCreatePage extends React.Component<void, void> {}
+let pages = {
+    TestComponent,
+    TestListPage,
+    TestEditPage,
+    TestShowPage,
+    TestCreatePage,
+    GenericEditPage,
+    GenericShowPage,
+    GenericListPage,
+    GenericCreatePage: GenericEditPage
+};
 
 describe('Test Component Service', () => {
-    class TestComponent extends React.Component<{}, {}> {
-        render() {
-            return (<div></div>);
-        }
-    }
-
-    class TestListPage extends React.Component<{}, {}> {
-        render() {
-            return (<div></div>);
-        }
-    }
-
-    class TestEditPage extends React.Component<{}, {}> {
-        render() {
-            return (<div></div>);
-        }
-    }
-
-    class TestShowPage extends React.Component<{}, {}> {
-        render() {
-            return (<div></div>);
-        }
-    }
-
-    class TestCreatePage extends React.Component<{}, {}> {
-        render() {
-            return (<div></div>);
-        }
-    }
 
     it('registers the component in the React DI resolver object', () => {
         ComponentService.register(TestComponent);
@@ -63,36 +54,31 @@ describe('Test Component Service', () => {
 
         });
 
-        it('checks if the specified Pages have been registered', () => {
+        unroll('checks if #methodName returns true if component has been registered', (done, testArgs) => {
+            expect(ComponentService[testArgs.methodName]('test')).toEqual(true);
+            expect(ComponentService[testArgs.methodName]('aaaa')).toEqual(false);
+            done();
+        }, [
+            ['methodName'],
+            ['hasListPage'],
+            ['hasEditPage'],
+            ['hasShowPage'],
+            ['hasCreatePage']
+        ]);
 
-            expect(ComponentService.hasListPage('test')).toBe(true);
-            expect(ComponentService.hasEditPage('test')).toBe(true);
-            expect(ComponentService.hasShowPage('test')).toBe(true);
-            expect(ComponentService.hasCreatePage('test')).toBe(true);
-
-        });
-
-        it('retrieves the specified Pages', () => {
-            expect(ComponentService.getListPage('test')).toEqual(TestListPage);
-            expect(ComponentService.getEditPage('test')).toEqual(TestEditPage);
-            expect(ComponentService.getShowPage('test')).toEqual(TestShowPage);
-            expect(ComponentService.getCreatePage('test')).toEqual(TestCreatePage);
-            expect(ComponentService.getListPage('TEst')).toEqual(TestListPage);
-            expect(ComponentService.getEditPage('TEst')).toEqual(TestEditPage);
-            expect(ComponentService.getShowPage('TEst')).toEqual(TestShowPage);
-            expect(ComponentService.getCreatePage('TEst')).toEqual(TestCreatePage);
-
-            expect(ComponentService.getListPage('abc')).toEqual(GenericListPage);
-            expect(ComponentService.getShowPage('abc')).toEqual(GenericShowPage);
-            expect(ComponentService.getEditPage('abc')).toEqual(GenericEditPage);
-            expect(ComponentService.getCreatePage('abc')).toEqual(GenericEditPage);
-
-            expect(ComponentService.getListPage('')).toEqual(GenericListPage);
-            expect(ComponentService.getShowPage('')).toEqual(GenericShowPage);
-            expect(ComponentService.getEditPage('')).toEqual(GenericEditPage);
-            expect(ComponentService.getCreatePage('')).toEqual(GenericEditPage);
-
-        });
+        unroll('retrieves the #type Pages', (done, testArgs) => {
+            expect(ComponentService[`get${testArgs.type}Page`]('test')).toEqual(pages[`Test${testArgs.type}Page`]);
+            expect(ComponentService[`get${testArgs.type}Page`]('TEst')).toEqual(pages[`Test${testArgs.type}Page`]);
+            expect(ComponentService[`get${testArgs.type}Page`]('abc')).toEqual(pages[`Generic${testArgs.type}Page`]);
+            expect(ComponentService[`get${testArgs.type}Page`]('')).toEqual(pages[`Generic${testArgs.type}Page`]);
+            done();
+        }, [
+            ['type'],
+            ['List'],
+            ['Create'],
+            ['Edit'],
+            ['Show']
+        ]);
 
     });
 });

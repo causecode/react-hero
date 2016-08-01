@@ -2,6 +2,9 @@ import {BaseModel} from '../src/models/BaseModel';
 jest.unmock('../src/utils/modelService');
 import {ModelService} from '../src/utils/modelService';
 import {resolver} from '../src/resolver';
+const unroll: any = require<any>('unroll');
+
+unroll.use(it);
 
 describe('Test Model Service', () => {
 
@@ -24,25 +27,21 @@ describe('Test Model Service', () => {
             ModelService.register(TestModel);
         });
 
-        it('checks if the specified model has been regsitered', () => {
+        unroll('checks if the #modelKey has been registered and can be fetched', (done, testArgs) => {
 
-            expect(ModelService.hasModel('test')).toBe(true);
-            expect(ModelService.hasModel('testModel')).toBe(true);
-            expect(ModelService.hasModel('Testmodel')).toBe(true);
-            expect(ModelService.hasModel('abc')).toBe(false);
-            expect(ModelService.hasModel('abcModel')).toBe(false);
+            let { modelKey, expectation, model } = testArgs;
+            expect(ModelService.hasModel(modelKey)).toEqual(expectation);
+            expect(ModelService.getModel(modelKey)).toEqual(model);
+            done();
 
-        });
-
-        it('gets the specified Model', () => {
-
-            expect(ModelService.getModel('test')).toEqual(TestModel);
-            expect(ModelService.getModel('testModel')).toEqual(TestModel);
-            expect(ModelService.getModel('Testmodel')).toEqual(TestModel);
-            expect(ModelService.getModel('abcModel')).toEqual(BaseModel);
-            expect(ModelService.getModel('abc')).toEqual(BaseModel);
-
-        });
+        }, [
+            ['modelKey', 'expectation', 'model'],
+            ['test', true, TestModel],
+            ['testModel', true, TestModel],
+            ['TestModel', true, TestModel],
+            ['abc', false, BaseModel],
+            ['abcModel', false, BaseModel]
+        ]);
 
     });
 });

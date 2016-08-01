@@ -18,12 +18,14 @@ describe('tests store methods', () => {
     });
 
     it('calls the configure Store method in development environment', () => {
+        let oldEnv: string = process.env.NODE_ENV;
         process.env.NODE_ENV = 'development';
         compose = jest.fn();
         let testStore: any = configureStore({});
 
         expect(testStore).toBeTruthy();
         expect(testStore.getActions).toBeFalsy();
+        process.env.NODE_ENV = oldEnv;
     });
 
 });

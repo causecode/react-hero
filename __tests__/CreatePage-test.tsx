@@ -9,21 +9,31 @@ const ShallowTestUtils: IShallowTestUtils = require<IShallowTestUtils>('react-sh
 import {ComponentService} from '../src/utils/componentService';
 import {resolver} from '../src/resolver';
 import * as TestUtils from 'react-addons-test-utils';
-import {ICreatePageProps} from '../src/components-stateful/CreatePage';
 import {ModelService} from '../src/utils/modelService';
 import {IShallowTestUtils} from '../src/interfaces/interfaces';
 import {IInstanceContainerProps} from '../src/interfaces/interfaces';
+import {IBaseModel} from '../src/interfaces/interfaces';
+
+function generalCreatePageTests(
+    createPage: new() => React.Component<{}, {}>,
+    page: React.ReactElement<IInstanceContainerProps>,
+    instance: IBaseModel,
+    resource: string
+): void {
+    expect(page).toBeTruthy();
+    let renderedPage = ShallowTestUtils.findWithType(page, createPage);
+    expect(renderedPage).toBeTruthy();
+    // expect(renderedPage.props.handleSubmit.toString()).toEqual(handleSubmit.toString());
+    expect(renderedPage.props.handleDelete).toBeUndefined();
+    expect(renderedPage.props.instance).toEqual(instance);
+    expect(renderedPage.props.resource).toEqual(resource);
+}
 
 describe('test CreatePage', () => {
-    let renderer: React.ShallowRenderer, resource: string, instances: Object,
-        fetchInstanceData: (...args: any[]) => void, handleSubmit: Function, handleDelete: Function;
+    let handleSubmit, handleDelete;
+    let { renderer, resource, instances, fetchInstanceData } = initializeTestCase();
 
     beforeEach(() => {
-        let data = initializeTestCase();
-        renderer = data.renderer;
-        resource = data.resource;
-        instances = data.instances;
-        fetchInstanceData = data.fetchInstanceData;
         handleSubmit = (instance: BaseModel, e: Event) => {
             e.preventDefault();
             instance.$save();
@@ -42,49 +52,28 @@ describe('test CreatePage', () => {
             />
         );
 
-        let page: React.ReactElement<ICreatePageProps> = renderer.getRenderOutput();
+        let page: React.ReactElement<IInstanceContainerProps> = renderer.getRenderOutput();
 
-        expect(page).toBeTruthy();
-        let renderedPage = ShallowTestUtils.findWithType(page, GenericEditPage);
-        expect(renderedPage).toBeTruthy();
-        // expect(renderedPage.props.handleSubmit.toString()).toEqual(handleSubmit.toString());
-        expect(renderedPage.props.handleDelete).toBeUndefined();
-        expect(renderedPage.props.instance).toEqual(instances[resource]);
-        expect(renderedPage.props.resource).toEqual(resource);
+        generalCreatePageTests(GenericEditPage, page, instances[resource], resource);
         expect(fetchInstanceData).toBeCalled();
 
     });
 
     it('renders an CreatePage without any props', () => {
         renderer.render(
-            <CreatePageImpl />
+            <CreatePageImpl/>
         );
 
         let page: React.ReactElement<IInstanceContainerProps> = renderer.getRenderOutput();
-        expect(page).toBeTruthy();
 
-        let renderedPage = ShallowTestUtils.findWithType(page, GenericEditPage);
-        expect(renderedPage).toBeTruthy();
-        expect(renderedPage.props.instance).toEqual(new BaseModel({}));
-        // expect(renderedPage.props.handleSubmit.toString()).toEqual(handleSubmit.toString());
-        expect(renderedPage.props.handleDelete).toBeUndefined();
-        expect(renderedPage.props.resource).toEqual('');
+        generalCreatePageTests(GenericEditPage, page, new BaseModel({}), '');
 
     });
 
     it('renders an CreatePage with user implemented CreatePage registered', () => {
-        class TestCreatePage extends React.Component<{}, {}> {
-            render() {
-                return(
-                    <div></div>
-                );
-            }
-        }
-        class TestModel extends BaseModel {
-            constructor(data) {
-                super(data);
-            }
-        }
+        class TestCreatePage extends React.Component<{}, {}> {}
+
+        class TestModel extends BaseModel {}
 
         ModelService.register(TestModel);
         ComponentService.register(TestCreatePage);
@@ -98,15 +87,10 @@ describe('test CreatePage', () => {
             <CreatePageImpl params={{resource: resource}} />
         );
 
-        let page = renderer.getRenderOutput();
-        expect(page).toBeTruthy();
 
-        let renderedPage = ShallowTestUtils.findWithType(page, TestCreatePage);
-        expect(renderedPage).toBeTruthy();
-        expect(renderedPage.props.instance).toEqual(new TestModel({}));
-        expect(renderedPage.props.resource).toEqual(resource);
-        // expect(renderedPage.props.handleSubmit.toString()).toEqual(handleSubmit.toString());
-        expect(renderedPage.props.handleDelete).toBeUndefined();
+        let page: React.ReactElement<IInstanceContainerProps> = renderer.getRenderOutput();
+
+        generalCreatePageTests(TestCreatePage, page, new TestModel({}), resource);
 
     });
 

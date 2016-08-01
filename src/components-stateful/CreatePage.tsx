@@ -10,16 +10,10 @@ import {IBaseModel} from '../interfaces/interfaces';
 import {IInstanceContainerProps} from '../interfaces/interfaces';
 import {IRouteParams} from '../interfaces/interfaces';
 
-export interface ICreatePageProps {
-    params: IRouteParams;
-    instances: JSON;
-    fetchInstanceData: (resource: string) => void;
-}
-
 export class CreatePageImpl extends React.Component<IInstanceContainerProps, {}> {
 
     static defaultProps: IInstanceContainerProps = {
-        fetchInstanceData: (resource: string, resourceID: string): void => { },
+        fetchInstanceData: (resource: string): void => { },
         instances: [],
         params: {resource: '', resourceID: ''}
     };

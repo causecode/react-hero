@@ -44,7 +44,6 @@ export class NavigationMenu extends React.Component<{}, {}> {
 }
 
 export interface IHeaderFooterLayoutProps {
-    fixedHeader?: boolean;
     menuPosition: 'left'|'right';
     children?: any;
     open?: boolean;

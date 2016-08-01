@@ -4,6 +4,9 @@ import {ResponsiveView} from '../src/components/ResponsiveView';
 import * as TestUtils from 'react-addons-test-utils';
 import * as ReactDOM from 'react-dom';
 import * as React from 'react';
+const unroll: any = require<any>('unroll');
+
+unroll.use(it);
 
 const DesktopMockID = 0;
 const TabletMockID = 1;
@@ -12,10 +15,20 @@ const TabletLandscapeMockID = 3;
 const MobileMockID = 4;
 const MobilePortraitMockID = 5;
 const MobileLandscapeMockID = 6;
+const InvalidMockID = 7;
+
+const Desktop = 'default';
+const Tablet = 'tablet';
+const TabletPortrait = 'tabletPortrait';
+const TabletLandscape = 'tabletLandscape';
+const Mobile = 'mobile';
+const MobilePortrait = 'mobilePortrait';
+const MobileLandscape = 'mobileLandscape';
 
 describe('Test Device Types enum', () => {
-    let mockWindow: (propertyValue: number) => {}, oldGetComputedStyle: typeof window.getComputedStyle;
+    let mockWindow: (propertyValue: number) => void, oldGetComputedStyle: typeof window.getComputedStyle;
     oldGetComputedStyle = window.getComputedStyle;
+
     beforeEach(() => {
         mockWindow = (propertyValue: number) => {
             window.getComputedStyle = (element: Element, pseudoElt?: string) => {
@@ -30,156 +43,87 @@ describe('Test Device Types enum', () => {
         window.getComputedStyle = oldGetComputedStyle;
     });
 
-    it('gets the device type data', () => {
+    unroll('tests the device type data for the device #expectedName', (done, testArgs) => {
 
-        expect(DeviceTypes.DESKTOP.getName()).toBe('default');
-        expect(DeviceTypes.TABLET.getName()).toBe('tablet');
-        expect(DeviceTypes.TABLET_PORTRAIT.getName()).toBe('tabletPortrait');
-        expect(DeviceTypes.TABLET_LANDSCAPE.getName()).toBe('tabletLandscape');
-        expect(DeviceTypes.MOBILE.getName()).toBe('mobile');
-        expect(DeviceTypes.MOBILE_PORTRAIT.getName()).toBe('mobilePortrait');
-        expect(DeviceTypes.MOBILE_LANDSCAPE.getName()).toBe('mobileLandscape');
+        expect(testArgs.deviceType.getName()).toBe(testArgs.expectedName);
+        expect(testArgs.deviceType.getId()).toBe(testArgs.expectedId);
+        done();
 
-        expect(DeviceTypes.DESKTOP.getId()).toBe(0);
-        expect(DeviceTypes.TABLET.getId()).toBe(1);
-        expect(DeviceTypes.TABLET_PORTRAIT.getId()).toBe(2);
-        expect(DeviceTypes.TABLET_LANDSCAPE.getId()).toBe(3);
-        expect(DeviceTypes.MOBILE.getId()).toBe(4);
-        expect(DeviceTypes.MOBILE_PORTRAIT.getId()).toBe(5);
-        expect(DeviceTypes.MOBILE_LANDSCAPE.getId()).toBe(6);
+    }, [
+        ['deviceType', 'expectedName', 'expectedId'],
+        [DeviceTypes.DESKTOP, Desktop, DesktopMockID],
+        [DeviceTypes.TABLET, Tablet, TabletMockID],
+        [DeviceTypes.TABLET_PORTRAIT, TabletPortrait, TabletPortraitMockID],
+        [DeviceTypes.TABLET_LANDSCAPE, TabletLandscape, TabletLandscapeMockID],
+        [DeviceTypes.MOBILE, Mobile, MobileMockID],
+        [DeviceTypes.MOBILE_PORTRAIT, MobilePortrait, MobilePortraitMockID],
+        [DeviceTypes.MOBILE_LANDSCAPE, MobileLandscape, MobileLandscapeMockID],
+    ]);
+
+    unroll('gets the device type from id or string for #deviceName', (done: Function, testArgs) => {
+
+        expect(DeviceTypes.getDeviceTypeFromIdOrString(testArgs.deviceId)).toEqual(testArgs.deviceType);
+        expect(DeviceTypes.getDeviceTypeFromIdOrString(testArgs.deviceName)).toEqual(testArgs.deviceType);
+        expect(DeviceTypes.getDeviceTypeFromIdOrString(testArgs.deviceName.toUpperCase())).toEqual(testArgs.deviceType);
+        done();
+
+    }, [
+        ['deviceId', 'deviceName', 'deviceType'],
+        [DesktopMockID, Desktop, DeviceTypes.DESKTOP],
+        [TabletMockID, Tablet, DeviceTypes.TABLET],
+        [TabletPortraitMockID, TabletPortrait, DeviceTypes.TABLET_PORTRAIT],
+        [TabletLandscapeMockID, TabletLandscape, DeviceTypes.TABLET_LANDSCAPE],
+        [MobileMockID, Mobile, DeviceTypes.MOBILE],
+        [MobilePortraitMockID, MobilePortrait, DeviceTypes.MOBILE_PORTRAIT],
+        [MobileLandscapeMockID, MobileLandscape, DeviceTypes.MOBILE_LANDSCAPE]
+    ]);
+
+    unroll('gets the current device and checks whether it is equal to #device',
+        (done, testArgs) => {
+
+        mockWindow(testArgs.mockId);
+        expect(DeviceTypes.getCurrentDevice()).toBe(testArgs.expectedDeviceType);
+        done();
+
+    }, [
+        ['mockId', 'expectedDeviceType', 'device'],
+        [DesktopMockID, DeviceTypes.DESKTOP, Desktop],
+        [TabletMockID, DeviceTypes.TABLET, Tablet],
+        [TabletPortraitMockID, DeviceTypes.TABLET_PORTRAIT, TabletPortrait],
+        [TabletLandscapeMockID, DeviceTypes.TABLET_LANDSCAPE, TabletLandscape],
+        [MobileMockID, DeviceTypes.MOBILE, Mobile],
+        [MobilePortraitMockID, DeviceTypes.MOBILE_PORTRAIT, MobilePortrait],
+        [MobileLandscapeMockID, DeviceTypes.MOBILE_LANDSCAPE, MobileLandscape],
+    ]);
+
+    it('checks if a device other than the ones specified is used', () => {
+
+        mockWindow(InvalidMockID);
+        expect(() => DeviceTypes.getCurrentDevice())
+                .toThrow(new Error('No matching device for the given identifier.'));
 
     });
 
-    it('gets the device type from id or string', () => {
+    unroll('checks device type in a #device device', (done, testArgs) => {
 
-        expect(DeviceTypes.getDeviceTypeFromIdOrString(0)).toEqual(DeviceTypes.DESKTOP);
-        expect(DeviceTypes.getDeviceTypeFromIdOrString('Default')).toEqual(DeviceTypes.DESKTOP);
-        expect(DeviceTypes.getDeviceTypeFromIdOrString('deFault')).toEqual(DeviceTypes.DESKTOP);
+        mockWindow(testArgs.mockId);
+        expect(DeviceTypes.isMobile()).toEqual(testArgs.isMobile);
+        expect(DeviceTypes.isTablet()).toEqual(testArgs.isTablet);
+        expect(DeviceTypes.isDesktop()).toEqual(testArgs.isDesktop);
+        done();
 
-        expect(DeviceTypes.getDeviceTypeFromIdOrString(1)).toEqual(DeviceTypes.TABLET);
-        expect(DeviceTypes.getDeviceTypeFromIdOrString('Tablet')).toEqual(DeviceTypes.TABLET);
-        expect(DeviceTypes.getDeviceTypeFromIdOrString('tabLet')).toEqual(DeviceTypes.TABLET);
-
-        expect(DeviceTypes.getDeviceTypeFromIdOrString(2)).toEqual(DeviceTypes.TABLET_PORTRAIT);
-        expect(DeviceTypes.getDeviceTypeFromIdOrString('TabletPortrait')).toEqual(DeviceTypes.TABLET_PORTRAIT);
-        expect(DeviceTypes.getDeviceTypeFromIdOrString('tabletPOrtrait')).toEqual(DeviceTypes.TABLET_PORTRAIT);
-
-        expect(DeviceTypes.getDeviceTypeFromIdOrString(3)).toEqual(DeviceTypes.TABLET_LANDSCAPE);
-        expect(DeviceTypes.getDeviceTypeFromIdOrString('TabletLandscape')).toEqual(DeviceTypes.TABLET_LANDSCAPE);
-        expect(DeviceTypes.getDeviceTypeFromIdOrString('tabletlAndscape')).toEqual(DeviceTypes.TABLET_LANDSCAPE);
-
-        expect(DeviceTypes.getDeviceTypeFromIdOrString(4)).toEqual(DeviceTypes.MOBILE);
-        expect(DeviceTypes.getDeviceTypeFromIdOrString('Mobile')).toEqual(DeviceTypes.MOBILE);
-        expect(DeviceTypes.getDeviceTypeFromIdOrString('mobiLe')).toEqual(DeviceTypes.MOBILE);
-
-        expect(DeviceTypes.getDeviceTypeFromIdOrString(5)).toEqual(DeviceTypes.MOBILE_PORTRAIT);
-        expect(DeviceTypes.getDeviceTypeFromIdOrString('MobilePortrait')).toEqual(DeviceTypes.MOBILE_PORTRAIT);
-        expect(DeviceTypes.getDeviceTypeFromIdOrString('mobilepOrtrait')).toEqual(DeviceTypes.MOBILE_PORTRAIT);
-
-        expect(DeviceTypes.getDeviceTypeFromIdOrString(6)).toEqual(DeviceTypes.MOBILE_LANDSCAPE);
-        expect(DeviceTypes.getDeviceTypeFromIdOrString('MobileLandscape')).toEqual(DeviceTypes.MOBILE_LANDSCAPE);
-        expect(DeviceTypes.getDeviceTypeFromIdOrString('mobilelAndscape')).toEqual(DeviceTypes.MOBILE_LANDSCAPE);
-
-    });
-
-    it('gets the current device', () => {
-        mockWindow(DesktopMockID);
-        expect(DeviceTypes.getCurrentDevice()).toBe(DeviceTypes.DESKTOP);
-
-        mockWindow(TabletMockID);
-        expect(DeviceTypes.getCurrentDevice()).toBe(DeviceTypes.TABLET);
-
-        mockWindow(TabletPortraitMockID);
-        expect(DeviceTypes.getCurrentDevice()).toBe(DeviceTypes.TABLET_PORTRAIT);
-
-        mockWindow(TabletLandscapeMockID);
-        expect(DeviceTypes.getCurrentDevice()).toBe(DeviceTypes.TABLET_LANDSCAPE);
-
-        mockWindow(MobileMockID);
-        expect(DeviceTypes.getCurrentDevice()).toBe(DeviceTypes.MOBILE);
-
-        mockWindow(MobilePortraitMockID);
-        expect(DeviceTypes.getCurrentDevice()).toBe(DeviceTypes.MOBILE_PORTRAIT);
-
-        mockWindow(MobileLandscapeMockID);
-        expect(DeviceTypes.getCurrentDevice()).toBe(DeviceTypes.MOBILE_LANDSCAPE);
-
-        mockWindow(7);
-        expect(() => DeviceTypes.getCurrentDevice()).toThrow(new Error('No matching device for the given identifier.'));
-    });
-
-    it('checks if currentDevice is a Mobile Device', () => {
-        mockWindow(DesktopMockID);
-        expect(DeviceTypes.isMobile()).toEqual(false);
-
-        mockWindow(TabletMockID);
-        expect(DeviceTypes.isMobile()).toEqual(false);
-
-        mockWindow(TabletPortraitMockID);
-        expect(DeviceTypes.isMobile()).toEqual(false);
-
-        mockWindow(TabletLandscapeMockID);
-        expect(DeviceTypes.isMobile()).toEqual(false);
-
-        mockWindow(MobileMockID);
-        expect(DeviceTypes.isMobile()).toEqual(true);
-
-        mockWindow(MobilePortraitMockID);
-        expect(DeviceTypes.isMobile()).toEqual(true);
-
-        mockWindow(MobileLandscapeMockID);
-        expect(DeviceTypes.isMobile()).toEqual(true);
-    });
-
-    it('checks if currentDevice is a Tablet Device', () => {
-        mockWindow(DesktopMockID);
-        expect(DeviceTypes.isTablet()).toEqual(false);
-
-        mockWindow(TabletMockID);
-        expect(DeviceTypes.isTablet()).toEqual(true);
-
-        mockWindow(TabletPortraitMockID);
-        expect(DeviceTypes.isTablet()).toEqual(true);
-
-        mockWindow(TabletLandscapeMockID);
-        expect(DeviceTypes.isTablet()).toEqual(true);
-
-        mockWindow(MobileMockID);
-        expect(DeviceTypes.isTablet()).toEqual(false);
-
-        mockWindow(MobilePortraitMockID);
-        expect(DeviceTypes.isTablet()).toEqual(false);
-
-        mockWindow(MobileLandscapeMockID);
-        expect(DeviceTypes.isTablet()).toEqual(false);
-    });
-
-    it('checks if currentDevice is a Desktop Device', () => {
-        mockWindow(DesktopMockID);
-        expect(DeviceTypes.isDesktop()).toEqual(true);
-
-        mockWindow(TabletMockID);
-        expect(DeviceTypes.isDesktop()).toEqual(false);
-
-        mockWindow(TabletPortraitMockID);
-        expect(DeviceTypes.isDesktop()).toEqual(false);
-
-        mockWindow(TabletLandscapeMockID);
-        expect(DeviceTypes.isDesktop()).toEqual(false);
-
-        mockWindow(MobileMockID);
-        expect(DeviceTypes.isDesktop()).toEqual(false);
-
-        mockWindow(MobilePortraitMockID);
-        expect(DeviceTypes.isDesktop()).toEqual(false);
-
-        mockWindow(MobileLandscapeMockID);
-        expect(DeviceTypes.isDesktop()).toEqual(false);
-    });
+    }, [
+        ['mockId', 'device', 'isMobile', 'isTablet', 'isDesktop'],
+        [DesktopMockID, Desktop, false, false, true],
+        [TabletMockID, Tablet, false, true, false],
+        [TabletPortraitMockID, TabletPortrait, false, true, false],
+        [TabletLandscapeMockID, TabletLandscape, false, true, false],
+        [MobileMockID, Mobile, true, false, false],
+        [MobilePortraitMockID, MobilePortrait, true, false, false],
+        [MobileLandscapeMockID, MobileLandscape, true, false, false],
+    ]);
 
 });
-
-// TODO write test cases for getCurrentDevice, isMobile, isDeskTop, isTablet, ResponsiveViews.
 
 describe('Test Responsive View', () => {
 
@@ -188,7 +132,7 @@ describe('Test Responsive View', () => {
 
     beforeEach(() => {
         mockWindow = (propertyValue: number) => {
-            window.getComputedStyle = (element: Element, pseudoElt?: string) => {
+            window.getComputedStyle = (element: Element, pseudoElement?: string) => {
                 return {
                     getPropertyValue: (propertyName: string) => { return propertyValue.toString(); }
                 } as CSSStyleDeclaration;
@@ -200,38 +144,34 @@ describe('Test Responsive View', () => {
         window.getComputedStyle = oldGetComputedStyle;
     });
 
-    class ResponsiveViewImpl extends  ResponsiveView<{}, {}> {
-
-        constructor() {
-            super();
-        }
+    class ResponsiveViewImpl extends  ResponsiveView<void, void> {
 
         renderDefault() {
-            return (<div>Default</div>);
+            return (<div>{Desktop}</div>);
         }
 
         renderMobile(): JSX.Element {
-            return (<div>Mobile</div>);
+            return (<div>{Mobile}</div>);
         }
 
         renderMobilePortrait(): JSX.Element {
-            return (<div>Mobile Portrait</div>);
+            return (<div>{MobilePortrait}</div>);
         }
 
         renderMobileLandscape(): JSX.Element {
-            return (<div>Mobile Landscape</div>);
+            return (<div>{MobileLandscape}</div>);
         }
 
         renderTablet(): JSX.Element {
-            return (<div>Tablet</div>);
+            return (<div>{Tablet}</div>);
         }
 
         renderTabletPortrait(): JSX.Element {
-            return (<div>Tablet Portrait</div>);
+            return (<div>{TabletPortrait}</div>);
         }
 
         renderTabletLandscape(): JSX.Element {
-            return (<div>Tablet Landscape</div>);
+            return (<div>{TabletLandscape}</div>);
         }
     }
 
@@ -242,139 +182,65 @@ describe('Test Responsive View', () => {
 
     describe('Test Responsive View with the mocked window', () => {
 
-        it('renders in Desktop device', () => {
-            mockWindow(DesktopMockID);
-            let view: React.Component<{}, {}> = TestUtils.renderIntoDocument<React.Component<{}, {}>>(
+        unroll('renders in #device device', (done, testArgs) => {
+            mockWindow(testArgs.mockId);
+            let view: React.Component<void, void> = TestUtils.renderIntoDocument<React.Component<void, void>>(
                 <ResponsiveViewImpl />
             );
-            expect(TestUtils.scryRenderedDOMComponentsWithTag(view, 'div')[0].textContent).toBe('Default');
-        });
+            expect(TestUtils.scryRenderedDOMComponentsWithTag(view, 'div')[0].textContent).toBe(testArgs.device);
+            done();
+        }, [
+            ['mockId', 'device'],
+            [DesktopMockID, Desktop],
+            [TabletMockID, Tablet],
+            [TabletPortraitMockID, TabletPortrait],
+            [TabletLandscapeMockID, TabletLandscape],
+            [MobileMockID, Mobile],
+            [MobilePortraitMockID, MobilePortrait],
+            [MobileLandscapeMockID, MobileLandscape]
+        ]);
 
-        it('renders in Tablet device', () => {
-            mockWindow(TabletMockID);
-            let view: React.Component<{}, {}> = TestUtils.renderIntoDocument<React.Component<{}, {}>>(
-                <ResponsiveViewImpl />
-            );
-            expect(TestUtils.scryRenderedDOMComponentsWithTag(view, 'div')[0].textContent).toBe('Tablet');
-        });
-
-        it('renders in Tablet Portrait device', () => {
-            mockWindow(TabletPortraitMockID);
-            let view: React.Component<{}, {}> = TestUtils.renderIntoDocument<React.Component<{}, {}>>(
-                <ResponsiveViewImpl />
-            );
-            expect(TestUtils.scryRenderedDOMComponentsWithTag(view, 'div')[0].textContent).toBe('Tablet Portrait');
-        });
-
-        it('renders in Tablet Landscape device', () => {
-            mockWindow(TabletLandscapeMockID);
-            let view: React.Component<{}, {}> = TestUtils.renderIntoDocument<React.Component<{}, {}>>(
-                <ResponsiveViewImpl />
-            );
-            expect(TestUtils.scryRenderedDOMComponentsWithTag(view, 'div')[0].textContent).toBe('Tablet Landscape');
-        });
-
-        it('renders in Mobile device', () => {
-            mockWindow(MobileMockID);
-            let view: React.Component<{}, {}> = TestUtils.renderIntoDocument<React.Component<{}, {}>>(
-                <ResponsiveViewImpl />
-            );
-            expect(TestUtils.scryRenderedDOMComponentsWithTag(view, 'div')[0].textContent).toBe('Mobile');
-        });
-
-        it('renders in Mobile Portrait device', () => {
-            mockWindow(MobilePortraitMockID);
-            let view: React.Component<{}, {}> = TestUtils.renderIntoDocument<React.Component<{}, {}>>(
-                <ResponsiveViewImpl />
-            );
-            expect(TestUtils.scryRenderedDOMComponentsWithTag(view, 'div')[0].textContent).toBe('Mobile Portrait');
-        });
-
-        it('renders in Mobile Landscape device', () => {
-            mockWindow(MobileLandscapeMockID);
-            let view: React.Component<{}, {}> = TestUtils.renderIntoDocument<React.Component<{}, {}>>(
-                <ResponsiveViewImpl />
-            );
-            expect(TestUtils.scryRenderedDOMComponentsWithTag(view, 'div')[0].textContent).toBe('Mobile Landscape');
-        });
     });
 
         describe('renders a Responsive View with the render Desktop, Mobile and Tablet functions defined', () => {
-            class TestView extends ResponsiveView<{}, {}> {
+            class TestView extends ResponsiveView<void, void> {
 
                 protected renderDefault(): JSX.Element {
-                    return (<div>Default</div>);
+                    return (<div>{Desktop}</div>);
                 }
 
                 protected renderMobile() : JSX.Element {
-                    return (<div>Mobile</div>);
+                    return (<div>{Mobile}</div>);
                 }
 
                 protected renderTablet(): JSX.Element {
-                return (<div>Tablet</div>);
+                return (<div>{Tablet}</div>);
             }
 
             }
 
-            it('renders on Desktop device', () => {
-                mockWindow(DesktopMockID);
-                let view: React.Component<{}, {}> = TestUtils.renderIntoDocument<React.Component<{}, {}>>(
+            unroll('renders on #device device', (done, testArgs) => {
+                mockWindow(testArgs.mockId);
+                let view: React.Component<void, void> = TestUtils.renderIntoDocument<React.Component<void, void>>(
                     <TestView />
                 );
-                expect(TestUtils.scryRenderedDOMComponentsWithTag(view, 'div')[0].textContent).toEqual('Default');
-            });
+                expect(TestUtils.scryRenderedDOMComponentsWithTag(view, 'div')[0].textContent).toEqual(testArgs.device);
+                done();
+            }, [
+                ['mockId', 'device'],
+                [DesktopMockID, Desktop],
+                [TabletMockID, Tablet],
+                [TabletPortraitMockID, Tablet],
+                [TabletLandscapeMockID, Tablet],
+                [MobileMockID, Mobile],
+                [MobilePortraitMockID, Mobile],
+                [MobileLandscapeMockID, Mobile]
+            ]);
 
-            it('renders on Tablet device', () => {
-                mockWindow(TabletMockID);
-                let view: React.Component<{}, {}> = TestUtils.renderIntoDocument<React.Component<{}, {}>>(
-                    <TestView />
-                );
-                expect(TestUtils.scryRenderedDOMComponentsWithTag(view, 'div')[0].textContent).toEqual('Tablet');
-            });
-
-            it('renders on Tablet Portrait device', () => {
-                mockWindow(TabletPortraitMockID);
-                let view: React.Component<{}, {}> = TestUtils.renderIntoDocument<React.Component<{}, {}>>(
-                    <TestView />
-                );
-                expect(TestUtils.scryRenderedDOMComponentsWithTag(view, 'div')[0].textContent).toEqual('Tablet');
-            });
-
-            it('renders on Tablet Landscape device', () => {
-                mockWindow(TabletLandscapeMockID);
-                let view: React.Component<{}, {}> = TestUtils.renderIntoDocument<React.Component<{}, {}>>(
-                    <TestView />
-                );
-                expect(TestUtils.scryRenderedDOMComponentsWithTag(view, 'div')[0].textContent).toEqual('Tablet');
-            });
-
-            it('renders on Mobile device', () => {
-                mockWindow(MobileMockID);
-                let view: React.Component<{}, {}> = TestUtils.renderIntoDocument<React.Component<{}, {}>>(
-                    <TestView />
-                );
-                expect(TestUtils.scryRenderedDOMComponentsWithTag(view, 'div')[0].textContent).toEqual('Mobile');
-            });
-
-            it('renders on Mobile Portrait device', () => {
-                mockWindow(MobilePortraitMockID);
-                let view: React.Component<{}, {}> = TestUtils.renderIntoDocument<React.Component<{}, {}>>(
-                    <TestView />
-                );
-                expect(TestUtils.scryRenderedDOMComponentsWithTag(view, 'div')[0].textContent).toEqual('Mobile');
-            });
-
-            it('renders on Mobile Landscape device', () => {
-                mockWindow(MobileLandscapeMockID);
-                let view: React.Component<{}, {}> = TestUtils.renderIntoDocument<React.Component<{}, {}>>(
-                    <TestView />
-                );
-                expect(TestUtils.scryRenderedDOMComponentsWithTag(view, 'div')[0].textContent).toEqual('Mobile');
-            });
         });
 
     describe('renders a Responsive View with only renderDefault function', () => {
-        class DefaultView extends ResponsiveView<{}, {}> {
+        class DefaultView extends ResponsiveView<void, void> {
 
             protected renderDefault(): JSX.Element {
                 return (<div>Default</div>);
@@ -382,61 +248,23 @@ describe('Test Responsive View', () => {
 
         }
 
-        it('renders on Desktop device', () => {
-            mockWindow(DesktopMockID);
-            let view: React.Component<{}, {}> = TestUtils.renderIntoDocument<React.Component<{}, {}>>(
+        unroll('renders on #device device', (done, testArgs) => {
+            mockWindow(testArgs.mockId);
+            let view: React.Component<void, void> = TestUtils.renderIntoDocument<React.Component<void, void>>(
                 <DefaultView />
             );
             expect(TestUtils.scryRenderedDOMComponentsWithTag(view, 'div')[0].textContent).toEqual('Default');
-        });
-
-        it('renders on Tablet device', () => {
-            mockWindow(TabletMockID);
-            let view: React.Component<{}, {}> = TestUtils.renderIntoDocument<React.Component<{}, {}>>(
-                <DefaultView />
-            );
-            expect(TestUtils.scryRenderedDOMComponentsWithTag(view, 'div')[0].textContent).toEqual('Default');
-        });
-
-        it('renders on Tablet Portrait device', () => {
-            mockWindow(TabletPortraitMockID);
-            let view: React.Component<{}, {}> = TestUtils.renderIntoDocument<React.Component<{}, {}>>(
-                <DefaultView />
-            );
-            expect(TestUtils.scryRenderedDOMComponentsWithTag(view, 'div')[0].textContent).toEqual('Default');
-        });
-
-        it('renders on Tablet Landscape device', () => {
-            mockWindow(TabletLandscapeMockID);
-            let view: React.Component<{}, {}> = TestUtils.renderIntoDocument<React.Component<{}, {}>>(
-                <DefaultView />
-            );
-            expect(TestUtils.scryRenderedDOMComponentsWithTag(view, 'div')[0].textContent).toEqual('Default');
-        });
-
-        it('renders on Mobile device', () => {
-            mockWindow(MobileMockID);
-            let view: React.Component<{}, {}> = TestUtils.renderIntoDocument<React.Component<{}, {}>>(
-                <DefaultView />
-            );
-            expect(TestUtils.scryRenderedDOMComponentsWithTag(view, 'div')[0].textContent).toEqual('Default');
-        });
-
-        it('renders on Mobile Portrait device', () => {
-            mockWindow(MobilePortraitMockID);
-            let view: React.Component<{}, {}> = TestUtils.renderIntoDocument<React.Component<{}, {}>>(
-                <DefaultView />
-            );
-            expect(TestUtils.scryRenderedDOMComponentsWithTag(view, 'div')[0].textContent).toEqual('Default');
-        });
-
-        it('renders on Mobile Landscape device', () => {
-            mockWindow(MobileLandscapeMockID);
-            let view: React.Component<{}, {}> = TestUtils.renderIntoDocument<React.Component<{}, {}>>(
-                <DefaultView />
-            );
-            expect(TestUtils.scryRenderedDOMComponentsWithTag(view, 'div')[0].textContent).toEqual('Default');
-        });
+            done();
+        }, [
+            ['mockId', 'device'],
+            [DesktopMockID, Desktop],
+            [TabletMockID, Tablet],
+            [TabletPortraitMockID, TabletPortrait],
+            [TabletLandscapeMockID, TabletLandscape],
+            [MobileMockID, Mobile],
+            [MobilePortraitMockID, MobilePortrait],
+            [MobileLandscapeMockID, MobileLandscape]
+        ]);
 
     });
 

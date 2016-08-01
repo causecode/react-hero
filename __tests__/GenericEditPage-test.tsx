@@ -14,54 +14,58 @@ import {Link} from 'react-router';
 import {IBaseModel} from '../src/interfaces/interfaces.ts';
 
 describe('Test Generic Edit Page', () => {
-    let resource, handleSubmit, handleDelete, ModelInstance, keys, submit, del;
+    let handleSubmit: jest.Mock<Function>, handleDelete: jest.Mock<Function>;
+    let resource: string = 'test';
+    let instanceData = {id: '1', author: 'abc'};
+    let ModelInstance: IBaseModel = new BaseModel(instanceData);
+    let keys: string[] = Object.keys(ModelInstance.instanceData);
 
     beforeEach(() => {
-        submit = del = false;
-        let instanceData = {id: '1', author: 'abc'};
-        ModelInstance = new BaseModel(instanceData);
-        keys = Object.keys(ModelInstance.instanceData);
-        handleSubmit = (instance: IBaseModel, e: Event) => {
-            submit = true;
-        };
-        handleDelete = (instance: IBaseModel) => {
-            del = true;
-        };
-        resource = 'test';
-
+        handleSubmit = jest.fn<Function>();
+        handleDelete = jest.fn<Function>();
     });
 
-    it('renders a simple GenericEditPage', () => {
+    function genericEditPageTests(editPage) {
 
-        let EditPage: any = TestUtils.renderIntoDocument(
-            <GenericEditPage instance={ModelInstance}
-                    handleSubmit={handleSubmit} handleDelete={handleDelete} resource={resource}/>
-        );
-
-        let grid = TestUtils
-                .scryRenderedComponentsWithType<React.Component<{}, {}>, React.ComponentClass<{}>>(EditPage, Grid)[0];
-
-        expect(grid).toBeTruthy();
-
-        let formControls: any = TestUtils.scryRenderedDOMComponentsWithTag(grid, 'input');
-        let labels: any = TestUtils.scryRenderedDOMComponentsWithTag(grid, 'label');
+        let formControls: HTMLInputElement[] =
+            TestUtils.scryRenderedDOMComponentsWithTag(editPage, 'input') as HTMLInputElement[];
+        let labels: HTMLInputElement[] =
+            TestUtils.scryRenderedDOMComponentsWithTag(editPage, 'label') as HTMLInputElement[];
 
         expect(formControls.length).toBe(2);
-        for (let i = 0; i < formControls.length; i++) {
+        for (let i: number = 0; i < formControls.length; i++) {
             expect(formControls[i].value).toEqual(ModelInstance.instanceData[keys[i]]);
             expect(labels[i].textContent).toEqual(keys[i]);
         }
 
-        let newVal = 'aa';
-        ModelInstance.instanceData = {id: newVal, author: newVal};
-        EditPage.setState({instance: ModelInstance});
+        let randomString: string = 'aa';
+        ModelInstance.instanceData = {id: randomString, author: randomString};
+        editPage.setState({instance: ModelInstance});
 
-        for (let i = 0; i < formControls.length; i++) {
+        for (let i: number = 0; i < formControls.length; i++) {
             expect(formControls[i].value).toEqual('aa');
         }
 
-        let buttons = [...TestUtils.scryRenderedDOMComponentsWithTag(grid, 'button'),
-                ...TestUtils.scryRenderedComponentsWithType(grid, Link)];
+        expect(handleSubmit).not.toBeCalled();
+
+        let formInstance = TestUtils.scryRenderedDOMComponentsWithTag(editPage, 'form');
+
+        TestUtils.Simulate.submit(formInstance[0]);
+
+        expect(handleSubmit).toBeCalled();
+    }
+
+    it('renders a simple GenericEditPage', () => {
+
+        let editPage: React.Component<void, void> = TestUtils.renderIntoDocument<React.Component<void, void>>(
+            <GenericEditPage instance={ModelInstance}
+                    handleSubmit={handleSubmit} handleDelete={handleDelete} resource={resource}/>
+        );
+
+        genericEditPageTests(editPage);
+
+        let buttons = [...TestUtils.scryRenderedDOMComponentsWithTag(editPage, 'button'),
+        ...TestUtils.scryRenderedComponentsWithType(editPage, Link)];
 
         expect(buttons.length).toBe(3);
         expect(buttons[0].textContent).toBe('Update');
@@ -69,69 +73,34 @@ describe('Test Generic Edit Page', () => {
         expect(TestUtils.scryRenderedDOMComponentsWithTag(buttons[2], 'a')[0].textContent).toBe('Cancel');
 
         expect(buttons[2].props.to).toEqual(`${resource}/list`);
-
-        expect(submit).toBe(false);
-        expect(del).toBe(false);
-
-        let formInstance = TestUtils.scryRenderedDOMComponentsWithTag(EditPage, 'form');
-
-        TestUtils.Simulate.submit(formInstance[0]);
+        expect(handleDelete).not.toBeCalled();
         TestUtils.Simulate.click(ReactDOM.findDOMNode(buttons[1]));
-
-        expect(submit).toBe(true);
-        expect(del).toBe(true);
-
+        expect(handleDelete).toBeCalled();
     });
 
     it('renders an EditPage without the handleDelete function passed in the props', () => {
-        let EditPage: any = TestUtils.renderIntoDocument(
+        let editPage: React.Component<void, void> = TestUtils.renderIntoDocument<React.Component<void, void>>(
              <GenericEditPage handleSubmit={handleSubmit} instance={ModelInstance}/>
         );
 
-        let formControls: any = TestUtils.scryRenderedDOMComponentsWithTag(EditPage, 'input');
-        let labels: any = TestUtils.scryRenderedDOMComponentsWithTag(EditPage, 'label');
-
-        expect(formControls.length).toBe(2);
-        for (let i = 0; i < formControls.length; i++) {
-            expect(formControls[i].value).toEqual(ModelInstance.instanceData[keys[i]]);
-            expect(labels[i].textContent).toEqual(keys[i]);
-        }
-
-        let newVal = 'aa';
-        ModelInstance.instanceData = {id: newVal, author: newVal};
-        EditPage.setState({instance: ModelInstance});
-
-        for (let i = 0; i < formControls.length; i++) {
-            expect(formControls[i].value).toEqual('aa');
-        }
-
-        let buttons = [...TestUtils.scryRenderedDOMComponentsWithTag(EditPage, 'button'),
-            ...TestUtils.scryRenderedComponentsWithType(EditPage, Link)];
+        genericEditPageTests(editPage);
+        let buttons = [...TestUtils.scryRenderedDOMComponentsWithTag(editPage, 'button'),
+            ...TestUtils.scryRenderedComponentsWithType(editPage, Link)];
 
         expect(buttons.length).toBe(2);
         expect(buttons[0].textContent).toBe('Create');
         expect(TestUtils.scryRenderedDOMComponentsWithTag(buttons[1], 'a')[0].textContent).toBe('Cancel');
 
         expect(buttons[1].props.to).toEqual(`${ModelInstance.resourceName}/list`);
-
-        expect(submit).toBe(false);
-
-        let formInstance = TestUtils.scryRenderedDOMComponentsWithTag(EditPage, 'form');
-
-        TestUtils.Simulate.submit(formInstance[0]);
-
-        expect(submit).toBe(true);
     });
 
     it('renders an EditPage without any props', () => {
-        let page = TestUtils.renderIntoDocument<React.Component<{}, {}>>(
+        let page = TestUtils.renderIntoDocument<React.Component<void, void>>(
             <GenericEditPage/>
         );
 
-        let formControls: any = TestUtils.scryRenderedDOMComponentsWithTag(page, 'input');
-        let labels: any = TestUtils.scryRenderedDOMComponentsWithTag(page, 'label');
-        expect(formControls.length).toEqual(0);
-        expect(labels.length).toEqual(0);
+        expect(TestUtils.scryRenderedDOMComponentsWithTag(page, 'input').length).toEqual(0);
+        expect(TestUtils.scryRenderedDOMComponentsWithTag(page, 'label').length).toEqual(0);
 
         let buttons = [...TestUtils.scryRenderedDOMComponentsWithTag(page, 'button'),
             ...TestUtils.scryRenderedDOMComponentsWithTag(page, 'a')];

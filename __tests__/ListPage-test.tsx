@@ -9,8 +9,7 @@ import {ComponentService} from '../src/utils/componentService';
 import {IShallowTestUtils} from '../src/interfaces/interfaces';
 
 describe('test List Page', () => {
-    let renderer: React.ShallowRenderer, resource: string, instances: Object,
-        fetchInstanceData: (...args: any[]) => void, handleSubmit: Function, handleDelete: Function;
+    let { renderer, instances, resource, fetchInstanceData }: IInitializerData = initializeTestCase();
 
     beforeEach(() => {
         let data: IInitializerData = initializeTestCase();
@@ -20,50 +19,41 @@ describe('test List Page', () => {
         fetchInstanceData = data.fetchInstanceData;
     });
 
+    function testPageAndResource(innerPage: React.ComponentClass<{}>) {
+        let page = renderer.getRenderOutput();
+        expect(page).toBeTruthy();
+        let renderedPage: React.ReactElement<{resource: string}> = ShallowTestUtils.findWithType(page, innerPage);
+        expect(renderedPage).toBeTruthy();
+        expect(renderedPage.props.resource).toEqual(resource);
+    }
+
     it('renders a simple ListPage', () => {
         renderer.render(
             <ListPage params={{resource: resource}} />
         );
 
-        let page = renderer.getRenderOutput();
-
-        expect(page).toBeTruthy();
-        let renderedPage = ShallowTestUtils.findWithType(page, GenericListPage);
-        expect(renderedPage).toBeTruthy();
-        expect(renderedPage.props.resource).toEqual(resource);
-    });
-
-    it('renders a List Page without any props', () => {
-        renderer.render(
-            <ListPage />
-        );
-
-        let page = renderer.getRenderOutput();
-
-        expect(page).toBeTruthy();
+        testPageAndResource(GenericListPage);
     });
 
     it('renders a List Page with user Defined ListPage', () => {
-        class TestListPage extends React.Component<{}, {}> {
-            render() {
-                return(
-                    <div></div>
-                );
-            }
-        }
+        class TestListPage extends React.Component<{}, {}> {}
 
         ComponentService.register(TestListPage);
 
         renderer.render(
-           <ListPage params={{resource: resource}}/>
+            <ListPage params={{resource: resource}}/>
+        );
+
+        testPageAndResource(TestListPage);
+    });
+
+    it('renders a List Page without any props', () => {
+        renderer.render(
+        <ListPage />
         );
 
         let page = renderer.getRenderOutput();
         expect(page).toBeTruthy();
-        let renderedPage = ShallowTestUtils.findWithType(page, TestListPage);
-        expect(renderedPage).toBeTruthy();
-        expect(renderedPage.props.resource).toEqual(resource);
-
     });
 
 });

@@ -14,7 +14,7 @@ export interface IGenericEditPageProps extends IInstancePageProps {
 
 export class GenericEditPage extends React.Component<IGenericEditPageProps, IGenericEditPageState> {
 
-    constructor(props: IGenericEditPageProps) {
+constructor(props: IGenericEditPageProps) {
         super();
         this.state = { instance: props.instance };
     }
@@ -27,9 +27,8 @@ export class GenericEditPage extends React.Component<IGenericEditPageProps, IGen
 
     render(): JSX.Element {
         let { instance, handleSubmit, handleDelete } = this.props;
-        let stubFunction: Stub = (...args: any[]) => { return; };
         if (!handleSubmit) {
-            handleSubmit = stubFunction;
+            handleSubmit = (...args: any[]) => { return; };
         }
         let resource: string = this.props.resource;
         if (!resource) {

@@ -11,61 +11,61 @@ import {initializeTestCase} from './../src/utils/initializeTestCase';
 import * as React from 'react';
 import {Button} from 'react-bootstrap';
 import {IShallowTestUtils} from '../src/interfaces/interfaces';
+import {IInitializerData} from '../src/utils/initializeTestCase';
 
 describe('render a simple FilterForm', () => {
-    let renderer: React.ShallowRenderer, fields: string[], resource: string,
-            sendFilters: (...args: any[]) => any, children: Array<{}>, reduxFormFields: {};
+    let sendFilters: jest.Mock<Function>;
+    let children = [
+        <DropDownFilter
+            label="status"
+            paramName="status"
+            possibleValues={['enable', 'disable', 'inactive']}
+            key="1"
+        />,
+        <RangeFilter
+            label="Bill Amount"
+            paramName="billAmount"
+            key="2"
+        />,
+        <DateRangeFilter
+            label="Date Created"
+            paramName="dateCreated"
+            key="3"
+        />,
+        <DropDownFilter
+            label="types"
+            paramName="types"
+            possibleValues={['Zoo', 'Jungle', 'Forest']}
+            key="4"
+        />,
+        <QueryFilter
+            label="Search"
+            paramName="query"
+            placeholder={['First Name', 'Last Name', 'Email']}
+            key="5"
+        />
+    ];
+    let reduxFormFields;
+    let fields: string[] = [];
+    let { renderer , resource }: IInitializerData = initializeTestCase();
+
+    for (let child: any of children) {
+        let param = child.props.paramName;
+        if (['RangeFilter', 'DateRangeFilter'].indexOf(child.type.name) > -1) {
+            fields.push(`${param}From`, `${param}To`);
+        } else {
+            fields.push(param);
+        }
+    }
+
+    reduxFormFields = {};
+
+    for (let field: string of fields) {
+        reduxFormFields[field] = {name: field};
+    }
+
     beforeEach(() => {
-        let data = initializeTestCase();
-        renderer = data.renderer;
-        resource = 'test';
         sendFilters = jest.fn();
-        fields = [];
-        children = [
-            <DropDownFilter
-                label="status"
-                paramName="status"
-                possibleValues={['enable', 'disable', 'inactive']}
-                key="1"
-            />,
-            <RangeFilter
-                label="Bill Amount"
-                paramName="billAmount"
-                key="2"
-            />,
-            <DateRangeFilter
-                label="Date Created"
-                paramName="dateCreated"
-                key="3"
-            />,
-            <DropDownFilter
-                label="types"
-                paramName="types"
-                possibleValues={['Zoo', 'Jungle', 'Forest']}
-                key="4"
-            />,
-            <QueryFilter
-                label="Search"
-                paramName="query"
-                placeholder={['First Name', 'Last Name', 'Email']}
-                key="5"
-            />
-        ];
-
-        for (let child: any of children) {
-            let param = child.props.paramName;
-            if (['RangeFilter', 'DateRangeFilter'].indexOf(child.type.name) > -1) {
-                fields.push(`${param}From`, `${param}To`);
-            } else {
-                fields.push(param);
-            }
-        }
-
-        reduxFormFields = {};
-
-        for (let field: string of fields) {
-            reduxFormFields[field] = {name: field};
-        }
     });
 
     it('renders a simple filterForm', () => {
@@ -91,6 +91,7 @@ describe('render a simple FilterForm', () => {
         expect(dropdown.length).toEqual(2);
         expect(dropdown[0].props.fields.length).toEqual(1);
         expect(dropdown[0].props.fields[0]).toEqual(reduxFormFields[dropdown[0].props.paramName]);
+        expect(dropdown[1].props.fields.length).toEqual(1);
         expect(dropdown[1].props.fields[0]).toEqual(reduxFormFields[dropdown[1].props.paramName]);
 
         expect(range.length).toEqual(1);
@@ -119,7 +120,7 @@ describe('render a simple FilterForm', () => {
         expect(ShallowTestUtils.findWithType(innerForm, Button)).toBeTruthy();
     });
 
-    it('renders a Filter Form with fields but no children', () => {
+    it('renders a FilterForm with fields but no children', () => {
         renderer.render(
         <FilterForm fields={{abc: {name: 'abc'}, dev: {name: 'dev'}}}/>
         );
@@ -131,7 +132,7 @@ describe('render a simple FilterForm', () => {
         expect(ShallowTestUtils.findWithType(form, Button)).toBeTruthy();
     });
 
-    it('renders a Filter Form with incorrect fields and Children', () => {
+    it('renders a FilterForm with incorrect fields and Children', () => {
         renderer.render(
             <FilterForm fields={{abc: {name: 'abc'}, dev: {name: 'dev'}, query: {name: 'query'}}}>
                 <DropDownFilter

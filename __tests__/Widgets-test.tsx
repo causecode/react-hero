@@ -1,14 +1,16 @@
 import {FormControl} from 'react-bootstrap';
 jest.unmock('../src/components/Widgets');
 import {initializeTestCase} from './../src/utils/initializeTestCase';
-import * as Widgets from '../src/components/Widgets';
+import {Title, Content, ButtonList, ButtonListItem, Description} from '../src/components/Widgets';
 import {IInitializerData} from './../src/utils/initializeTestCase';
 import * as React from 'react';
-const ShallowTestUtils: IShallowTestUtils = require<IShallowTestUtils>('react-shallow-testutils');
 import * as TestUtils from 'react-addons-test-utils';
 import * as ReactDOM from 'react-dom';
 import {Wrapper} from './../src/utils/Wrapper';
 import {IShallowTestUtils} from '../src/interfaces/interfaces';
+const unroll: any = require<any>('unroll');
+
+unroll.use(it);
 
 describe('Test Widgets', () => {
     let renderer: React.ShallowRenderer;
@@ -20,177 +22,43 @@ describe('Test Widgets', () => {
 
     describe('Test Title', () => {
 
-        it('renders a Title Widget with children', () => {
-            let widget: React.Component<{}, {}> = TestUtils.renderIntoDocument<React.Component<{}, {}>>(
+        unroll('renders a #title', (done, testArgs) => {
+            let widget: React.Component<void, void> = TestUtils.renderIntoDocument<React.Component<void, void>>(
                 <Wrapper>
-                <Widgets.Title>New Title</Widgets.Title>
+                    {testArgs.widgetContent}
                 </Wrapper>
             );
 
             expect(widget).toBeTruthy();
+            expect(TestUtils.scryRenderedDOMComponentsWithClass(widget, 'highlight').length)
+                    .toEqual(testArgs.highlightItems);
+            expect(TestUtils.scryRenderedDOMComponentsWithClass(widget, 'highlight-on-hover').length)
+                    .toEqual(testArgs.highlightOnHoverItems);
             let innerDiv: Element = TestUtils
-                    .findRenderedDOMComponentWithClass(widget, 'title');
+                    .findRenderedDOMComponentWithClass(widget, testArgs.contentClass);
             expect(innerDiv).toBeTruthy();
-            expect(innerDiv.textContent).toEqual('New Title');
+            expect(innerDiv.textContent).toEqual(testArgs.textContent);
+            done();
 
-        });
-
-        it('renders a Title Widget without children', () => {
-            let widget: React.Component<{}, {}> = TestUtils.renderIntoDocument<React.Component<{}, {}>>(
-                <Wrapper><Widgets.Title/></Wrapper>
-            );
-
-            expect(widget).toBeTruthy();
-            let innerDiv: Element = TestUtils
-                    .findRenderedDOMComponentWithClass(widget, 'title');
-            expect(innerDiv).toBeTruthy();
-            expect(innerDiv.textContent).toEqual('');
-        });
-    });
-
-    describe('Test Content', () => {
-
-        it('renders a Content Widget with children', () => {
-            let widget: React.Component<{}, {}> = TestUtils.renderIntoDocument<React.Component<{}, {}>>(
-                <Wrapper><Widgets.Content>New Content</Widgets.Content></Wrapper>
-            );
-
-            expect(widget).toBeTruthy();
-            let innerDiv: Element = TestUtils
-                    .findRenderedDOMComponentWithClass(widget, 'widget-content');
-            expect(innerDiv).toBeTruthy();
-            expect(innerDiv.textContent).toEqual('New Content');
-
-        });
-
-        it('renders a Content Widget without children', () => {
-            let widget: React.Component<{}, {}> = TestUtils.renderIntoDocument<React.Component<{}, {}>>(
-                <Wrapper><Widgets.Content/></Wrapper>
-            );
-
-            expect(widget).toBeTruthy();
-            let innerDiv : Element = TestUtils
-                    .findRenderedDOMComponentWithClass(widget, 'widget-content');
-            expect(innerDiv).toBeTruthy();
-            expect(innerDiv.textContent).toEqual('');
-        });
-
-    });
-
-    describe('Test Description', () => {
-
-        it('renders a Description Widget with children', () => {
-            let widget: React.Component<{}, {}> = TestUtils.renderIntoDocument<React.Component<{}, {}>>(
-                <Wrapper><Widgets.Description>New Description</Widgets.Description></Wrapper>
-            );
-
-            expect(widget).toBeTruthy();
-            let innerDiv: Element = TestUtils
-                    .findRenderedDOMComponentWithClass(widget, 'description');
-            expect(innerDiv).toBeTruthy();
-            expect(innerDiv.textContent).toEqual('New Description');
-
-        });
-
-        it('renders a Description Widget without children', () => {
-            let widget: React.Component<{}, {}> = TestUtils.renderIntoDocument<React.Component<{}, {}>>(
-                <Wrapper><Widgets.Description/></Wrapper>
-            );
-
-            expect(widget).toBeTruthy();
-            let innerDiv: Element  = TestUtils
-                    .findRenderedDOMComponentWithClass(widget, 'description');
-            expect(innerDiv).toBeTruthy();
-            expect(innerDiv.textContent).toEqual('');
-        });
-
-    });
-
-    describe('Test ButtonList', () => {
-
-        it('renders a ButtonList', () => {
-            let widget: React.Component<{}, {}> = TestUtils.renderIntoDocument<React.Component<{}, {}>>(
-                <Wrapper><Widgets.ButtonList>Buttons</Widgets.ButtonList></Wrapper>
-            );
-
-            expect(widget).toBeTruthy();
-            expect(TestUtils.scryRenderedDOMComponentsWithClass(widget, 'highlight').length).toBeFalsy();
-            let list: Element = TestUtils
-                    .findRenderedDOMComponentWithClass(widget, 'button-list');
-            expect(list).toBeTruthy();
-            expect(list.textContent).toEqual('Buttons');
-
-        });
-
-        it('renders a ButtonList with a highlightOnHover prop', () => {
-            let widget: React.Component<{}, {}> = TestUtils.renderIntoDocument<React.Component<{}, {}>>(
-                <Wrapper><Widgets.ButtonList highlightOnHover={true}>Buttons</Widgets.ButtonList></Wrapper>
-            );
-
-            expect(widget).toBeTruthy();
-            expect(TestUtils.scryRenderedDOMComponentsWithClass(widget, 'highlight').length).toBeTruthy();
-            let list: Element = TestUtils
-                    .findRenderedDOMComponentWithClass(widget, 'button-list');
-            expect(list).toBeTruthy();
-            expect(list.textContent).toEqual('Buttons');
-        });
-
-        it('renders a ButtonList without any props or children', () => {
-            let widget: React.Component<{}, {}> = TestUtils.renderIntoDocument<React.Component<{}, {}>>(
-               <Wrapper> <Widgets.ButtonList/></Wrapper>
-            );
-
-            expect(widget).toBeTruthy();
-            expect(TestUtils.scryRenderedDOMComponentsWithClass(widget, 'highlight').length).toBeFalsy();
-            let list: Element = TestUtils
-                    .findRenderedDOMComponentWithClass(widget, 'button-list');
-            expect(list).toBeTruthy();
-            expect(list.textContent).toEqual('');
-        });
-
-    });
-
-    describe('Test ButtonListItem', () => {
-
-        it('renders a ButtonListItem', () => {
-            let widget: React.Component<{}, {}> = TestUtils.renderIntoDocument<React.Component<{}, {}>>(
-                <Wrapper><Widgets.ButtonListItem>Buttons</Widgets.ButtonListItem></Wrapper>
-            );
-
-            expect(widget).toBeTruthy();
-            expect(TestUtils.scryRenderedDOMComponentsWithClass(widget, 'highlight-on-hover').length).toBeFalsy();
-            let list: Element = TestUtils
-                    .findRenderedDOMComponentWithClass(widget, 'button-list-item');
-            expect(list).toBeTruthy();
-            expect(list.textContent).toEqual('Buttons');
-
-        });
-
-        it('renders a ButtonListItem with a highlightOnHover prop', () => {
-            let widget: React.Component<{}, {}> = TestUtils.renderIntoDocument<React.Component<{}, {}>>(
-                <Wrapper><Widgets.ButtonListItem highlightOnHover={true}>Buttons</Widgets.ButtonListItem></Wrapper>
-            );
-
-            expect(widget).toBeTruthy();
-            expect(TestUtils.scryRenderedDOMComponentsWithClass(widget, 'highlight-on-hover').length).toBeTruthy();
-            let list: Element = TestUtils
-                    .findRenderedDOMComponentWithClass(widget, 'button-list-item');
-            expect(list).toBeTruthy();
-            expect(list.textContent).toEqual('Buttons');
-        });
-
-        it('renders a ButtonListItem without any props or children', () => {
-            let widget: React.Component<{}, {}> = TestUtils.renderIntoDocument<React.Component<{}, {}>>(
-                <Wrapper><Widgets.ButtonListItem/></Wrapper>
-            );
-
-            expect(widget).toBeTruthy();
-            expect(TestUtils.scryRenderedDOMComponentsWithClass(widget, 'highlight-on-hover').length).toBeFalsy();
-            let list: Element = TestUtils
-                    .findRenderedDOMComponentWithClass(widget, 'button-list-item');
-            expect(list).toBeTruthy();
-            expect(list.textContent).toEqual('');
-        });
+        }, [
+            ['title', 'widgetContent', 'contentClass', 'textContent', 'highlightItems', 'highlightOnHoverItems'],
+            ['Title with children', <Title>New Title</Title>, 'title', 'New Title', 0, 0],
+            ['Title without children', <Title/>, 'title', '', 0, 0],
+            ['Content with Children', <Content>New Content</Content>, 'widget-content', 'New Content', 0, 0],
+            ['Content without Children', <Content/>, 'widget-content', '', 0, 0],
+            ['Description with Children', <Description>New Description</Description>, 'description', 'New Description'
+                    , 0, 0],
+            ['Description without Children', <Description/>, 'description', '', 0, 0],
+            ['ButtonList with Children', <ButtonList>Buttons</ButtonList>, 'button-list', 'Buttons', 0, 0],
+            ['ButtonList with highlightOnHover', <ButtonList highlightOnHover={true}>Buttons</ButtonList>
+                    , 'button-list', 'Buttons', 1, 0],
+            ['ButtonList without Children', <ButtonList/>, 'button-list', '', 0, 0],
+            ['ButtonListItem with Children', <ButtonListItem>Button</ButtonListItem>, 'button-list-item', 'Button'
+                    , 0, 0],
+            ['ButtonListItem with highlightOnHover', <ButtonListItem highlightOnHover={true}>Button</ButtonListItem>
+                    , 'button-list-item', 'Button', 0, 1],
+            ['ButtonListItem without Children', <ButtonListItem/>, 'button-list-item', '', 0, 0],
+        ]);
 
     });
 

@@ -15,6 +15,7 @@ import {PagedListFilters} from '../src/components/PagedList/Filters/PagedListFil
 import {Wrapper} from './../src/utils/Wrapper';
 import {IShallowTestUtils} from '../src/interfaces/interfaces';
 import {IBaseModel} from '../src/interfaces/interfaces';
+import {IPagedListProps} from '../src/components-stateful/PagedList';
 
 const ShallowTestUtils: IShallowTestUtils = require<IShallowTestUtils>('react-shallow-testutils');
 
@@ -26,19 +27,41 @@ interface ITestModel extends IBaseModel {
 }
 
 describe('Test Paged List', () => {
-    let properties: string[], instanceList: ITestModel[], totalCount: number, setPage: (pageNumber: number) => void,
-            activePage: number, resource: string, fetchInstanceList: (resource: string, offset?: number) => void,
-            renderer: React.ShallowRenderer;
+    let renderer: React.ShallowRenderer;
+    let properties: string[] = ['id', 'author'];
+    let instanceList: ITestModel[] = [new BaseModel({id: '1', author: 'abc'}),
+            new BaseModel({id: '6', author: 'xyz'}) ];
+    let resource: string = 'test';
+    let totalCount: number = instanceList.length;
+    let activePage: number = 1;
+    let fetchInstanceList: jest.Mock<Function>;
+    let setPage = (pageNumber: number): void => { activePage = pageNumber; };
+
     beforeEach(() => {
         renderer = TestUtils.createRenderer();
-        properties = ['id', 'author'];
-        instanceList = [new BaseModel({id: '1', author: 'abc'}), new BaseModel({id: '6', author: 'xyz'}) ];
-        resource = 'test';
-        totalCount = instanceList.length;
-        activePage = 1;
         fetchInstanceList = jest.fn();
-        setPage = (pageNumber: number) => { activePage = pageNumber; };
     });
+
+    function testPaginationGridAndLink(
+        page: React.Component<IPagedListProps, void>,
+        activePageParam: number,
+        items: number,
+        instanceListParam: IBaseModel[],
+        propertiesParam: string[]
+    ) {
+        let pagination = ShallowTestUtils.findAllWithType(page, Pagination);
+        let grid = ShallowTestUtils.findAllWithType(page, DataGrid);
+        let link = ShallowTestUtils.findAllWithType(page, Link);
+
+        expect(pagination.length).toBe(1);
+        expect(pagination[0].props.activePage).toEqual(activePageParam);
+        expect(pagination[0].props.items).toEqual(items);
+        expect(link.length).toBe(1);
+        expect(link[0].props.to).toEqual(`${resource}/create`);
+        expect(grid.length).toBe(1);
+        expect(grid[0].props.instanceList).toEqual(instanceListParam);
+        expect(grid[0].props.properties).toEqual(propertiesParam);
+    }
 
     it('renders a simple PagedList', () => {
         renderer.render(
@@ -53,32 +76,15 @@ describe('Test Paged List', () => {
                 <div className="test-filter"></div>
             </PagedListImpl>
         );
-        let page = renderer.getRenderOutput<React.Component<{}, {}>>();
+        let page: React.Component<IPagedListProps, void> =
+                renderer.getRenderOutput<React.Component<IPagedListProps, void>>();
 
-        let pagination = ShallowTestUtils.findAllWithType(page, Pagination);
-        let grid = ShallowTestUtils.findAllWithType(page, DataGrid);
-        let link = ShallowTestUtils.findAllWithType(page, Link);
+        testPaginationGridAndLink(page, activePage, (totalCount / instanceList.length), instanceList, properties);
+
         let filters = ShallowTestUtils.findAllWithType(page, PagedListFilters);
-
-        expect(pagination.length).toBe(1);
-        expect(pagination[0].props.activePage).toEqual(activePage);
-        expect(pagination[0].props.items).toEqual(Math.ceil(totalCount / instanceList.length));
-        expect(link.length).toBe(1);
-        expect(link[0].props.to).toEqual(`${resource}/create`);
         expect(filters.length).toBe(1);
-        expect(ShallowTestUtils.findAllWithClass(filters[0], 'test-filter').length).toEqual(1);
         expect(fetchInstanceList).toBeCalledWith(resource, 0);
-        expect(grid.length).toBe(1);
-        expect(grid[0].props.instanceList).toEqual(instanceList);
-        expect(grid[0].props.properties).toEqual(properties);
-
-    });
-
-    it('renders a PagedList without a resource', () => {
-
-        expect(() => renderer.render(
-            <PagedListImpl/>
-        )).toThrow(new Error('No resource name passed.'));
+        expect(ShallowTestUtils.findAllWithClass(filters[0], 'test-filter').length).toEqual(1);
 
     });
 
@@ -89,24 +95,23 @@ describe('Test Paged List', () => {
             />
         );
 
-        let page = renderer.getRenderOutput<React.Component<{}, {}>>();
+        let page: React.Component<IPagedListProps, void> =
+                renderer.getRenderOutput<React.Component<IPagedListProps, void>>();
 
-        let pagination = ShallowTestUtils.findAllWithType(page, Pagination);
-        let grid = ShallowTestUtils.findAllWithType(page, DataGrid);
-        let link = ShallowTestUtils.findAllWithType(page, Link);
+        testPaginationGridAndLink(page, 1, 1, [], []);
+
         let filters = ShallowTestUtils.findAllWithType(page, PagedListFilters);
-
-        expect(pagination.length).toBe(1);
-        expect(pagination[0].props.activePage).toEqual(1);
-        expect(pagination[0].props.items).toEqual(1);
-        expect(link.length).toBe(1);
-        expect(link[0].props.to).toEqual(`${resource}/create`);
         expect(filters.length).toBe(1);
-        expect(filters[0].props.children).toBeFalsy();
         expect(fetchInstanceList).not.toBeCalled();
-        expect(grid.length).toBe(1);
-        expect(grid[0].props.instanceList).toEqual([]);
-        expect(grid[0].props.properties).toEqual([]);
+        expect(filters[0].props.children).toBeFalsy();
     } );
+
+    it('renders a PagedList without a resource', () => {
+
+        expect(() => renderer.render(
+            <PagedListImpl/>
+        )).toThrow(new Error('No resource name passed.'));
+
+    });
 
 });

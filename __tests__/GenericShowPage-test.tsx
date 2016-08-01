@@ -6,42 +6,26 @@ import {GenericShowPage} from '../src/components/CRUD/GenericShowPage';
 import * as TestUtils from 'react-addons-test-utils';
 import * as React from 'react';
 import {IBaseModel} from '../src/interfaces/interfaces';
+import {IInstancePageProps} from '../src/interfaces/interfaces';
+const unroll: any = require<any>('unroll');
+
+unroll.use(it);
 
 describe('Test Generic Show Page', () => {
-    let ModelInstance: IBaseModel, keys: string[];
-    beforeEach(() => {
-        ModelInstance = new BaseModel({id: '1' , author: 'abc'});
-        keys = Object.keys(ModelInstance.instanceData);
-    });
+    let ModelInstance: IBaseModel = new BaseModel({id: '1' , author: 'abc'});
+    let keys: string[] = Object.keys(ModelInstance.instanceData);
 
-    it('renders a simple Show Page', () => {
-        let page = TestUtils.renderIntoDocument<React.Component<{}, {}>>(
-            <GenericShowPage instance={ModelInstance}/>
-        );
+    unroll('renders a GenericShowPage #title', (done, testArgs: {page: React.DOMElement<{}, {}>}) => {
+        const {resource} = testArgs;
+        let showPage: React.Component<IInstancePageProps, void> =
+            TestUtils.renderIntoDocument<React.Component<IInstancePageProps, void>>(
+                testArgs.page
+            );
 
-        expect(TestUtils.scryRenderedDOMComponentsWithClass(page, 'data-show-table').length).toBe(1);
+        expect(TestUtils.scryRenderedDOMComponentsWithClass(showPage, 'data-show-table').length).toBe(1);
 
-        let properties = TestUtils.scryRenderedDOMComponentsWithClass(page, 'base-property');
-        let values = TestUtils.scryRenderedDOMComponentsWithClass(page, 'base-value');
-
-        expect(properties.length).toBe(2);
-        expect(values.length).toBe(2);
-
-        for (let i = 0; i < properties.length; i++ ) {
-            expect(properties[i].textContent).toEqual(keys[i]);
-            expect(values[i].textContent).toEqual(ModelInstance.instanceData[keys[i]]);
-        }
-    });
-
-    it('renders a GenericShowPage with a resource', () => {
-        let page = TestUtils.renderIntoDocument<React.Component<{}, {}>> (
-            <GenericShowPage instance={ModelInstance} resource="test"/>
-        );
-
-        expect(TestUtils.scryRenderedDOMComponentsWithClass(page, 'data-show-table').length).toBe(1);
-
-        let properties = TestUtils.scryRenderedDOMComponentsWithClass(page, 'test-property');
-        let values = TestUtils.scryRenderedDOMComponentsWithClass(page, 'test-value');
+        let properties: Element[] = TestUtils.scryRenderedDOMComponentsWithClass(showPage, `${resource}-property`);
+        let values: Element[] = TestUtils.scryRenderedDOMComponentsWithClass(showPage, `${resource}-value`);
 
         expect(properties.length).toBe(2);
         expect(values.length).toBe(2);
@@ -50,11 +34,15 @@ describe('Test Generic Show Page', () => {
             expect(properties[i].textContent).toEqual(keys[i]);
             expect(values[i].textContent).toEqual(ModelInstance.instanceData[keys[i]]);
         }
-
-    });
+        done();
+    }, [
+        ['title', 'page', 'resource'],
+        ['without a resource', <GenericShowPage instance={ModelInstance} />, 'base'],
+        ['with a resource', <GenericShowPage instance={ModelInstance} resource="test"/>, 'test']
+    ]);
 
     it('renders a GenericShowPage without any props', () => {
-        let page = TestUtils.renderIntoDocument<React.Component<{}, {}>>(
+        let page = TestUtils.renderIntoDocument<React.Component<void, void>>(
             <GenericShowPage />
         );
 

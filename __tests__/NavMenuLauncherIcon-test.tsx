@@ -3,50 +3,41 @@ import {NavMenuLauncherIcon} from '../src/components/NavMenuLauncherIcon';
 import {initializeTestCase, IInitializerData} from './../src/utils/initializeTestCase';
 import * as React from 'react';
 import {INavMenuLauncherIconProps} from '../src/components/NavMenuLauncherIcon';
+const unroll: any = require<any>('unroll');
+
+unroll.use(it);
 
 describe('Test NavMenuLauncherIcon', () => {
-    let onClick: jest.Mock<Function>;
+    let onClick: jest.Mock<Function> = jest.fn<Function>();
 
-    beforeEach(() => {
-        onClick = jest.fn<Function>();
-    });
-
-    it('renders a simple NavMenuLauncherIcon', () => {
-        let icon: React.Component<{}, {}> = TestUtils.renderIntoDocument<React.Component<{}, {}>>(
-            <NavMenuLauncherIcon position="left" onClick={onClick}/>
-        );
+    unroll('renders a simple NavMenuLauncherIcon', (done, testArgs) => {
+        let { position } = testArgs;
+        let icon: React.Component<INavMenuLauncherIconProps, void> =
+            TestUtils.renderIntoDocument<React.Component<INavMenuLauncherIconProps, void>>(
+                <NavMenuLauncherIcon position={position} onClick={onClick}/>
+            );
 
         expect(icon).toBeTruthy();
-        let innerIcon = TestUtils.findRenderedDOMComponentWithClass(icon, 'float-left');
+        let innerIcon: Element = TestUtils.findRenderedDOMComponentWithClass(icon, `float-${position}`);
         expect(innerIcon).toBeTruthy();
         TestUtils.Simulate.click(innerIcon);
         expect(onClick).toBeCalled();
-    });
-
-    it('renders a NavMenuLauncherIcon with position set to right', () => {
-        let icon: React.Component<{}, {}> = TestUtils.renderIntoDocument<React.Component<{}, {}>>(
-        <NavMenuLauncherIcon position="right" onClick={onClick}/>
-        );
-
-        expect(icon).toBeTruthy();
-        let innerIcon: Element = TestUtils.findRenderedDOMComponentWithClass(icon, 'float-right');
-        expect(innerIcon).toBeTruthy();
-        TestUtils.Simulate.click(innerIcon);
-        expect(onClick).toBeCalled();
-
-    });
+        done();
+    }, [
+        ['position'],
+        ['left'],
+        ['right'],
+    ]);
 
     it('renders a NavMenuLauncherIcon without any props', () => {
-        let icon: React.Component<INavMenuLauncherIconProps, {}> & {props: {onClick: Function}} = TestUtils
-                .renderIntoDocument<React.Component<INavMenuLauncherIconProps, {}>>(
-        <NavMenuLauncherIcon />
+        let icon: React.Component<INavMenuLauncherIconProps, void> =
+        TestUtils.renderIntoDocument<React.Component<INavMenuLauncherIconProps, void>>(
+            <NavMenuLauncherIcon />
         );
 
-        expect(icon).toBeTruthy();
         expect(icon).toBeTruthy();
         let innerIcon: Element = TestUtils.findRenderedDOMComponentWithClass(icon, 'float-left');
         expect(innerIcon).toBeTruthy();
-        // expect(icon.props.onClick.toString()).toEqual((() => {}).toString());
     });
 
 });

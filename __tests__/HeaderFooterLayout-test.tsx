@@ -1,3 +1,4 @@
+import {NavMenuLauncherIcon} from '../src/components/NavMenuLauncherIcon';
 jest.unmock('../src/components/HeaderFooterLayout');
 import {
     HeaderFooterLayout,
@@ -10,41 +11,30 @@ import {ReactComponent} from 'react-router';
 import * as TestUtils from 'react-addons-test-utils';
 import * as React from 'react';
 import {store} from '../src/store/store';
+const store = require.requireActual<IMockStore>('../src/store/store');
 import {Provider, connect} from 'react-redux';
 import * as ReactDOM from 'react-dom';
+import IMockStore from '../src/store/store';
 
 describe('Test HeaderFooterLayout', () => {
 
     it('renders a simple HeaderFooterLayout in the DOM', () => {
-        let layout: any = TestUtils.renderIntoDocument<any>(
+        let layout: React.Component<void, void> = TestUtils.renderIntoDocument<React.Component<void, void>>(
             <Provider store={store}>
-                <HeaderFooterLayout>
-                </HeaderFooterLayout>
+                <HeaderFooterLayout/>
             </Provider>
         );
 
         expect(TestUtils.isCompositeComponent(layout)).toBeTruthy();
-        expect(TestUtils.scryRenderedDOMComponentsWithClass(layout, 'header')[0]).toBeTruthy();
-        expect(TestUtils.scryRenderedDOMComponentsWithClass(layout, 'content')[0]).toBeTruthy();
-        expect(TestUtils.scryRenderedDOMComponentsWithClass(layout, 'footer')[0]).toBeTruthy();
-        expect(TestUtils.scryRenderedDOMComponentsWithClass(layout, 'nav-menu').length).toBe(0);
+        ['header', 'content', 'footer']
+            .forEach((className) => {
+                expect(TestUtils.scryRenderedDOMComponentsWithClass(layout, className).length).toBeTruthy();
+            });
+        expect(TestUtils.scryRenderedDOMComponentsWithClass(layout, 'nav-menu').length).toBeFalsy();
     });
 
-    it('renders a HeaderFooterLayout with menuPosition undefined but Navigation Menu Defined', () => {
-        let layout: any =
-            <Provider store={store}>
-                <HeaderFooterLayout>
-                    <NavigationMenu>this is  a navigation menu</NavigationMenu>
-                </HeaderFooterLayout>
-            </Provider>;
-
-        expect(() => { TestUtils.renderIntoDocument(layout); })
-                .toThrow(new Error('The prop menuPosition has not been defined.'));
-
-     });
-
     it('renders a HeaderFooterLayout with NavigationMenu', () => {
-        let layout: any = TestUtils.renderIntoDocument(
+        let layout: React.Component<void, void> = TestUtils.renderIntoDocument<React.Component<void, void>>(
             <Provider store={store}>
                 <HeaderFooterLayout menuPosition="left">
                     <HeaderView><div className="header-content"></div></HeaderView>
@@ -55,19 +45,24 @@ describe('Test HeaderFooterLayout', () => {
             </Provider>
         );
         let getRenderedDOM = (tree) => ReactDOM.findDOMNode(tree);
-        let header: any = TestUtils.scryRenderedDOMComponentsWithClass(layout, 'header');
-        let content: any = TestUtils.scryRenderedDOMComponentsWithClass(layout, 'content');
-        let footer: any = TestUtils.scryRenderedDOMComponentsWithClass(layout, 'footer');
-        let nav: any = TestUtils.scryRenderedDOMComponentsWithClass(layout, 'nav-menu');
-        expect(TestUtils.scryRenderedDOMComponentsWithClass(layout, 'header-content').length).toBe(1);
-        expect(TestUtils.scryRenderedDOMComponentsWithClass(layout, 'content-content').length).toBe(1);
-        expect(TestUtils.scryRenderedDOMComponentsWithClass(layout, 'footer-content').length).toBe(1);
-        expect(TestUtils.scryRenderedDOMComponentsWithClass(layout, 'nav-menu-content').length).toBe(1);
+        let header: React.ReactElement<React.Props<void>> =
+            TestUtils.scryRenderedDOMComponentsWithClass(layout, 'header') as React.ReactElement<{}>;
+        let content: React.ReactElement<React.Props<void>> =
+            TestUtils.scryRenderedDOMComponentsWithClass(layout, 'content') as React.ReactElement<{}>;
+        let footer: React.ReactElement<React.Props<void>> =
+            TestUtils.scryRenderedDOMComponentsWithClass(layout, 'footer') as React.ReactElement<{}>;
+        let nav: React.ReactElement<React.Props<void>> =
+            TestUtils.scryRenderedDOMComponentsWithClass(layout, 'nav-menu') as React.ReactElement<{}>;
 
-        expect(header[0]).toBeTruthy();
-        expect(content[0]).toBeTruthy();
-        expect(footer[0]).toBeTruthy();
-        expect(nav[0]).toBeTruthy();
+        ['header-content', 'content-content', 'footer-content', 'nav-menu-content']
+            .forEach((contentClass) => {
+                expect(TestUtils.scryRenderedDOMComponentsWithClass(layout, contentClass).length).toBe(1);
+            });
+
+        [header[0], content[0], footer[0], nav[0]]
+            .forEach((component) => {
+                expect(component).toBeTruthy();
+            });
 
         expect(TestUtils.isCompositeComponent(layout)).toBeTruthy();
         expect(header[0].children.length).toBe(2);
@@ -75,11 +70,31 @@ describe('Test HeaderFooterLayout', () => {
         expect(footer[0].children.length).toBe(1);
         expect(nav[0].children.length).toBe(2);
 
+
         expect(getRenderedDOM(header[0]).querySelector('div.header-content')).toBeTruthy();
-        expect(getRenderedDOM(header[0]).querySelector('span.burger-icon')).toBeTruthy();
         expect(getRenderedDOM(content[0]).querySelector('div.content-content')).toBeTruthy();
         expect(getRenderedDOM(footer[0]).querySelector('div.footer-content')).toBeTruthy();
         expect(getRenderedDOM(nav[0]).querySelector('div.nav-menu-content')).toBeTruthy();
+
+        let navMenuLauncher = getRenderedDOM(header[0]).querySelector('span.burger-icon');
+        expect(navMenuLauncher).toBeTruthy();
+
+        TestUtils.Simulate.click(navMenuLauncher);
+
+        expect(store.getActions()[0].type).toEqual('TOGGLE_NAV');
+    });
+
+    it('renders a HeaderFooterLayout with menuPosition undefined but Navigation Menu Defined', () => {
+        let layout: React.DOMElement<{}, {}> =
+            <Provider store={store}>
+                <HeaderFooterLayout>
+                    <NavigationMenu>this is  a navigation menu</NavigationMenu>
+                </HeaderFooterLayout>
+            </Provider>;
+
+        expect(() => { TestUtils.renderIntoDocument(layout); })
+            .toThrow(new Error('The prop menuPosition has not been defined.'));
+
     });
 
 });

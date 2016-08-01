@@ -19,8 +19,8 @@ interface ITestModel extends IBaseModel {
     instanceData: ITestData;
 }
 
-function generalDataGridTests(grid: React.Component<{}, {}>, keys: string[], instanceList: ITestModel[],
-        resource: string) {
+function generalDataGridTests(grid: React.Component<void, void>, keys: string[], instanceList: ITestModel[],
+        resource: string): void {
     expect(TestUtils.scryRenderedDOMComponentsWithClass(grid, 'data-grid').length).toBe(1);
 
     let headers: Element[] = TestUtils.scryRenderedDOMComponentsWithTag(grid, 'th');
@@ -60,7 +60,7 @@ describe('Test Data Grid', () => {
     });
 
     it('renders a simple Data Grid', () => {
-        let grid: React.Component<{}, {}> = TestUtils.renderIntoDocument<React.Component<{}, {}>>(
+        let grid: React.Component<void, void> = TestUtils.renderIntoDocument<React.Component<void, void>>(
             <Wrapper>
                 <DataGrid
                     instanceList={instanceList}
@@ -74,7 +74,7 @@ describe('Test Data Grid', () => {
     });
 
     it('renders a Data Grid without any props', () => {
-        expect(() => TestUtils.renderIntoDocument<React.Component<{}, {}>>(
+        expect(() => TestUtils.renderIntoDocument<React.Component<void, void>>(
             <Wrapper>
                 <DataGrid />
             </Wrapper>
@@ -82,7 +82,7 @@ describe('Test Data Grid', () => {
     });
 
     it('renders a Data grid with only an instanceList', () => {
-        let grid: React.Component<{}, {}> = TestUtils.renderIntoDocument<React.Component<{}, {}>>(
+        let grid: React.Component<void, void> = TestUtils.renderIntoDocument<React.Component<void, void>>(
             <Wrapper>
                 <DataGrid
                     instanceList={instanceList}

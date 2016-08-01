@@ -6,7 +6,7 @@ import * as React from 'react';
 import {StatelessComponent, ComponentClass, Component} from 'react';
 import '../utils/appService';
 
-export type ComponentType = (ComponentClass<{}> | StatelessComponent<{}>);
+export type ComponentType = (ComponentClass<any> | StatelessComponent<any>);
 
 module ComponentService {
 

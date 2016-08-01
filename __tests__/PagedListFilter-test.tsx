@@ -12,14 +12,8 @@ import {QueryFilter} from '../src/components/PagedList/Filters/QueryFilter';
 import {RangeFilter} from '../src/components/PagedList/Filters/RangeFilter';
 import {IInitializerData} from './../src/utils/initializeTestCase';
 
-describe('Test Pagedlist Filters', () => {
-    let renderer: React.ShallowRenderer, resource: string;
-
-    beforeEach(() => {
-        let data: IInitializerData = initializeTestCase();
-        renderer = data.renderer;
-        resource = data.resource;
-    });
+describe('Test PagedList Filters', () => {
+    let { renderer, resource }: IInitializerData = initializeTestCase();
 
     it('renders a simple PagedListFilters Component', () => {
         renderer.render(
@@ -28,7 +22,7 @@ describe('Test Pagedlist Filters', () => {
             </PagedListFilters>
         );
 
-        let filter: React.ReactElement<{}> = renderer.getRenderOutput();
+        let filter: React.ReactElement<void> = renderer.getRenderOutput();
 
         expect(ShallowTestUtils.findWithClass(filter, 'paged-list-filters')).toBeTruthy();
 
@@ -82,7 +76,7 @@ describe('Test Pagedlist Filters', () => {
             </PagedListFilters>
         );
 
-        let filter: React.ReactElement<{}> = renderer.getRenderOutput();
+        let filter: React.ReactElement<void> = renderer.getRenderOutput();
 
         expect(ShallowTestUtils.findWithClass(filter, 'paged-list-filters')).toBeTruthy();
 
@@ -111,7 +105,7 @@ describe('Test Pagedlist Filters', () => {
             <PagedListFilters />
         );
 
-        let filter: React.ReactElement<{}> = renderer.getRenderOutput();
+        let filter: React.ReactElement<void> = renderer.getRenderOutput();
         let child = ShallowTestUtils.findWithType(filter, 'div');
         expect(child).toBeTruthy();
         expect(child.props.children).toBeFalsy();

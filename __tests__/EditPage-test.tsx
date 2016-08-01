@@ -13,25 +13,25 @@ import {resolver} from '../src/resolver';
 import {IInitializerData} from './../src/utils/initializeTestCase';
 import {IShallowTestUtils} from '../src/interfaces/interfaces';
 import {IInstanceContainerProps} from '../src/interfaces/interfaces';
+import {IBaseModel} from '../src/interfaces/interfaces';
+
+function generalEditPageTests(renderedPage, instance: IBaseModel, resource: string ): void {
+    expect(renderedPage).toBeTruthy();
+    expect(renderedPage.props.instance).toEqual(instance);
+    expect(renderedPage.props.resource).toEqual(resource);
+    // expect(renderedPage.props.handleSubmit.toString()).toEqual(handleSubmit.toString());
+    // expect(renderedPage.props.handleDelete.toString()).toEqual(handleDelete.toString());
+}
 
 describe('Test EditPage', () => {
-    let renderer: React.ShallowRenderer, resource: string, instances: Object,
-            fetchInstanceData: (...args: any[]) => void, handleSubmit: Function, handleDelete: Function;
-
-    beforeEach(() => {
-        let data = initializeTestCase();
-        renderer = data.renderer;
-        resource = data.resource;
-        instances = data.instances;
-        handleSubmit = (instance: BaseModel, e: Event) => {
-            e.preventDefault();
-            instance.$update();
-        };
-        handleDelete = (instance: BaseModel) : void => {
-            instance.$delete();
-        };
-        fetchInstanceData = jest.fn<(...args: any[]) => void>();
-    });
+    let { renderer, resource, instances, fetchInstanceData }: IInitializerData = initializeTestCase();
+    let handleSubmit = (instance: BaseModel, e: Event): void => {
+        e.preventDefault();
+        instance.$update();
+    };
+    let handleDelete = (instance: BaseModel) : void => {
+        instance.$delete();
+    };
 
     it('renders a simple Edit Page', () => {
         renderer.render(
@@ -46,11 +46,7 @@ describe('Test EditPage', () => {
 
         expect(page).toBeTruthy();
         let renderedPage = ShallowTestUtils.findWithType(page, GenericEditPage);
-        expect(renderedPage).toBeTruthy();
-        expect(renderedPage.props.resource).toEqual(resource);
-        // expect(renderedPage.props.handleSubmit.toString()).toEqual(handleSubmit.toString());
-        // expect(renderedPage.props.handleDelete.toString()).toEqual(handleDelete.toString());
-        expect(renderedPage.props.instance).toEqual(instances[resource]);
+        generalEditPageTests(renderedPage, instances[resource], resource);
         expect(fetchInstanceData).toBeCalled();
 
     });
@@ -64,16 +60,11 @@ describe('Test EditPage', () => {
         expect(page).toBeTruthy();
 
         let renderedPage = ShallowTestUtils.findWithType(page, GenericEditPage);
-        expect(renderedPage).toBeTruthy();
-        expect(renderedPage.props.instance).toEqual(new BaseModel({}));
-        // expect(renderedPage.props.handleSubmit.toString()).toEqual(handleSubmit.toString());
-        // expect(renderedPage.props.handleDelete.toString()).toEqual(handleDelete.toString());
-        expect(renderedPage.props.resource).toEqual('');
-
+        generalEditPageTests(renderedPage, new BaseModel({}), '');
     });
 
     it('renders an EditPage with user implemented EditPage and Model registered', () => {
-        class TestEditPage extends React.Component<{}, {}> {
+        class TestEditPage extends React.Component<void, void> {
             render() {
                 return(
                     <div></div>
@@ -102,11 +93,7 @@ describe('Test EditPage', () => {
         expect(page).toBeTruthy();
 
         let renderedPage = ShallowTestUtils.findWithType(page, TestEditPage);
-        expect(renderedPage).toBeTruthy();
-        expect(renderedPage.props.instance).toEqual(new TestModel({}));
-        expect(renderedPage.props.resource).toEqual(resource);
-        // expect(renderedPage.props.handleSubmit.toString()).toEqual(handleSubmit.toString());
-        // expect(renderedPage.props.handleDelete.toString()).toEqual(handleDelete.toString());
+        generalEditPageTests(renderedPage, new TestModel({}), resource);
 
     });
 

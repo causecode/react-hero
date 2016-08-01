@@ -3,11 +3,11 @@ import {ComponentService} from '../utils/componentService';
 import {PagedList} from './PagedList';
 import {IRouteParams} from '../interfaces/interfaces';
 
-export interface IListPage extends React.Props<{}> {
+export interface IListPage extends React.Props<void> {
     params?: IRouteParams;
 }
 
-export class ListPage extends React.Component<IListPage, {}> {
+export class ListPage extends React.Component<IListPage, void> {
 
     static defaultProps: IListPage = {
         params: {resource: ''}
