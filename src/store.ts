@@ -1,9 +1,15 @@
-import {IStore} from "redux";
-import {createStore} from "redux";
+import {Store, compose, createStore} from 'redux';
+import {IStore} from '~react-router-redux~redux/redux';
+import rootReducer from './components/common/reducers/rootReducer';
 
 const initialState = {
+    open: false
 };
 
-const fooAction = (state, action) => { }
-
-export const store: IStore<any> = createStore(fooAction, initialState);
+export const store: any = createStore (
+    rootReducer,
+    initialState,
+    compose(
+        window.devToolsExtension ? window.devToolsExtension() : f => f
+    )
+);

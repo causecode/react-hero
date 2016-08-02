@@ -1,0 +1,50 @@
+/* desktop */
+.state-indicator {
+	position: absolute;
+	top: -999em;
+	left: -999em;
+
+	z-index: 0;
+}
+
+/* tablet default */
+@media all and (max-width: 768px) {
+	.state-indicator {
+		z-index: 1;
+	}
+}
+
+/* tablet portrait */
+@media all and (max-width: 768px) and (orientation: portrait) {
+	.state-indicator {
+		z-index: 2;
+	}
+}
+
+/* tablet landscape */
+@media all and (max-width: 1024px) and (orientation:landscape) {
+	.state-indicator {
+		z-index: 3;
+	}
+}
+
+/* mobile default */
+@media all and (max-width: 420px) {
+	.state-indicator {
+		z-index: 4;
+	}
+}
+
+/* mobile portrait */
+@media all and (max-width: 420px) and (orientation: portrait) {
+	.state-indicator {
+		z-index: 5;
+	}
+}
+
+/* mobile landscape */
+@media all and (max-width: 740px) and (orientation: landscape){
+	.state-indicator {
+		z-index: 6;
+	}
+}
