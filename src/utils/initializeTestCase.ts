@@ -1,12 +1,11 @@
 import * as TestUtils from 'react-addons-test-utils';
 import * as React from 'react';
 import {BaseModel} from '../models/BaseModel';
-import {IBaseModel} from '../interfaces/interfaces';
 
 export interface IInitializerData {
     renderer: React.ShallowRenderer;
     resource: string;
-    instances: {'test': IBaseModel, 'test1': IBaseModel};
+    instances: {'test': BaseModel, 'test1': BaseModel};
     fetchInstanceData: (...args: any[]) => void;
 }
 

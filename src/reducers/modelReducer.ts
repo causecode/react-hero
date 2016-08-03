@@ -9,21 +9,25 @@ import {
 import {BaseModel} from '../models/BaseModel';
 import {resolver} from '../resolver';
 import {ModelService} from '../utils/modelService';
-import {IBaseModel} from '../interfaces/interfaces';
 const INITIAL_STATE = fromJS({});
 
 export function modelReducer(state = INITIAL_STATE, action) {
-    let Model: new(instanceData) => IBaseModel;
+    let Model: typeof BaseModel;
     let instanceKey = action.instance ? `${action.instance.resourceName}Model` : '';
     switch (action.type) {
         case FETCH_INSTANCE_DATA_START:
             return INITIAL_STATE;
 
         case FETCH_INSTANCE_DATA_SUCCESS:
-            let key;
-            key = action.resource;
-            Model = ModelService.getModel(key);
-            let instance = action.payload[`${action.resource}Instance`];
+            let resource = action.resource || '';
+            Model = ModelService.getModel(resource);
+            let instance;
+            if (action.payload) {
+                instance = action.payload[`${action.resource}Instance`];
+            } else {
+                throw new Error('No Data in the Action Payload. Please make sure you are returning an instanceList' +
+                    ' from the server.');
+            }
             return state.set(action.resource, new Model(instance));
 
         case FETCH_INSTANCE_DATA_ERROR:

@@ -13,9 +13,8 @@ import {resolver} from '../src/resolver';
 import {IInitializerData} from './../src/utils/initializeTestCase';
 import {IShallowTestUtils} from '../src/interfaces/interfaces';
 import {IInstanceContainerProps} from '../src/interfaces/interfaces';
-import {IBaseModel} from '../src/interfaces/interfaces';
 
-function generalEditPageTests(renderedPage, instance: IBaseModel, resource: string ): void {
+function generalEditPageTests(renderedPage, instance: BaseModel, resource: string ): void {
     expect(renderedPage).toBeTruthy();
     expect(renderedPage.props.instance).toEqual(instance);
     expect(renderedPage.props.resource).toEqual(resource);

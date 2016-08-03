@@ -10,7 +10,6 @@ import {
     FETCH_INSTANCE_LIST_ERROR,
     DELETE_INSTANCE_LIST
 } from '../actions/data';
-import {IBaseModel} from '../interfaces/interfaces';
 
 const INITIAL_STATE = fromJS({
     totalCount: 0,
@@ -23,8 +22,7 @@ const INITIAL_STATE = fromJS({
 });
 
 function dataReducer(state = INITIAL_STATE, action ) {
-    let Model: new(instanceData) => IBaseModel;
-    let key: string;
+    let Model: typeof BaseModel;
 
     switch (action.type) {
 
@@ -34,8 +32,10 @@ function dataReducer(state = INITIAL_STATE, action ) {
         case FETCH_INSTANCE_LIST_SUCCESS:
             let resource = action.resource || '';
             Model = ModelService.getModel(resource);
-            let instanceList;
+            let instanceList, totalCount: number, properties: string[];
             if (action.payload && action.payload.instanceList) {
+                totalCount = action.payload.totalCount;
+                properties = action.payload.properties;
                 instanceList = action.payload.instanceList.map(instance => {
                     return new Model(instance);
                 });
@@ -44,9 +44,9 @@ function dataReducer(state = INITIAL_STATE, action ) {
                     ' from the server.');
             }
             return state.merge(fromJS({
-                totalCount: action.payload.totalCount,
+                totalCount: totalCount,
                 instanceList: instanceList,
-                properties: action.payload.properties,
+                properties: properties,
                 clazz: {},
                 hasError: false,
                 isLoading: false,

@@ -6,7 +6,6 @@ import {BaseModel} from '../models/BaseModel';
 import {GenericEditPage} from '../components/CRUD/GenericEditPage';
 import {connect} from 'react-redux';
 import {ComponentService} from '../utils/componentService';
-import {IBaseModel} from '../interfaces/interfaces';
 import {IInstanceContainerProps} from '../interfaces/interfaces';
 import {IRouteParams} from '../interfaces/interfaces';
 
@@ -30,11 +29,11 @@ export class CreatePageImpl extends React.Component<IInstanceContainerProps, {}>
     render() {
         // TODO handle case where No Instance has yet been created.
         let resource: string = this.props.params.resource;
-        let Model: new(Object) => IBaseModel = ModelService.getModel(resource);
+        let Model: typeof BaseModel = ModelService.getModel(resource);
         const instance = this.props.instances[resource] || new Model({});
         if (instance) {
-            for (let key of Object.keys(instance.instanceData)) {
-                instance.instanceData[key] = '';
+            for (let key of Object.keys(instance.properties)) {
+                instance.properties[key] = '';
             }
         }
         const childProps = {handleSubmit: this.handleSubmit, instance: instance, resource: resource};

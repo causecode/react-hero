@@ -1,7 +1,7 @@
 import { Store, compose, createStore, applyMiddleware } from 'redux';
 import { fromJS } from 'immutable';
 import {rootReducer} from './../reducers/rootReducer';
-import {promiseMiddleware} from '../middleware/promise-middleware';
+import {promiseMiddleware} from '../middleware/promiseMiddleware';
 import logger from './logger';
 const thunk = require<any>('redux-thunk').default;
 const MockStore = require<any>('redux-mock-store');

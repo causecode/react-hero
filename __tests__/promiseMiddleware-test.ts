@@ -1,4 +1,4 @@
-import {promiseMiddleware} from '../src/middleware/promise-middleware';
+import {promiseMiddleware} from '../src/middleware/promiseMiddleware';
 import {Store} from 'redux';
 import 'babel-polyfill';
 const unroll: any = require<any>('unroll');
@@ -29,7 +29,7 @@ describe('Test promise middleware', () => {
     let fetchData: jest.Mock<Function> = jest.fn<Function>((path) => {
         return new Promise((resolve, reject) => {
             if (path === successPath) {
-                resolve(successObject);
+                resolve({data: successObject});
             } else {
                 reject(failureObject);
             }
@@ -55,8 +55,7 @@ describe('Test promise middleware', () => {
     });
 
     unroll('executes middleware with the correct action type and path #path', async (done, testArgs) => {
-        let promise: Promise = promiseMiddleware(store)(next)(getAction(testArgs.path));
-        await promise;
+        await promiseMiddleware(store)(next)(getAction(testArgs.path));
 
         let dispatchCalls = dispatch.mock.calls;
 

@@ -3,22 +3,28 @@ import {saveInstance, updateInstance, deleteInstance} from '../actions/modelActi
 import {resolver} from '../resolver';
 import {HTTP} from '../api/server/index';
 import {InvalidInstanceDataError} from '../errors/InvalidInstanceDataError';
-import {IBaseModel} from '../interfaces/interfaces';
+import {FETCH_INSTANCE_LIST_START} from '../actions/data';
+import {FETCH_INSTANCE_LIST_SUCCESS} from '../actions/data';
+import {FETCH_INSTANCE_LIST_ERROR} from '../actions/data';
+const objectAssign: any = require<any>('object-assign');
+const getValues: (state: any) => any = require<{getValues: (state: any) => any}>('redux-form').getValues;
 
-export class BaseModel implements IBaseModel {
+const FETCH_ERR_MSG = `Request couldn't be processed.`;
+
+export class BaseModel {
     resourceName: string;
-    constructor(public instanceData) {
+    constructor(public properties) {
         let className: string = (this.constructor as Function & {name: string}).name;
         // Dynamically assigning resource name from class Name
         this.resourceName = className.substr(0, className.indexOf('Model')).toLowerCase();
-        this.instanceData = instanceData;
+        this.properties = properties;
     }
 
     $save(flush: boolean = true,
             successCallBack = ( (...args: any[]) => {} ),
             failureCallBack = ( (...args: any[]) => {} )): void {
         if (flush) {
-            HTTP.postRequest(`${this.resourceName}/save`, this.instanceData)
+            HTTP.postRequest(`${this.resourceName}/save`, this.properties)
                 .then((response) => {
                     successCallBack(response);
                     store.dispatch(saveInstance(this));
@@ -34,7 +40,7 @@ export class BaseModel implements IBaseModel {
             successCallBack = ( (...args: any[]) => {} ),
             failureCallBack = ( (...args: any[]) => {} )): void {
         if (flush) {
-            HTTP.putRequest(`${this.resourceName}/update`, this.instanceData)
+            HTTP.putRequest(`${this.resourceName}/update`, this.properties)
                 .then((response) => {
                     successCallBack(response);
                     store.dispatch(updateInstance(this));
@@ -50,7 +56,7 @@ export class BaseModel implements IBaseModel {
             successCallBack = ( (...args: any[]) => {} ),
             failureCallBack = ( (...args: any[]) => {} )): void {
         if (flush) {
-            HTTP.deleteRequest(`${this.resourceName}/delete/${this.instanceData.id}`)
+            HTTP.deleteRequest(`${this.resourceName}/delete/${this.properties.id}`)
                 .then((response) => {
                     successCallBack(response);
                     store.dispatch(deleteInstance(this));
@@ -62,12 +68,26 @@ export class BaseModel implements IBaseModel {
         }
     }
 
-    static list() {
-        return;
+    static list(flush: boolean = true, filters?) {
+        let resourceName: string = this.name.substr(0, this.name.indexOf('Model')).toLowerCase();
+        getList(resourceName, filters);
     }
 
-    static get() {
-        return;
+    static get(id: number) {
+        let resourceName: string = this.name.substr(0, this.name.indexOf('Model')).toLowerCase();
+        getList(resourceName, {id: id});
     }
 
+}
+
+function getList(path: string, filters) {
+    return new Promise((resolve, reject) => {
+        return HTTP.getRequest(path, filters)
+            .then<void>((response) => {
+                resolve(response);
+            })
+            .then<void>(null, (err) =>
+                reject(new Error(FETCH_ERR_MSG))
+            );
+    });
 }

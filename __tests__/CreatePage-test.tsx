@@ -12,12 +12,11 @@ import * as TestUtils from 'react-addons-test-utils';
 import {ModelService} from '../src/utils/modelService';
 import {IShallowTestUtils} from '../src/interfaces/interfaces';
 import {IInstanceContainerProps} from '../src/interfaces/interfaces';
-import {IBaseModel} from '../src/interfaces/interfaces';
 
 function generalCreatePageTests(
     createPage: new() => React.Component<{}, {}>,
     page: React.ReactElement<IInstanceContainerProps>,
-    instance: IBaseModel,
+    instance: BaseModel,
     resource: string
 ): void {
     expect(page).toBeTruthy();

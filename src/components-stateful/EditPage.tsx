@@ -5,14 +5,14 @@ import {GenericEditPage} from './../components/CRUD/GenericEditPage';
 import {ComponentService} from '../utils/componentService';
 const connect: any = require<any>('react-redux').connect;
 import {ModelService} from '../utils/modelService';
-import {IBaseModel} from '../interfaces/interfaces';
 import {IInstanceContainerProps} from '../interfaces/interfaces';
+import {IInjectedProps} from 'react-router';
 
 export interface IInstanceContainerState {
-    instance: IBaseModel;
+    instance: BaseModel;
 }
 
-export class EditPageImpl extends React.Component<IInstanceContainerProps, IInstanceContainerState> {
+export class EditPageImpl extends React.Component<IInstanceContainerProps & IInjectedProps, IInstanceContainerState> {
 
     static defaultProps: IInstanceContainerProps = {
         fetchInstanceData: (resource, resourceID) => { },
@@ -36,8 +36,8 @@ export class EditPageImpl extends React.Component<IInstanceContainerProps, IInst
 
     render(): JSX.Element {
         const resource = this.props.params.resource;
-        let Model: new(Object) => IBaseModel = ModelService.getModel(resource);
-        const instance: IBaseModel = this.props.instances[resource] || new Model({});
+        let Model: typeof BaseModel = ModelService.getModel(resource);
+        const instance: BaseModel = this.props.instances[resource] || new Model({});
         const childProps = {resource: resource, handleSubmit: this.handleSubmit, handleDelete: this.handleDelete,
                 instance: instance};
         let Page: React.ComponentClass<{}> = ComponentService.getEditPage(resource) as React.ComponentClass<{}>;
@@ -47,8 +47,8 @@ export class EditPageImpl extends React.Component<IInstanceContainerProps, IInst
     }
 }
 
-function mapStateToProps(state): {instances: IBaseModel[]} {
-    let instances: IBaseModel[] = state.instances.toJS();
+function mapStateToProps(state): {instances: BaseModel[]} {
+    let instances: BaseModel[] = state.instances.toJS();
     return {
         instances: instances
     };

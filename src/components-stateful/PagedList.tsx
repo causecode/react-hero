@@ -5,13 +5,13 @@ import {DataGrid} from '../components/PagedList/DataGrid';
 import {fetchInstanceList} from '../actions/data';
 import {setPage} from '../actions/data';
 import {Link} from 'react-router';
-import {IBaseModel} from '../interfaces/interfaces';
 const connect = require<any>('react-redux').connect;
 import '../utils/appService';
+import {BaseModel} from '../models/BaseModel';
 
 export interface IPagedListProps extends React.Props<{}> {
     properties: string[];
-    instanceList: IBaseModel[];
+    instanceList: BaseModel[];
     totalCount: number;
     fetchInstanceList: ((resource: string, offset?: number) => void) ;
     setPage: (pageNumber: number) => void;
@@ -89,12 +89,12 @@ export class PagedListImpl extends React.Component<IPagedListProps, {}> {
 
 function mapStateToProps(state): {
     properties: string[];
-    instanceList: IBaseModel[];
+    instanceList: BaseModel[];
     totalCount: number;
     activePage: number
 } {
     return {
-        properties: state.data.get('properties', []),
+        properties: state.data.get('properties', []) as string[],
         instanceList: state.data.get('instanceList', []).toJS(),
         totalCount:  state.data.get('totalCount', 0),
         activePage: state.data.get('activePage', 1)

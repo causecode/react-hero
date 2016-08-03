@@ -11,14 +11,13 @@ import * as ReactDOM from 'react-dom';
 import {Row, Button} from 'react-bootstrap';
 import {MissingInstanceError} from '../src/errors/MissingInstanceError';
 import {Link} from 'react-router';
-import {IBaseModel} from '../src/interfaces/interfaces.ts';
 
 describe('Test Generic Edit Page', () => {
     let handleSubmit: jest.Mock<Function>, handleDelete: jest.Mock<Function>;
     let resource: string = 'test';
     let instanceData = {id: '1', author: 'abc'};
-    let ModelInstance: IBaseModel = new BaseModel(instanceData);
-    let keys: string[] = Object.keys(ModelInstance.instanceData);
+    let ModelInstance: BaseModel = new BaseModel(instanceData);
+    let keys: string[] = Object.keys(ModelInstance.properties);
 
     beforeEach(() => {
         handleSubmit = jest.fn<Function>();
@@ -34,12 +33,12 @@ describe('Test Generic Edit Page', () => {
 
         expect(formControls.length).toBe(2);
         for (let i: number = 0; i < formControls.length; i++) {
-            expect(formControls[i].value).toEqual(ModelInstance.instanceData[keys[i]]);
+            expect(formControls[i].value).toEqual(ModelInstance.properties[keys[i]]);
             expect(labels[i].textContent).toEqual(keys[i]);
         }
 
         let randomString: string = 'aa';
-        ModelInstance.instanceData = {id: randomString, author: randomString};
+        ModelInstance.properties = {id: randomString, author: randomString};
         editPage.setState({instance: ModelInstance});
 
         for (let i: number = 0; i < formControls.length; i++) {

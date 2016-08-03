@@ -6,7 +6,7 @@ import {IInitializerData} from './../src/utils/initializeTestCase';
 import * as React from 'react';
 import * as TestUtils from 'react-addons-test-utils';
 import * as ReactDOM from 'react-dom';
-import {Wrapper} from './../src/utils/Wrapper';
+import {Wrapper} from './../src/components/Wrapper';
 import {IShallowTestUtils} from '../src/interfaces/interfaces';
 const unroll: any = require<any>('unroll');
 

@@ -2,10 +2,10 @@ import * as React from 'react';
 import {Table} from 'react-bootstrap';
 import {Link} from 'react-router';
 import {MissingInstanceListError} from '../../errors/MissingInstanceListError';
-import {IBaseModel} from '../../interfaces/interfaces';
+import {BaseModel} from '../../models/BaseModel';
 
 export interface IDataGridProps extends React.Props<{}> {
-    instanceList: IBaseModel[];
+    instanceList: BaseModel[];
     properties: string[];
     resource?: string;
 }
@@ -16,7 +16,7 @@ export function DataGrid( { instanceList, properties, resource }: IDataGridProps
     }
     resource = instanceList[0] ? instanceList[0].resourceName : '';
     if (!properties) {
-        properties = Object.keys(instanceList[0].instanceData);
+        properties = Object.keys(instanceList[0].properties);
     }
     return (
         <div className="data-grid">
@@ -32,17 +32,19 @@ export function DataGrid( { instanceList, properties, resource }: IDataGridProps
                 </thead>
                 <tbody>
                     {instanceList.map((instance) => {
-                        let instanceData = instance.instanceData;
+                        let instanceProperties = instance.properties;
                         return (
-                        <tr key={instanceData.id} className="data-grid-row">
+                        <tr key={instanceProperties.id} className="data-grid-row">
                             <td>
-                                <Link to={`/${resource}/edit/${instanceData.id}`}><i className="fa fa-pencil" />
+                                <Link to={`/${resource}/edit/${instanceProperties.id}`}>
+                                    <i className="fa fa-pencil" />
                                 </Link>
-                                <Link to={`/${resource}/show/${instanceData.id}`}><i className="fa fa-location-arrow" />
+                                <Link to={`/${resource}/show/${instanceProperties.id}`}>
+                                    <i className="fa fa-location-arrow" />
                                 </Link>
                             </td>
                             {properties.map(function(property) {
-                                return ( <td key={properties.indexOf(property)}>{instanceData[property]}</td> );
+                                return ( <td key={properties.indexOf(property)}>{instanceProperties[property]}</td> );
                             })}
                         </tr>
                             );

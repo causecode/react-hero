@@ -1,14 +1,13 @@
 import {resolver} from '../resolver';
 import {BaseModel} from '../models/BaseModel';
-import {IBaseModel} from '../interfaces/interfaces';
 
 module ModelService {
 
-    export function register(model: (new(instanceData: JSON) => IBaseModel) & {name?: string}): void {
+    export function register(model: typeof BaseModel): void {
         resolver.set(model.name.toLowerCase(), model);
     }
 
-    export function getModel(name: string): new(instanceData) => IBaseModel {
+    export function getModel(name: string): typeof BaseModel {
         name = name.toLowerCase();
         name = (name.indexOf('model') === -1) ? `${name}model` : name;
         if (hasModel(name)) {

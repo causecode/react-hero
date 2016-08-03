@@ -13,7 +13,6 @@ import {resolver} from '../src/resolver';
 import {IInitializerData} from './../src/utils/initializeTestCase';
 import {IShallowTestUtils} from '../src/interfaces/interfaces';
 import {IInstanceContainerProps} from '../src/interfaces/interfaces';
-import {IBaseModel} from '../src/interfaces/interfaces';
 
 describe('Test ShowPage', () => {
     let initializerData: IInitializerData = initializeTestCase();
@@ -26,7 +25,7 @@ describe('Test ShowPage', () => {
         fetchInstanceData = jest.fn<(...args: any[]) => void>();
     });
 
-    function testRenderedPageProps(page: React.ReactElement<IInstanceContainerProps>, instance: IBaseModel
+    function testRenderedPageProps(page: React.ReactElement<IInstanceContainerProps>, instance: BaseModel
             , resourceParam: string) {
         let renderedPage = ShallowTestUtils.findWithType(page, GenericShowPage);
 

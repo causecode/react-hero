@@ -2,14 +2,17 @@ import * as React from 'react';
 import { Grid, Col, Row, FormGroup, FormControl, ControlLabel, Button } from 'react-bootstrap';
 import { Link } from 'react-router';
 import {MissingInstanceError} from '../../errors/MissingInstanceError';
-import {IBaseModel} from '../../interfaces/interfaces';
 import {Stub} from '../../interfaces/interfaces';
 import {IInstancePageProps} from '../../interfaces/interfaces';
-import {IGenericEditPageState} from '../../interfaces/interfaces';
+import {BaseModel} from '../../models/BaseModel';
 
 export interface IGenericEditPageProps extends IInstancePageProps {
-    handleSubmit: (instance: IBaseModel, e: Event) => void;
-    handleDelete?: (instance: IBaseModel) => void;
+    handleSubmit: (instance: BaseModel, e: Event) => void;
+    handleDelete?: (instance: BaseModel) => void;
+}
+
+export interface IGenericEditPageState {
+    instance: BaseModel;
 }
 
 export class GenericEditPage extends React.Component<IGenericEditPageProps, IGenericEditPageState> {
@@ -21,7 +24,7 @@ constructor(props: IGenericEditPageProps) {
 
     handleChange = (key: string, event: Event & {target: {value: string}}): void  => {
         let instance = this.state.instance;
-        instance.instanceData[key] = event.target.value;
+        instance.properties[key] = event.target.value;
         this.setState({instance: instance});
     };
 
@@ -35,8 +38,8 @@ constructor(props: IGenericEditPageProps) {
             resource = instance ? instance.resourceName : '';
         }
         this.state.instance = instance;
-        let instanceData = (instance && instance.instanceData) ? instance.instanceData : {};
-        let instanceKeys = Object.keys(instanceData);
+        let instanceProperties = (instance && instance.properties) ? instance.properties : {};
+        let instanceKeys = Object.keys(instanceProperties);
         return (
             <form className="data-edit-form" onSubmit={handleSubmit.bind(this, this.state.instance)}>
                 <Grid>
@@ -50,7 +53,7 @@ constructor(props: IGenericEditPageProps) {
                                     <Col sm={4}>
                                         <FormControl
                                             type="text"
-                                            value={this.state.instance.instanceData[key]}
+                                            value={this.state.instance.properties[key]}
                                             onChange={this.handleChange.bind(this, key)}
                                         />
                                     </Col>

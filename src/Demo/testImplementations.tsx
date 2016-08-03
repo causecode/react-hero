@@ -18,6 +18,7 @@ import {ComponentService} from '../utils/componentService';
 import {ModelService} from '../utils/modelService';
 import {BlogModel, UserModel} from './testModel';
 import {CreatePage} from '../components-stateful/CreatePage';
+import {BaseModel} from '../models/BaseModel';
 
 export class NewPage extends React.Component<any, any> {
 

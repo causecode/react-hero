@@ -12,8 +12,8 @@ export class GenericShowPage extends React.Component<IInstancePageProps, {}> {
     render(): JSX.Element {
         const { instance } =  this.props;
         let resource: string = this.props.resource || instance.resourceName;
-        const instanceData = instance.instanceData;
-        let instanceKeys: string[] = Object.keys(instanceData);
+        const instanceProperties = instance.properties;
+        let instanceKeys: string[] = Object.keys(instanceProperties);
         return (
             <Table responsive bordered className="data-show-table">
                 <thead>
@@ -27,7 +27,7 @@ export class GenericShowPage extends React.Component<IInstancePageProps, {}> {
                         return (
                             <tr key={instanceKeys.indexOf(key)}>
                                 <td className={`${resource}-property`}><strong>{key}</strong></td>
-                                <td className={`${resource}-value`}>{instanceData[key]}</td>
+                                <td className={`${resource}-value`}>{instanceProperties[key]}</td>
                             </tr>
                         );
                     })}

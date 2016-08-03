@@ -12,24 +12,16 @@ jest.mock('../src/store/store');
 import {store} from '../src/store/store';
 import {Provider} from 'react-redux';
 import {PagedListFilters} from '../src/components/PagedList/Filters/PagedListFilter';
-import {Wrapper} from './../src/utils/Wrapper';
+import {Wrapper} from './../src/components/Wrapper';
 import {IShallowTestUtils} from '../src/interfaces/interfaces';
-import {IBaseModel} from '../src/interfaces/interfaces';
 import {IPagedListProps} from '../src/components-stateful/PagedList';
 
 const ShallowTestUtils: IShallowTestUtils = require<IShallowTestUtils>('react-shallow-testutils');
 
-interface ITestModel extends IBaseModel {
-    instanceData: {
-        id: string;
-        author: string;
-    };
-}
-
 describe('Test Paged List', () => {
     let renderer: React.ShallowRenderer;
     let properties: string[] = ['id', 'author'];
-    let instanceList: ITestModel[] = [new BaseModel({id: '1', author: 'abc'}),
+    let instanceList: BaseModel[] = [new BaseModel({id: '1', author: 'abc'}),
             new BaseModel({id: '6', author: 'xyz'}) ];
     let resource: string = 'test';
     let totalCount: number = instanceList.length;
@@ -46,7 +38,7 @@ describe('Test Paged List', () => {
         page: React.Component<IPagedListProps, void>,
         activePageParam: number,
         items: number,
-        instanceListParam: IBaseModel[],
+        instanceListParam: BaseModel[],
         propertiesParam: string[]
     ) {
         let pagination = ShallowTestUtils.findAllWithType(page, Pagination);

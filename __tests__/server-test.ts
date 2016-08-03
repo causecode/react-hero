@@ -11,25 +11,20 @@ describe('Test server api methods', () => {
     let data: {id: number, author: string} = {id: 1, author: 'abc'};
     let failurePath: string = 'failurePath';
     let successObject: {success: boolean} = {success: true};
-    let failureObject: {success: boolean} = {success: false};
 
-    beforeEach(() => {
-        fetch = jest.fn((path, config) => {
-            return new Promise((resolve, reject) => {
-                if (path.toLowerCase().indexOf('failure') > -1) {
-                    reject({failureObject});
-                } else {
-                    resolve({successObject, json: () => {}});
-                }
-            });
-        });
+    afterEach(() => {
+        axios.mockClear();
     });
 
     describe('Test getRequest method', () => {
 
         unroll('calls getRequest with #title', async (done, testArgs) => {
+            let expectedGetConfig = {
+                method: 'get',
+                url: testArgs.expectedURL
+            };
             await HTTP.getRequest(testArgs.path, testArgs.data);
-            expect(fetch).toBeCalledWith(testArgs.expectedURL);
+            expect(axios).toBeCalledWith(expectedGetConfig);
             done();
         }, [
             ['title', 'path', 'data', 'expectedURL'],
@@ -39,28 +34,29 @@ describe('Test server api methods', () => {
         ]);
 
         it('calls getRequest with url', async () => {
+            let expectedGetConfig = {
+                method: 'get',
+                url: BASE_URL
+            };
             await HTTP.getRequest('');
-            expect(fetch).toBeCalledWith(BASE_URL);
+            expect(axios).toBeCalledWith(expectedGetConfig);
         });
 
     });
 
     describe('Test postRequest method', () => {
-        let postConfig: {method: string, headers: {'Accept': string, 'Content-Type': string}, body?: string};
+        let postConfig: {method: string, url?: string, data?: Object};
         beforeEach(() => {
             postConfig = {
-                method: 'post',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                }
+                method: 'post'
             };
         });
 
         unroll('calls postRequest with #title', async (done, testArgs) => {
-            postConfig.body = JSON.stringify(testArgs.data);
+            postConfig.data = testArgs.data;
+            postConfig.url = BASE_URL + testArgs.path;
             await HTTP.postRequest(testArgs.path, testArgs.data);
-            expect(fetch).toBeCalledWith(BASE_URL + testArgs.path, postConfig);
+            expect(axios).toBeCalledWith(postConfig);
             done();
         }, [
             ['title', 'path', 'data'],
@@ -70,9 +66,10 @@ describe('Test server api methods', () => {
         ]);
 
         it('calls postRequest with url', async() => {
-            postConfig.body = JSON.stringify({});
+            postConfig.data = {};
+            postConfig.url = BASE_URL;
             await HTTP.postRequest('');
-            expect(fetch).toBeCalledWith(BASE_URL, postConfig);
+            expect(axios).toBeCalledWith(postConfig);
         });
     });
 

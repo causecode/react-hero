@@ -1,6 +1,5 @@
 import { fetchInstanceListFromApi } from '../api/auth/index';
 import {SET_PAGE} from './actions';
-import {fetchInstanceDataFromApi} from '../api/auth/index';
 import {BaseModel} from '../models/BaseModel';
 import {FETCH_INSTANCE_DATA_START} from './modelActions';
 import {FETCH_INSTANCE_DATA_SUCCESS} from './modelActions';
@@ -29,7 +28,7 @@ export function fetchInstanceList(resource: string, offset: number) {
             resource: resource
         });
     };
-};
+}
 
 export const setPage = (pageNumber: number): {type: string, pageNumber: number} => {
     return {

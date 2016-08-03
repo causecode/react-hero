@@ -5,15 +5,14 @@ import {GenericListPage} from '../src/components/CRUD/GenericListPage';
 import {GenericShowPage} from '../src/components/CRUD/GenericShowPage';
 import * as TestUtils from 'react-addons-test-utils';
 import * as React from 'react';
-import {IBaseModel} from '../src/interfaces/interfaces';
 import {IInstancePageProps} from '../src/interfaces/interfaces';
 const unroll: any = require<any>('unroll');
 
 unroll.use(it);
 
 describe('Test Generic Show Page', () => {
-    let ModelInstance: IBaseModel = new BaseModel({id: '1' , author: 'abc'});
-    let keys: string[] = Object.keys(ModelInstance.instanceData);
+    let ModelInstance: BaseModel = new BaseModel({id: '1' , author: 'abc'});
+    let keys: string[] = Object.keys(ModelInstance.properties);
 
     unroll('renders a GenericShowPage #title', (done, testArgs: {page: React.DOMElement<{}, {}>}) => {
         const {resource} = testArgs;
@@ -32,7 +31,7 @@ describe('Test Generic Show Page', () => {
 
         for (let i = 0; i < properties.length; i++ ) {
             expect(properties[i].textContent).toEqual(keys[i]);
-            expect(values[i].textContent).toEqual(ModelInstance.instanceData[keys[i]]);
+            expect(values[i].textContent).toEqual(ModelInstance.properties[keys[i]]);
         }
         done();
     }, [

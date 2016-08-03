@@ -1,11 +1,8 @@
 import {FieldProp} from 'redux-form';
 import {Component, Props} from 'react';
+import {BaseModel} from '../models/BaseModel';
 
-export interface IBaseModel {
-    instanceData: any;
-    resourceName: string;
-}
-
+// Data type for a stub function.
 export type Stub = (...args: any[]) => void ;
 
 export interface IShallowTestUtils {
@@ -19,26 +16,26 @@ export interface IShallowTestUtils {
     isDOMComponent: any;
 }
 
+// Data passed in the Instance Page routes.
 export interface IRouteParams {
     resource: string;
     resourceID?: string;
 }
 
+// Props used by Instance Page Containers.
 export interface IInstanceContainerProps {
     params: IRouteParams;
     fetchInstanceData: (resource: string, resourceID?: string) => void;
-    instances: IBaseModel[];
+    instances: BaseModel[];
 }
 
-export interface IGenericEditPageState {
-    instance: IBaseModel;
-}
-
+// Props used by the Instance Pages.
 export interface IInstancePageProps {
-    instance: IBaseModel;
+    instance: BaseModel;
     resource?: string;
 }
 
+// Basic interface used by all filters.
 export interface IFilter {
     label?: string;
     paramName?: string;
@@ -47,6 +44,7 @@ export interface IFilter {
     fields?: FieldProp | FieldProp[];
 }
 
+// Interface for props used by the PagedListFilters.
 export interface IPagedListFiltersProps extends Props<{}> {
     fields?: string[];
     sendFilters?: (resource: string) => void;

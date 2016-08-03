@@ -9,7 +9,6 @@ import {HTTP} from '../src/api/server/index';
 import {BASE_URL} from '../src/api/server/index';
 import {InvalidInstanceDataError} from '../src/errors/InvalidInstanceDataError';
 import 'babel-polyfill';
-import {IBaseModel} from '../src/interfaces/interfaces';
 
 describe('Test Base Model', () => {
     let successCallback: jest.Mock<Function>, failureCallback: jest.Mock<Function>;
@@ -18,7 +17,7 @@ describe('Test Base Model', () => {
     let instanceData = {id: 1, author: 'abc'};
     let ModelInstance: BaseModel = new BaseModel(instanceData);
 
-    async function verifyActions(type: string, instance: IBaseModel): void {
+    async function verifyActions(type: string, instance: BaseModel): void {
         let action: IInstanceAction = store.getActions()[0];
         expect(action.type).toEqual(type);
         expect(action.instance).toEqual(instance);
@@ -48,7 +47,7 @@ describe('Test Base Model', () => {
         store.clearActions();
     });
 
-    async function testWithoutParams(instance: IBaseModel, functionName: string,
+    async function testWithoutParams(instance: BaseModel, functionName: string,
             HTTPMethod: Function, requestParams: Object): void {
         store.clearActions();
         await instance['$' + functionName]();
@@ -58,7 +57,7 @@ describe('Test Base Model', () => {
         verifyActions(`${functionName.toUpperCase()}_INSTANCE`, instance);
     }
 
-    async function testWithFlush(instance: IBaseModel, functionName: string,
+    async function testWithFlush(instance: BaseModel, functionName: string,
             HTTPMethod: Function, requestParams: Object): void {
         store.clearActions();
         await instance[`$${functionName}`](true, successCallback, failureCallback);
@@ -69,7 +68,7 @@ describe('Test Base Model', () => {
         verifyActions(`${functionName.toUpperCase()}_INSTANCE`, instance);
     }
 
-    async function testWithFlushFalse(instance: IBaseModel, functionName: string,
+    async function testWithFlushFalse(instance: BaseModel, functionName: string,
             HTTPMethod: Function): void {
         store.clearActions();
         await instance[`$${functionName}`](false);
@@ -78,7 +77,7 @@ describe('Test Base Model', () => {
         verifyActions(`${functionName.toUpperCase()}_INSTANCE`, instance);
     }
 
-    async function testWithFlushFalseAndCallbacks(instance: IBaseModel, functionName: string,
+    async function testWithFlushFalseAndCallbacks(instance: BaseModel, functionName: string,
             HTTPMethod: Function): void {
         store.clearActions();
         await instance[`$${functionName}`](false, successCallback, failureCallback);
@@ -89,7 +88,7 @@ describe('Test Base Model', () => {
         verifyActions(`${functionName.toUpperCase()}_INSTANCE`, instance);
     }
 
-    async function testWithFlushAndPromiseFailure(instance: IBaseModel, functionName: string,
+    async function testWithFlushAndPromiseFailure(instance: BaseModel, functionName: string,
             HTTPMethod: Function, requestParams: Object): void {
         store.clearActions();
 
@@ -102,23 +101,23 @@ describe('Test Base Model', () => {
 
     describe('Test $save method on the instance', () => {
 
-        it('calls the #type Model method without any params',
+        it('calls the Model methods without any params',
                 async () => {
             await testWithoutParams(ModelInstance, 'save', HTTP.postRequest,
-                    [`${ModelInstance.resourceName}/save`, ModelInstance.instanceData]);
+                    [`${ModelInstance.resourceName}/save`, ModelInstance.properties]);
             await testWithoutParams(ModelInstance, 'update', HTTP.putRequest,
-                    [`${ModelInstance.resourceName}/update`, ModelInstance.instanceData]);
+                    [`${ModelInstance.resourceName}/update`, ModelInstance.properties]);
             await testWithoutParams(ModelInstance, 'delete', HTTP.deleteRequest,
-                    [`${ModelInstance.resourceName}/delete/${ModelInstance.instanceData.id}`]);
+                    [`${ModelInstance.resourceName}/delete/${ModelInstance.properties.id}`]);
         });
 
         it('calls the methods with flush', async () => {
             await testWithFlush(ModelInstance, 'save', HTTP.postRequest,
-                    [`${ModelInstance.resourceName}/save`, ModelInstance.instanceData]);
+                    [`${ModelInstance.resourceName}/save`, ModelInstance.properties]);
             await testWithFlush(ModelInstance, 'update', HTTP.putRequest,
-                    [`${ModelInstance.resourceName}/update`, ModelInstance.instanceData]);
+                    [`${ModelInstance.resourceName}/update`, ModelInstance.properties]);
             await testWithFlush(ModelInstance, 'delete', HTTP.deleteRequest,
-                    [`${ModelInstance.resourceName}/delete/${ModelInstance.instanceData.id}`]);
+                    [`${ModelInstance.resourceName}/delete/${ModelInstance.properties.id}`]);
         });
 
         it('calls the methods with flush false', async() => {
@@ -140,11 +139,11 @@ describe('Test Base Model', () => {
                 });
             });
             await testWithFlushAndPromiseFailure(ModelInstance, 'save', HTTP.postRequest,
-                    [`${ModelInstance.resourceName}/save`, ModelInstance.instanceData]);
+                    [`${ModelInstance.resourceName}/save`, ModelInstance.properties]);
             await testWithFlushAndPromiseFailure(ModelInstance, 'update', HTTP.putRequest,
-                    [`${ModelInstance.resourceName}/update`, ModelInstance.instanceData]);
+                    [`${ModelInstance.resourceName}/update`, ModelInstance.properties]);
             await testWithFlushAndPromiseFailure(ModelInstance, 'delete', HTTP.deleteRequest,
-                    [`${ModelInstance.resourceName}/delete/${ModelInstance.instanceData.id}`]);
+                    [`${ModelInstance.resourceName}/delete/${ModelInstance.properties.id}`]);
         });
 
     });

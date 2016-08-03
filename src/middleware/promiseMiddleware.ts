@@ -34,7 +34,7 @@ export function promiseMiddleware({ dispatch }) {
             result => {
                 dispatch({
                     type: FULFILLED,
-                    payload: result,
+                    payload: result.data || {},
                     meta,
                     resource
                 });
