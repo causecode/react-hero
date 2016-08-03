@@ -1,5 +1,5 @@
 import {BaseModel} from '../models/BaseModel';
-import {fetchInstanceDataFromApi} from '../api/auth/index';
+import {ModelService} from '../utils/modelService';
 
 export const SAVE_INSTANCE: string = 'SAVE_INSTANCE';
 export const UPDATE_INSTANCE: string = 'UPDATE_INSTANCE';
@@ -35,7 +35,6 @@ export const deleteInstance = ( instance: BaseModel ): IInstanceAction => {
 };
 
 export function fetchInstanceData(resource: string, resourceID: string) {
-    let path: string = `${resource}/show/${resourceID}`;
     return (dispatch) => {
         return dispatch({
             types: [
@@ -44,10 +43,7 @@ export function fetchInstanceData(resource: string, resourceID: string) {
                 FETCH_INSTANCE_DATA_ERROR,
             ],
             payload: {
-                promise: fetchInstanceDataFromApi(path)
-                    .then((response) => {
-                        return response;
-                    }),
+                promise: ModelService.getModel(resource).get(resourceID),
             },
             resource: resource
         });

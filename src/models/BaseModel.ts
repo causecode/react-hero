@@ -6,8 +6,6 @@ import {InvalidInstanceDataError} from '../errors/InvalidInstanceDataError';
 import {FETCH_INSTANCE_LIST_START} from '../actions/data';
 import {FETCH_INSTANCE_LIST_SUCCESS} from '../actions/data';
 import {FETCH_INSTANCE_LIST_ERROR} from '../actions/data';
-const objectAssign: any = require<any>('object-assign');
-const getValues: (state: any) => any = require<{getValues: (state: any) => any}>('redux-form').getValues;
 
 const FETCH_ERR_MSG = `Request couldn't be processed.`;
 
@@ -68,19 +66,20 @@ export class BaseModel {
         }
     }
 
-    static list(flush: boolean = true, filters?) {
+    static list(filters?): Promise<{}> {
         let resourceName: string = this.name.substr(0, this.name.indexOf('Model')).toLowerCase();
-        getList(resourceName, filters);
+        return getList(resourceName, filters);
     }
 
-    static get(id: number) {
+    static get(id: number | string): Promise<{}> {
         let resourceName: string = this.name.substr(0, this.name.indexOf('Model')).toLowerCase();
-        getList(resourceName, {id: id});
+        let path: string = `${resourceName}/show/${id}`;
+        return getList(path);
     }
 
 }
 
-function getList(path: string, filters) {
+function getList(path: string, filters = {}): Promise<{}> {
     return new Promise((resolve, reject) => {
         return HTTP.getRequest(path, filters)
             .then<void>((response) => {
