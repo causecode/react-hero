@@ -26,6 +26,7 @@ describe('Test Paged List', () => {
     let resource: string = 'test';
     let totalCount: number = instanceList.length;
     let activePage: number = 1;
+    let max: number = 1;
     let setPage = (pageNumber: number): void => { activePage = pageNumber; };
 
     beforeEach(() => {
@@ -44,12 +45,12 @@ describe('Test Paged List', () => {
         let grid = ShallowTestUtils.findAllWithType(page, DataGrid);
         let link = ShallowTestUtils.findAllWithType(page, Link);
 
-        expect(pagination.length).toBe(1);
+        expect(pagination.length).toEqual(1);
         expect(pagination[0].props.activePage).toEqual(activePageParam);
         expect(pagination[0].props.items).toEqual(items);
-        expect(link.length).toBe(1);
+        expect(link.length).toEqual(1);
         expect(link[0].props.to).toEqual(`${resource}/create`);
-        expect(grid.length).toBe(1);
+        expect(grid.length).toEqual(1);
         expect(grid[0].props.instanceList).toEqual(instanceListParam);
         expect(grid[0].props.properties).toEqual(propertiesParam);
     }
@@ -62,18 +63,20 @@ describe('Test Paged List', () => {
                 resource={resource}
                 totalCount={totalCount}
                 activePage={activePage}
-                setPage={setPage}>
+                setPage={setPage}
+                max={max}
+            >
                 <div className="test-filter"></div>
             </PagedListImpl>
         );
         let page: React.Component<IPagedListProps, void> =
                 renderer.getRenderOutput<React.Component<IPagedListProps, void>>();
 
-        testPaginationGridAndLink(page, activePage, (totalCount / instanceList.length), instanceList, properties);
+        testPaginationGridAndLink(page, activePage, (totalCount / max), instanceList, properties);
 
         let filters = ShallowTestUtils.findAllWithType(page, PagedListFilters);
         expect(filters.length).toBe(1);
-        expect(BaseModel.list).toBeCalled();
+        expect(BaseModel.list).toBeCalledWith({max: max});
         expect(ShallowTestUtils.findAllWithClass(filters[0], 'test-filter').length).toEqual(1);
 
     });
@@ -88,7 +91,7 @@ describe('Test Paged List', () => {
         let page: React.Component<IPagedListProps, void> =
                 renderer.getRenderOutput<React.Component<IPagedListProps, void>>();
 
-        testPaginationGridAndLink(page, 1, 1, [], []);
+        testPaginationGridAndLink(page, 1, 0, [], []);
 
         let filters = ShallowTestUtils.findAllWithType(page, PagedListFilters);
         expect(filters.length).toBe(1);

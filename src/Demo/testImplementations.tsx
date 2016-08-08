@@ -17,7 +17,6 @@ import {EditPage} from './../components-stateful/EditPage';
 import {ComponentService} from '../utils/componentService';
 import {ModelService} from '../utils/modelService';
 import {BlogModel, UserModel} from './testModel';
-import {CreatePage} from '../components-stateful/CreatePage';
 import {BaseModel} from '../models/BaseModel';
 
 export class NewPage extends React.Component<any, any> {
@@ -46,7 +45,7 @@ export class NewPage extends React.Component<any, any> {
                     <Route path="/page2" component={Page2Content}/>
                     <Route path="/resp" component={ContentImpl}/>
                     <Route path="/:resource/list" component={ListPage}/>
-                    <Route path="/:resource/create" component={CreatePage}/>
+                    <Route path="/:resource/create" component={EditPage}/>
                     <Route path="/:resource/show/:resourceID" component={ShowPage} />
                     <Route path="/:resource/edit/:resourceID" component={EditPage} />
                 </Router>
@@ -73,7 +72,7 @@ class BlogListPage extends React.Component<{resource: string}, any> {
         return (
             <div>
                 <h1>This is a list page</h1>
-                <PagedList resource={this.props.resource}>
+                <PagedList resource={this.props.resource} max={2}>
                     <DropDownFilter
                         label="status"
                         paramName="status"
@@ -121,7 +120,7 @@ class UserListPage extends React.Component<{params?: any}, any> {
         return (
             <div>
                 <h1 style={{background : 'red'}}>This is MY user list page</h1>
-                <PagedList resource={this.props.params.resource}>
+                <PagedList resource={this.props.params.resource} max={10}>
                     <DropDownFilter
                         label = "status"
                         paramName = "status"

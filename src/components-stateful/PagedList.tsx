@@ -4,25 +4,28 @@ import {PagedListFilters} from '../components/PagedList/Filters/PagedListFilter'
 import {DataGrid} from '../components/PagedList/DataGrid';
 import {setPage} from '../actions/data';
 import {Link} from 'react-router';
-const connect = require<any>('react-redux').connect;
+import {connect} from 'react-redux';
 import {BaseModel} from '../models/BaseModel';
 import {ModelService} from '../utils/modelService';
 import '../utils/appService';
 
 export interface IPagedListProps extends React.Props<{}> {
-    properties: string[];
-    instanceList: BaseModel[];
-    totalCount: number;
-    setPage: (pageNumber: number) => void;
-    activePage: number;
+    properties?: string[];
+    instanceList?: BaseModel[];
+    max: number;
+    totalCount?: number;
+    setPage?: (pageNumber: number) => void;
+    activePage?: number;
     resource: string;
 }
 
 export class PagedListImpl extends React.Component<IPagedListProps, {}> {
-    itemsPerPage: number;
 
-    fetchInstanceList(resource) {
-        ModelService.getModel(resource).list();
+    fetchInstanceList(resource, filters: {max?: number, offset?: number} = {}) {
+        if (this.props.max > 0) {
+            filters.max = this.props.max;
+        }
+        ModelService.getModel(resource).list(filters);
     }
 
     constructor(props: IPagedListProps) {
@@ -30,16 +33,16 @@ export class PagedListImpl extends React.Component<IPagedListProps, {}> {
         if (!props.resource) {
             throw new Error('No resource name passed.');
         }
-        this.itemsPerPage = 1;
     }
 
     static defaultProps: IPagedListProps = {
         properties: [],
         resource: '',
+        max: 20,
         totalCount: 0,
         activePage: 1,
         instanceList: [],
-        setPage: (pageNumber) => { return; }
+        setPage: (pageNumber: number) => { return; }
     };
 
     componentWillMount(): void {
@@ -47,19 +50,14 @@ export class PagedListImpl extends React.Component<IPagedListProps, {}> {
         this.fetchInstanceList(resource);
     };
 
-    setItemsPerPage(itemsPerPage: number): void {
-        this.itemsPerPage = itemsPerPage;
-    }
-
     handlePagination = (pageNumber: number): void => {
-        this.fetchInstanceList(this.props.resource);
+        this.fetchInstanceList(this.props.resource, {offset: (pageNumber - 1) * this.props.max});
         this.props.setPage(pageNumber);
     };
 
     render(): JSX.Element {
         let activePage: number = this.props.activePage;
-        this.setItemsPerPage(this.props.instanceList.length);
-        let items: number = this.itemsPerPage ? Math.ceil(this.props.totalCount / this.itemsPerPage) : 1;
+        let items: number = this.props.max ? Math.ceil(this.props.totalCount / this.props.max) : 1;
         return (
             <div>
                 <h2 className="caps">
@@ -112,7 +110,7 @@ function mapDispatchToProps(dispatch): {
         }
     };
 }
-let PagedList = connect(
+let PagedList = connect<{}, {}, IPagedListProps>(
     mapStateToProps,
     mapDispatchToProps
 )(PagedListImpl);

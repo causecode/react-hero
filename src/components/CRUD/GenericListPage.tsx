@@ -14,7 +14,7 @@ export class GenericListPage extends React.Component<IGenericListPage, void> {
     render(): JSX.Element {
         return (
             <div className="listPage">
-                <PagedList resource={this.props.resource}/>
+                <PagedList resource={this.props.resource} max={20}/>
             </div>
         );
     }
