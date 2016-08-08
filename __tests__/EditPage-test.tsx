@@ -6,7 +6,6 @@ import * as TestUtils from 'react-addons-test-utils';
 const ShallowTestUtils: IShallowTestUtils = require<IShallowTestUtils>('react-shallow-testutils');
 import {initializeTestCase} from './../src/utils/initializeTestCase';
 import {BaseModel} from '../src/models/BaseModel';
-import {fetchInstanceData} from '../src/actions/modelActions';
 import {ComponentService} from '../src/utils/componentService';
 import {ModelService} from '../src/utils/modelService';
 import {resolver} from '../src/resolver';
@@ -18,26 +17,24 @@ function generalEditPageTests(renderedPage, instance: BaseModel, resource: strin
     expect(renderedPage).toBeTruthy();
     expect(renderedPage.props.instance).toEqual(instance);
     expect(renderedPage.props.resource).toEqual(resource);
+    expect(BaseModel.get).toBeCalled();
     // expect(renderedPage.props.handleSubmit.toString()).toEqual(handleSubmit.toString());
     // expect(renderedPage.props.handleDelete.toString()).toEqual(handleDelete.toString());
 }
 
 describe('Test EditPage', () => {
-    let { renderer, resource, instances, fetchInstanceData }: IInitializerData = initializeTestCase();
-    let handleSubmit = (instance: BaseModel, e: Event): void => {
-        e.preventDefault();
-        instance.$update();
-    };
-    let handleDelete = (instance: BaseModel) : void => {
-        instance.$delete();
-    };
+    let { resource, instances }: IInitializerData = initializeTestCase();
+    let renderer: React.ShallowRenderer;
+    beforeEach(() => {
+        renderer = TestUtils.createRenderer();
+        BaseModel.get = jest.fn<Function>();
+    });
 
     it('renders a simple Edit Page', () => {
         renderer.render(
         <EditPageImpl
                 params={{resource: resource}}
                 instances={instances}
-                fetchInstanceData={fetchInstanceData}
             />
         );
 
@@ -46,7 +43,6 @@ describe('Test EditPage', () => {
         expect(page).toBeTruthy();
         let renderedPage = ShallowTestUtils.findWithType(page, GenericEditPage);
         generalEditPageTests(renderedPage, instances[resource], resource);
-        expect(fetchInstanceData).toBeCalled();
 
     });
 

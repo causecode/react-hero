@@ -12,6 +12,7 @@ import * as TestUtils from 'react-addons-test-utils';
 import {ModelService} from '../src/utils/modelService';
 import {IShallowTestUtils} from '../src/interfaces/interfaces';
 import {IInstanceContainerProps} from '../src/interfaces/interfaces';
+import 'babel-polyfill';
 
 function generalCreatePageTests(
     createPage: new() => React.Component<{}, {}>,
@@ -26,35 +27,28 @@ function generalCreatePageTests(
     expect(renderedPage.props.handleDelete).toBeUndefined();
     expect(renderedPage.props.instance).toEqual(instance);
     expect(renderedPage.props.resource).toEqual(resource);
+    expect(BaseModel.get).toBeCalledWith(1);
 }
 
 describe('test CreatePage', () => {
-    let handleSubmit, handleDelete;
-    let { renderer, resource, instances, fetchInstanceData } = initializeTestCase();
-
+    let { resource, instances }: IInitializerData = initializeTestCase();
+    let renderer: React.ShallowRenderer;
     beforeEach(() => {
-        handleSubmit = (instance: BaseModel, e: Event) => {
-            e.preventDefault();
-            instance.$save();
-        };
-        handleDelete = (instance: BaseModel) : void => {
-            instance.$delete();
-        };
+        renderer = TestUtils.createRenderer();
+        BaseModel.get = jest.fn<Function>();
     });
 
     it('renders a simple Create Page', () => {
         renderer.render(
-            <CreatePageImpl
+        <CreatePageImpl
                 instances={instances}
                 params={{resource: resource}}
-                fetchInstanceData={fetchInstanceData}
             />
         );
 
         let page: React.ReactElement<IInstanceContainerProps> = renderer.getRenderOutput();
 
         generalCreatePageTests(GenericEditPage, page, instances[resource], resource);
-        expect(fetchInstanceData).toBeCalled();
 
     });
 
@@ -85,7 +79,6 @@ describe('test CreatePage', () => {
         renderer.render(
             <CreatePageImpl params={{resource: resource}} />
         );
-
 
         let page: React.ReactElement<IInstanceContainerProps> = renderer.getRenderOutput();
 

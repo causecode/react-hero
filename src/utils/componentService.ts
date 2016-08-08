@@ -5,14 +5,19 @@ import {GenericShowPage} from '../components/CRUD/GenericShowPage';
 import * as React from 'react';
 import {StatelessComponent, ComponentClass, Component} from 'react';
 import '../utils/appService';
+import {getEnvironment} from './appService';
 
 export type ComponentType = (ComponentClass<any> | StatelessComponent<any>);
 
 module ComponentService {
 
-    const warn = (name: string, type: string) => console.warn(`Cannot find Component ` +
-            `${name.capitalize()}${type.capitalize()}, Make sure you have registered it.` +
-            ` Using Generic${type.capitalize()} instead.`);
+    function warn(name: string, type: string) {
+        if (getEnvironment() === 'development') {
+            console.warn(`Cannot find Component ` +
+                `${name.capitalize()}${type.capitalize()}, Make sure you have registered it.` +
+                ` Using Generic${type.capitalize()} instead.`);
+        }
+    }
 
     export function register(component: ComponentType & {name?: string} ) {
         resolver.set(component.name.toLowerCase(), component);

@@ -2,18 +2,17 @@ import * as React from 'react';
 import { Table, Pagination } from 'react-bootstrap';
 import {PagedListFilters} from '../components/PagedList/Filters/PagedListFilter';
 import {DataGrid} from '../components/PagedList/DataGrid';
-import {fetchInstanceList} from '../actions/data';
 import {setPage} from '../actions/data';
 import {Link} from 'react-router';
 const connect = require<any>('react-redux').connect;
-import '../utils/appService';
 import {BaseModel} from '../models/BaseModel';
+import {ModelService} from '../utils/modelService';
+import '../utils/appService';
 
 export interface IPagedListProps extends React.Props<{}> {
     properties: string[];
     instanceList: BaseModel[];
     totalCount: number;
-    fetchInstanceList: ((resource: string, offset?: number) => void) ;
     setPage: (pageNumber: number) => void;
     activePage: number;
     resource: string;
@@ -21,6 +20,10 @@ export interface IPagedListProps extends React.Props<{}> {
 
 export class PagedListImpl extends React.Component<IPagedListProps, {}> {
     itemsPerPage: number;
+
+    fetchInstanceList(resource) {
+        ModelService.getModel(resource).list();
+    }
 
     constructor(props: IPagedListProps) {
         super();
@@ -36,13 +39,12 @@ export class PagedListImpl extends React.Component<IPagedListProps, {}> {
         totalCount: 0,
         activePage: 1,
         instanceList: [],
-        fetchInstanceList: (resource, offset) => { return; },
         setPage: (pageNumber) => { return; }
     };
 
     componentWillMount(): void {
         const { resource } = this.props;
-        this.props.fetchInstanceList(resource, 0);
+        this.fetchInstanceList(resource);
     };
 
     setItemsPerPage(itemsPerPage: number): void {
@@ -50,7 +52,7 @@ export class PagedListImpl extends React.Component<IPagedListProps, {}> {
     }
 
     handlePagination = (pageNumber: number): void => {
-        this.props.fetchInstanceList(this.props.resource, (( pageNumber - 1 ) * this.itemsPerPage));
+        this.fetchInstanceList(this.props.resource);
         this.props.setPage(pageNumber);
     };
 
@@ -102,13 +104,9 @@ function mapStateToProps(state): {
 }
 
 function mapDispatchToProps(dispatch): {
-    fetchInstanceList: ((resource: string, offset?: number) => void) ;
     setPage: (pageNumber: number) => void;
 } {
     return {
-        fetchInstanceList: (resource: string, offset: number) => {
-            dispatch(fetchInstanceList(resource, offset));
-        },
         setPage: (pageNumber) => {
             dispatch(setPage(pageNumber));
         }

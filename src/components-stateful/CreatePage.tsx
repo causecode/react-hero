@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {ModelService} from '../utils/modelService';
 import {IRoute} from 'react-router';
-import {fetchInstanceData} from '../actions/modelActions';
 import {BaseModel} from '../models/BaseModel';
 import {GenericEditPage} from '../components/CRUD/GenericEditPage';
 import {connect} from 'react-redux';
@@ -9,13 +8,16 @@ import {ComponentService} from '../utils/componentService';
 import {IInstanceContainerProps} from '../interfaces/interfaces';
 import {IRouteParams} from '../interfaces/interfaces';
 
-export class CreatePageImpl extends React.Component<IInstanceContainerProps, {}> {
+export class CreatePageImpl extends React.Component<IInstanceContainerProps, void> {
 
     static defaultProps: IInstanceContainerProps = {
-        fetchInstanceData: (resource: string): void => { },
         instances: [],
-        params: {resource: '', resourceID: ''}
+        params: {resource: ''}
     };
+
+    fetchInstanceData(resource: string): void {
+        ModelService.getModel(resource).get(1);
+    }
 
     handleSubmit = (instance: BaseModel, e: Event): void => {
         e.preventDefault();
@@ -23,7 +25,7 @@ export class CreatePageImpl extends React.Component<IInstanceContainerProps, {}>
     };
 
     componentWillMount() {
-        this.props.fetchInstanceData(this.props.params.resource);
+        this.fetchInstanceData(this.props.params.resource);
     }
 
     render() {
@@ -50,17 +52,8 @@ function mapStateToProps(state) {
     };
 }
 
-function mapDispatchToProps(dispatch) {
-    return {
-        fetchInstanceData: (resource: string) => {
-            dispatch(fetchInstanceData(resource, '1'));
-        }
-    };
-}
-
 let CreatePage = connect(
-    mapStateToProps,
-    mapDispatchToProps
+    mapStateToProps
 )(CreatePageImpl);
 
 export {CreatePage};

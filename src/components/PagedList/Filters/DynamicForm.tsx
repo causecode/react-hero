@@ -1,21 +1,24 @@
 import * as React from 'react';
 import {Button} from 'react-bootstrap';
-import {fetchInstanceList} from '../../../actions/data';
 import {IPagedListFiltersProps} from '../../../interfaces/interfaces';
+import {ModelService} from '../../../utils/modelService';
 const ReduxForm: any = require<any>('redux-form');
 const classNames: any = require<any>('classnames');
 
 export class FilterForm extends React.Component<IPagedListFiltersProps, {}> {
 
     static defaultProps: IPagedListFiltersProps = {
-        sendFilters: () => {},
         filtersOpen: false,
         fields: []
     };
 
+    sendFilters(resource: string): void {
+        ModelService.getModel(resource).list();
+    }
+
     handleSubmit = (e): void => {
         e.preventDefault();
-        this.props.sendFilters(this.props.resource);
+        this.sendFilters(this.props.resource);
     };
 
     render(): JSX.Element {
@@ -56,12 +59,6 @@ export class FilterForm extends React.Component<IPagedListFiltersProps, {}> {
     }
 }
 
-function mapDispatchToProps(dispatch): {sendFilters: (resource: string) => void} {
-    return {
-        sendFilters: (resource: string) => dispatch(fetchInstanceList(resource, 0)),
-    };
-}
-
 function mapStateToProps(state): {filtersOpen: boolean} {
     return {
         filtersOpen: state.data.get('filtersOpen')
@@ -70,8 +67,7 @@ function mapStateToProps(state): {filtersOpen: boolean} {
 
 let DynamicForm = ReduxForm.reduxForm(
     {form: 'dynamic'},
-    mapStateToProps,
-    mapDispatchToProps
+    mapStateToProps
 )(FilterForm);
 
 export {DynamicForm};

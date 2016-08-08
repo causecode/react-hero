@@ -6,7 +6,6 @@ import * as TestUtils from 'react-addons-test-utils';
 const ShallowTestUtils: IShallowTestUtils = require<IShallowTestUtils>('react-shallow-testutils');
 import {initializeTestCase} from './../src/utils/initializeTestCase';
 import {BaseModel} from '../src/models/BaseModel';
-import {fetchInstanceData} from '../src/actions/modelActions';
 import {ComponentService} from '../src/utils/componentService';
 import {ModelService} from '../src/utils/modelService';
 import {resolver} from '../src/resolver';
@@ -16,13 +15,13 @@ import {IInstanceContainerProps} from '../src/interfaces/interfaces';
 
 describe('Test ShowPage', () => {
     let initializerData: IInitializerData = initializeTestCase();
-    let renderer: React.ShallowRenderer = initializerData.renderer;
+    let renderer: React.ShallowRenderer;
     let resource: string = initializerData.resource;
     let instances: Object = initializerData.instances;
-    let fetchInstanceData: (...args: any[]) => void;
 
     beforeEach(() => {
-        fetchInstanceData = jest.fn<(...args: any[]) => void>();
+        renderer = TestUtils.createRenderer();
+        BaseModel.get = jest.fn<Function>();
     });
 
     function testRenderedPageProps(page: React.ReactElement<IInstanceContainerProps>, instance: BaseModel
@@ -32,14 +31,14 @@ describe('Test ShowPage', () => {
         expect(renderedPage).toBeTruthy();
         expect(renderedPage.props.resource).toEqual(resourceParam);
         expect(renderedPage.props.instance).toEqual(instance);
+        expect(BaseModel.get).toBeCalled();
     }
 
     it('renders a simple Show Page', () => {
         renderer.render(
-            <ShowPageImpl
+        <ShowPageImpl
                 params={{resource: resource}}
                 instances={instances}
-                fetchInstanceData={fetchInstanceData}
             />
         );
 
@@ -47,7 +46,6 @@ describe('Test ShowPage', () => {
 
         expect(page).toBeTruthy();
         testRenderedPageProps(page, instances[resource], resource);
-        expect(fetchInstanceData).toBeCalled();
 
     });
 

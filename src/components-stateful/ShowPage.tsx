@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { fetchInstanceData } from '../actions/modelActions';
 import {BaseModel} from '../models/BaseModel';
 import {GenericShowPage} from './../components/CRUD/GenericShowPage';
 import {ComponentService} from '../utils/componentService';
@@ -11,14 +10,17 @@ import {ComponentType} from '../utils/componentService';
 export class ShowPageImpl extends React.Component<IInstanceContainerProps, {}> {
 
     static defaultProps: IInstanceContainerProps = {
-        fetchInstanceData: (resource, resourceID) => { },
         instances: [],
         params: {resource: '', resourceID: ''}
     };
 
+    fetchInstanceData(resource: string , resourceID: string) {
+        ModelService.getModel(resource).get(resourceID);
+    }
+
     componentWillMount() {
         const { resource, resourceID } = this.props.params;
-        this.props.fetchInstanceData(resource, resourceID);
+        this.fetchInstanceData(resource, resourceID);
     }
 
     render() {
@@ -40,17 +42,8 @@ function mapStateToProps(state): {instances: BaseModel[]} {
     };
 }
 
-function mapDispatchToProps(dispatch): {fetchInstanceData: (resource: string, resourceID: string) => void } {
-    return {
-        fetchInstanceData: (resource: string, resourceID: string) => {
-            dispatch(fetchInstanceData(resource, resourceID));
-        }
-    };
-}
-
 let ShowPage = connect(
-    mapStateToProps,
-    mapDispatchToProps
+    mapStateToProps
 )(ShowPageImpl);
 
 export {ShowPage};

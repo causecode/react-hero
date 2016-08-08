@@ -25,7 +25,6 @@ export interface IRouteParams {
 // Props used by Instance Page Containers.
 export interface IInstanceContainerProps {
     params: IRouteParams;
-    fetchInstanceData: (resource: string, resourceID?: string) => void;
     instances: BaseModel[];
 }
 
@@ -47,7 +46,6 @@ export interface IFilter {
 // Interface for props used by the PagedListFilters.
 export interface IPagedListFiltersProps extends Props<{}> {
     fields?: string[];
-    sendFilters?: (resource: string) => void;
     resource?: string;
     filtersOpen?: boolean;
 }

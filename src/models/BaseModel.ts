@@ -3,9 +3,19 @@ import {saveInstance, updateInstance, deleteInstance} from '../actions/modelActi
 import {resolver} from '../resolver';
 import {HTTP} from '../api/server/index';
 import {InvalidInstanceDataError} from '../errors/InvalidInstanceDataError';
-import {FETCH_INSTANCE_LIST_START} from '../actions/data';
-import {FETCH_INSTANCE_LIST_SUCCESS} from '../actions/data';
-import {FETCH_INSTANCE_LIST_ERROR} from '../actions/data';
+import {
+    FETCH_INSTANCE_LIST_START,
+    FETCH_INSTANCE_LIST_SUCCESS,
+    FETCH_INSTANCE_LIST_ERROR
+} from '../actions/data';
+import {
+    FETCH_INSTANCE_DATA_START,
+    FETCH_INSTANCE_DATA_SUCCESS,
+    FETCH_INSTANCE_DATA_ERROR
+} from '../actions/modelActions';
+const objectAssign: any = require<any>('object-assign');
+const getValues: (state: any) => any = require<{getValues: (state: any) => any}>('redux-form').getValues;
+import {ModelService} from '../utils/modelService';
 
 const FETCH_ERR_MSG = `Request couldn't be processed.`;
 
@@ -66,20 +76,97 @@ export class BaseModel {
         }
     }
 
-    static list(filters?): Promise<{}> {
+    static list(
+        filters = {},
+        valueInStore: boolean = false,
+        successCallBack: Function = () => {},
+        failureCallBack: Function = () => {}
+    ) {
         let resourceName: string = this.name.substr(0, this.name.indexOf('Model')).toLowerCase();
-        return getList(resourceName, filters);
+
+            if (!valueInStore) {
+                // Fetch list data from server and save it in the store followed by returning it.
+                let types: string[] = [
+                    FETCH_INSTANCE_LIST_START,
+                    FETCH_INSTANCE_LIST_SUCCESS,
+                    FETCH_INSTANCE_LIST_ERROR,
+                ];
+                let path: string = resourceName;
+                let filterFormData = getValues(store.getState().form.dynamic);
+                objectAssign(filters, filterFormData);
+                store.dispatch(
+                    getPromiseAction(
+                        types,
+                        resourceName,
+                        path,
+                        filters,
+                        successCallBack,
+                        failureCallBack
+                    )()
+                );
+            }
+
+        // Fetch list from store.
+        let listData = store.getState().data;
+        return listData.toJS ? listData.toJS() : listData;
     }
 
-    static get(id: number | string): Promise<{}> {
+    static get(
+        id: number | string,
+        valueInStore: boolean = false,
+        successCallBack: Function = () => {},
+        failureCallBack: Function = () => {}
+    ) {
         let resourceName: string = this.name.substr(0, this.name.indexOf('Model')).toLowerCase();
-        let path: string = `${resourceName}/show/${id}`;
-        return getList(path);
+
+        if (!valueInStore) {
+            // Fetch Instance Data from the server and save it in the store.
+            let types: string[] = [
+                FETCH_INSTANCE_DATA_START,
+                FETCH_INSTANCE_DATA_SUCCESS,
+                FETCH_INSTANCE_DATA_ERROR,
+            ];
+            let path: string = `${resourceName}/show/${id}`;
+            store.dispatch(
+                getPromiseAction(
+                    types,
+                    resourceName,
+                    path,
+                    {},
+                    successCallBack,
+                    failureCallBack
+                )()
+            );
+        }
+
+        let instanceData = store.getState().instances;
+        return instanceData.toJS ? instanceData.toJS() : instanceData;
     }
 
 }
 
-function getList(path: string, filters = {}): Promise<{}> {
+function getPromiseAction(
+    types: string[],
+    resource: string,
+    path: string,
+    filters: Object,
+    successCallBack: Function,
+    failureCallBack: Function) {
+    return () =>
+        (dispatch) => {
+            return dispatch({
+                types,
+                payload: {
+                    promise: getData(path, filters),
+                },
+                resource,
+                successCallBack,
+                failureCallBack
+            });
+        };
+}
+
+function getData(path: string, filters = {}): Promise<{}> {
     return new Promise((resolve, reject) => {
         return HTTP.getRequest(path, filters)
             .then<void>((response) => {

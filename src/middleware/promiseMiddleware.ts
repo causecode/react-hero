@@ -1,3 +1,4 @@
+import {store} from '../store/store';
 const objectAssign: any = require<any>('object-assign');
 
 function isPromise(value): boolean {
@@ -7,12 +8,12 @@ function isPromise(value): boolean {
 }
 
 export function promiseMiddleware({ dispatch }) {
-    return next => action => {
+    return next => (action) => {
         if (!isPromise(action.payload)) {
             return next(action);
         }
 
-        const { types, payload, meta, resource } = action;
+        const { types, payload, resource, successCallBack, failureCallBack } = action;
         const { promise, data } = payload;
         const [ PENDING, FULFILLED, REJECTED ] = types;
 
@@ -22,7 +23,6 @@ export function promiseMiddleware({ dispatch }) {
         dispatch(objectAssign({},
             {type: PENDING},
             data ? {payload: data} : {},
-            meta ? {meta} : {},
             {resource}
         ));
 
@@ -35,17 +35,23 @@ export function promiseMiddleware({ dispatch }) {
                 dispatch({
                     type: FULFILLED,
                     payload: result.data || {},
-                    meta,
                     resource
                 });
+
+                if (typeof successCallBack === 'function') {
+                    successCallBack(result);
+                }
             },
             error => {
                 dispatch({
                     type: REJECTED,
                     payload: error,
-                    meta,
                     resource
                 });
+
+                if (typeof failureCallBack === 'function') {
+                    failureCallBack(error);
+                }
             }
         );
     };

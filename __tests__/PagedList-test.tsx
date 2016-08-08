@@ -26,12 +26,11 @@ describe('Test Paged List', () => {
     let resource: string = 'test';
     let totalCount: number = instanceList.length;
     let activePage: number = 1;
-    let fetchInstanceList: jest.Mock<Function>;
     let setPage = (pageNumber: number): void => { activePage = pageNumber; };
 
     beforeEach(() => {
         renderer = TestUtils.createRenderer();
-        fetchInstanceList = jest.fn();
+        BaseModel.list = jest.fn<Function>();
     });
 
     function testPaginationGridAndLink(
@@ -62,7 +61,6 @@ describe('Test Paged List', () => {
                 properties={properties}
                 resource={resource}
                 totalCount={totalCount}
-                fetchInstanceList={fetchInstanceList}
                 activePage={activePage}
                 setPage={setPage}>
                 <div className="test-filter"></div>
@@ -75,7 +73,7 @@ describe('Test Paged List', () => {
 
         let filters = ShallowTestUtils.findAllWithType(page, PagedListFilters);
         expect(filters.length).toBe(1);
-        expect(fetchInstanceList).toBeCalledWith(resource, 0);
+        expect(BaseModel.list).toBeCalled();
         expect(ShallowTestUtils.findAllWithClass(filters[0], 'test-filter').length).toEqual(1);
 
     });
@@ -94,7 +92,7 @@ describe('Test Paged List', () => {
 
         let filters = ShallowTestUtils.findAllWithType(page, PagedListFilters);
         expect(filters.length).toBe(1);
-        expect(fetchInstanceList).not.toBeCalled();
+        expect(BaseModel.list).toBeCalled();
         expect(filters[0].props.children).toBeFalsy();
     } );
 

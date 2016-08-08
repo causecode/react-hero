@@ -2,7 +2,6 @@ import * as React from 'react';
 import {DynamicForm} from './DynamicForm';
 import { Form, Button, Grid, Row } from 'react-bootstrap';
 import {DropDownFilter} from './DropDownFilter';
-import {fetchInstanceList} from '../../../actions/data';
 import {store} from '../../../store/store';
 import * as Actions from '../../../actions/data';
 import {spring} from 'react-motion';

@@ -6,7 +6,7 @@ export const BASE_URL = config.serverUrl;
 
 export module HTTP {
 
-    export function postRequest(path: string, data = {}): Promise<{}> {
+    export function postRequest(path: string, data = {}): Axios.IPromise<Axios.AxiosXHR<{}>> {
         return axios({
             method: 'post',
             url: BASE_URL + path,
@@ -27,7 +27,7 @@ export module HTTP {
         return str.join('&');
     }
 
-    export function getRequest(path: string, data = {}): Promise<{}> {
+    export function getRequest(path: string, data = {}): Axios.IPromise<Axios.AxiosXHR<{}>> {
         let url: string = Object.keys(data).length ? BASE_URL + path + `?${serialize(data)}` : BASE_URL + path;
         return axios({
             method: 'get',

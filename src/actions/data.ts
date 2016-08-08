@@ -14,24 +14,6 @@ export const FETCH_INSTANCE_LIST_ERROR = 'App/FETCH_INSTANCE_LIST_ERROR';
 export const DELETE_INSTANCE_LIST = 'App/DELETE_INSTANCE_LIST';
 export const TOGGLE_FILTERS = 'TOGGLE_FILTERS';
 
-export function fetchInstanceList(resource: string, offset: number) {
-    let filterFormData = getValues(store.getState().form.dynamic);
-    let filters = {offset: offset};
-    objectAssign(filters, filterFormData);
-    return (dispatch) => {
-        return dispatch({
-            types: [
-                FETCH_INSTANCE_LIST_START,
-                FETCH_INSTANCE_LIST_SUCCESS,
-                FETCH_INSTANCE_LIST_ERROR,
-            ],
-            payload: {
-                promise: ModelService.getModel(resource).list(filters),
-            },
-            resource: resource
-        });
-    };
-}
 
 export const setPage = (pageNumber: number): {type: string, pageNumber: number} => {
     return {

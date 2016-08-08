@@ -1,7 +1,14 @@
 import {resolver} from '../resolver';
 import {BaseModel} from '../models/BaseModel';
+import {getEnvironment} from './appService';
 
 module ModelService {
+
+    function warn(name) {
+        if (getEnvironment() === 'development') {
+            console.warn(`Cannot find ${name}, make sure you have registered it. Using Base Model instead.`);
+        }
+    }
 
     export function register(model: typeof BaseModel): void {
         resolver.set(model.name.toLowerCase(), model);
@@ -13,7 +20,7 @@ module ModelService {
         if (hasModel(name)) {
             return resolver.get(name);
         } else {
-            console.warn(`Cannot find ${name}, make sure you have registered it. Using Base Model instead.`);
+            warn(name);
             return BaseModel;
         }
     }

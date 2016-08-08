@@ -1,5 +1,6 @@
 import configureStore from '../src/store/store';
 import {IMockStore, store} from '../src/store/store';
+import {getEnvironment} from '../src/utils/appService';
 let compose = require<any>('redux').compose;
 
 declare module process {
@@ -18,7 +19,7 @@ describe('tests store methods', () => {
     });
 
     it('calls the configure Store method in development environment', () => {
-        let oldEnv: string = process.env.NODE_ENV;
+        let oldEnv: string = getEnvironment();
         process.env.NODE_ENV = 'development';
         compose = jest.fn();
         let testStore: any = configureStore({});

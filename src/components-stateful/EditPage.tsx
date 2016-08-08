@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { fetchInstanceData } from '../actions/modelActions';
 import {BaseModel} from '../models/BaseModel';
 import {GenericEditPage} from './../components/CRUD/GenericEditPage';
 import {ComponentService} from '../utils/componentService';
@@ -12,17 +11,20 @@ export interface IInstanceContainerState {
     instance: BaseModel;
 }
 
-export class EditPageImpl extends React.Component<IInstanceContainerProps & IInjectedProps, IInstanceContainerState> {
+export class EditPageImpl extends React.Component<IInstanceContainerProps, IInstanceContainerState> {
 
     static defaultProps: IInstanceContainerProps = {
-        fetchInstanceData: (resource, resourceID) => { },
         instances: [],
         params: {resource: '', resourceID: ''}
     };
 
+    fetchInstanceData(resource: string, resourceID: string): void {
+        ModelService.getModel(resource).get(resourceID);
+    }
+
     componentWillMount(): void {
         const { resource, resourceID } = this.props.params;
-        this.props.fetchInstanceData(resource, resourceID);
+        this.fetchInstanceData(resource, resourceID);
     }
 
     handleSubmit = (instance: BaseModel, e: Event): void => {
@@ -54,17 +56,8 @@ function mapStateToProps(state): {instances: BaseModel[]} {
     };
 }
 
-function mapDispatchToProps(dispatch): {fetchInstanceData: (resource: string, resourceID: string) => void } {
-    return {
-        fetchInstanceData: (resource: string, resourceID: string) => {
-            dispatch(fetchInstanceData(resource, resourceID));
-        }
-    };
-}
-
 let EditPage = connect(
-    mapStateToProps,
-    mapDispatchToProps
+    mapStateToProps
 )(EditPageImpl);
 
 export {EditPage};

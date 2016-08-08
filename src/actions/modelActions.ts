@@ -33,20 +33,3 @@ export const deleteInstance = ( instance: BaseModel ): IInstanceAction => {
         instance,
     };
 };
-
-export function fetchInstanceData(resource: string, resourceID: string) {
-    return (dispatch) => {
-        return dispatch({
-            types: [
-                FETCH_INSTANCE_DATA_START,
-                FETCH_INSTANCE_DATA_SUCCESS,
-                FETCH_INSTANCE_DATA_ERROR,
-            ],
-            payload: {
-                promise: ModelService.getModel(resource).get(resourceID),
-            },
-            resource: resource
-        });
-    };
-};
-

@@ -1,4 +1,14 @@
 
+declare module process {
+    export module env {
+        let NODE_ENV: string;
+    }
+}
+
+export function getEnvironment() {
+    return process.env.NODE_ENV;
+}
+
 export interface IAppServiceConfig {
     alertType?: string;
     alertTimeOut?: number;
