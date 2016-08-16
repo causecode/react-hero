@@ -14,6 +14,12 @@ module ModelService {
         resolver.set(model.name.toLowerCase(), model);
     }
 
+    export function registerAll(...models: typeof BaseModel[]): void {
+        models.forEach((model) => {
+            register(model);
+        });
+    }
+
     export function getModel(name: string): typeof BaseModel {
         name = name.toLowerCase();
         name = (name.indexOf('model') === -1) ? `${name}model` : name;

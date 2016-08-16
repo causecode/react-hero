@@ -5,7 +5,7 @@ import {ModelService} from '../../../utils/modelService';
 const ReduxForm: any = require<any>('redux-form');
 const classNames: any = require<any>('classnames');
 
-export class FilterForm extends React.Component<IPagedListFiltersProps, {}> {
+export class FilterForm extends React.Component<IPagedListFiltersProps, void> {
 
     static defaultProps: IPagedListFiltersProps = {
         filtersOpen: false,
@@ -65,9 +65,9 @@ function mapStateToProps(state): {filtersOpen: boolean} {
     };
 }
 
-let DynamicForm = ReduxForm.reduxForm(
-    {form: 'dynamic'},
-    mapStateToProps
-)(FilterForm);
-
-export {DynamicForm};
+export function FormFactory(resource) {
+    return ReduxForm.reduxForm(
+        {form: `${resource}Filters`},
+        mapStateToProps
+    )(FilterForm);
+}

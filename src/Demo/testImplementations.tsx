@@ -35,7 +35,8 @@ export class NewPage extends React.Component<any, any> {
                             <ButtonListItem><Link to="/">Home</Link> </ButtonListItem>
                             <ButtonListItem><Link to="/page2">Button 2</Link></ButtonListItem>
                             <ButtonListItem><Link to="/resp">Responsive View Page</Link></ButtonListItem>
-                            <ButtonListItem><Link to="/blog/list">Page List</Link></ButtonListItem>
+                            <ButtonListItem><Link to="/blog/list">Blog List</Link></ButtonListItem>
+                            <ButtonListItem><Link to="/user/list">User List</Link></ButtonListItem>
                         </ButtonList>
                 </Content>
             </HeaderView>
@@ -102,8 +103,7 @@ class BlogListPage extends React.Component<{resource: string}, any> {
     }
 }
 
-ComponentService.register(BlogListPage);
-ModelService.register(BlogModel);
+ComponentService.registerAll(BlogListPage);
 
 // This component is for testing.
 class UserEditPage extends React.Component<any, any> {
@@ -154,21 +154,15 @@ export class HomeContent extends ResponsiveView<any, any> {
     protected renderDefault(): JSX.Element {
         return <h1 style={{height: '30em'}}>This is the home page</h1>;
     }
-
 }
 
 export class Page2Content extends ResponsiveView<any, any> {
     protected renderDefault(): JSX.Element {
         return <h1 style={{height: '30em'}}>Just Another Page!!</h1>;
     }
-
 }
 
 export class ContentImpl extends ResponsiveView<any, any> {
-
-    constructor() {
-        super();
-    }
 
     protected renderDefault(): JSX.Element {
         return (

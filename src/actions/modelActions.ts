@@ -1,35 +1,55 @@
 import {BaseModel} from '../models/BaseModel';
 import {ModelService} from '../utils/modelService';
-
-export const SAVE_INSTANCE: string = 'SAVE_INSTANCE';
-export const UPDATE_INSTANCE: string = 'UPDATE_INSTANCE';
-export const DELETE_INSTANCE: string = 'DELETE_INSTANCE';
-export const FETCH_INSTANCE_DATA_START: string = 'App/FETCH_INSTANCE_DATA_START';
-export const FETCH_INSTANCE_DATA_SUCCESS: string = 'App/FETCH_INSTANCE_DATA_SUCCESS';
-export const FETCH_INSTANCE_DATA_ERROR: string = 'App/FETCH_INSTANCE_DATA_ERROR';
+import {
+    SAVE_INSTANCE,
+    UPDATE_INSTANCE,
+    DELETE_INSTANCE,
+    CREATE_INSTANCE,
+    SET_PAGE,
+    TOGGLE_FILTERS,
+    TOGGLE_NAV
+} from '../constants';
 
 export interface IInstanceAction {
     type: string;
+    key?: string;
     instance: BaseModel;
 }
 
-export const saveInstance = ( instance: BaseModel ): IInstanceAction => {
+function ModelActionFactory(type: string) {
+    return (instance: BaseModel, key?: string): IInstanceAction => {
+        return {
+            type,
+            key,
+            instance
+        };
+    };
+}
+
+export type ModelActionCreatorType = (instance: BaseModel, key?: string) => IInstanceAction
+
+export const saveInstance: ModelActionCreatorType = ModelActionFactory(SAVE_INSTANCE);
+export const updateInstance: ModelActionCreatorType = ModelActionFactory(UPDATE_INSTANCE);
+export const deleteInstance: ModelActionCreatorType = ModelActionFactory(DELETE_INSTANCE);
+export const createInstance: ModelActionCreatorType = ModelActionFactory(CREATE_INSTANCE);
+
+export const setPage = (pageNumber: number, resource: string): {type: string, resource: string, pageNumber: number} => {
     return {
-        type: SAVE_INSTANCE,
-        instance,
+        type: SET_PAGE,
+        resource: resource,
+        pageNumber: pageNumber
     };
 };
 
-export const updateInstance = ( instance: BaseModel ): IInstanceAction => {
+export const toggleFilters = (): {type: string} => {
     return {
-        type: UPDATE_INSTANCE,
-        instance,
+        type: TOGGLE_FILTERS
     };
 };
 
-export const deleteInstance = ( instance: BaseModel ): IInstanceAction => {
+export const toggleNav = (): {type: string} => {
     return {
-        type: DELETE_INSTANCE,
-        instance,
+        type: TOGGLE_NAV
     };
 };
+

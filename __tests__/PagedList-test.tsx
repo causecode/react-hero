@@ -7,7 +7,6 @@ import {PagedListImpl} from '../src/components-stateful/PagedList';
 import * as React from 'react';
 import * as TestUtils from 'react-addons-test-utils';
 import {Link} from 'react-router';
-import {setPage} from '../src/actions/data';
 jest.mock('../src/store/store');
 import {store} from '../src/store/store';
 import {Provider} from 'react-redux';

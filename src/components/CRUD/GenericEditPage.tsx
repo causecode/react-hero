@@ -5,21 +5,39 @@ import {MissingInstanceError} from '../../errors/MissingInstanceError';
 import {Stub} from '../../interfaces/interfaces';
 import {IInstancePageProps} from '../../interfaces/interfaces';
 import {BaseModel} from '../../models/BaseModel';
+import {ModelService} from '../../utils/modelService';
+import {IInjectedProps} from 'react-router';
+import {connect} from 'react-redux';
+import {store }from '../../store/store';
 
 export interface IGenericEditPageProps extends IInstancePageProps {
+    isCreatePage: boolean;
     handleSubmit: (instance: BaseModel, e: Event) => void;
     handleDelete?: (instance: BaseModel) => void;
-}
-
-export interface IGenericEditPageState {
+    params: {resource: string};
     instance: BaseModel;
 }
 
-export class GenericEditPage extends React.Component<IGenericEditPageProps, IGenericEditPageState> {
+export class GenericEditPage extends React.Component<IGenericEditPageProps, {instance: BaseModel}> {
+    static defaultProps: IGenericEditPageProps = {
+        isCreatePage: false,
+        handleSubmit: (instance: BaseModel, e: Event): void => {},
+        handleDelete: (instance: BaseModel): void => {},
+        params: {resource: ''},
+        instance: new BaseModel({})
+    };
 
-constructor(props: IGenericEditPageProps) {
+    constructor(props: IGenericEditPageProps) {
         super();
         this.state = { instance: props.instance };
+    }
+
+    componentWillReceiveProps(nextProps: IGenericEditPageProps) {
+        this.setState({instance: nextProps.instance});
+    }
+
+    getResource(): string {
+        return this.props.params.resource || this.props.instance.resourceName || '';
     }
 
     handleChange = (key: string, event: Event & {target: {value: string}}): void  => {
@@ -37,7 +55,6 @@ constructor(props: IGenericEditPageProps) {
         if (!resource) {
             resource = instance ? instance.resourceName : '';
         }
-        this.state.instance = instance;
         let instanceProperties = (instance && instance.properties) ? instance.properties : {};
         let instanceKeys = Object.keys(instanceProperties);
         return (
@@ -77,7 +94,7 @@ constructor(props: IGenericEditPageProps) {
                                     return;
                                     }
                                 })()}
-                            <Link className="btn btn-default" to={`${resource}/list`}>Cancel</Link>
+                            <Link className="btn btn-default" to={`${this.getResource()}/list`}>Cancel</Link>
                         </Col>
                     </FormGroup>
                 </Grid>

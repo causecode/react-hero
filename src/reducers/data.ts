@@ -1,6 +1,4 @@
-import {SET_PAGE} from '../actions/actions';
 import {fromJS} from 'immutable';
-import {TOGGLE_FILTERS} from '../actions/data';
 import {resolver} from '../resolver';
 import {BaseModel} from '../models/BaseModel';
 import {ModelService} from '../utils/modelService';
@@ -8,16 +6,11 @@ import {
     FETCH_INSTANCE_LIST_START,
     FETCH_INSTANCE_LIST_SUCCESS,
     FETCH_INSTANCE_LIST_ERROR,
-    DELETE_INSTANCE_LIST
-} from '../actions/data';
+    TOGGLE_FILTERS,
+    SET_PAGE
+} from '../constants';
 
 const INITIAL_STATE = fromJS({
-    totalCount: 0,
-    instanceList: [],
-    properties: [],
-    clazz: {},
-    hasError: false,
-    isLoading: false,
     filtersOpen: false,
 });
 
@@ -27,7 +20,7 @@ function dataReducer(state = INITIAL_STATE, action ) {
     switch (action.type) {
 
         case FETCH_INSTANCE_LIST_START:
-        return INITIAL_STATE;
+            return state;
 
         case FETCH_INSTANCE_LIST_SUCCESS:
             let resource = action.resource || '';
@@ -43,25 +36,24 @@ function dataReducer(state = INITIAL_STATE, action ) {
                 throw new Error('No Data in the Action Payload. Please make sure you are returning an instanceList' +
                     ' from the server.');
             }
-            return state.merge(fromJS({
+            let listProps = {};
+            listProps = fromJS({
                 totalCount: totalCount,
                 instanceList: instanceList,
                 properties: properties,
-                clazz: {},
                 hasError: false,
                 isLoading: false,
-            }));
+            });
+            return state.mergeIn([`${resource}List`], listProps);
+
         case FETCH_INSTANCE_LIST_ERROR:
-            return state.merge(fromJS({
+            return state.set(`${action.resource}List`, fromJS({
                 hasError: true,
                 isLoading: false,
             }));
 
-        case DELETE_INSTANCE_LIST:
-            return state.merge(INITIAL_STATE);
-
         case SET_PAGE:
-            return state.update('activePage', (value) => value = action.pageNumber);
+            return state.setIn([`${action.resource}List`, 'activePage'], action.pageNumber);
 
         case TOGGLE_FILTERS:
             return  state.update('filtersOpen', (value) => value = !value);

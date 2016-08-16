@@ -6,13 +6,11 @@ import {InvalidInstanceDataError} from '../errors/InvalidInstanceDataError';
 import {
     FETCH_INSTANCE_LIST_START,
     FETCH_INSTANCE_LIST_SUCCESS,
-    FETCH_INSTANCE_LIST_ERROR
-} from '../actions/data';
-import {
+    FETCH_INSTANCE_LIST_ERROR,
     FETCH_INSTANCE_DATA_START,
     FETCH_INSTANCE_DATA_SUCCESS,
     FETCH_INSTANCE_DATA_ERROR
-} from '../actions/modelActions';
+} from '../constants';
 const objectAssign: any = require<any>('object-assign');
 const getValues: (state: any) => any = require<{getValues: (state: any) => any}>('redux-form').getValues;
 import {ModelService} from '../utils/modelService';
@@ -29,6 +27,7 @@ export class BaseModel {
     }
 
     $save(flush: boolean = true,
+            key: string = '',
             successCallBack = ( (...args: any[]) => {} ),
             failureCallBack = ( (...args: any[]) => {} )): void {
         if (flush) {
@@ -40,27 +39,29 @@ export class BaseModel {
                     failureCallBack(err);
                 });
         } else {
-            store.dispatch(saveInstance(this));
+            store.dispatch(saveInstance(this, key));
         }
     }
 
     $update(flush: boolean = true,
+            key: string = '',
             successCallBack = ( (...args: any[]) => {} ),
             failureCallBack = ( (...args: any[]) => {} )): void {
         if (flush) {
             HTTP.putRequest(`${this.resourceName}/update`, this.properties)
                 .then((response) => {
                     successCallBack(response);
-                    store.dispatch(updateInstance(this));
+                    store.dispatch(updateInstance(this, key));
                 }, (err) => {
                     failureCallBack(err);
                 });
         } else {
-            store.dispatch(updateInstance(this));
+            store.dispatch(updateInstance(this, key));
         }
     }
 
     $delete(flush: boolean = true,
+            key: string = '',
             successCallBack = ( (...args: any[]) => {} ),
             failureCallBack = ( (...args: any[]) => {} )): void {
         if (flush) {
@@ -72,7 +73,7 @@ export class BaseModel {
                     failureCallBack(err);
                 });
         } else {
-            store.dispatch(deleteInstance(this));
+            store.dispatch(deleteInstance(this, key));
         }
     }
 

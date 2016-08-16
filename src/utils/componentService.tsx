@@ -23,6 +23,12 @@ module ComponentService {
         resolver.set(component.name.toLowerCase(), component);
     }
 
+    export function registerAll(...components: ComponentType[]) {
+        components.forEach((component) => {
+            register(component);
+        });
+    }
+
     export function getComponent(name: string, type: string = ''): ComponentType {
         name = (type.length && (name.indexOf(type) === -1)) ? `${name}${type}`.toLowerCase() : name.toLowerCase();
         return resolver.get(name);
