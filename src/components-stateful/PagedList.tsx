@@ -2,24 +2,30 @@ import * as React from 'react';
 import { Table, Pagination } from 'react-bootstrap';
 import {PagedListFilters} from '../components/PagedList/Filters/PagedListFilter';
 import {DataGrid} from '../components/PagedList/DataGrid';
-import {setPage} from '../actions/data';
+import {setPage} from '../actions/modelActions';
 import {Link} from 'react-router';
 import {connect} from 'react-redux';
 import {BaseModel} from '../models/BaseModel';
 import {ModelService} from '../utils/modelService';
 import '../utils/appService';
 
-export interface IPagedListProps extends React.Props<{}> {
+export interface IPagedListDispatchProps {
+    setPage?: (pageNumber: number, resource: string) => void;
+}
+
+export interface IPagedListStateProps {
     properties?: string[];
     instanceList?: BaseModel[];
-    max: number;
     totalCount?: number;
-    setPage?: (pageNumber: number) => void;
     activePage?: number;
+}
+
+export interface IPagedListProps extends IPagedListStateProps, IPagedListDispatchProps {
+    max: number;
     resource: string;
 }
 
-export class PagedListImpl extends React.Component<IPagedListProps, {}> {
+export class PagedListImpl extends React.Component<IPagedListProps, void> {
 
     fetchInstanceList(resource, filters: {max?: number, offset?: number} = {}) {
         if (this.props.max > 0) {
@@ -52,7 +58,7 @@ export class PagedListImpl extends React.Component<IPagedListProps, {}> {
 
     handlePagination = (pageNumber: number): void => {
         this.fetchInstanceList(this.props.resource, {offset: (pageNumber - 1) * this.props.max});
-        this.props.setPage(pageNumber);
+        this.props.setPage(pageNumber, this.props.resource);
     };
 
     render(): JSX.Element {
@@ -87,26 +93,22 @@ export class PagedListImpl extends React.Component<IPagedListProps, {}> {
     };
 }
 
-function mapStateToProps(state): {
-    properties: string[];
-    instanceList: BaseModel[];
-    totalCount: number;
-    activePage: number
-} {
+function mapStateToProps(state, ownProps): IPagedListStateProps {
+    let instanceList: IPagedListStateProps & {toJS?: () => IPagedListStateProps} =
+            state.data.get(`${ownProps.resource}List`, {} );
+    instanceList = instanceList.toJS ? instanceList.toJS() : instanceList;
     return {
-        properties: state.data.get('properties', []) as string[],
-        instanceList: state.data.get('instanceList', []).toJS(),
-        totalCount:  state.data.get('totalCount', 0),
-        activePage: state.data.get('activePage', 1)
+        properties: instanceList.properties,
+        instanceList: instanceList.instanceList,
+        totalCount:  instanceList.totalCount,
+        activePage: instanceList.activePage
     };
 }
 
-function mapDispatchToProps(dispatch): {
-    setPage: (pageNumber: number) => void;
-} {
+function mapDispatchToProps(dispatch): IPagedListDispatchProps {
     return {
-        setPage: (pageNumber) => {
-            dispatch(setPage(pageNumber));
+        setPage: (pageNumber, resource) => {
+            dispatch(setPage(pageNumber, resource));
         }
     };
 }

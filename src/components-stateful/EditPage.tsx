@@ -6,67 +6,107 @@ const connect: any = require<any>('react-redux').connect;
 import {ModelService} from '../utils/modelService';
 import {IInstanceContainerProps} from '../interfaces/interfaces';
 import {IInjectedProps} from 'react-router';
+import {createInstance} from '../actions/modelActions';
+import {PAGE_NOT_FOUND} from '../constants';
+import {ErrorPage} from '../components/ErrorPage';
 
-export interface IInstanceContainerState {
-    instance: BaseModel;
+function isCreatePage(pathName: string): boolean {
+    return pathName.toLowerCase().indexOf('create') > -1;
 }
 
-export class EditPageImpl extends React.Component<IInstanceContainerProps & IInjectedProps, IInstanceContainerState> {
+export type EditPageProps = IInstanceContainerProps & IInjectedProps & {createInstance: (instance: BaseModel) => void};
 
-    static defaultProps: IInstanceContainerProps & IInjectedProps = {
-        instances: [],
+export class EditPageImpl extends React.Component<EditPageProps, void> {
+
+    static defaultProps: EditPageProps = {
+        instance: new BaseModel({}),
         params: {resource: '', resourceID: ''},
-        location: {pathname: ''}
+        location: {pathname: ''},
+        createInstance: () => {}
     };
 
     fetchInstanceData(resource: string, resourceID: string): void {
         ModelService.getModel(resource).get(resourceID);
     }
 
-    componentWillMount(): void {
+    getInstance(): BaseModel {
+        let Model: typeof BaseModel = ModelService.getModel(this.props.params.resource);
+        return this.props.instance instanceof BaseModel ? this.props.instance : new Model({});
+    }
+
+    updateModelInstance(): void {
         const { resource, resourceID } = this.props.params;
         if (resourceID) {
             this.fetchInstanceData(resource, resourceID);
         }
     }
 
-    handleSubmit = (instance: BaseModel, e: Event): void => {
+    saveInstanceChanges(instance: BaseModel): void {
+        let resource: string = this.props.params.resource;
+        if (isCreatePage(this.props.location.pathname)) {
+            instance.$save(true, `${resource}Create`);
+        } else {
+            instance.$update(true, `${resource}Edit`);
+        }
+    }
+
+    componentWillMount(): void {
+        this.updateModelInstance();
+        let resource: string = this.props.params.resource;
+        let Model: typeof BaseModel = ModelService.getModel(resource);
+        if (this.props.instance && isCreatePage(this.props.location.pathname)) {
+            this.props.createInstance(new Model({}));
+        }
+    }
+
+    handleSubmit(instance: BaseModel, e: Event): void {
         e.preventDefault();
-        instance.$update();
+        this.saveInstanceChanges(instance);
     };
 
-    handleDelete = (instance: BaseModel) : void => {
-        instance.$delete();
+    handleDelete = (): void => {
+        let instanceKey: string = this.props.params.resource;
+        instanceKey += isCreatePage(this.props.location.pathname) ? 'Create' : 'Edit';
+        this.props.instance.$delete(true, instanceKey);
     };
 
     render(): JSX.Element {
-        const resource = this.props.params.resource;
-        let Model: typeof BaseModel = ModelService.getModel(resource);
-        let instance: BaseModel;
-        if (this.props.location.pathname.indexOf('create') > -1 || !this.props.params.resourceID ||
-                !this.props.instances[resource]) {
-            instance = new Model({});
-        } else {
-            instance = this.props.instances[resource];
+        if (!(this.props.instance instanceof BaseModel)) {
+            return (
+                <ErrorPage message={PAGE_NOT_FOUND}/>
+            );
         }
-        const childProps = {resource: resource, handleSubmit: this.handleSubmit, handleDelete: this.handleDelete,
-                instance: instance};
-        let Page: React.ComponentClass<{}> = ComponentService.getEditPage(resource) as React.ComponentClass<{}>;
+        const childProps = {location: this.props.location, params: this.props.params,
+                handleSubmit: this.handleSubmit, handleDelete: this.handleDelete,
+                isCreatePage: isCreatePage(this.props.location.pathname), instance: this.props.instance};
+        let Page: React.ComponentClass<void> = ComponentService
+                .getEditPage(this.props.params.resource) as React.ComponentClass<void>;
         return(
             <Page {...childProps}/>
         );
     }
 }
 
-function mapStateToProps(state): {instances: BaseModel[]} {
-    let instances: BaseModel[] = state.instances.toJS();
+function mapStateToProps(state, ownProps): Object {
+    let instanceKey: string = ownProps.params.resource;
+    instanceKey += isCreatePage(ownProps.location.pathname) ? 'Create' : 'Edit';
+    let instance: BaseModel = state.instances.get(instanceKey);
     return {
-        instances: instances
+        instance
     };
 }
 
+function mapDispatchToProps(dispatch) {
+   return {
+       createInstance: (instance) => {
+           dispatch(createInstance(instance));
+       }
+   };
+}
+
 let EditPage = connect(
-    mapStateToProps
+    mapStateToProps,
+    mapDispatchToProps
 )(EditPageImpl);
 
 export {EditPage};

@@ -1,5 +1,6 @@
 import {BaseModel} from './../models/BaseModel';
 import {resolver} from '../resolver';
+import {ModelService} from '../utils/modelService';
 
 function getProperties() {
     return {author: '', blogIMGSrc: '', dateCreated: 0, lastUpdated: 0};
@@ -23,3 +24,4 @@ export class UserModel extends BaseModel {
     }
 }
 
+ModelService.registerAll(UserModel, BlogModel);

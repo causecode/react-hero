@@ -1,12 +1,11 @@
 import * as React from 'react';
-import * as Actions from '../actions/actions';
 
-export interface INavMenuLauncherIconProps extends React.Props<{}> {
+export interface INavMenuLauncherIconProps {
     onClick?: () => void;
     position?: string;
 }
 
-export class NavMenuLauncherIcon extends React.Component<INavMenuLauncherIconProps, {}> {
+export class NavMenuLauncherIcon extends React.Component<INavMenuLauncherIconProps, void> {
 
     static defaultProps: INavMenuLauncherIconProps = {
         onClick: () => {},

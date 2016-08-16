@@ -25,7 +25,7 @@ export interface IRouteParams {
 // Props used by Instance Page Containers.
 export interface IInstanceContainerProps {
     params: IRouteParams;
-    instances: BaseModel[];
+    instance: BaseModel;
 }
 
 // Props used by the Instance Pages.

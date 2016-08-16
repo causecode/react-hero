@@ -6,11 +6,13 @@ const connect: any = require<any>('react-redux').connect;
 import {ModelService} from '../utils/modelService';
 import {IInstanceContainerProps} from '../interfaces/interfaces';
 import {ComponentType} from '../utils/componentService';
+import {PAGE_NOT_FOUND} from '../constants';
+import {ErrorPage} from '../components/ErrorPage';
 
-export class ShowPageImpl extends React.Component<IInstanceContainerProps, {}> {
+export class ShowPageImpl extends React.Component<IInstanceContainerProps, void> {
 
     static defaultProps: IInstanceContainerProps = {
-        instances: [],
+        instance: new BaseModel({}),
         params: {resource: '', resourceID: ''}
     };
 
@@ -24,21 +26,24 @@ export class ShowPageImpl extends React.Component<IInstanceContainerProps, {}> {
     }
 
     render() {
+        if (!(this.props.instance instanceof BaseModel)) {
+            return (
+                <ErrorPage message={PAGE_NOT_FOUND} />
+            );
+        }
         const resource = this.props.params.resource;
-        let Model: typeof BaseModel = ModelService.getModel(resource);
-        const instance: BaseModel = this.props.instances[resource] || new Model({});
-        const childProps = {instance: instance, resource: resource};
-        let Page: React.ComponentClass<{}> = ComponentService.getShowPage(resource) as React.ComponentClass<{}>;
+        const childProps = {instance: this.props.instance, resource: resource};
+        let Page: React.ComponentClass<void> = ComponentService.getShowPage(resource) as React.ComponentClass<void>;
         return (
             <Page {...childProps}/>
         );
     }
 }
 
-function mapStateToProps(state): {instances: BaseModel[]} {
-    let instances: BaseModel[] = state.instances.toJS();
+function mapStateToProps(state, ownProps): {instance: BaseModel} {
+    let instance: BaseModel = state.instances.get(`${ownProps.params.resource}Edit`);
     return {
-        instances: instances
+        instance
     };
 }
 
