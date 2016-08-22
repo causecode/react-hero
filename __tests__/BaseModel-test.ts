@@ -104,20 +104,20 @@ describe('Test Base Model', () => {
         it('calls the Model methods without any params',
                 async () => {
             await testWithoutParams(ModelInstance, 'save', HTTP.postRequest,
-                    [`${ModelInstance.resourceName}/save`, ModelInstance.properties]);
+                    [`${ModelInstance.resourceName}`, ModelInstance.properties]);
             await testWithoutParams(ModelInstance, 'update', HTTP.putRequest,
-                    [`${ModelInstance.resourceName}/update`, ModelInstance.properties]);
+                    [`${ModelInstance.resourceName}`, ModelInstance.properties]);
             await testWithoutParams(ModelInstance, 'delete', HTTP.deleteRequest,
-                    [`${ModelInstance.resourceName}/delete/${ModelInstance.properties.id}`]);
+                    [`${ModelInstance.resourceName}/${ModelInstance.properties.id}`]);
         });
 
         it('calls the methods with flush', async () => {
             await testWithFlush(ModelInstance, 'save', HTTP.postRequest,
-                    [`${ModelInstance.resourceName}/save`, ModelInstance.properties]);
+                    [`${ModelInstance.resourceName}`, ModelInstance.properties]);
             await testWithFlush(ModelInstance, 'update', HTTP.putRequest,
-                    [`${ModelInstance.resourceName}/update`, ModelInstance.properties]);
+                    [`${ModelInstance.resourceName}`, ModelInstance.properties]);
             await testWithFlush(ModelInstance, 'delete', HTTP.deleteRequest,
-                    [`${ModelInstance.resourceName}/delete/${ModelInstance.properties.id}`]);
+                    [`${ModelInstance.resourceName}/${ModelInstance.properties.id}`]);
         });
 
         it('calls the methods with flush false', async() => {
@@ -139,11 +139,11 @@ describe('Test Base Model', () => {
                 });
             });
             await testWithFlushAndPromiseFailure(ModelInstance, 'save', HTTP.postRequest,
-                    [`${ModelInstance.resourceName}/save`, ModelInstance.properties]);
+                    [`${ModelInstance.resourceName}`, ModelInstance.properties]);
             await testWithFlushAndPromiseFailure(ModelInstance, 'update', HTTP.putRequest,
-                    [`${ModelInstance.resourceName}/update`, ModelInstance.properties]);
+                    [`${ModelInstance.resourceName}`, ModelInstance.properties]);
             await testWithFlushAndPromiseFailure(ModelInstance, 'delete', HTTP.deleteRequest,
-                    [`${ModelInstance.resourceName}/delete/${ModelInstance.properties.id}`]);
+                    [`${ModelInstance.resourceName}/${ModelInstance.properties.id}`]);
         });
 
     });

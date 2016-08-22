@@ -32,7 +32,7 @@ export class BaseModel {
             successCallBack = ( (...args: any[]) => {} ),
             failureCallBack = ( (...args: any[]) => {} )): void {
         if (flush) {
-            HTTP.postRequest(`${this.resourceName}/save`, this.properties)
+            HTTP.postRequest(`${this.resourceName}`, this.properties)
                 .then((response) => {
                     successCallBack(response);
                     store.dispatch(saveInstance(this));
@@ -48,7 +48,7 @@ export class BaseModel {
             successCallBack = ( (...args: any[]) => {} ),
             failureCallBack = ( (...args: any[]) => {} )): void {
         if (flush) {
-            HTTP.putRequest(`${this.resourceName}/update`, this.properties)
+            HTTP.putRequest(`${this.resourceName}`, this.properties)
                 .then((response) => {
                     successCallBack(response);
                     store.dispatch(updateInstance(this));
@@ -64,7 +64,7 @@ export class BaseModel {
             successCallBack = ( (...args: any[]) => {} ),
             failureCallBack = ( (...args: any[]) => {} )): void {
         if (flush) {
-            HTTP.deleteRequest(`${this.resourceName}/delete/${this.properties.id}`)
+            HTTP.deleteRequest(`${this.resourceName}/${this.properties.id}`)
                 .then((response) => {
                     successCallBack(response);
                     store.dispatch(deleteInstance(this));
@@ -126,7 +126,7 @@ export class BaseModel {
                 FETCH_INSTANCE_DATA_SUCCESS,
                 FETCH_INSTANCE_DATA_ERROR,
             ];
-            let path: string = `${resourceName}/show/${id}`;
+            let path: string = `${resourceName}/${id}`;
             store.dispatch(
                 getPromiseAction(
                     types,
