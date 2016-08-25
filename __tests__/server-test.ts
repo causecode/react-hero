@@ -74,7 +74,6 @@ describe('Test server api methods', () => {
             postConfig.headers = {};
             postConfig.url = BASE_URL;
             await HTTP.postRequest('');
-            console.log('config', postConfig);
             expect(axios).toBeCalledWith(postConfig);
         });
     });
