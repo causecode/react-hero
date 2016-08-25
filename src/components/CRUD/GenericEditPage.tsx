@@ -22,7 +22,6 @@ export class GenericEditPage extends React.Component<IGenericEditPageProps, {ins
     static defaultProps: IGenericEditPageProps = {
         isCreatePage: false,
         handleSubmit: (instance: BaseModel, e: Event): void => {},
-        handleDelete: (instance: BaseModel): void => {},
         params: {resource: ''},
         instance: new BaseModel({})
     };

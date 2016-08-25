@@ -16,7 +16,7 @@ import {IInstanceContainerProps} from '../src/interfaces/interfaces';
 function generalEditPageTests(renderedPage, instance: BaseModel, resource: string ): void {
     expect(renderedPage).toBeTruthy();
     expect(renderedPage.props.instance).toEqual(instance);
-    expect(renderedPage.props.resource).toEqual(resource);
+    expect(renderedPage.props.params.resource).toEqual(resource);
     /*
      * Commenting these out so that later when a work around for checking function equality is found
      * these test cases can also be executed.
@@ -28,6 +28,7 @@ function generalEditPageTests(renderedPage, instance: BaseModel, resource: strin
 describe('Test EditPage', () => {
     let { resource, instances }: IInitializerData = initializeTestCase();
     let renderer: React.ShallowRenderer;
+
     beforeEach(() => {
         renderer = TestUtils.createRenderer();
         BaseModel.get = jest.fn<Function>();
@@ -37,15 +38,15 @@ describe('Test EditPage', () => {
         renderer.render(
         <EditPageImpl
                 params={{resource: resource, resourceID: 1}}
-                instances={instances}
+                instance={instances[resource]}
                 location={{pathname: 'edit'}}
             />
         );
-
         let page: React.ReactElement<IInstanceContainerProps> = renderer.getRenderOutput();
 
         expect(page).toBeTruthy();
         let renderedPage = ShallowTestUtils.findWithType(page, GenericEditPage);
+
         generalEditPageTests(renderedPage, instances[resource], resource);
         expect(BaseModel.get).toBeCalledWith(1);
 
@@ -55,7 +56,7 @@ describe('Test EditPage', () => {
         renderer.render(
             <EditPageImpl
                     params={{resource: resource}}
-                    instances={instances}
+                    instance={instances[resource]}
                     location={{pathname: ''}}
                 />
         );
@@ -64,7 +65,7 @@ describe('Test EditPage', () => {
 
         expect(page).toBeTruthy();
         let renderedPage = ShallowTestUtils.findWithType(page, GenericEditPage);
-        generalEditPageTests(renderedPage, new BaseModel({}), resource);
+        generalEditPageTests(renderedPage, instances[resource], resource);
         expect(BaseModel.get).not.toBeCalled();
     });
 
@@ -104,7 +105,7 @@ describe('Test EditPage', () => {
         expect(resolver.get('testeditpage')).toEqual(TestEditPage);
 
         renderer.render(
-            <EditPageImpl params={{resource: resource, resourceID: 1}}  />
+            <EditPageImpl params={{resource: resource, resourceID: 1}}  instance={new TestModel({})}/>
         );
 
         let page = renderer.getRenderOutput();

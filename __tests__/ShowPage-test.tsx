@@ -27,7 +27,6 @@ describe('Test ShowPage', () => {
     function testRenderedPageProps(page: React.ReactElement<IInstanceContainerProps>, instance: BaseModel
             , resourceParam: string) {
         let renderedPage = ShallowTestUtils.findWithType(page, GenericShowPage);
-
         expect(renderedPage).toBeTruthy();
         expect(renderedPage.props.resource).toEqual(resourceParam);
         expect(renderedPage.props.instance).toEqual(instance);
@@ -38,7 +37,7 @@ describe('Test ShowPage', () => {
         renderer.render(
         <ShowPageImpl
                 params={{resource: resource}}
-                instances={instances}
+                instance={instances[resource]}
             />
         );
 
@@ -77,7 +76,7 @@ describe('Test ShowPage', () => {
         expect(resolver.get('testshowpage')).toEqual(TestShowPage);
 
         renderer.render(
-            <ShowPageImpl params={{resource: resource}} />
+            <ShowPageImpl params={{resource: resource}} instance={new TestModel({})}/>
         );
 
         let page = renderer.getRenderOutput();
@@ -91,4 +90,3 @@ describe('Test ShowPage', () => {
     });
 
 });
-

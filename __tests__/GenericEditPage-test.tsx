@@ -65,7 +65,7 @@ describe('Test Generic Edit Page', () => {
 
         let buttons = [...TestUtils.scryRenderedDOMComponentsWithTag(editPage, 'button'),
         ...TestUtils.scryRenderedComponentsWithType(editPage, Link)];
-        
+
         expect(buttons.length).toBe(3);
         expect(buttons[0].textContent).toBe('Update');
         expect(buttons[1].textContent).toBe('Delete');
@@ -86,11 +86,11 @@ describe('Test Generic Edit Page', () => {
         let buttons = [...TestUtils.scryRenderedDOMComponentsWithTag(editPage, 'button'),
             ...TestUtils.scryRenderedComponentsWithType(editPage, Link)];
 
-        expect(buttons.length).toBe(3);
-        expect(buttons[0].textContent).toBe('Update');
+        expect(buttons.length).toBe(2);
+        expect(buttons[0].textContent).toBe('Create');
 
-        expect(TestUtils.scryRenderedDOMComponentsWithTag(buttons[2], 'a')[0].textContent).toBe('Cancel');
-        expect(buttons[2].props.to).toEqual(`${ModelInstance.resourceName}/list`);
+        expect(TestUtils.scryRenderedDOMComponentsWithTag(buttons[1], 'a')[0].textContent).toBe('Cancel');
+        expect(buttons[1].props.to).toEqual(`${ModelInstance.resourceName}/list`);
     });
 
     it('renders an EditPage without any props', () => {
@@ -104,9 +104,9 @@ describe('Test Generic Edit Page', () => {
         let buttons = [...TestUtils.scryRenderedDOMComponentsWithTag(page, 'button'),
             ...TestUtils.scryRenderedComponentsWithType(page, Link)];
 
-        expect(buttons.length).toBe(3);
-        expect(buttons[0].textContent).toBe('Update');
-        expect(buttons[1].textContent).toBe('Delete');
+        expect(buttons.length).toBe(2);
+        expect(buttons[0].textContent).toBe('Create');
+        expect(TestUtils.scryRenderedDOMComponentsWithTag(buttons[1], 'a')[0].textContent).toBe('Cancel');
     });
 
 });
