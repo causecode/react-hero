@@ -14,7 +14,7 @@ import {Link} from 'react-router';
 
 describe('Test Generic Edit Page', () => {
     let handleSubmit: jest.Mock<Function>, handleDelete: jest.Mock<Function>;
-    let resource: string = 'test';
+    let params: {resource: string} = {resource: 'test'};
     let instanceData = {id: '1', author: 'abc'};
     let ModelInstance: BaseModel = new BaseModel(instanceData);
     let keys: string[] = Object.keys(ModelInstance.properties);
@@ -58,20 +58,20 @@ describe('Test Generic Edit Page', () => {
 
         let editPage: React.Component<void, void> = TestUtils.renderIntoDocument<React.Component<void, void>>(
             <GenericEditPage instance={ModelInstance}
-                    handleSubmit={handleSubmit} handleDelete={handleDelete} resource={resource}/>
+                    handleSubmit={handleSubmit} handleDelete={handleDelete} params={params}/>
         );
 
         genericEditPageTests(editPage);
 
         let buttons = [...TestUtils.scryRenderedDOMComponentsWithTag(editPage, 'button'),
         ...TestUtils.scryRenderedComponentsWithType(editPage, Link)];
-
+        
         expect(buttons.length).toBe(3);
         expect(buttons[0].textContent).toBe('Update');
         expect(buttons[1].textContent).toBe('Delete');
         expect(TestUtils.scryRenderedDOMComponentsWithTag(buttons[2], 'a')[0].textContent).toBe('Cancel');
 
-        expect(buttons[2].props.to).toEqual(`${resource}/list`);
+        expect(buttons[2].props.to).toEqual(`${params.resource}/list`);
         expect(handleDelete).not.toBeCalled();
         TestUtils.Simulate.click(ReactDOM.findDOMNode(buttons[1]));
         expect(handleDelete).toBeCalled();
@@ -86,11 +86,11 @@ describe('Test Generic Edit Page', () => {
         let buttons = [...TestUtils.scryRenderedDOMComponentsWithTag(editPage, 'button'),
             ...TestUtils.scryRenderedComponentsWithType(editPage, Link)];
 
-        expect(buttons.length).toBe(2);
-        expect(buttons[0].textContent).toBe('Create');
-        expect(TestUtils.scryRenderedDOMComponentsWithTag(buttons[1], 'a')[0].textContent).toBe('Cancel');
+        expect(buttons.length).toBe(3);
+        expect(buttons[0].textContent).toBe('Update');
 
-        expect(buttons[1].props.to).toEqual(`${ModelInstance.resourceName}/list`);
+        expect(TestUtils.scryRenderedDOMComponentsWithTag(buttons[2], 'a')[0].textContent).toBe('Cancel');
+        expect(buttons[2].props.to).toEqual(`${ModelInstance.resourceName}/list`);
     });
 
     it('renders an EditPage without any props', () => {
@@ -102,11 +102,11 @@ describe('Test Generic Edit Page', () => {
         expect(TestUtils.scryRenderedDOMComponentsWithTag(page, 'label').length).toEqual(0);
 
         let buttons = [...TestUtils.scryRenderedDOMComponentsWithTag(page, 'button'),
-            ...TestUtils.scryRenderedDOMComponentsWithTag(page, 'a')];
+            ...TestUtils.scryRenderedComponentsWithType(page, Link)];
 
-        expect(buttons.length).toBe(2);
-        expect(buttons[0].textContent).toBe('Create');
-        expect(buttons[1].textContent).toBe('Cancel');
+        expect(buttons.length).toBe(3);
+        expect(buttons[0].textContent).toBe('Update');
+        expect(buttons[1].textContent).toBe('Delete');
     });
 
 });

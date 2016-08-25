@@ -15,6 +15,7 @@ describe('Test Base Model', () => {
     let successObject: {success: boolean} = {success: true};
     let failureObject: {success: boolean} = {success: false};
     let instanceData = {id: 1, author: 'abc'};
+    let key: string = 'test';
     let ModelInstance: BaseModel = new BaseModel(instanceData);
 
     async function verifyActions(type: string, instance: BaseModel): void {
@@ -60,11 +61,24 @@ describe('Test Base Model', () => {
     async function testWithFlush(instance: BaseModel, functionName: string,
             HTTPMethod: Function, requestParams: Object): void {
         store.clearActions();
-        await instance[`$${functionName}`](true, successCallback, failureCallback);
+        await instance[`$${functionName}`](true, key, successCallback, failureCallback);
 
         expect(HTTPMethod).toBeCalledWith(...requestParams);
         expect(successCallback).toBeCalledWith(successObject);
         expect(failureCallback).not.toBeCalled();
+        verifyActions(`${functionName.toUpperCase()}_INSTANCE`, instance);
+    }
+
+    async function testWithFlushAndWithoutKey(instance: BaseModel, functionName: string,
+            HTTPMethod: Function, requestParams: Object): void {
+        store.clearActions();
+        await instance[`$${functionName}`](true, successCallback, failureCallback);
+
+        expect(HTTPMethod).toBeCalled();
+        if (functionName === 'update') {
+            expect(successCallback).not.toBeCalled();
+        }
+        expect(failureCallback).toBeCalled();
         verifyActions(`${functionName.toUpperCase()}_INSTANCE`, instance);
     }
 
@@ -80,7 +94,7 @@ describe('Test Base Model', () => {
     async function testWithFlushFalseAndCallbacks(instance: BaseModel, functionName: string,
             HTTPMethod: Function): void {
         store.clearActions();
-        await instance[`$${functionName}`](false, successCallback, failureCallback);
+        await instance[`$${functionName}`](false, key, successCallback, failureCallback);
 
         expect(HTTPMethod).not.toBeCalled();
         expect(successCallback).not.toBeCalled();
@@ -92,7 +106,7 @@ describe('Test Base Model', () => {
             HTTPMethod: Function, requestParams: Object): void {
         store.clearActions();
 
-        await instance[`$${functionName}`](true, successCallback, failureCallback);
+        await instance[`$${functionName}`](true, key, successCallback, failureCallback);
         expect(HTTPMethod).toBeCalledWith(...requestParams);
         expect(failureCallback).toBeCalledWith(failureObject);
         expect(successCallback).not.toBeCalled();
@@ -117,6 +131,15 @@ describe('Test Base Model', () => {
             await testWithFlush(ModelInstance, 'update', HTTP.putRequest,
                     [`${ModelInstance.resourceName}/update`, ModelInstance.properties]);
             await testWithFlush(ModelInstance, 'delete', HTTP.deleteRequest,
+                    [`${ModelInstance.resourceName}/delete/${ModelInstance.properties.id}`]);
+        });
+
+        it('calls the methods with flush and without key', async () => {
+            await testWithFlushAndWithoutKey(ModelInstance, 'save', HTTP.postRequest,
+                    [`${ModelInstance.resourceName}/save`, ModelInstance.properties]);
+            await testWithFlushAndWithoutKey(ModelInstance, 'update', HTTP.putRequest,
+                    [`${ModelInstance.resourceName}/update`, ModelInstance.properties]);
+            await testWithFlushAndWithoutKey(ModelInstance, 'delete', HTTP.deleteRequest,
                     [`${ModelInstance.resourceName}/delete/${ModelInstance.properties.id}`]);
         });
 
