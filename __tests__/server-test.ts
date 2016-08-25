@@ -9,6 +9,7 @@ unroll.use(it);
 describe('Test server api methods', () => {
     let successPath: string = 'successPath';
     let data: {id: number, author: string} = {id: 1, author: 'abc'};
+    let headers: {token: string} = {token: 'dummyToken'};
     let failurePath: string = 'failurePath';
     let successObject: {success: boolean} = {success: true};
 
@@ -21,22 +22,24 @@ describe('Test server api methods', () => {
         unroll('calls getRequest with #title', async (done, testArgs) => {
             let expectedGetConfig = {
                 method: 'get',
-                url: testArgs.expectedURL
+                url: testArgs.expectedURL,
+                headers: testArgs.headers
             };
-            await HTTP.getRequest(testArgs.path, testArgs.data);
+            await HTTP.getRequest(testArgs.path, testArgs.data, testArgs.headers);
             expect(axios).toBeCalledWith(expectedGetConfig);
             done();
         }, [
-            ['title', 'path', 'data', 'expectedURL'],
-            ['all parameters', successPath, data, BASE_URL + successPath + '?' + HTTP.serialize(data)],
-            ['path and empty data', successPath, {}, BASE_URL + successPath],
-            ['empty params', '', {}, BASE_URL]
+            ['title', 'path', 'data', 'expectedURL', 'headers'],
+            ['all parameters', successPath, data, BASE_URL + successPath + '?' + HTTP.serialize(data), headers],
+            ['path and empty data', successPath, {}, BASE_URL + successPath, {}],
+            ['empty params', '', {}, BASE_URL, {}]
         ]);
 
         it('calls getRequest with url', async () => {
             let expectedGetConfig = {
                 method: 'get',
-                url: BASE_URL
+                url: BASE_URL,
+                headers: {}
             };
             await HTTP.getRequest('');
             expect(axios).toBeCalledWith(expectedGetConfig);
@@ -45,7 +48,7 @@ describe('Test server api methods', () => {
     });
 
     describe('Test postRequest method', () => {
-        let postConfig: {method: string, url?: string, data?: Object};
+        let postConfig: {method: string, url?: string, data?: Object, headers?: Object};
         beforeEach(() => {
             postConfig = {
                 method: 'post'
@@ -54,21 +57,24 @@ describe('Test server api methods', () => {
 
         unroll('calls postRequest with #title', async (done, testArgs) => {
             postConfig.data = testArgs.data;
+            postConfig.headers = testArgs.headers;
             postConfig.url = BASE_URL + testArgs.path;
-            await HTTP.postRequest(testArgs.path, testArgs.data);
+            await HTTP.postRequest(testArgs.path, testArgs.data, testArgs.headers);
             expect(axios).toBeCalledWith(postConfig);
             done();
         }, [
-            ['title', 'path', 'data'],
-            ['all parameters', successPath, data],
-            ['empty data', successPath, {}],
-            ['empty params', '', {}],
+            ['title', 'path', 'data', 'headers'],
+            ['all parameters', successPath, data, headers],
+            ['empty data', successPath, {}, {}],
+            ['empty params', '', {}, {}],
         ]);
 
         it('calls postRequest with url', async() => {
             postConfig.data = {};
+            postConfig.headers = {};
             postConfig.url = BASE_URL;
             await HTTP.postRequest('');
+            console.log('config', postConfig);
             expect(axios).toBeCalledWith(postConfig);
         });
     });
@@ -79,13 +85,14 @@ describe('Test server api methods', () => {
             putConfig = {
                 method: 'put',
                 url: '',
-                data: data
+                data: data,
+                headers: headers
             };
         });
 
         it('calls putRequest with all the parameters', async () => {
             putConfig.url = BASE_URL + successPath;
-            await HTTP.putRequest(successPath, data).then((resp) => {
+            await HTTP.putRequest(successPath, data, headers).then((resp) => {
                 expect(resp).toEqual(successObject);
             });
             expect(axios).toBeCalledWith(putConfig);
@@ -94,18 +101,20 @@ describe('Test server api methods', () => {
         unroll('calls putRequest with #title', async (done, testArgs) => {
             putConfig.url = BASE_URL + testArgs.path;
             putConfig.data = testArgs.data;
-            await HTTP.putRequest(testArgs.path, testArgs.data);
+            putConfig.headers = testArgs.headers;
+            await HTTP.putRequest(testArgs.path, testArgs.data, testArgs.headers);
             expect(axios).toBeCalledWith(putConfig);
             done();
         }, [
-            ['title', 'path', 'data'],
-            ['empty data and successPath', successPath, data],
-            ['empty params', '', {}],
+            ['title', 'path', 'data', 'headers'],
+            ['empty data and successPath', successPath, data, headers],
+            ['empty params', '', {}, {}],
         ]);
 
         it('calls putRequest with url', async() => {
             putConfig.url = BASE_URL;
             putConfig.data = {};
+            putConfig.headers = {};
             await HTTP.putRequest('');
             expect(axios).toBeCalledWith(putConfig);
         });
@@ -116,13 +125,15 @@ describe('Test server api methods', () => {
         beforeEach(() => {
             deleteConfig = {
                 method: 'delete',
-                url: ''
+                url: '',
+                headers: headers
             };
         });
 
         it('calls deleteRequest with all params', async () => {
             deleteConfig.url = BASE_URL + successPath;
-            await HTTP.deleteRequest(successPath).then((response) => {
+            deleteConfig.headers = headers;
+            await HTTP.deleteRequest(successPath, headers).then((response) => {
                 expect(response).toEqual(successObject);
             });
 
@@ -131,6 +142,7 @@ describe('Test server api methods', () => {
 
         it('calls deleteRequest with empty params', async () => {
             deleteConfig.url = BASE_URL;
+            deleteConfig.headers = {};
             await HTTP.deleteRequest('');
             expect(axios).toBeCalledWith(deleteConfig);
         });

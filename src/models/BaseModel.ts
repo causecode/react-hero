@@ -30,9 +30,10 @@ export class BaseModel {
 
     $save(flush: boolean = true,
             successCallBack = ( (...args: any[]) => {} ),
-            failureCallBack = ( (...args: any[]) => {} )): void {
+            failureCallBack = ( (...args: any[]) => {} ),
+            headers: Object = {}): void {
         if (flush) {
-            HTTP.postRequest(`${this.resourceName}`, this.properties)
+            HTTP.postRequest(`${this.resourceName}`, this.properties, headers)
                 .then((response) => {
                     successCallBack(response);
                     store.dispatch(saveInstance(this));
@@ -46,9 +47,10 @@ export class BaseModel {
 
     $update(flush: boolean = true,
             successCallBack = ( (...args: any[]) => {} ),
-            failureCallBack = ( (...args: any[]) => {} )): void {
+            failureCallBack = ( (...args: any[]) => {} ),
+            headers: Object = {}): void {
         if (flush) {
-            HTTP.putRequest(`${this.resourceName}`, this.properties)
+            HTTP.putRequest(`${this.resourceName}`, this.properties, headers)
                 .then((response) => {
                     successCallBack(response);
                     store.dispatch(updateInstance(this));
@@ -62,9 +64,10 @@ export class BaseModel {
 
     $delete(flush: boolean = true,
             successCallBack = ( (...args: any[]) => {} ),
-            failureCallBack = ( (...args: any[]) => {} )): void {
+            failureCallBack = ( (...args: any[]) => {} ),
+            headers: Object = {}): void {
         if (flush) {
-            HTTP.deleteRequest(`${this.resourceName}/${this.properties.id}`)
+            HTTP.deleteRequest(`${this.resourceName}/${this.properties.id}`, headers)
                 .then((response) => {
                     successCallBack(response);
                     store.dispatch(deleteInstance(this));

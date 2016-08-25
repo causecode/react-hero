@@ -16,6 +16,7 @@ describe('Test Base Model', () => {
     let failureObject: {success: boolean} = {success: false};
     let instanceData = {id: 1, author: 'abc'};
     let ModelInstance: BaseModel = new BaseModel(instanceData);
+    let headers: {token: string} = {token: 'dummyToken'};
 
     async function verifyActions(type: string, instance: BaseModel): void {
         let action: IInstanceAction = store.getActions()[0];
@@ -60,7 +61,7 @@ describe('Test Base Model', () => {
     async function testWithFlush(instance: BaseModel, functionName: string,
             HTTPMethod: Function, requestParams: Object): void {
         store.clearActions();
-        await instance[`$${functionName}`](true, successCallback, failureCallback);
+        await instance[`$${functionName}`](true, successCallback, failureCallback, headers);
 
         expect(HTTPMethod).toBeCalledWith(...requestParams);
         expect(successCallback).toBeCalledWith(successObject);
@@ -80,7 +81,7 @@ describe('Test Base Model', () => {
     async function testWithFlushFalseAndCallbacks(instance: BaseModel, functionName: string,
             HTTPMethod: Function): void {
         store.clearActions();
-        await instance[`$${functionName}`](false, successCallback, failureCallback);
+        await instance[`$${functionName}`](false, successCallback, failureCallback, headers);
 
         expect(HTTPMethod).not.toBeCalled();
         expect(successCallback).not.toBeCalled();
@@ -92,7 +93,7 @@ describe('Test Base Model', () => {
             HTTPMethod: Function, requestParams: Object): void {
         store.clearActions();
 
-        await instance[`$${functionName}`](true, successCallback, failureCallback);
+        await instance[`$${functionName}`](true, successCallback, failureCallback, headers);
         expect(HTTPMethod).toBeCalledWith(...requestParams);
         expect(failureCallback).toBeCalledWith(failureObject);
         expect(successCallback).not.toBeCalled();
@@ -104,20 +105,20 @@ describe('Test Base Model', () => {
         it('calls the Model methods without any params',
                 async () => {
             await testWithoutParams(ModelInstance, 'save', HTTP.postRequest,
-                    [`${ModelInstance.resourceName}`, ModelInstance.properties]);
+                    [`${ModelInstance.resourceName}`, ModelInstance.properties, {}]);
             await testWithoutParams(ModelInstance, 'update', HTTP.putRequest,
-                    [`${ModelInstance.resourceName}`, ModelInstance.properties]);
+                    [`${ModelInstance.resourceName}`, ModelInstance.properties, {}]);
             await testWithoutParams(ModelInstance, 'delete', HTTP.deleteRequest,
-                    [`${ModelInstance.resourceName}/${ModelInstance.properties.id}`]);
+                    [`${ModelInstance.resourceName}/${ModelInstance.properties.id}`, {}]);
         });
 
         it('calls the methods with flush', async () => {
             await testWithFlush(ModelInstance, 'save', HTTP.postRequest,
-                    [`${ModelInstance.resourceName}`, ModelInstance.properties]);
+                    [`${ModelInstance.resourceName}`, ModelInstance.properties, headers]);
             await testWithFlush(ModelInstance, 'update', HTTP.putRequest,
-                    [`${ModelInstance.resourceName}`, ModelInstance.properties]);
+                    [`${ModelInstance.resourceName}`, ModelInstance.properties, headers]);
             await testWithFlush(ModelInstance, 'delete', HTTP.deleteRequest,
-                    [`${ModelInstance.resourceName}/${ModelInstance.properties.id}`]);
+                    [`${ModelInstance.resourceName}/${ModelInstance.properties.id}`, headers]);
         });
 
         it('calls the methods with flush false', async() => {
@@ -139,11 +140,11 @@ describe('Test Base Model', () => {
                 });
             });
             await testWithFlushAndPromiseFailure(ModelInstance, 'save', HTTP.postRequest,
-                    [`${ModelInstance.resourceName}`, ModelInstance.properties]);
+                    [`${ModelInstance.resourceName}`, ModelInstance.properties, headers]);
             await testWithFlushAndPromiseFailure(ModelInstance, 'update', HTTP.putRequest,
-                    [`${ModelInstance.resourceName}`, ModelInstance.properties]);
+                    [`${ModelInstance.resourceName}`, ModelInstance.properties, headers]);
             await testWithFlushAndPromiseFailure(ModelInstance, 'delete', HTTP.deleteRequest,
-                    [`${ModelInstance.resourceName}/${ModelInstance.properties.id}`]);
+                    [`${ModelInstance.resourceName}/${ModelInstance.properties.id}`, headers]);
         });
 
     });
