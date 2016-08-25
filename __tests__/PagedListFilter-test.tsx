@@ -1,4 +1,4 @@
-import {DynamicForm} from '../src/components/PagedList/Filters/DynamicForm';
+import {FilterForm} from '../src/components/PagedList/Filters/DynamicForm';
 jest.unmock('../src/components/PagedList/Filters/PagedListFilter');
 import {PagedListFilters} from '../src/components/PagedList/Filters/PagedListFilter';
 import * as React from 'react';
@@ -23,20 +23,11 @@ describe('Test PagedList Filters', () => {
         );
 
         let filter: React.ReactElement<void> = renderer.getRenderOutput();
-
+        expect(filter.props.children[1].props.resource).toEqual(resource);
         expect(ShallowTestUtils.findWithClass(filter, 'paged-list-filters')).toBeTruthy();
-
-        let button = ShallowTestUtils.findWithType(filter, Button);
-        expect(button).toBeTruthy();
-
-        let form = ShallowTestUtils.findWithType(filter, DynamicForm);
-        expect(form).toBeTruthy();
-        expect(form.props.fields).toEqual([]);
-        expect(form.props.children).toBeTruthy();
-        expect(form.props.children.type).toEqual('div');
-        expect(form.props.children.props.className).toEqual('test-filter');
-        expect(form.props.resource).toEqual(resource);
-        expect(form.props.filtersOpen).toEqual(false);
+        expect(ShallowTestUtils.findAllWithType(filter, 'div').length).toEqual(2)
+        expect(ShallowTestUtils.findWithType(filter, Button)).toBeTruthy();
+        expect(ShallowTestUtils.findWithType(filter, 'i')).toBeTruthy();
     });
 
     it('renders a simple PagedListFilters Component with a few Filters', () => {
@@ -79,25 +70,15 @@ describe('Test PagedList Filters', () => {
         let filter: React.ReactElement<void> = renderer.getRenderOutput();
 
         expect(ShallowTestUtils.findWithClass(filter, 'paged-list-filters')).toBeTruthy();
-
-        let button = ShallowTestUtils.findWithType(filter, Button);
-        expect(button).toBeTruthy();
-
-        let form = ShallowTestUtils.findWithType(filter, DynamicForm);
-        let fields: string[] = [];
-        let formChildren = form.props.children;
-        expect(formChildren).toEqual(children);
-
-        React.Children.forEach(children, (child: any) => {
-            if (['RangeFilter', 'DateRangeFilter'].indexOf(child.type.name) !== -1) {
-                fields.push(`${child.props.paramName}From`, `${child.props.paramName}To`);
-            } else {
-                fields.push(child.props.paramName);
-            }
-        });
-
-        expect(form.props.fields).toEqual(fields);
-
+        expect(ShallowTestUtils.findWithType(filter, Button)).toBeTruthy();
+        let fields: string[] = ['status',
+                                'billAmountFrom',
+                                'billAmountTo',
+                                'dateCreatedFrom',
+                                'dateCreatedTo',
+                                'types',
+                                'query'];
+        expect(filter.props.children[1].props.fields).toEqual(fields);
     });
 
     it('renders a PagedListFilter Component without any children', () => {
@@ -122,13 +103,7 @@ describe('Test PagedList Filters', () => {
 
         expect(ShallowTestUtils.findWithClass(filter, 'test-filter')).toBeTruthy();
         expect(ShallowTestUtils.findWithType(filter, Button)).toBeTruthy();
-        let form = ShallowTestUtils.findWithType(filter, DynamicForm);
-
-        expect(form).toBeTruthy();
-        expect(form.props.fields).toEqual([]);
-        expect(form.props.resource).toEqual('');
-        expect(form.props.children).toBeTruthy();
-        expect(form.props.children.props.className).toEqual('test-filter');
-
+        expect(ShallowTestUtils.findAllWithType(filter, 'div').length).toEqual(2)
+        expect(ShallowTestUtils.findWithType(filter, 'i')).toBeTruthy();
     });
 });
