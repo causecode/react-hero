@@ -15,6 +15,7 @@ describe('Test Base Model', () => {
     let successObject: {success: boolean} = {success: true};
     let failureObject: {success: boolean} = {success: false};
     let instanceData = {id: 1, author: 'abc'};
+    let key: string = 'test';
     let ModelInstance: BaseModel = new BaseModel(instanceData);
     let headers: {token: string} = {token: 'dummyToken'};
 
@@ -69,6 +70,19 @@ describe('Test Base Model', () => {
         verifyActions(`${functionName.toUpperCase()}_INSTANCE`, instance);
     }
 
+    async function testWithFlushAndWithoutKey(instance: BaseModel, functionName: string,
+            HTTPMethod: Function, requestParams: Object): void {
+        store.clearActions();
+        await instance[`$${functionName}`](true, successCallback, failureCallback);
+
+        expect(HTTPMethod).toBeCalled();
+        if (functionName === 'update') {
+            expect(successCallback).not.toBeCalled();
+        }
+        expect(failureCallback).toBeCalled();
+        verifyActions(`${functionName.toUpperCase()}_INSTANCE`, instance);
+    }
+
     async function testWithFlushFalse(instance: BaseModel, functionName: string,
             HTTPMethod: Function): void {
         store.clearActions();
@@ -119,6 +133,15 @@ describe('Test Base Model', () => {
                     [`${ModelInstance.resourceName}`, ModelInstance.properties, headers]);
             await testWithFlush(ModelInstance, 'delete', HTTP.deleteRequest,
                     [`${ModelInstance.resourceName}/${ModelInstance.properties.id}`, headers]);
+        });
+
+        it('calls the methods with flush and without key', async () => {
+            await testWithFlushAndWithoutKey(ModelInstance, 'save', HTTP.postRequest,
+                    [`${ModelInstance.resourceName}/save`, ModelInstance.properties]);
+            await testWithFlushAndWithoutKey(ModelInstance, 'update', HTTP.putRequest,
+                    [`${ModelInstance.resourceName}/update`, ModelInstance.properties]);
+            await testWithFlushAndWithoutKey(ModelInstance, 'delete', HTTP.deleteRequest,
+                    [`${ModelInstance.resourceName}/delete/${ModelInstance.properties.id}`]);
         });
 
         it('calls the methods with flush false', async() => {
