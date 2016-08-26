@@ -9,6 +9,7 @@ import {
     TOGGLE_FILTERS,
     SET_PAGE
 } from '../constants';
+import {MissingActionPayloadError} from '../errors/MissingActionPayloadError';
 
 const INITIAL_STATE = fromJS({
     filtersOpen: false,
@@ -33,8 +34,7 @@ function dataReducer(state = INITIAL_STATE, action ) {
                     return new Model(instance);
                 });
             } else {
-                throw new Error('No Data in the Action Payload. Please make sure you are returning an instanceList' +
-                    ' from the server.');
+                throw new MissingActionPayloadError();
             }
             let listProps = {};
             listProps = fromJS({
