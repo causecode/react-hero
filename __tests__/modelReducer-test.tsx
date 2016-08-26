@@ -1,5 +1,6 @@
 jest.unmock('../src/reducers/modelReducer');
 import {modelReducer} from '../src/reducers/modelReducer';
+jest.unmock('../src/actions/modelActions');
 import {fromJS} from 'immutable';
 import {
     FETCH_INSTANCE_DATA_START,
@@ -14,16 +15,17 @@ import {
 import {BaseModel} from '../src/models/BaseModel';
 import {resolver} from '../src/resolver';
 import {ModelService} from '../src/utils/modelService';
-import {MissingActionPayloadError} from '../src/errors/MissingActionPayloadError'
+import {MissingActionPayloadError} from '../src/errors/MissingActionPayloadError';
 const initialState: Object = fromJS({});
 const unroll: any = require<any>('unroll');
+import {createStore} from 'redux';
 
 unroll.use(it);
 
 describe('test model reducer.', () => {
     let baseModelData: {name: string} = {name: 'testData'};
     let resourceString: string = 'test';
-    let payloadString: string = 'test_payload';
+    let payloadString: string = 'testPayload';
     let testString: string = 'hello';
     let testKey: string = 'dummyKey';
     let testState: Object = fromJS({testState: testString});
@@ -41,8 +43,14 @@ describe('test model reducer.', () => {
     };
     const tempSuccess: {type: string, resource: string, payload: {testInstance: string}, instance: BaseModel} =
             getActionData(FETCH_INSTANCE_DATA_SUCCESS, payloadString, resourceString);
+
     const tempError: {type: string, resource: string, payload: {testInstance: string}, instance: BaseModel} =
             getActionData(FETCH_INSTANCE_DATA_ERROR, payloadString, resourceString);
+
+    const tempCreate: {type: string, resource: string, payload: {testInstance: string}, instance: BaseModel} =
+            getActionData(CREATE_INSTANCE, payloadString, resourceString, testKey);
+
+    const store = createStore(modelReducer);
 
     it('should return the initial value when empty action is passed.', () => {
         expect(modelReducer(initialState, {})).toEqual(initialState);
@@ -82,7 +90,8 @@ describe('test model reducer.', () => {
     ]);
 
     unroll('should #title correctly', (done, testArgs) => {
-        let temp: Object = modelReducer(initialState, getActionData(testArgs.reducer, payloadString, resourceString, testKey));
+        let temp: Object = modelReducer(initialState,
+                    getActionData(testArgs.reducer, payloadString, resourceString, testKey));
         expect(temp.get(testKey)).toBeTruthy();
         expect(temp.get(testKey) instanceof BaseModel).toBeTruthy();
         done();
@@ -93,13 +102,24 @@ describe('test model reducer.', () => {
     ]);
 
     it('should delete instance', () => {
-        // console.log(`>>> modelReducer`, modelReducer(testState, getActionData(DELETE_INSTANCE, payloadString, resourceString, testKey)));
-        expect(modelReducer(initialState, getActionData(DELETE_INSTANCE, payloadString, resourceString, testKey))).toEqual(initialState);
+        expect(modelReducer(initialState, getActionData(DELETE_INSTANCE, payloadString, resourceString, testKey)))
+                .toEqual(initialState);
     });
 
     it('should create instance', () => {
-        let tempCreate: Object = modelReducer(initialState, getActionData(CREATE_INSTANCE, payloadString, resourceString, testKey));
-        expect(tempCreate.get(`${instance.resourceName}Create`)).toBeTruthy();
-        expect(tempCreate.get(`${instance.resourceName}Create`) instanceof BaseModel).toBeTruthy();
+        let temp: Object = modelReducer(initialState, tempCreate);
+        expect(temp.get(`${instance.resourceName}Create`)).toBeTruthy();
+        expect(temp.get(`${instance.resourceName}Create`) instanceof BaseModel).toBeTruthy();
     });
+
+    unroll('checks whether #title key is created in the store.', (done, testArgs) => {
+        store.dispatch(testArgs.action);
+        expect(store.getState().has(testArgs.page)).toBeTruthy();
+        done();
+    }, [
+        ['title', 'action', 'page'],
+        ['Create', tempCreate, `${instance.resourceName}Create`],
+        ['Edit', tempSuccess, `${resourceString}Edit`]
+    ]);
+
 });

@@ -48,7 +48,7 @@ export function modelReducer(state = INITIAL_STATE, action) {
             return news;
 
         case DELETE_INSTANCE:
-            return state.delete(action.instanceKey);
+            return state.delete(action.key);
 
         case CREATE_INSTANCE:
             return state.set(`${action.instance.resourceName}Create`, action.instance);
