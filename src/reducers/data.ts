@@ -17,7 +17,6 @@ const INITIAL_STATE = fromJS({
 
 function dataReducer(state = INITIAL_STATE, action ) {
     let Model: typeof BaseModel;
-
     switch (action.type) {
 
         case FETCH_INSTANCE_LIST_START:

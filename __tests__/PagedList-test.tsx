@@ -1,19 +1,22 @@
 import {BaseModel} from '../src/models/BaseModel';
 jest.unmock('../src/components-stateful/PagedList');
 jest.mock('react-bootstrap');
+jest.unmock('../src/reducers/data');
+jest.unmock('../src/actions/modelActions');
 import {Pagination} from 'react-bootstrap';
 import {DataGrid} from '../src/components/PagedList/DataGrid';
-import {PagedListImpl} from '../src/components-stateful/PagedList';
+import PagedList, {PagedListImpl} from '../src/components-stateful/PagedList';
 import * as React from 'react';
 import * as TestUtils from 'react-addons-test-utils';
 import {Link} from 'react-router';
-jest.mock('../src/store/store');
-import {store} from '../src/store/store';
 import {Provider} from 'react-redux';
 import {PagedListFilters} from '../src/components/PagedList/Filters/PagedListFilter';
 import {Wrapper} from './../src/components/Wrapper';
 import {IShallowTestUtils} from '../src/interfaces/interfaces';
 import {IPagedListProps} from '../src/components-stateful/PagedList';
+import * as actions from '../src/actions/modelActions';
+import {createStore} from 'redux';
+import {dataReducer} from '../src/reducers/data';
 
 const ShallowTestUtils: IShallowTestUtils = require<IShallowTestUtils>('react-shallow-testutils');
 
@@ -103,7 +106,14 @@ describe('Test Paged List', () => {
         expect(() => renderer.render(
             <PagedListImpl/>
         )).toThrow(new Error('No resource name passed.'));
+    });
 
+    it('checks whether correct key is created in the store.', () => {
+        const store = createStore(dataReducer);
+        let pageNumber: number = 12;
+        store.dispatch(actions.setPage(pageNumber, resource));
+        expect(store.getState().has(`${resource}List`)).toBeTruthy();
+        expect(store.getState().get(`${resource}List`).get('activePage')).toBe(pageNumber);
     });
 
 });

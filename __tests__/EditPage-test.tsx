@@ -1,5 +1,6 @@
 import {GenericEditPage} from '../src/components/CRUD/GenericEditPage';
 jest.unmock('../src/components-stateful/EditPage');
+import {modelReducer} from '../src/reducers/modelReducer';
 import {EditPageImpl} from '../src/components-stateful/EditPage';
 import * as React from 'react';
 import * as TestUtils from 'react-addons-test-utils';
@@ -12,6 +13,8 @@ import {resolver} from '../src/resolver';
 import {IInitializerData} from './../src/utils/initializeTestCase';
 import {IShallowTestUtils} from '../src/interfaces/interfaces';
 import {IInstanceContainerProps} from '../src/interfaces/interfaces';
+import {createStore} from 'redux';
+
 
 function generalEditPageTests(renderedPage, instance: BaseModel, resource: string ): void {
     expect(renderedPage).toBeTruthy();
@@ -28,7 +31,6 @@ function generalEditPageTests(renderedPage, instance: BaseModel, resource: strin
 describe('Test EditPage', () => {
     let { resource, instances }: IInitializerData = initializeTestCase();
     let renderer: React.ShallowRenderer;
-
     beforeEach(() => {
         renderer = TestUtils.createRenderer();
         BaseModel.get = jest.fn<Function>();
@@ -114,7 +116,5 @@ describe('Test EditPage', () => {
         let renderedPage = ShallowTestUtils.findWithType(page, TestEditPage);
         generalEditPageTests(renderedPage, new TestModel({}), resource);
         expect(TestModel.get).toBeCalledWith(1);
-
     });
-
 });
