@@ -12,6 +12,7 @@ import {fromJS} from 'immutable';
 import {BaseModel} from '../models/BaseModel';
 import {resolver} from '../resolver';
 import {ModelService} from '../utils/modelService';
+import {MissingActionPayloadError} from '../errors/MissingActionPayloadError';
 const INITIAL_STATE = fromJS({});
 
 export function modelReducer(state = INITIAL_STATE, action) {
@@ -28,8 +29,7 @@ export function modelReducer(state = INITIAL_STATE, action) {
             if (action.payload) {
                 instance = action.payload[`${action.resource}Instance`];
             } else {
-                throw new Error('No Data in the Action Payload. Please make sure you are returning an instanceList' +
-                    ' from the server.');
+                throw new MissingActionPayloadError();
             }
             return state.set(`${action.resource}Edit`, new Model(instance));
 
