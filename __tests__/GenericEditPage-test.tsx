@@ -94,7 +94,7 @@ describe('Test Generic Edit Page', () => {
     });
 
     it('renders an EditPage without any props', () => {
-        let page = TestUtils.renderIntoDocument<React.Component<void, void>>(
+        let page: React.Component<void, void> = TestUtils.renderIntoDocument<React.Component<void, void>>(
             <GenericEditPage/>
         );
 
