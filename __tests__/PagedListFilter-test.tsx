@@ -25,7 +25,7 @@ describe('Test PagedList Filters', () => {
         let filter: React.ReactElement<void> = renderer.getRenderOutput();
         expect(filter.props.children[1].props.resource).toEqual(resource);
         expect(ShallowTestUtils.findWithClass(filter, 'paged-list-filters')).toBeTruthy();
-        expect(ShallowTestUtils.findAllWithType(filter, 'div').length).toEqual(2)
+        expect(ShallowTestUtils.findAllWithType(filter, 'div').length).toEqual(2);
         expect(ShallowTestUtils.findWithType(filter, Button)).toBeTruthy();
         expect(ShallowTestUtils.findWithType(filter, 'i')).toBeTruthy();
     });
@@ -87,7 +87,7 @@ describe('Test PagedList Filters', () => {
         );
 
         let filter: React.ReactElement<void> = renderer.getRenderOutput();
-        let child = ShallowTestUtils.findWithType(filter, 'div');
+        let child: Element = ShallowTestUtils.findWithType(filter, 'div');
         expect(child).toBeTruthy();
         expect(child.props.children).toBeFalsy();
     });
@@ -99,7 +99,7 @@ describe('Test PagedList Filters', () => {
             </PagedListFilters>
         );
 
-        let filter = renderer.getRenderOutput();
+        let filter: React.ReactElement<void> = renderer.getRenderOutput();
 
         expect(ShallowTestUtils.findWithClass(filter, 'test-filter')).toBeTruthy();
         expect(ShallowTestUtils.findWithType(filter, Button)).toBeTruthy();

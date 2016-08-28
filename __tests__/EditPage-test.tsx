@@ -14,7 +14,9 @@ import {IInitializerData} from './../src/utils/initializeTestCase';
 import {IShallowTestUtils} from '../src/interfaces/interfaces';
 import {IInstanceContainerProps} from '../src/interfaces/interfaces';
 import {createStore} from 'redux';
-
+import {createInstance} from '../src/actions/modelActions';
+import {PAGE_NOT_FOUND} from '../src/constants';
+import {ErrorPage} from '../src/components/ErrorPage';
 
 function generalEditPageTests(renderedPage, instance: BaseModel, resource: string ): void {
     expect(renderedPage).toBeTruthy();
@@ -110,11 +112,30 @@ describe('Test EditPage', () => {
             <EditPageImpl params={{resource: resource, resourceID: 1}}  instance={new TestModel({})}/>
         );
 
-        let page = renderer.getRenderOutput();
+        let page: React.ReactElement<IInstanceContainerProps> = renderer.getRenderOutput();
         expect(page).toBeTruthy();
 
         let renderedPage = ShallowTestUtils.findWithType(page, TestEditPage);
         generalEditPageTests(renderedPage, new TestModel({}), resource);
         expect(TestModel.get).toBeCalledWith(1);
+    });
+
+    it('renders the error page when BaseModel instance is not provided.', () => {
+        class TestEditPage extends React.Component<void, void> {
+            constructor() {
+                super();
+            };
+        }
+
+        renderer.render(
+            <EditPageImpl
+                    params={{resource: resource}}
+                    instance={new TestEditPage()}
+                    location={{pathname: ''}}
+                />
+        );
+        let page: React.ReactElement<IInstanceContainerProps> = renderer.getRenderOutput();
+        expect(page.type).toEqual(ErrorPage);
+        expect(page.props.message).toEqual(PAGE_NOT_FOUND);
     });
 });
