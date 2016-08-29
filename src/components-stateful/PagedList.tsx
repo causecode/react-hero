@@ -72,22 +72,22 @@ export class PagedListImpl extends React.Component<IPagedListProps, void> {
                 </h2>
                 <PagedListFilters resource={this.props.resource}>
                         {this.props.children}
-                    </PagedListFilters>
-                    <DataGrid
-                        instanceList={ this.props.instanceList }
-                        properties={ this.props.properties }
-                    />
-                    <Pagination
-                        prev
-                        next
-                        first
-                        last
-                        ellipsis
-                        boundaryLinks
-                        maxButtons={5}
-                        items={items}
-                        activePage={activePage}
-                        onSelect={this.handlePagination} />
+                </PagedListFilters>
+                <DataGrid
+                    instanceList={ this.props.instanceList }
+                    properties={ this.props.properties }
+                />
+                <Pagination
+                    prev
+                    next
+                    first
+                    last
+                    ellipsis
+                    boundaryLinks
+                    maxButtons={5}
+                    items={items}
+                    activePage={activePage}
+                    onSelect={this.handlePagination} />
             </div>
         );
     };
