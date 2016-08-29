@@ -11,11 +11,12 @@ import * as ReactDOM from 'react-dom';
 import {Row, Button} from 'react-bootstrap';
 import {MissingInstanceError} from '../src/errors/MissingInstanceError';
 import {Link} from 'react-router';
+import {initializeTestCase} from './../src/utils/initializeTestCase';
 
 describe('Test Generic Edit Page', () => {
     let handleSubmit: jest.Mock<Function>, handleDelete: jest.Mock<Function>;
     let params: {resource: string} = {resource: 'test'};
-    let instanceData = {id: '1', author: 'abc'};
+    let instanceData: {id: string, author: string} = {id: '1', author: 'abc'};
     let ModelInstance: BaseModel = new BaseModel(instanceData);
     let keys: string[] = Object.keys(ModelInstance.properties);
 
@@ -48,9 +49,7 @@ describe('Test Generic Edit Page', () => {
         expect(handleSubmit).not.toBeCalled();
 
         let formInstance = TestUtils.scryRenderedDOMComponentsWithTag(editPage, 'form');
-
         TestUtils.Simulate.submit(formInstance[0]);
-
         expect(handleSubmit).toBeCalled();
     }
 
@@ -58,7 +57,10 @@ describe('Test Generic Edit Page', () => {
 
         let editPage: React.Component<void, void> = TestUtils.renderIntoDocument<React.Component<void, void>>(
             <GenericEditPage instance={ModelInstance}
-                    handleSubmit={handleSubmit} handleDelete={handleDelete} params={params}/>
+                    handleSubmit={handleSubmit}
+                    handleDelete={handleDelete}
+                    params={params}
+                    instance={ModelInstance}/>
         );
 
         genericEditPageTests(editPage);
@@ -97,7 +99,9 @@ describe('Test Generic Edit Page', () => {
         let page: React.Component<void, void> = TestUtils.renderIntoDocument<React.Component<void, void>>(
             <GenericEditPage/>
         );
-
+        expect(page.props.isCreatePage).toBeFalsy();
+        expect(page.props.params.resource).toBe('');
+        expect(page.props.instance).toEqual(new BaseModel({}));
         expect(TestUtils.scryRenderedDOMComponentsWithTag(page, 'input').length).toEqual(0);
         expect(TestUtils.scryRenderedDOMComponentsWithTag(page, 'label').length).toEqual(0);
 

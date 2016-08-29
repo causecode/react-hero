@@ -6,6 +6,7 @@ jest.unmock('../src/actions/modelActions');
 import {Pagination} from 'react-bootstrap';
 import {DataGrid} from '../src/components/PagedList/DataGrid';
 import PagedList, {PagedListImpl} from '../src/components-stateful/PagedList';
+import {PagedListFilters} from '../src/components/PagedList/Filters/PagedListFilter';
 import * as React from 'react';
 import * as TestUtils from 'react-addons-test-utils';
 import {Link} from 'react-router';
@@ -15,7 +16,7 @@ import {Wrapper} from './../src/components/Wrapper';
 import {IShallowTestUtils} from '../src/interfaces/interfaces';
 import {IPagedListProps} from '../src/components-stateful/PagedList';
 import * as actions from '../src/actions/modelActions';
-import {createStore} from 'redux';
+import {Store, createStore} from 'redux';
 import {dataReducer} from '../src/reducers/data';
 
 const ShallowTestUtils: IShallowTestUtils = require<IShallowTestUtils>('react-shallow-testutils');
@@ -66,13 +67,17 @@ describe('Test Paged List', () => {
                 totalCount={totalCount}
                 activePage={activePage}
                 setPage={setPage}
-                max={max}
-            >
+                max={max}>
                 <div className="test-filter"></div>
             </PagedListImpl>
         );
         let page: React.Component<IPagedListProps, void> =
                 renderer.getRenderOutput<React.Component<IPagedListProps, void>>();
+        
+        let tags = ['h2', PagedListFilters, DataGrid, Pagination];
+        page.props.children.forEach((item, index) => {
+            expect(item.type).toBe(tags[index]);
+        });
 
         testPaginationGridAndLink(page, activePage, (totalCount / max), instanceList, properties);
 
@@ -85,14 +90,15 @@ describe('Test Paged List', () => {
 
     it('renders a PagedList with a resource', () => {
         renderer.render(
-            <PagedListImpl
-                resource={resource}
-            />
+            <PagedListImpl resource={resource}/>
         );
 
-        let page: React.Component<IPagedListProps, void> =
-                renderer.getRenderOutput<React.Component<IPagedListProps, void>>();
-
+        let page: React.Component<IPagedListProps, void> = renderer.getRenderOutput<
+                React.Component<IPagedListProps, void>>();
+        expect(page.props.children[1].props.resource).toBe(resource);
+        expect(page.props.children[2].props.instanceList).not.toBe(undefined);
+        expect(page.props.children[2].props.properties).not.toBe(undefined);
+        expect(page.props.children[3].props.activePage).toBe(1);
         testPaginationGridAndLink(page, 1, 0, [], []);
 
         let filters = ShallowTestUtils.findAllWithType(page, PagedListFilters);
@@ -102,14 +108,13 @@ describe('Test Paged List', () => {
     } );
 
     it('renders a PagedList without a resource', () => {
-
         expect(() => renderer.render(
             <PagedListImpl/>
         )).toThrow(new Error('No resource name passed.'));
     });
 
     it('checks whether correct key is created in the store.', () => {
-        const store = createStore(dataReducer);
+        const store: Store = createStore(dataReducer);
         let pageNumber: number = 12;
         store.dispatch(actions.setPage(pageNumber, resource));
         expect(store.getState().has(`${resource}List`)).toBeTruthy();

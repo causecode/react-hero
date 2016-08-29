@@ -1,7 +1,7 @@
 import {GenericEditPage} from '../src/components/CRUD/GenericEditPage';
 jest.unmock('../src/components-stateful/EditPage');
 import {modelReducer} from '../src/reducers/modelReducer';
-import {EditPageImpl} from '../src/components-stateful/EditPage';
+import {EditPageImpl, EditPageProps} from '../src/components-stateful/EditPage';
 import * as React from 'react';
 import * as TestUtils from 'react-addons-test-utils';
 const ShallowTestUtils: IShallowTestUtils = require<IShallowTestUtils>('react-shallow-testutils');
@@ -31,6 +31,9 @@ function generalEditPageTests(renderedPage, instance: BaseModel, resource: strin
 }
 
 describe('Test EditPage', () => {
+    let fetchInstanceData: jest.Mock<Function>;
+    let path: string = 'edit';
+    let id: number = 1;
     let { resource, instances }: IInitializerData = initializeTestCase();
     let renderer: React.ShallowRenderer;
     beforeEach(() => {
@@ -41,14 +44,18 @@ describe('Test EditPage', () => {
     it('renders a simple Edit Page', () => {
         renderer.render(
         <EditPageImpl
-                params={{resource: resource, resourceID: 1}}
+                params={{resource: resource, resourceID: id}}
                 instance={instances[resource]}
-                location={{pathname: 'edit'}}
+                location={{pathname: path}}
+                createInstance={() => {}}
             />
         );
         let page: React.ReactElement<IInstanceContainerProps> = renderer.getRenderOutput();
-
         expect(page).toBeTruthy();
+        expect(page.props.location.pathname).toBe(path);
+        expect(page.props.instance).toBe(instances[resource]);
+        expect(page.props.params.resource).toBe(resource);
+        expect(page.props.params.resourceID).toBe(id);
         let renderedPage = ShallowTestUtils.findWithType(page, GenericEditPage);
 
         generalEditPageTests(renderedPage, instances[resource], resource);
@@ -59,10 +66,11 @@ describe('Test EditPage', () => {
     it('renders a simple EditPage without a resourceID', () => {
         renderer.render(
             <EditPageImpl
-                    params={{resource: resource}}
-                    instance={instances[resource]}
-                    location={{pathname: ''}}
-                />
+                params={{resource: resource}}
+                instance={instances[resource]}
+                location={{pathname: ''}}
+                createInstance={() => {}}
+            />
         );
 
         let page: React.ReactElement<IInstanceContainerProps> = renderer.getRenderOutput();
@@ -80,7 +88,10 @@ describe('Test EditPage', () => {
 
         let page: React.ReactElement<IInstanceContainerProps> = renderer.getRenderOutput();
         expect(page).toBeTruthy();
-
+        expect(page.props.location.pathname).toBe('');
+        expect(page.props.params.resource).toBe('');
+        expect(page.props.params.resourceID).toBe('');
+        expect(page.props.instance).toEqual(new BaseModel({}));
         let renderedPage = ShallowTestUtils.findWithType(page, GenericEditPage);
         generalEditPageTests(renderedPage, new BaseModel({}), '');
         expect(BaseModel.get).not.toBeCalled();
@@ -129,10 +140,11 @@ describe('Test EditPage', () => {
 
         renderer.render(
             <EditPageImpl
-                    params={{resource: resource}}
-                    instance={new TestEditPage()}
-                    location={{pathname: ''}}
-                />
+                params={{resource: resource}}
+                instance={new TestEditPage()}
+                location={{pathname: ''}}
+                createInstance={() => {}}
+            />
         );
         let page: React.ReactElement<IInstanceContainerProps> = renderer.getRenderOutput();
         expect(page.type).toEqual(ErrorPage);
