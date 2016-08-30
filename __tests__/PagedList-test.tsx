@@ -3,6 +3,7 @@ jest.unmock('../src/components-stateful/PagedList');
 jest.mock('react-bootstrap');
 jest.unmock('../src/reducers/data');
 jest.unmock('../src/actions/modelActions');
+jest.unmock('../src/store/store');
 import {Pagination} from 'react-bootstrap';
 import {DataGrid} from '../src/components/PagedList/DataGrid';
 import {PagedListImpl, PagedList} from '../src/components-stateful/PagedList';
@@ -18,6 +19,10 @@ import {IPagedListProps} from '../src/components-stateful/PagedList';
 import * as actions from '../src/actions/modelActions';
 import {Store, createStore} from 'redux';
 import {dataReducer} from '../src/reducers/data';
+import configureStore from '../src/store/store';
+import {IMockStore, store} from '../src/store/store';
+import {Provider} from 'react-redux';
+import {fromJS} from 'immutable';
 
 const ShallowTestUtils: IShallowTestUtils = require<IShallowTestUtils>('react-shallow-testutils');
 
@@ -71,9 +76,9 @@ describe('Test Paged List', () => {
                 <div className="test-filter"></div>
             </PagedListImpl>
         );
-        let page: React.ReactElement<void> =
-                renderer.getRenderOutput();
-        
+        let page: React.Component<IPagedListProps, void> =
+                renderer.getRenderOutput<React.Component<IPagedListProps, void>>();
+
         let tags = ['h2', PagedListFilters, DataGrid, Pagination];
         page.props.children.forEach((item, index) => {
             expect(item.type).toBe(tags[index]);
@@ -118,6 +123,23 @@ describe('Test Paged List', () => {
         store.dispatch(actions.setPage(pageNumber, resource));
         expect(store.getState().has(`${resource}List`)).toBeTruthy();
         expect(store.getState().get(`${resource}List`).get('activePage')).toBe(pageNumber);
+    });
+
+    it('renders the PagedList with the store.', () => {
+        renderer.render(
+            <Provider store={configureStore({instances: fromJS({testEditPage: {}})})} >
+                <PagedList/>
+            </Provider>
+        );
+        let page = renderer.getRenderOutput();
+        let defaultProp = page.type.WrappedComponent.defaultProps;
+        expect(defaultProp.resource).toBe('');
+        expect(defaultProp.max).toBe(20);
+        expect(defaultProp.totalCount).toBe(0);
+        expect(defaultProp.activePage).toBe(1);
+        expect(defaultProp.setPage).not.toBe(undefined);
+        expect(defaultProp.properties).not.toBe(undefined);
+        expect(defaultProp.instanceList).not.toBe(undefined);
     });
 
 });
