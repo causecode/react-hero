@@ -12,14 +12,15 @@ import {resolver} from '../src/resolver';
 import {BaseModel} from '../src/models/BaseModel';
 import {ModelService} from '../src/utils/modelService';
 import {MissingActionPayloadError} from '../src/errors/MissingActionPayloadError';
+import {IFromJS} from '../src/interfaces/interfaces';
 const unroll: any = require<any>('unroll');
 
 unroll.use(it);
 
 describe('Data-dataReducer', () => {
-    // fromJS({}) has 'any' as return type, therefore using 'Object' as type.
-    const testJS: Object = fromJS({});
-    const INITIAL_STATE: Object = fromJS({
+
+    const testJS: IFromJS = fromJS({});
+    const INITIAL_STATE: IFromJS = fromJS({
         totalCount: 0,
         instanceList: [],
         properties: [],
@@ -27,7 +28,7 @@ describe('Data-dataReducer', () => {
         isLoading: false,
         filtersOpen: false,
     });
-    let error: Object = fromJS({'hasError': true, 'isLoading': false});
+    let error: IFromJS = fromJS({'hasError': true, 'isLoading': false});
 
     function actionData(type: string, payloadData?: string, page?: number, resource?: string) {
         return {
@@ -43,9 +44,9 @@ describe('Data-dataReducer', () => {
     let payloadString: string = 'test';
     let pageNo: number = 12;
     let resourceString: string = 'test_resource';
-    let tempSuccess = dataReducer(
-        INITIAL_STATE,
-        actionData(FETCH_INSTANCE_LIST_FULFILLED, payloadString, pageNo, resourceString)
+    let successResult: IFromJS = dataReducer(
+            INITIAL_STATE,
+            actionData(FETCH_INSTANCE_LIST_FULFILLED, payloadString, pageNo, resourceString)
     );
 
     it('should return the initial value.', () => {
@@ -57,30 +58,30 @@ describe('Data-dataReducer', () => {
     });
 
     it('should handle error case ', () => {
-        let tempError: {type: string, resource: string, payload: {instanceList: {data: string}[]}, pageNumber: number} =
+        let result: {type: string, resource: string, payload: {instanceList: {data: string}[]}, pageNumber: number} =
                 actionData(FETCH_INSTANCE_LIST_ERROR, payloadString, pageNo, resourceString);
-        expect(dataReducer(INITIAL_STATE, tempError).get(`${resourceString}List`)).toBeTruthy();
-        expect(dataReducer(INITIAL_STATE, tempError).get(`${resourceString}List`)).toEqual(error);
+        expect(dataReducer(INITIAL_STATE, result).get(`${resourceString}List`)).toBeTruthy();
+        expect(dataReducer(INITIAL_STATE, result).get(`${resourceString}List`)).toEqual(error);
     });
 
     it('should handle set page.', () => {
-        let tempSet = dataReducer(INITIAL_STATE, actionData(SET_PAGE, payloadString, pageNo, resourceString));
-        expect(tempSet.get(`${resourceString}List`)).toBeTruthy();
-        expect(tempSet.get(`${resourceString}List`).get('activePage')).toEqual(pageNo);
+        let result: IFromJS = dataReducer(INITIAL_STATE, actionData(SET_PAGE, payloadString, pageNo, resourceString));
+        expect(result.get(`${resourceString}List`)).toBeTruthy();
+        expect(result.get(`${resourceString}List`).get('activePage')).toEqual(pageNo);
     });
 
     it('should handle toggle case', () => {
-        let tempToggle = dataReducer(INITIAL_STATE, actionData(TOGGLE_FILTERS, payloadString, pageNo, resourceString));
-        expect(tempToggle.get(`filtersOpen`)).toBeTruthy();
-        expect(tempToggle.get(`filtersOpen`)).toEqual(true);
+        let result: IFromJS = dataReducer(INITIAL_STATE, actionData(TOGGLE_FILTERS, payloadString, pageNo, resourceString));
+        expect(result.get(`filtersOpen`)).toBeTruthy();
+        expect(result.get(`filtersOpen`)).toEqual(true);
     });
 
     it('should handle success case', () => {
-        expect(tempSuccess.get(`${resourceString}List`)).toBeTruthy();
+        expect(successResult.get(`${resourceString}List`)).toBeTruthy();
     });
 
-    unroll('success case should return #name', (done, testArgs) => {
-        expect(tempSuccess.get(`${resourceString}List`).has(testArgs.name)).toBeTruthy();
+    unroll('checks if the success return object contains #name', (done, testArgs) => {
+        expect(successResult.get(`${resourceString}List`).has(testArgs.name)).toBeTruthy();
         done();
     }, [
         ['name'],
