@@ -19,6 +19,8 @@ import {ModelService} from '../utils/modelService';
 import {BlogModel, UserModel} from './testModel';
 import {BaseModel} from '../models/BaseModel';
 
+ModelService.registerAll(UserModel, BlogModel);
+
 export class NewPage extends React.Component<any, any> {
 
     constructor() {

@@ -5,6 +5,7 @@ import * as React from 'react';
 import {GenericListPage} from '../src/components/CRUD/GenericListPage';
 import {GenericShowPage} from '../src/components/CRUD/GenericShowPage';
 import {GenericEditPage} from '../src/components/CRUD/GenericEditPage';
+import {getEnvironment} from '../src/utils/appService';
 const unroll: any = require<any>('unroll');
 
 unroll.use(it);
@@ -35,6 +36,15 @@ describe('Test Component Service', () => {
         expect(resolver.get('testcomponent')).toEqual(TestComponent);
     });
 
+    it('registers the list of components in the React DI resolver object', () => {
+       class AbcComponent extends React.Component<void, void> {}
+        ComponentService.registerAll(AbcComponent, TestComponent);
+
+        expect(resolver.has('testcomponent')).toBeTruthy();
+        expect(resolver.has('abccomponent')).toBeTruthy();
+        expect(resolver.get('testcomponent')).toEqual(TestComponent);
+        expect(resolver.get('abccomponent')).toEqual(AbcComponent);
+    });
 
     describe('Component Service retrieval functions', () => {
 
@@ -79,6 +89,17 @@ describe('Test Component Service', () => {
             ['Edit'],
             ['Show']
         ]);
+
+        it('logs a warning in the development Environment if component is not found', () => {
+            let oldEnv: string = getEnvironment();
+            process.env.NODE_ENV = 'development';
+            console.warn = jest.fn<typeof console.warn>();
+            ComponentService.getListPage('abc');
+            expect(console.warn).toBeCalledWith(`Cannot find Component ` +
+                `AbcListpage, Make sure you have registered it.` +
+                ` Using GenericListpage instead.`);
+            process.env.NODE_ENV = oldEnv;
+        });
 
     });
 });

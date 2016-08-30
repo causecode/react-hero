@@ -1,6 +1,6 @@
 import {
     FETCH_INSTANCE_DATA_START,
-    FETCH_INSTANCE_DATA_SUCCESS,
+    FETCH_INSTANCE_DATA_FULFILLED,
     FETCH_INSTANCE_DATA_ERROR,
     SAVE_INSTANCE,
     DELETE_INSTANCE,
@@ -22,7 +22,7 @@ export function modelReducer(state = INITIAL_STATE, action) {
         case FETCH_INSTANCE_DATA_START:
             return state;
 
-        case FETCH_INSTANCE_DATA_SUCCESS:
+        case FETCH_INSTANCE_DATA_FULFILLED:
             let resource = action.resource || '';
             Model = ModelService.getModel(resource);
             let instance;

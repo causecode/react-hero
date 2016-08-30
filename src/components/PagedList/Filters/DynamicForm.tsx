@@ -65,7 +65,7 @@ function mapStateToProps(state): {filtersOpen: boolean} {
     };
 }
 
-export function FormFactory(resource) {
+export function FormFactory(resource): typeof FilterForm {
     return ReduxForm.reduxForm(
         {form: `${resource}Filters`},
         mapStateToProps

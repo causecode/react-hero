@@ -1,16 +1,19 @@
 import {promiseMiddleware} from '../src/middleware/promiseMiddleware';
 import {Store} from 'redux';
 import 'babel-polyfill';
+import {Stub} from '../src/interfaces/interfaces';
 const unroll: any = require<any>('unroll');
 
 unroll.use(it);
 
 interface IPreMiddlewareAction {
-    types: string[];
+    type: string;
     payload: {
         promise: any
     };
     resource?: string;
+    successCallBack?: jest.Mock<Stub>;
+    failureCallBack?: jest.Mock<Stub>;
 }
 
 describe('Test promise middleware', () => {
@@ -20,9 +23,10 @@ describe('Test promise middleware', () => {
     let store: {dispatch: jest.Mock<Function>};
     let successPath: string = 'successPath';
     let failurePath: string = 'failurePath';
-    let START: string = 'START';
-    let SUCCESS: string = 'SUCCESS';
-    let ERROR: string = 'ERROR';
+    let ACTION: string = 'TEST_ACTION';
+    let START: string = `${ACTION}_START`;
+    let SUCCESS: string = `${ACTION}_FULFILLED`;
+    let ERROR: string = `${ACTION}_ERROR`;
     let successObject: {success: boolean} = {success: true};
     let failureObject: {success: boolean} = {success: false};
 
@@ -36,13 +40,11 @@ describe('Test promise middleware', () => {
         });
     });
 
-    let getAction = (path: string): IPreMiddlewareAction => {
+    let getAction = (path: string, promise?: (path: string) => Promise<{}>): IPreMiddlewareAction => {
         return {
-            types: [
-                START, SUCCESS, ERROR
-            ],
+            type: ACTION,
             payload: {
-                promise: fetchData(path)
+                promise: promise ? promise(path) : fetchData(path)
             },
             resource: 'test'
         };
@@ -54,8 +56,8 @@ describe('Test promise middleware', () => {
         store = { dispatch: dispatch };
     });
 
-    unroll('executes middleware with the correct action type and path #path', async (done, testArgs) => {
-        await promiseMiddleware(store)(next)(getAction(testArgs.path));
+    unroll('executes middleware with the correct action type', async (done, testArgs) => {
+        await promiseMiddleware(store)(next)(testArgs.action);
 
         let dispatchCalls = dispatch.mock.calls;
 
@@ -69,8 +71,42 @@ describe('Test promise middleware', () => {
     }, [
         ['path', 'response', 'type', 'action'],
         [successPath, successObject, SUCCESS, getAction(successPath)],
-        [failurePath, failureObject, ERROR, getAction(failurePath)]
+        [failurePath, failureObject, ERROR, getAction(failurePath)],
+        [successPath, {}, SUCCESS, getAction(successPath, () => {
+            return new Promise((resolve) => { resolve({successObject}); });
+        })]
     ]);
+
+    describe('executes callbacks if passed', () => {
+        let successCallBack: jest.Mock<Stub>;
+        let failureCallBack: jest.Mock<Stub>;
+
+        function configureAction(action: IPreMiddlewareAction): void {
+            successCallBack = jest.fn<Stub>();
+            failureCallBack = jest.fn<Stub>();
+            action.successCallBack =  successCallBack;
+            action.failureCallBack = failureCallBack;
+        }
+
+        it('executes successCallback if passed and promise resolves', async() => {
+            let action: IPreMiddlewareAction = getAction(successPath);
+            configureAction(action);
+            await promiseMiddleware(store)(next)(action);
+
+            expect(successCallBack).toBeCalledWith({data: successObject});
+            expect(failureCallBack).not.toBeCalled();
+        });
+
+        it('executes failureCallBack if passed and promise rejects', async() => {
+            let action: IPreMiddlewareAction = getAction(failurePath);
+            configureAction(action);
+            await promiseMiddleware(store)(next)(action);
+
+            expect(successCallBack).not.toBeCalled();
+            expect(failureCallBack).toBeCalledWith(failureObject);
+        });
+    });
+
 
     it('calls next if promise is not passed', () => {
         promiseMiddleware(store)(next)(successObject);

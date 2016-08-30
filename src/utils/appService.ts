@@ -1,11 +1,10 @@
-
 declare module process {
     export module env {
         let NODE_ENV: string;
     }
 }
 
-export function getEnvironment() {
+export function getEnvironment(): string {
     return process.env.NODE_ENV;
 }
 

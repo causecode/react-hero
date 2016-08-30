@@ -1,7 +1,7 @@
 jest.unmock('../src/reducers/data');
 import {
     FETCH_INSTANCE_LIST_START,
-    FETCH_INSTANCE_LIST_SUCCESS,
+    FETCH_INSTANCE_LIST_FULFILLED,
     FETCH_INSTANCE_LIST_ERROR,
     TOGGLE_FILTERS,
     SET_PAGE
@@ -17,7 +17,7 @@ const unroll: any = require<any>('unroll');
 unroll.use(it);
 
 describe('Data-dataReducer', () => {
-    // fromJS({}) has 'any' as return type, therefore using 'Object' as types.
+    // fromJS({}) has 'any' as return type, therefore using 'Object' as type.
     const testJS: Object = fromJS({});
     const INITIAL_STATE: Object = fromJS({
         totalCount: 0,
@@ -29,7 +29,7 @@ describe('Data-dataReducer', () => {
     });
     let error: Object = fromJS({'hasError': true, 'isLoading': false});
 
-    function actionData(type: string, payloadData: string, page: number, resource: string) {
+    function actionData(type: string, payloadData?: string, page?: number, resource?: string) {
         return {
             type,
             resource,
@@ -43,8 +43,10 @@ describe('Data-dataReducer', () => {
     let payloadString: string = 'test';
     let pageNo: number = 12;
     let resourceString: string = 'test_resource';
-    let tempSuccess: Object =
-            dataReducer(INITIAL_STATE, actionData(FETCH_INSTANCE_LIST_SUCCESS, payloadString, pageNo, resourceString));
+    let tempSuccess = dataReducer(
+        INITIAL_STATE,
+        actionData(FETCH_INSTANCE_LIST_FULFILLED, payloadString, pageNo, resourceString)
+    );
 
     it('should return the initial value.', () => {
         expect(dataReducer(INITIAL_STATE, {})).toEqual(INITIAL_STATE);
@@ -55,20 +57,20 @@ describe('Data-dataReducer', () => {
     });
 
     it('should handle error case ', () => {
-        let tempError: {type: string, resource: string, payload: {instanceList: {data:string}[]}, pageNumber: number} =
+        let tempError: {type: string, resource: string, payload: {instanceList: {data: string}[]}, pageNumber: number} =
                 actionData(FETCH_INSTANCE_LIST_ERROR, payloadString, pageNo, resourceString);
         expect(dataReducer(INITIAL_STATE, tempError).get(`${resourceString}List`)).toBeTruthy();
         expect(dataReducer(INITIAL_STATE, tempError).get(`${resourceString}List`)).toEqual(error);
     });
 
     it('should handle set page.', () => {
-        let tempSet: Object = dataReducer(INITIAL_STATE, actionData(SET_PAGE, payloadString, pageNo, resourceString));
+        let tempSet = dataReducer(INITIAL_STATE, actionData(SET_PAGE, payloadString, pageNo, resourceString));
         expect(tempSet.get(`${resourceString}List`)).toBeTruthy();
         expect(tempSet.get(`${resourceString}List`).get('activePage')).toEqual(pageNo);
     });
 
     it('should handle toggle case', () => {
-        let tempToggle: Object = dataReducer(INITIAL_STATE, actionData(TOGGLE_FILTERS, payloadString, pageNo, resourceString);
+        let tempToggle = dataReducer(INITIAL_STATE, actionData(TOGGLE_FILTERS, payloadString, pageNo, resourceString));
         expect(tempToggle.get(`filtersOpen`)).toBeTruthy();
         expect(tempToggle.get(`filtersOpen`)).toEqual(true);
     });
@@ -89,13 +91,8 @@ describe('Data-dataReducer', () => {
         ['totalCount']
     ]);
 
-    it('should throw error when Payload is not provided.', (done) => {
-        try {
-           dataReducer(INITIAL_STATE, {type: FETCH_INSTANCE_LIST_SUCCESS});
-           done(new new MissingActionPayloadError());
-       } catch (err) {
-           expect(err);
-           done();
-       }
+    it('should throw error when Payload is not provided.', () => {
+        expect(() => dataReducer(INITIAL_STATE, {type: FETCH_INSTANCE_LIST_FULFILLED}))
+                .toThrow(new MissingActionPayloadError());
     });
 });

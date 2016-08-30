@@ -12,6 +12,24 @@ import * as React from 'react';
 import {Button} from 'react-bootstrap';
 import {IShallowTestUtils} from '../src/interfaces/interfaces';
 import {IInitializerData} from '../src/utils/initializeTestCase';
+import {FormFactory} from '../src/components/PagedList/Filters/DynamicForm';
+import {Provider} from 'react-redux';
+import {fromJS} from 'immutable';
+import {reducer as formReducer} from 'redux-form';
+import {createStore, Store} from 'redux';
+import {rootReducer} from '../src/reducers/rootReducer';
+import {findDOMNode} from 'react-dom';
+import {IFilter} from '../src/interfaces/interfaces';
+import {BaseModel} from '../src/models/BaseModel';
+
+interface IReduxFormStoreValue {
+    visited: boolean;
+}
+interface IFilterStoreData {
+    status: IReduxFormStoreValue;
+    billAmountFrom: IReduxFormStoreValue;
+    billAmountTo: IReduxFormStoreValue;
+}
 
 describe('render a simple FilterForm', () => {
     let sendFilters: jest.Mock<Function>;
@@ -122,7 +140,7 @@ describe('render a simple FilterForm', () => {
 
     it('renders a FilterForm with fields but no children', () => {
         renderer.render(
-        <FilterForm fields={{abc: {name: 'abc'}, dev: {name: 'dev'}}}/>
+            <FilterForm fields={{abc: {name: 'abc'}, dev: {name: 'dev'}}}/>
         );
 
         let form = renderer.getRenderOutput();
@@ -188,6 +206,58 @@ describe('render a simple FilterForm', () => {
 
         expect(form).toBeTruthy();
         expect(ShallowTestUtils.findWithType(form, 'div')).toBeTruthy();
+    });
+
+    it('renders a Dynamic Form and saves form data in the <resource>Filters key', () => {
+        let testDynamicFormData: {data: Object} = {data: fromJS({filtersOpen: true})};
+        let store: Store = createStore(rootReducer, testDynamicFormData);
+        let DynamicForm: typeof FilterForm = FormFactory(resource);
+        let possibleValues: string[] = ['enable', 'disable', 'inactive'];
+        let fieldValues: string[] = ['status', 'billAmountFrom', 'billAmountTo'];
+        React.cloneElement = jest.fn(React.cloneElement);
+        let filter: React.Component<void, void> = TestUtils.renderIntoDocument<React.Component<void, void>>(
+            <Provider store = {store}>
+                <DynamicForm fields={fieldValues} resource={resource}>
+                    <DropDownFilter
+                        label="status"
+                        paramName="status"
+                        possibleValues={possibleValues}
+                        key="1"
+                    />
+                    <RangeFilter
+                        label="Bill Amount"
+                        paramName="billAmount"
+                    />
+                    <div className="dummy-filter">test</div>
+                </DynamicForm>
+            </Provider>
+        );
+        expect(store.getState().form.testFilters).toBeUndefined();
+
+        let dropdown: HTMLSelectElement = TestUtils
+            .scryRenderedDOMComponentsWithTag(filter, 'select')[0] as HTMLSelectElement;
+        let range: HTMLInputElement[] = TestUtils
+            .scryRenderedDOMComponentsWithTag(filter, 'input') as HTMLInputElement[];
+
+        [dropdown, ...range].forEach((filterDOM: HTMLSelectElement | HTMLInputElement): void => {
+            TestUtils.Simulate.focus(filterDOM);
+        });
+
+        let filterDataInStore: IFilterStoreData = store.getState().form[`${resource}Filters`];
+        expect(filterDataInStore).toBeTruthy();
+        fieldValues.forEach((field) => {
+            expect(filterDataInStore[field].visited).toBeTruthy();
+        });
+
+        BaseModel.list = jest.fn();
+        let form: HTMLFormElement = TestUtils.findRenderedDOMComponentWithTag(filter, 'form') as HTMLFormElement;
+        TestUtils.Simulate.submit(form);
+        expect(BaseModel.list).toBeCalled();
+
+        let dummyFilter: HTMLDivElement = TestUtils
+                .findRenderedDOMComponentWithClass(filter, 'dummy-filter') as HTMLDivElement;
+        expect(dummyFilter).toBeTruthy();
+        expect(dummyFilter.textContent).toEqual('test');
     });
 
 });

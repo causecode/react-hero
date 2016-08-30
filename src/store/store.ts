@@ -19,7 +19,7 @@ export interface IMockStore extends Store {
 function configureStore(initialState): Store | IMockStore {
     let store: Store | IMockStore;
     if ( getEnvironment() === 'test') {
-         store = (MockStore as Function)()(_getMiddleware());
+         store = (MockStore as Function)()(initialState, rootReducer, _getMiddleware());
     } else {
         store = compose(
             _getMiddleware(),
@@ -43,7 +43,7 @@ function _getMiddleware(): Function {
     return applyMiddleware(...middleware);
 }
 
-function _getEnhancers() {
+export function _getEnhancers() {
     let enhancers = [];
 
     if (window.devToolsExtension) {
