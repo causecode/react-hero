@@ -21,7 +21,6 @@ describe('Test Base Model', () => {
     let instanceData: {id: number, author: string} = {id: 1, author: 'abc'};
     let key: string = 'test';
     let ModelInstance: BaseModel = new BaseModel(instanceData);
-    // getPromiseAction: jest.Mock<Function>;
 
     async function verifyActions(type: string, instance: BaseModel): void {
         let action: IInstanceAction = store.getActions()[0];
