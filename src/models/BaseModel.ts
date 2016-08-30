@@ -4,11 +4,13 @@ import {resolver} from '../resolver';
 import {HTTP} from '../api/server/index';
 import {InvalidInstanceDataError} from '../errors/InvalidInstanceDataError';
 import {
+    FETCH_INSTANCE_DATA,
+    FETCH_INSTANCE_LIST,
     FETCH_INSTANCE_LIST_START,
-    FETCH_INSTANCE_LIST_SUCCESS,
+    FETCH_INSTANCE_LIST_FULFILLED,
     FETCH_INSTANCE_LIST_ERROR,
     FETCH_INSTANCE_DATA_START,
-    FETCH_INSTANCE_DATA_SUCCESS,
+    FETCH_INSTANCE_DATA_FULFILLED,
     FETCH_INSTANCE_DATA_ERROR
 } from '../constants';
 const objectAssign: any = require<any>('object-assign');
@@ -87,17 +89,12 @@ export class BaseModel {
 
             if (!valueInStore) {
                 // Fetch list data from server and save it in the store followed by returning it.
-                let types: string[] = [
-                    FETCH_INSTANCE_LIST_START,
-                    FETCH_INSTANCE_LIST_SUCCESS,
-                    FETCH_INSTANCE_LIST_ERROR,
-                ];
                 let path: string = resourceName;
                 let filterFormData = getValues(store.getState().form.dynamic);
                 objectAssign(filters, filterFormData);
                 store.dispatch(
                     getPromiseAction(
-                        types,
+                        FETCH_INSTANCE_LIST,
                         resourceName,
                         path,
                         filters,
@@ -122,15 +119,10 @@ export class BaseModel {
 
         if (!valueInStore) {
             // Fetch Instance Data from the server and save it in the store.
-            let types: string[] = [
-                FETCH_INSTANCE_DATA_START,
-                FETCH_INSTANCE_DATA_SUCCESS,
-                FETCH_INSTANCE_DATA_ERROR,
-            ];
             let path: string = `${resourceName}/show/${id}`;
             store.dispatch(
                 getPromiseAction(
-                    types,
+                    FETCH_INSTANCE_DATA,
                     resourceName,
                     path,
                     {},
@@ -140,14 +132,14 @@ export class BaseModel {
             );
         }
 
-        let instanceData = store.getState().instances;
+        let instanceData: {toJS?: Function} = store.getState().instances;
         return instanceData.toJS ? instanceData.toJS() : instanceData;
     }
 
 }
 
 function getPromiseAction(
-    types: string[],
+    type: string,
     resource: string,
     path: string,
     filters: Object,
@@ -156,7 +148,7 @@ function getPromiseAction(
     return () =>
         (dispatch) => {
             return dispatch({
-                types,
+                type,
                 payload: {
                     promise: getData(path, filters),
                 },

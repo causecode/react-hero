@@ -47,15 +47,7 @@ export class GenericEditPage extends React.Component<IGenericEditPageProps, {ins
 
     render(): JSX.Element {
         let { instance, handleSubmit, handleDelete } = this.props;
-        if (!handleSubmit) {
-            handleSubmit = (...args: any[]) => { return; };
-        }
-        let resource: string = this.props.resource;
-        if (!resource) {
-            resource = instance ? instance.resourceName : '';
-        }
-        let instanceProperties = (instance && instance.properties) ? instance.properties : {};
-        let instanceKeys = Object.keys(instanceProperties);
+        let instanceKeys: string[] = Object.keys(instance.properties);
         return (
             <form className="data-edit-form" onSubmit={handleSubmit.bind(this, this.state.instance)}>
                 <Grid>

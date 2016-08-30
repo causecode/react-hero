@@ -4,6 +4,7 @@ import {ResponsiveView} from '../src/components/ResponsiveView';
 import * as TestUtils from 'react-addons-test-utils';
 import * as ReactDOM from 'react-dom';
 import * as React from 'react';
+import {INSTANTIATION_ERROR} from '../src/constants';
 const unroll: any = require<any>('unroll');
 
 unroll.use(it);
@@ -104,6 +105,10 @@ describe('Test Device Types enum', () => {
 
     });
 
+    it('tries to create a new Device Type', () => {
+        expect(() => new DeviceTypes(10, 'newDevice')).toThrow(new Error(INSTANTIATION_ERROR));
+    });
+
     unroll('checks device type in a #device device', (done, testArgs) => {
 
         mockWindow(testArgs.mockId);
@@ -199,6 +204,17 @@ describe('Test Responsive View', () => {
             [MobilePortraitMockID, MobilePortrait],
             [MobileLandscapeMockID, MobileLandscape]
         ]);
+
+        it('renders Responsive View directly', () => {
+            mockWindow(DesktopMockID);
+
+            let view: ResponsiveView<void, void> = TestUtils.renderIntoDocument<ResponsiveView<void, void>>(
+                <ResponsiveView/>
+            );
+
+            expect(view).toBeTruthy();
+            expect(TestUtils.scryRenderedDOMComponentsWithTag(view, 'div').length).toEqual(1);
+        });
 
     });
 

@@ -1,6 +1,6 @@
 import {GenericShowPage} from '../src/components/CRUD/GenericShowPage';
 jest.unmock('../src/components-stateful/ShowPage');
-import {ShowPageImpl} from '../src/components-stateful/ShowPage';
+import {ShowPageImpl, ShowPage} from '../src/components-stateful/ShowPage';
 import * as React from 'react';
 import * as TestUtils from 'react-addons-test-utils';
 const ShallowTestUtils: IShallowTestUtils = require<IShallowTestUtils>('react-shallow-testutils');
@@ -12,17 +12,39 @@ import {resolver} from '../src/resolver';
 import {IInitializerData} from './../src/utils/initializeTestCase';
 import {IShallowTestUtils} from '../src/interfaces/interfaces';
 import {IInstanceContainerProps} from '../src/interfaces/interfaces';
+import configureStore from '../src/store/store';
+import {Provider} from 'react-redux';
+import {fromJS} from 'immutable';
 
 describe('Test ShowPage', () => {
     let initializerData: IInitializerData = initializeTestCase();
     let renderer: React.ShallowRenderer;
     let resource: string = initializerData.resource;
+    let resourceID: number = 1;
     let instances: Object = initializerData.instances;
 
     beforeEach(() => {
         renderer = TestUtils.createRenderer();
         BaseModel.get = jest.fn<Function>();
     });
+
+    it('renders a ShowPage with the store', () => {
+        let page: React.Component<void, void> = TestUtils.renderIntoDocument<React.Component<void, void>>(
+            <Provider store={configureStore({instances: fromJS({testEditPage: {}})})} >
+                <ShowPage params={{resource, resourceID}}/>
+            </Provider>
+        );
+
+        expect(page).toBeTruthy();
+        let renderedPage: React.ReactElement<IInstanceContainerProps> = TestUtils
+            .findRenderedComponentWithType(page, GenericShowPage) as React.ReactElement<IInstanceContainerProps>;
+        expect(renderedPage).toBeTruthy();
+        expect(renderedPage.props.resource).toEqual(resource);
+        expect(TestUtils.findRenderedComponentWithType(page, GenericShowPage));
+        expect(BaseModel.get).toBeCalledWith(resourceID);
+
+    });
+
 
     function testRenderedPageProps(page: React.ReactElement<IInstanceContainerProps>, instance: BaseModel
             , resourceParam: string) {

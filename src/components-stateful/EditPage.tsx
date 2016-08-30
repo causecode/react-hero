@@ -14,7 +14,7 @@ function isCreatePage(pathName: string): boolean {
     return pathName.toLowerCase().indexOf('create') > -1;
 }
 
-export type EditPageProps = IInstanceContainerProps & IInjectedProps & {createInstance: (instance: BaseModel) => void};
+export type EditPageProps = IInstanceContainerProps & IInjectedProps & {createInstance?: (instance: BaseModel) => void};
 
 export class EditPageImpl extends React.Component<EditPageProps, void> {
 
@@ -29,24 +29,10 @@ export class EditPageImpl extends React.Component<EditPageProps, void> {
         ModelService.getModel(resource).get(resourceID);
     }
 
-    getInstance(): BaseModel {
-        let Model: typeof BaseModel = ModelService.getModel(this.props.params.resource);
-        return this.props.instance instanceof BaseModel ? this.props.instance : new Model({});
-    }
-
     updateModelInstance(): void {
         const { resource, resourceID } = this.props.params;
         if (resourceID) {
             this.fetchInstanceData(resource, resourceID);
-        }
-    }
-
-    saveInstanceChanges(instance: BaseModel): void {
-        let resource: string = this.props.params.resource;
-        if (isCreatePage(this.props.location.pathname)) {
-            instance.$save(true, `${resource}Create`);
-        } else {
-            instance.$update(true, `${resource}Edit`);
         }
     }
 
@@ -61,8 +47,13 @@ export class EditPageImpl extends React.Component<EditPageProps, void> {
 
     handleSubmit(instance: BaseModel, e: Event): void {
         e.preventDefault();
-        this.saveInstanceChanges(instance);
-    };
+        let resource: string = this.props.params.resource;
+        if (isCreatePage(this.props.location.pathname)) {
+            instance.$save(true, `${resource}Create`);
+        } else {
+            instance.$update(true, `${resource}Edit`);
+        }
+    }
 
     handleDelete = (): void => {
         let instanceKey: string = this.props.params.resource;

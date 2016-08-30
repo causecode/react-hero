@@ -15,6 +15,7 @@ const store = require.requireActual<IMockStore>('../src/store/store');
 import {Provider, connect} from 'react-redux';
 import * as ReactDOM from 'react-dom';
 import IMockStore from '../src/store/store';
+import {HeaderFooterLayoutImpl} from '../src/components/HeaderFooterLayout';
 
 describe('Test HeaderFooterLayout', () => {
 
@@ -45,14 +46,10 @@ describe('Test HeaderFooterLayout', () => {
             </Provider>
         );
         let getRenderedDOM = (tree) => ReactDOM.findDOMNode(tree);
-        let header: React.ReactElement<React.Props<void>> =
-            TestUtils.scryRenderedDOMComponentsWithClass(layout, 'header') as React.ReactElement<{}>;
-        let content: React.ReactElement<React.Props<void>> =
-            TestUtils.scryRenderedDOMComponentsWithClass(layout, 'content') as React.ReactElement<{}>;
-        let footer: React.ReactElement<React.Props<void>> =
-            TestUtils.scryRenderedDOMComponentsWithClass(layout, 'footer') as React.ReactElement<{}>;
-        let nav: React.ReactElement<React.Props<void>> =
-            TestUtils.scryRenderedDOMComponentsWithClass(layout, 'nav-menu') as React.ReactElement<{}>;
+        let header: HTMLElement[] = TestUtils.scryRenderedDOMComponentsWithClass(layout, 'header') as HTMLElement[];
+        let content: HTMLElement[] = TestUtils.scryRenderedDOMComponentsWithClass(layout, 'content') as HTMLElement[];
+        let footer: HTMLElement[] = TestUtils.scryRenderedDOMComponentsWithClass(layout, 'footer') as HTMLElement[];
+        let nav: HTMLElement[] = TestUtils.scryRenderedDOMComponentsWithClass(layout, 'nav-menu') as HTMLElement[];
 
         ['header-content', 'content-content', 'footer-content', 'nav-menu-content']
             .forEach((contentClass) => {
@@ -69,7 +66,6 @@ describe('Test HeaderFooterLayout', () => {
         expect(content[0].children.length).toBe(1);
         expect(footer[0].children.length).toBe(1);
         expect(nav[0].children.length).toBe(2);
-
 
         expect(getRenderedDOM(header[0]).querySelector('div.header-content')).toBeTruthy();
         expect(getRenderedDOM(content[0]).querySelector('div.content-content')).toBeTruthy();
@@ -95,6 +91,30 @@ describe('Test HeaderFooterLayout', () => {
         expect(() => { TestUtils.renderIntoDocument(layout); })
             .toThrow(new Error('The prop menuPosition has not been defined.'));
 
+    });
+
+    it('renders a HeaderFooterLayout with only the Header and NavigationMenu', () => {
+        HeaderFooterLayoutImpl.prototype.setNav =
+            jest.fn<typeof HeaderFooterLayoutImpl.prototype.setNav>(HeaderFooterLayoutImpl.prototype.setNav);
+        let navMenuContent: JSX.Element = <div className="nav-menu-content">NavMenu</div>;
+        let headerContent: JSX.Element = <div className="header-content">Header</div>;
+        let layout: React.Component<void, void> = TestUtils.renderIntoDocument<React.Component<void, void>>(
+            <Provider store={store} >
+                <HeaderFooterLayout menuPosition="left">
+                    <HeaderView>{headerContent}></HeaderView>
+                    <NavigationMenu>{navMenuContent}</NavigationMenu>
+                </HeaderFooterLayout>
+            </Provider>
+        );
+        expect(layout).toBeTruthy();
+
+        let header: HTMLElement = TestUtils.findRenderedDOMComponentWithClass(layout, 'header') as HTMLElement;
+        let navMenu: HTMLElement = TestUtils.findRenderedDOMComponentWithClass(layout, 'nav-menu') as HTMLElement;
+
+        [header, navMenu].forEach((element: HTMLElement): void => {
+            expect(element).toBeTruthy();
+            expect(element.children.length).toEqual(2);
+        });
     });
 
 });

@@ -13,9 +13,11 @@ export function promiseMiddleware({ dispatch }) {
             return next(action);
         }
 
-        const { types, payload, resource, successCallBack, failureCallBack } = action;
+        const { type, payload, resource, successCallBack, failureCallBack } = action;
         const { promise, data } = payload;
-        const [ PENDING, FULFILLED, REJECTED ] = types;
+        const PENDING: string = `${type}_START`;
+        const FULFILLED: string = `${type}_FULFILLED`;
+        const REJECTED: string = `${type}_ERROR`;
 
         /**
          * Dispatch the pending action

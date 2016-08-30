@@ -5,7 +5,7 @@ jest.unmock('../src/reducers/data');
 jest.unmock('../src/actions/modelActions');
 import {Pagination} from 'react-bootstrap';
 import {DataGrid} from '../src/components/PagedList/DataGrid';
-import PagedList, {PagedListImpl} from '../src/components-stateful/PagedList';
+import {PagedListImpl, PagedList} from '../src/components-stateful/PagedList';
 import {PagedListFilters} from '../src/components/PagedList/Filters/PagedListFilter';
 import * as React from 'react';
 import * as TestUtils from 'react-addons-test-utils';
@@ -38,7 +38,7 @@ describe('Test Paged List', () => {
     });
 
     function testPaginationGridAndLink(
-        page: React.Component<IPagedListProps, void>,
+        page: React.ReactElement<void>,
         activePageParam: number,
         items: number,
         instanceListParam: BaseModel[],
@@ -71,8 +71,8 @@ describe('Test Paged List', () => {
                 <div className="test-filter"></div>
             </PagedListImpl>
         );
-        let page: React.Component<IPagedListProps, void> =
-                renderer.getRenderOutput<React.Component<IPagedListProps, void>>();
+        let page: React.ReactElement<void> =
+                renderer.getRenderOutput();
         
         let tags = ['h2', PagedListFilters, DataGrid, Pagination];
         page.props.children.forEach((item, index) => {
@@ -93,8 +93,7 @@ describe('Test Paged List', () => {
             <PagedListImpl resource={resource}/>
         );
 
-        let page: React.Component<IPagedListProps, void> = renderer.getRenderOutput<
-                React.Component<IPagedListProps, void>>();
+        let page: React.ReactElement<void> = renderer.getRenderOutput();
         expect(page.props.children[1].props.resource).toBe(resource);
         expect(page.props.children[2].props.instanceList).not.toBe(undefined);
         expect(page.props.children[2].props.properties).not.toBe(undefined);

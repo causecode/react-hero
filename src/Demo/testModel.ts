@@ -23,5 +23,3 @@ export class UserModel extends BaseModel {
         this.properties = properties;
     }
 }
-
-ModelService.registerAll(UserModel, BlogModel);

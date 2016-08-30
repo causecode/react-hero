@@ -4,7 +4,7 @@ jest.unmock('../src/actions/modelActions');
 import {fromJS} from 'immutable';
 import {
     FETCH_INSTANCE_DATA_START,
-    FETCH_INSTANCE_DATA_SUCCESS,
+    FETCH_INSTANCE_DATA_FULFILLED,
     FETCH_INSTANCE_DATA_ERROR,
     SAVE_INSTANCE,
     DELETE_INSTANCE,
@@ -32,7 +32,7 @@ describe('test model reducer.', () => {
     let error: Object = fromJS({'hasError': true, 'isLoading': false});
 
     let instance = new BaseModel(baseModelData);
-    function getActionData(type: string, payloadData: string, resource: string, key: string) {
+    function getActionData(type: string, payloadData?: string, resource?: string, key?: string) {
         return {
             type,
             resource,
@@ -42,7 +42,7 @@ describe('test model reducer.', () => {
         };
     };
     const tempSuccess: {type: string, resource: string, payload: {testInstance: string}, instance: BaseModel} =
-            getActionData(FETCH_INSTANCE_DATA_SUCCESS, payloadString, resourceString);
+            getActionData(FETCH_INSTANCE_DATA_FULFILLED, payloadString, resourceString);
 
     const tempError: {type: string, resource: string, payload: {testInstance: string}, instance: BaseModel} =
             getActionData(FETCH_INSTANCE_DATA_ERROR, payloadString, resourceString);
@@ -69,14 +69,9 @@ describe('test model reducer.', () => {
         ['initial state', initialState]
     ]);
 
-    it('should handle success case for missing action payload.', (done) => {
-        try {
-           modelReducer(initialState, {type: FETCH_INSTANCE_DATA_SUCCESS});
-           done(new new MissingActionPayloadError());
-       } catch (err) {
-           expect(err);
-           done();
-       }
+    it('should handle success case for missing action payload.', () => {
+        expect(() => modelReducer(initialState, {type: FETCH_INSTANCE_DATA_FULFILLED}))
+                .toThrow(new MissingActionPayloadError());
     });
 
     unroll('should handle error case for #title', (done, testArgs) => {
@@ -90,7 +85,7 @@ describe('test model reducer.', () => {
     ]);
 
     unroll('should #title correctly', (done, testArgs) => {
-        let temp: Object = modelReducer(initialState,
+        let temp = modelReducer(initialState,
                     getActionData(testArgs.reducer, payloadString, resourceString, testKey));
         expect(temp.get(testKey)).toBeTruthy();
         expect(temp.get(testKey) instanceof BaseModel).toBeTruthy();
@@ -107,7 +102,7 @@ describe('test model reducer.', () => {
     });
 
     it('should create instance', () => {
-        let temp: Object = modelReducer(initialState, tempCreate);
+        let temp = modelReducer(initialState, tempCreate);
         expect(temp.get(`${instance.resourceName}Create`)).toBeTruthy();
         expect(temp.get(`${instance.resourceName}Create`) instanceof BaseModel).toBeTruthy();
     });

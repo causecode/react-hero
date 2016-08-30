@@ -16,16 +16,16 @@ export class ShowPageImpl extends React.Component<IInstanceContainerProps, void>
         params: {resource: '', resourceID: ''}
     };
 
-    fetchInstanceData(resource: string , resourceID: string) {
+    fetchInstanceData(resource: string , resourceID: string): void {
         ModelService.getModel(resource).get(resourceID);
     }
 
-    componentWillMount() {
+    componentWillMount(): void {
         const { resource, resourceID } = this.props.params;
         this.fetchInstanceData(resource, resourceID);
     }
 
-    render() {
+    render(): JSX.Element {
         if (!(this.props.instance instanceof BaseModel)) {
             return (
                 <ErrorPage message={PAGE_NOT_FOUND} />

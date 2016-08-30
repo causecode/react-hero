@@ -4,7 +4,7 @@ import {BaseModel} from '../models/BaseModel';
 import {ModelService} from '../utils/modelService';
 import {
     FETCH_INSTANCE_LIST_START,
-    FETCH_INSTANCE_LIST_SUCCESS,
+    FETCH_INSTANCE_LIST_FULFILLED,
     FETCH_INSTANCE_LIST_ERROR,
     TOGGLE_FILTERS,
     SET_PAGE
@@ -22,7 +22,7 @@ function dataReducer(state = INITIAL_STATE, action ) {
         case FETCH_INSTANCE_LIST_START:
             return state;
 
-        case FETCH_INSTANCE_LIST_SUCCESS:
+        case FETCH_INSTANCE_LIST_FULFILLED:
             let resource = action.resource || '';
             Model = ModelService.getModel(resource);
             let instanceList, totalCount: number, properties: string[];
