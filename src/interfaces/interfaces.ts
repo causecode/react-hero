@@ -49,3 +49,9 @@ export interface IPagedListFiltersProps extends Props<{}> {
     resource?: string;
     filtersOpen?: boolean;
 }
+
+export interface IFromJS {
+    set: Function;
+    get: Function;
+    toJS: Function;
+}

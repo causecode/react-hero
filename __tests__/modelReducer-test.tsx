@@ -18,7 +18,8 @@ import {ModelService} from '../src/utils/modelService';
 import {MissingActionPayloadError} from '../src/errors/MissingActionPayloadError';
 const initialState: Object = fromJS({});
 const unroll: any = require<any>('unroll');
-import {createStore} from 'redux';
+import {createStore, Store} from 'redux';
+import {IFromJS} from '../src/interfaces/interfaces';
 
 unroll.use(it);
 
@@ -28,10 +29,10 @@ describe('test model reducer.', () => {
     let payloadString: string = 'testPayload';
     let testString: string = 'hello';
     let testKey: string = 'dummyKey';
-    let testState: Object = fromJS({testState: testString});
-    let error: Object = fromJS({'hasError': true, 'isLoading': false});
+    let testState: IFromJS = fromJS({testState: testString});
+    let error: IFromJS = fromJS({'hasError': true, 'isLoading': false});
 
-    let instance = new BaseModel(baseModelData);
+    let instance: BaseModel = new BaseModel(baseModelData);
     function getActionData(type: string, payloadData?: string, resource?: string, key?: string) {
         return {
             type,
@@ -41,16 +42,16 @@ describe('test model reducer.', () => {
             instance
         };
     };
-    const tempSuccess: {type: string, resource: string, payload: {testInstance: string}, instance: BaseModel} =
+    const successAction: {type: string, resource: string, payload: {testInstance: string}, instance: BaseModel} =
             getActionData(FETCH_INSTANCE_DATA_FULFILLED, payloadString, resourceString);
 
-    const tempError: {type: string, resource: string, payload: {testInstance: string}, instance: BaseModel} =
+    const errorAction: {type: string, resource: string, payload: {testInstance: string}, instance: BaseModel} =
             getActionData(FETCH_INSTANCE_DATA_ERROR, payloadString, resourceString);
 
-    const tempCreate: {type: string, resource: string, payload: {testInstance: string}, instance: BaseModel} =
+    const createAction: {type: string, resource: string, payload: {testInstance: string}, instance: BaseModel} =
             getActionData(CREATE_INSTANCE, payloadString, resourceString, testKey);
 
-    const store = createStore(modelReducer);
+    const store: Store = createStore(modelReducer);
 
     it('should return the initial value when empty action is passed.', () => {
         expect(modelReducer(initialState, {})).toEqual(initialState);
@@ -61,7 +62,7 @@ describe('test model reducer.', () => {
     });
 
     unroll('should handle success case for #title.', (done, testArgs) => {
-        expect(modelReducer(testArgs.state, tempSuccess).get(`${resourceString}Edit`)).toBeTruthy();
+        expect(modelReducer(testArgs.state, successAction).get(`${resourceString}Edit`)).toBeTruthy();
         done();
     }, [
         ['title', 'state'],
@@ -75,8 +76,8 @@ describe('test model reducer.', () => {
     });
 
     unroll('should handle error case for #title', (done, testArgs) => {
-        expect(modelReducer(testArgs.state, tempError).get(`${resourceString}Edit`)).toBeTruthy();
-        expect(modelReducer(testArgs.state, tempError).get(`${resourceString}Edit`)).toEqual(error);
+        expect(modelReducer(testArgs.state, errorAction).get(`${resourceString}Edit`)).toBeTruthy();
+        expect(modelReducer(testArgs.state, errorAction).get(`${resourceString}Edit`)).toEqual(error);
         done();
     }, [
         ['title', 'state'],
@@ -85,10 +86,10 @@ describe('test model reducer.', () => {
     ]);
 
     unroll('should #title correctly', (done, testArgs) => {
-        let temp = modelReducer(initialState,
+        let result: IFromJS = modelReducer(initialState,
                     getActionData(testArgs.reducer, payloadString, resourceString, testKey));
-        expect(temp.get(testKey)).toBeTruthy();
-        expect(temp.get(testKey) instanceof BaseModel).toBeTruthy();
+        expect(result.get(testKey)).toBeTruthy();
+        expect(result.get(testKey) instanceof BaseModel).toBeTruthy();
         done();
     }, [
         ['title', 'reducer'],
@@ -102,9 +103,9 @@ describe('test model reducer.', () => {
     });
 
     it('should create instance', () => {
-        let temp = modelReducer(initialState, tempCreate);
-        expect(temp.get(`${instance.resourceName}Create`)).toBeTruthy();
-        expect(temp.get(`${instance.resourceName}Create`) instanceof BaseModel).toBeTruthy();
+        let result: IFromJS = modelReducer(initialState, createAction);
+        expect(result.get(`${instance.resourceName}Create`)).toBeTruthy();
+        expect(result.get(`${instance.resourceName}Create`) instanceof BaseModel).toBeTruthy();
     });
 
     unroll('checks whether #title key is created in the store.', (done, testArgs) => {
@@ -113,8 +114,8 @@ describe('test model reducer.', () => {
         done();
     }, [
         ['title', 'action', 'page'],
-        ['Create', tempCreate, `${instance.resourceName}Create`],
-        ['Edit', tempSuccess, `${resourceString}Edit`]
+        ['Create', createAction, `${instance.resourceName}Create`],
+        ['Edit', successAction, `${resourceString}Edit`]
     ]);
 
 });

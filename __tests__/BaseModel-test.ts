@@ -18,7 +18,7 @@ describe('Test Base Model', () => {
     let successCallback: jest.Mock<Function>, failureCallback: jest.Mock<Function>;
     let successObject: {success: boolean} = {success: true};
     let failureObject: {success: boolean} = {success: false};
-    let instanceData = {id: 1, author: 'abc'};
+    let instanceData: {id: number, author: string} = {id: 1, author: 'abc'};
     let key: string = 'test';
     let ModelInstance: BaseModel = new BaseModel(instanceData);
     // getPromiseAction: jest.Mock<Function>;
@@ -181,7 +181,7 @@ describe('Test Base Model', () => {
         beforeEach(() => {
             store.dispatch = jest.fn<Function>();
             store.getState = jest.fn<Function>(() => {
-                return {instances: {}}
+                return {instances: {}};
             });
         });
 
@@ -207,7 +207,7 @@ describe('Test Base Model', () => {
                     return {
                                 data: {},
                                 form: {dynamic: {}}
-                            }
+                            };
                     });
         });
 

@@ -104,7 +104,7 @@ describe('Test ShowPage', () => {
             <ShowPageImpl params={{resource: resource}} instance={new TestModel({})}/>
         );
 
-        let page = renderer.getRenderOutput();
+        let page: React.ReactElement<IInstanceContainerProps> = renderer.getRenderOutput();
         expect(page).toBeTruthy();
 
         let renderedPage = ShallowTestUtils.findWithType(page, TestShowPage);

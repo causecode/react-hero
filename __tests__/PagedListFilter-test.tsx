@@ -32,7 +32,7 @@ describe('Test PagedList Filters', () => {
     });
 
     it('renders a simple PagedListFilters Component with a few Filters', () => {
-        let children = [
+        let children: React.Component<{}, void> = [
             <DropDownFilter
                 label="status"
                 paramName="status"
