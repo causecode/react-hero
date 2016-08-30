@@ -1,14 +1,18 @@
 import {IInstanceAction} from '../src/actions/modelActions';
 jest.unmock('../src/models/BaseModel');
-import {BaseModel} from '../src/models/BaseModel';
+import {BaseModel, getData} from '../src/models/BaseModel';
 import {IMockStore} from '../src/store/store';
 const store: IMockStore = require<IMockStore>('../src/store/store').store as IMockStore;
+import configureStore from '../src/store/store';
 import {saveInstance, updateInstance, deleteInstance} from '../src/actions/modelActions';
 import {SAVE_INSTANCE, DELETE_INSTANCE, UPDATE_INSTANCE} from '../src/actions/modelActions';
 import {HTTP} from '../src/api/server/index';
 import {BASE_URL} from '../src/api/server/index';
 import {InvalidInstanceDataError} from '../src/errors/InvalidInstanceDataError';
 import 'babel-polyfill';
+const unroll: any = require<any>('unroll');
+
+unroll.use(it);
 
 describe('Test Base Model', () => {
     let successCallback: jest.Mock<Function>, failureCallback: jest.Mock<Function>;
@@ -42,7 +46,6 @@ describe('Test Base Model', () => {
 
         successCallback = jest.fn<Function>();
         failureCallback = jest.fn<Function>();
-
     });
 
     afterEach(() => {
@@ -169,6 +172,76 @@ describe('Test Base Model', () => {
             await testWithFlushAndPromiseFailure(ModelInstance, 'delete', HTTP.deleteRequest,
                     [`${ModelInstance.resourceName}/${ModelInstance.properties.id}`, headers]);
         });
+
+    });
+
+    describe('Tests get method.', () => {
+
+        let id: number = 10;
+        beforeEach(() => {
+            store.dispatch = jest.fn<Function>();
+            store.getState = jest.fn<Function>(() => {
+                return {instances: {}}
+            });
+        });
+
+        it('calls the get method without valueStore. ', () => {
+            BaseModel.get(id, false, successCallback, failureCallback);
+            expect(store.getState).toBeCalled();
+            expect(store.dispatch).toBeCalled();
+        });
+
+        it('calls the get method with valueStore. ', () => {
+            BaseModel.get(id, true, successCallback, failureCallback);
+            expect(store.getState).toBeCalled();
+            expect(store.dispatch).not.toBeCalled();
+        });
+    });
+
+    describe('Tests list method.', () => {
+
+        let filters: {} = {};
+        beforeEach(() => {
+            store.dispatch = jest.fn<Function>();
+            store.getState = jest.fn<Function>(() => {
+                    return {
+                                data: {},
+                                form: {dynamic: {}}
+                            }
+                    });
+        });
+
+        it('calls the list method with valueStore. ', () => {
+            BaseModel.list(filters, true, successCallback, failureCallback);
+            expect(store.getState).toBeCalled();
+            expect(store.dispatch).not.toBeCalled();
+        });
+
+        it('calls the list method without valueStore. ', () => {
+            BaseModel.list(filters, false, successCallback, failureCallback);
+            expect(store.getState).toBeCalled();
+            expect(store.dispatch).toBeCalled();
+        });
+    });
+
+    describe('Tests getData function ', () => {
+        let incorrectPath: string = 'test/123';
+        beforeEach(() => {
+            HTTP.getRequest = jest.fn<Function>((path) => {
+                let promise: Promise = Promise.resolve({});
+                return promise;
+            });
+        });
+        unroll('successfully calls to: #path', (done, testArgs) => {
+            getData(testArgs.path, {});
+            expect(HTTP.getRequest).toBeCalledWith(testArgs.path, {});
+            expect(HTTP.getRequest).not.toBeCalledWith(incorrectPath);
+            done();
+        }, [
+            ['path'],
+            ['test'],
+            ['demo/show/123']
+        ]);
 
     });
 });

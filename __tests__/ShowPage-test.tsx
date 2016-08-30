@@ -15,6 +15,8 @@ import {IInstanceContainerProps} from '../src/interfaces/interfaces';
 import configureStore from '../src/store/store';
 import {Provider} from 'react-redux';
 import {fromJS} from 'immutable';
+import {PAGE_NOT_FOUND} from '../src/constants';
+import {ErrorPage} from '../src/components/ErrorPage';
 
 describe('Test ShowPage', () => {
     let initializerData: IInitializerData = initializeTestCase();
@@ -57,17 +59,17 @@ describe('Test ShowPage', () => {
 
     it('renders a simple Show Page', () => {
         renderer.render(
-        <ShowPageImpl
+            <ShowPageImpl
                 params={{resource: resource}}
                 instance={instances[resource]}
             />
         );
 
         let page: React.ReactElement<IInstanceContainerProps> = renderer.getRenderOutput();
-
         expect(page).toBeTruthy();
+        expect(page.props.resource).toBe(resource);
+        expect(page.props.instance).toEqual(instances[resource]);
         testRenderedPageProps(page, instances[resource], resource);
-
     });
 
     it('renders an ShowPage without any props', () => {
@@ -77,8 +79,9 @@ describe('Test ShowPage', () => {
 
         let page: React.ReactElement<IInstanceContainerProps> = renderer.getRenderOutput();
         expect(page).toBeTruthy();
+        expect(page.props.resource).toBe('');
+        expect(page.props.instance).toEqual(new BaseModel({}));
         testRenderedPageProps(page, new BaseModel({}), '');
-
     });
 
     it('renders an ShowPage with user implemented ShowPage registered', () => {
@@ -108,7 +111,16 @@ describe('Test ShowPage', () => {
         expect(renderedPage).toBeTruthy();
         expect(renderedPage.props.instance).toEqual(new TestModel({}));
         expect(renderedPage.props.resource).toEqual(resource);
-
     });
 
+    it('renders the error page when BaseModel instance is not provided.', () => {
+        class TestPage {}
+
+        renderer.render(
+            <ShowPageImpl params={{resource: resource}} instance={new TestPage()}/>
+        );
+        let page: React.ReactElement<IInstanceContainerProps> = renderer.getRenderOutput();
+        expect(page.type).toEqual(ErrorPage);
+        expect(page.props.message).toEqual(PAGE_NOT_FOUND);
+    });
 });

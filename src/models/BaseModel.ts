@@ -162,7 +162,7 @@ function getPromiseAction(
         };
 }
 
-function getData(path: string, filters = {}): Promise<{}> {
+export function getData(path: string, filters = {}): Promise<{}> {
     return new Promise((resolve, reject) => {
         return HTTP.getRequest(path, filters)
             .then<void>((response) => {
