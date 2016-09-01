@@ -1,16 +1,16 @@
 import * as React from 'react';
-
+import '../utils/appService';
 export class DeviceTypes {
 
-    static DESKTOP: DeviceTypes = new DeviceTypes(0, 'Default');
-    static TABLET: DeviceTypes = new DeviceTypes(1, 'Tablet');
-    static TABLET_PORTRAIT: DeviceTypes = new DeviceTypes(2, 'TabletPortrait');
-    static TABLET_LANDSCAPE: DeviceTypes = new DeviceTypes(3, 'TabletLandscape');
-    static MOBILE: DeviceTypes = new DeviceTypes(4, 'Mobile');
-    static MOBILE_PORTRAIT: DeviceTypes = new DeviceTypes(5, 'MobilePortrait');
-    static MOBILE_LANDSCAPE: DeviceTypes = new DeviceTypes(6, 'MobileLandscape');
+    static DESKTOP: DeviceTypes = new DeviceTypes(0, 'default');
+    static TABLET: DeviceTypes = new DeviceTypes(1, 'tablet');
+    static TABLET_PORTRAIT: DeviceTypes = new DeviceTypes(2, 'tabletPortrait');
+    static TABLET_LANDSCAPE: DeviceTypes = new DeviceTypes(3, 'tabletLandscape');
+    static MOBILE: DeviceTypes = new DeviceTypes(4, 'mobile');
+    static MOBILE_PORTRAIT: DeviceTypes = new DeviceTypes(5, 'mobilePortrait');
+    static MOBILE_LANDSCAPE: DeviceTypes = new DeviceTypes(6, 'mobileLandscape');
 
-    private static allDeviceTypes = [
+    private static allDeviceTypes: DeviceTypes[] = [
         DeviceTypes.MOBILE,
         DeviceTypes.MOBILE_PORTRAIT,
         DeviceTypes.MOBILE_LANDSCAPE,
@@ -22,7 +22,7 @@ export class DeviceTypes {
 
     constructor(public id: number, public name: string) {
         if (DeviceTypes.allDeviceTypes && DeviceTypes.allDeviceTypes.length) {
-            throw new Error(`Error: Instantiation Failed: Trying to create a new instance of DeviceTypes. Please use
+            throw new Error(`Instantiation Failed: Trying to create a new instance of DeviceTypes. Please use
                     one of the predefined Device types.`);
         }
         this.id = id;
@@ -38,15 +38,15 @@ export class DeviceTypes {
     }
 
     static isMobile(): boolean {
-        return DeviceTypes.getCurrentDevice().getName().toLowerCase().indexOf('mobile') > 0;
+        return DeviceTypes.getCurrentDevice().getName().toLowerCase().indexOf('mobile') > -1;
     }
 
     static isTablet(): boolean {
-        return DeviceTypes.getCurrentDevice().getName().toLowerCase().indexOf('tablet') > 0;
+        return DeviceTypes.getCurrentDevice().getName().toLowerCase().indexOf('tablet') > -1;
     }
 
     static isDesktop(): boolean {
-        return DeviceTypes.getCurrentDevice().getName().toLowerCase().indexOf('default') > 0;
+        return DeviceTypes.getCurrentDevice().getName().toLowerCase().indexOf('default') > -1;
     }
 
     static getCurrentDevice(): DeviceTypes {
@@ -54,21 +54,26 @@ export class DeviceTypes {
         indicator.className = 'state-indicator';
         document.body.appendChild(indicator);
         let deviceId: number = parseInt(window.getComputedStyle(indicator).getPropertyValue('z-index'), 10);
+        document.body.removeChild(indicator);
         return DeviceTypes.getDeviceTypeFromIdOrString(deviceId);
     }
 
-    static getDeviceTypeFromIdOrString( identifier: number | string) {
+    static getDeviceTypeFromIdOrString( identifier: number | string): DeviceTypes {
+
+        if (typeof identifier === 'string') {
+            identifier = (identifier as string).toLowerCase();
+        }
         for (let deviceType of DeviceTypes.allDeviceTypes) {
-            if (deviceType.getId() === identifier || deviceType.getName() === identifier) {
+            if (deviceType.getId() === identifier || deviceType.getName().toLowerCase() === identifier) {
                 return deviceType;
             }
         }
-        throw new Error('Error: No matching device for the given identifier.');
+        throw new Error('No matching device for the given identifier.');
     }
 }
 
 export interface IResponsiveView {
-    renderDefault?() : JSX.Element;
+    renderDefault() : JSX.Element;
     renderMobile?() : JSX.Element;
     renderMobilePortrait?() : JSX.Element;
     renderMobileLandscape?() : JSX.Element;
@@ -77,18 +82,22 @@ export interface IResponsiveView {
     renderTabletLandscape?() : JSX.Element;
 }
 
+// TODO call renderTablet if only renderTabletPortrait is defined and not renderTablet. Same goes for mobile.
 export abstract class ResponsiveView<P, S> extends React.Component<P, S> {
 
-    constructor() {
-        super();
-    }
-
-    render() {
+    render(): JSX.Element {
         let currentDeviceType: DeviceTypes = DeviceTypes.getCurrentDevice();
-        let deviceSpecificRenderFunction: string = `render${currentDeviceType.getName()}`;
+        let deviceSpecificRenderFunction: string = `render${currentDeviceType.getName().capitalize()}`;
+        let renderFunction: () => JSX.Element = this[deviceSpecificRenderFunction];
+        if (!renderFunction) {
+            console.warn(`Cannot find device ` +
+            `specific render function for the device ${currentDeviceType.getName().capitalize()}`);
+            renderFunction = this.renderDefault;
+        }
+        renderFunction = renderFunction.bind(this);
         return (
             <div>
-                {this[deviceSpecificRenderFunction]()}
+                {renderFunction()}
             </div>
         );
     }
