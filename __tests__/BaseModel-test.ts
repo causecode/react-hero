@@ -3,7 +3,7 @@ jest.unmock('../src/models/BaseModel');
 import {BaseModel, getData} from '../src/models/BaseModel';
 import {IMockStore} from '../src/store/store';
 const store: IMockStore = require<IMockStore>('../src/store/store').store as IMockStore;
-import configureStore from '../src/store/store';
+import {configureStore} from '../src/store/store';
 import {saveInstance, updateInstance, deleteInstance} from '../src/actions/modelActions';
 import {SAVE_INSTANCE, DELETE_INSTANCE, UPDATE_INSTANCE} from '../src/actions/modelActions';
 import {HTTP} from '../src/api/server/index';
@@ -15,7 +15,7 @@ const unroll: any = require<any>('unroll');
 unroll.use(it);
 
 describe('Test Base Model', () => {
-    let successCallback: jest.Mock<Function>, failureCallback: jest.Mock<Function>;
+    let successCallback: Function, failureCallback: Function;
     let successObject: {success: boolean} = {success: true};
     let failureObject: {success: boolean} = {success: false};
     let instanceData: {id: number, author: string} = {id: 1, author: 'abc'};
@@ -43,8 +43,8 @@ describe('Test Base Model', () => {
         HTTP.putRequest = getNewHTTPMock();
         HTTP.deleteRequest = getNewHTTPMock();
 
-        successCallback = jest.fn<Function>();
-        failureCallback = jest.fn<Function>();
+        successCallback = jest.fn<Function>() as Function;
+        failureCallback = jest.fn<Function>() as Function;
     });
 
     afterEach(() => {
@@ -185,13 +185,13 @@ describe('Test Base Model', () => {
         });
 
         it('calls the get method without valueStore. ', () => {
-            BaseModel.get(id, false, successCallback, failureCallback);
+            BaseModel.get(id.toString(), false, successCallback, failureCallback);
             expect(store.getState).toBeCalled();
             expect(store.dispatch).toBeCalled();
         });
 
         it('calls the get method with valueStore. ', () => {
-            BaseModel.get(id, true, successCallback, failureCallback);
+            BaseModel.get(id.toString(), true, successCallback, failureCallback);
             expect(store.getState).toBeCalled();
             expect(store.dispatch).not.toBeCalled();
         });

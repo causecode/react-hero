@@ -16,3 +16,7 @@ export interface IAppServiceConfig {
 String.prototype.capitalize = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
 };
+
+export function isEmpty(obj: Object): boolean {
+    return (!obj || !Object.keys(obj).length);
+}

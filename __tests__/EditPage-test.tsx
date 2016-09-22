@@ -19,7 +19,7 @@ import {PAGE_NOT_FOUND} from '../src/constants';
 import {ErrorPage} from '../src/components/ErrorPage';
 import {store} from '../src/store/store';
 import {Provider} from 'react-redux';
-import configureStore from '../src/store/store';
+import {configureStore }from '../src/store/store';
 import {fromJS} from 'immutable';
 import ClassType = __React.ClassType;
 import {IGenericEditPageProps} from '../src/components/CRUD/GenericEditPage';

@@ -1,8 +1,13 @@
 var webpack = require('webpack');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
-var isProduction = process.argv.indexOf('--production') != -1;
+var argv = process.argv;
+var isProduction = argv.indexOf('--production') != -1;
 var path = require('path');
+var PORT = 8080;
+if (argv.indexOf('--port') > -1) {
+    PORT = argv[argv.indexOf('--port') + 1];
+}
 
 var plugins = [];
 
@@ -30,7 +35,7 @@ if (isProduction) {
 } else {
     // Adding Development environment specific features.
     entryPoints.push(
-        'webpack-dev-server/client?http://localhost:8080',
+        'webpack-dev-server/client?http://localhost:' + PORT,
         'webpack/hot/only-dev-server'  // Used to enable hot reloading in webpack.
     );
 

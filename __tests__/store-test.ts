@@ -1,4 +1,4 @@
-import configureStore from '../src/store/store';
+import {configureStore} from '../src/store/store';
 import {IMockStore, store} from '../src/store/store';
 import {getEnvironment} from '../src/utils/appService';
 import {_getEnhancers} from '../src/store/store';
