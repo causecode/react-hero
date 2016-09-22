@@ -6,12 +6,12 @@ export const BASE_URL = config.serverUrl;
 
 export module HTTP {
 
-    export function postRequest(path: string, data = {}, headers = {}): Axios.IPromise<Axios.AxiosXHR<{}>> {
+    export function postRequest(path: string, headers = {}, data = {}): Axios.IPromise<Axios.AxiosXHR<{}>> {
         return axios({
             method: 'post',
             url: BASE_URL + path,
-            data: data,
-            headers: headers
+            data,
+            headers
         });
     }
 
@@ -28,21 +28,21 @@ export module HTTP {
         return str.join('&');
     }
 
-    export function getRequest(path: string, data = {}, headers = {}): Axios.IPromise<Axios.AxiosXHR<{}>> {
+    export function getRequest(path: string, headers = {}, data = {}): Axios.IPromise<Axios.AxiosXHR<{}>> {
         let url: string = Object.keys(data).length ? BASE_URL + path + `?${serialize(data)}` : BASE_URL + path;
         return axios({
             method: 'get',
             url: url,
-            headers: headers
+            headers
         });
     }
 
-    export function putRequest(path: string, data = {}, headers = {}): Axios.IPromise<Axios.AxiosXHR<{}>> {
+    export function putRequest(path: string, headers = {}, data = {}): Axios.IPromise<Axios.AxiosXHR<{}>> {
         return axios({
             method: 'put',
             url: BASE_URL + path,
             data: data,
-            headers: headers
+            headers
         });
     }
 
@@ -50,7 +50,7 @@ export module HTTP {
         return axios({
             method: 'delete',
             url: BASE_URL + path,
-            headers: headers
+            headers
         });
     }
 

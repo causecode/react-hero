@@ -13,7 +13,7 @@ export function promiseMiddleware({ dispatch }) {
             return next(action);
         }
 
-        const { type, payload, resource, successCallBack, failureCallBack } = action;
+        const { type, payload, resource, successCallBack, failureCallBack, actionParams} = action;
         const { promise, data } = payload;
         const PENDING: string = `${type}_START`;
         const FULFILLED: string = `${type}_FULFILLED`;
@@ -25,7 +25,8 @@ export function promiseMiddleware({ dispatch }) {
         dispatch(objectAssign({},
             {type: PENDING},
             data ? {payload: data} : {},
-            {resource}
+            {resource},
+            actionParams
         ));
 
         /**
@@ -34,22 +35,22 @@ export function promiseMiddleware({ dispatch }) {
          */
         return promise.then(
             result => {
-                dispatch({
+                dispatch(objectAssign({}, {
                     type: FULFILLED,
                     payload: result.data || {},
                     resource
-                });
+                }, actionParams));
 
                 if (typeof successCallBack === 'function') {
                     successCallBack(result);
                 }
             },
             error => {
-                dispatch({
+                dispatch(objectAssign({}, {
                     type: REJECTED,
                     payload: error,
                     resource
-                });
+                }, actionParams));
 
                 if (typeof failureCallBack === 'function') {
                     failureCallBack(error);

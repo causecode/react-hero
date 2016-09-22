@@ -17,3 +17,8 @@ export const TOGGLE_NAV: string = 'TOGGLE_NAV';
 export const PAGE_NOT_FOUND: string = 'Page not found.';
 export const INSTANTIATION_ERROR: string = 'Instantiation Failed: Trying to create a new instance of DeviceTypes. '
         + 'Please use one of the predefined Device types.';
+export const INVALID_STATE: string = 'Invalid State.';
+export const RESOURCE_DATA_UNINTIALIZED: (resource: string) => string = (resource) => {
+    return `Resource Data not initialized for resource ${resource}`;
+};
+export const INVALID_INSTANCE: string = 'Invalid Instance passed to setInstance';

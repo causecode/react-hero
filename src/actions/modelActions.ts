@@ -12,15 +12,15 @@ import {
 
 export interface IInstanceAction {
     type: string;
-    key?: string;
+    resource: string;
     instance: BaseModel;
 }
 
 function ModelActionFactory(type: string) {
-    return (instance: BaseModel, key?: string): IInstanceAction => {
+    return (instance: BaseModel, resource: string): IInstanceAction => {
         return {
             type,
-            key,
+            resource,
             instance
         };
     };

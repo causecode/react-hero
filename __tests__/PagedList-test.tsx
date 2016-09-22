@@ -18,7 +18,7 @@ import {IPagedListProps} from '../src/components-stateful/PagedList';
 import * as actions from '../src/actions/modelActions';
 import {Store, createStore} from 'redux';
 import {dataReducer} from '../src/reducers/data';
-import configureStore from '../src/store/store';
+import {configureStore} from '../src/store/store';
 import {IMockStore, store} from '../src/store/store';
 import {Provider} from 'react-redux';
 import {fromJS} from 'immutable';
@@ -82,7 +82,13 @@ describe('Test Paged List', () => {
             expect(page.props.children[index].type).toBe(item);
         });
 
-        testPaginationGridAndLink(page, activePage, (totalCount / max), instanceList, properties);
+        testPaginationGridAndLink(
+                page as React.ReactElement<void>,
+                activePage,
+                (totalCount / max),
+                instanceList,
+                properties
+        );
 
         let filters = ShallowTestUtils.findAllWithType(page, PagedListFilters);
         expect(filters.length).toBe(1);
@@ -129,7 +135,8 @@ describe('Test Paged List', () => {
                 <PagedList/>
             </Provider>
         );
-        let page: React.Component<IPagedListProps, void> = renderer.getRenderOutput();
+        type pageType = JSX.Element & {type: {WrappedComponent: {defaultProps: Object}}}
+        let page: pageType = renderer.getRenderOutput<pageType>();
         let defaultProp: IPagedListProps = page.type.WrappedComponent.defaultProps;
         expect(defaultProp.resource).toBe('');
         expect(defaultProp.max).toBe(20);
@@ -153,7 +160,7 @@ describe('Test Paged List', () => {
                         max={max}/>
             </Provider>
         );
-        let passedProps: IPagedListProps = page.props.children.props;
+        let passedProps: IPagedListProps = (page.props.children as React.ReactElement<void>).props;
         expect(passedProps.instanceList).toEqual(instanceList);
         expect(passedProps.resource).toEqual(resource);
         expect(passedProps.totalCount).toEqual(totalCount);

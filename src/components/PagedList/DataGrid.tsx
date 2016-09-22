@@ -11,11 +11,11 @@ export interface IDataGridProps extends React.Props<{}> {
 }
 
 export function DataGrid( { instanceList, properties, resource }: IDataGridProps): JSX.Element {
-    if (!instanceList) {
-        throw new MissingInstanceListError();
+    if (!instanceList || !instanceList.length) {
+        return <div></div>;
     }
     resource = instanceList[0] ? instanceList[0].resourceName : '';
-    if (!properties) {
+    if (!properties.length) {
         properties = Object.keys(instanceList[0].properties);
     }
     return (

@@ -21,51 +21,54 @@ const FETCH_ERR_MSG = `Request couldn't be processed.`;
 
 export class BaseModel {
     resourceName: string;
+    key: string;
+
     constructor(public properties) {
         let className: string = (this.constructor as Function & {name: string}).name;
         // Dynamically assigning resource name from class Name
-        this.resourceName = className.substr(0, className.indexOf('Model')).toLowerCase();
+        let resource: string = className.substr(0, className.indexOf('Model'));
+        this.resourceName = resource[0].toLowerCase() + resource.slice(1, resource.length);
         this.properties = properties;
     }
 
     $save(flush: boolean = true,
-            key: string = '',
+          headers: Object = {},
             successCallBack = ( (...args: any[]) => {} ),
             failureCallBack = ( (...args: any[]) => {} ),
             headers: Object = {}): void {
         if (flush) {
-            HTTP.postRequest(`${this.resourceName}`, this.properties, headers)
+            HTTP.postRequest(`${this.resourceName}`, headers, this.properties)
                 .then((response) => {
                     successCallBack(response);
-                    store.dispatch(saveInstance(this));
+                    store.dispatch(saveInstance(this, this.resourceName));
                 }, (err) => {
                     failureCallBack(err);
                 });
         } else {
-            store.dispatch(saveInstance(this, key));
+            store.dispatch(saveInstance(this));
         }
     }
 
     $update(flush: boolean = true,
-            key: string = '',
+            headers: Object = {},
             successCallBack = ( (...args: any[]) => {} ),
             failureCallBack = ( (...args: any[]) => {} ),
             headers: Object = {}): void {
         if (flush) {
-            HTTP.putRequest(`${this.resourceName}`, this.properties, headers)
+            HTTP.putRequest(`${this.resourceName}`, headers, this.properties)
                 .then((response) => {
                     successCallBack(response);
-                    store.dispatch(updateInstance(this, key));
+                    store.dispatch(updateInstance(this, this.resourceName));
                 }, (err) => {
                     failureCallBack(err);
                 });
         } else {
-            store.dispatch(updateInstance(this, key));
+            store.dispatch(updateInstance(this));
         }
     }
 
     $delete(flush: boolean = true,
-            key: string = '',
+            headers: Object = {},
             successCallBack = ( (...args: any[]) => {} ),
             failureCallBack = ( (...args: any[]) => {} ),
             headers: Object = {}): void {
@@ -73,12 +76,12 @@ export class BaseModel {
             HTTP.deleteRequest(`${this.resourceName}/${this.properties.id}`, headers)
                 .then((response) => {
                     successCallBack(response);
-                    store.dispatch(deleteInstance(this));
+                    store.dispatch(deleteInstance(this, this.resourceName));
                 }, (err) => {
                     failureCallBack(err);
                 });
         } else {
-            store.dispatch(deleteInstance(this, key));
+            store.dispatch(deleteInstance(this));
         }
     }
 
@@ -89,6 +92,7 @@ export class BaseModel {
         failureCallBack: Function = () => {}
     ) {
         let resourceName: string = this.name.substr(0, this.name.indexOf('Model')).toLowerCase();
+        resourceName = resourceName[0].toLowerCase() + resourceName.slice(1, resourceName.length);
 
             if (!valueInStore) {
                 // Fetch list data from server and save it in the store followed by returning it.
@@ -112,17 +116,31 @@ export class BaseModel {
         return listData.toJS ? listData.toJS() : listData;
     }
 
-    static get(
-        id: number | string,
+    static get<T>(
+        id: string,
+        valueInStore?: boolean,
+        successCallBack?: Function,
+        failureCallBack?: Function
+    ): T;
+    static get<T>(
+        id: string,
+        valueInStore?: boolean,
+        successCallBack?: Function,
+        failureCallBack?: Function,
+        instanceType?: 'edit' | 'create'
+    ): T;
+    static get<T>(
+        id: string,
         valueInStore: boolean = false,
         successCallBack: Function = () => {},
-        failureCallBack: Function = () => {}
-    ) {
-        let resourceName: string = this.name.substr(0, this.name.indexOf('Model')).toLowerCase();
-
-        if (!valueInStore) {
+        failureCallBack: Function = () => {},
+        instanceType?: 'edit' | 'create'
+    ): T {
+        let resourceName: string = this.name.substr(0, this.name.indexOf('Model'));
+        resourceName = resourceName[0].toLowerCase() + resourceName.slice(1, resourceName.length);
+        if (!valueInStore && instanceType !== 'create') {
             // Fetch Instance Data from the server and save it in the store.
-            let path: string = `${resourceName}/show/${id}`;
+            let path: string = `${resourceName}/${id}`;
             store.dispatch(
                 getPromiseAction(
                     FETCH_INSTANCE_DATA,
@@ -130,13 +148,24 @@ export class BaseModel {
                     path,
                     {},
                     successCallBack,
-                    failureCallBack
+                    failureCallBack,
+                    instanceType
                 )()
             );
         }
 
-        let instanceData: {toJS?: Function} = store.getState().instances;
-        return instanceData.toJS ? instanceData.toJS() : instanceData;
+        let state = store.getState();
+        let instances = state.data;
+        instances = instances.toJS ? instances.toJS() : instances;
+        let requiredInstance: T;
+        if (instanceType === 'edit') {
+            requiredInstance = instances[`${resourceName}Edit`];
+        } else if (instanceType === 'create') {
+            requiredInstance = instances[`${resourceName}Create`];
+        } else {
+            requiredInstance = ModelService.findInstanceByID<T>(state, resourceName, id).instance;
+        }
+        return requiredInstance;
     }
 
 }
@@ -147,7 +176,9 @@ function getPromiseAction(
     path: string,
     filters: Object,
     successCallBack: Function,
-    failureCallBack: Function) {
+    failureCallBack: Function,
+    instanceType: string = ''
+) {
     return () =>
         (dispatch) => {
             return dispatch({
@@ -157,7 +188,10 @@ function getPromiseAction(
                 },
                 resource,
                 successCallBack,
-                failureCallBack
+                failureCallBack,
+                actionParams: {
+                    isEditPageInstance: instanceType === 'edit'
+                }
             });
         };
 }

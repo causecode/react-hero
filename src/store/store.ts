@@ -5,7 +5,7 @@ import {promiseMiddleware} from '../middleware/promiseMiddleware';
 import logger from './logger';
 import {getEnvironment} from '../utils/appService';
 const thunk = require<any>('redux-thunk').default;
-const MockStore = require<any>('redux-mock-store');
+const MockStore = require<{default: any}>('redux-mock-store').default;
 
 // MockStore interface copied from redux-mock-store index.d.ts file since interface is not exported.
 export interface IMockStore extends Store {
@@ -16,7 +16,7 @@ export interface IMockStore extends Store {
     subscribe(): any;
 }
 
-function configureStore(initialState): Store | IMockStore {
+export function configureStore(initialState): Store | IMockStore {
     let store: Store | IMockStore;
     if ( getEnvironment() === 'test') {
          store = (MockStore as Function)()(initialState, rootReducer, _getMiddleware());
@@ -54,4 +54,3 @@ export function _getEnhancers() {
 }
 
 export const store: Store | IMockStore = configureStore({});
-export default configureStore;

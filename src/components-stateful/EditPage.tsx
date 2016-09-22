@@ -26,7 +26,13 @@ export class EditPageImpl extends React.Component<EditPageProps, void> {
     };
 
     fetchInstanceData(resource: string, resourceID: string): void {
-        ModelService.getModel(resource).get(resourceID);
+        ModelService.getModel(resource).get(
+            resourceID,
+            false,
+            () => {},
+            () => {},
+            'edit'
+        );
     }
 
     updateModelInstance(): void {
@@ -40,25 +46,22 @@ export class EditPageImpl extends React.Component<EditPageProps, void> {
         this.updateModelInstance();
         let resource: string = this.props.params.resource;
         let Model: typeof BaseModel = ModelService.getModel(resource);
-        if (this.props.instance && isCreatePage(this.props.location.pathname)) {
+        if (isCreatePage(this.props.location.pathname)) {
             this.props.createInstance(new Model({}));
         }
     }
 
     handleSubmit(instance: BaseModel, e: Event): void {
         e.preventDefault();
-        let resource: string = this.props.params.resource;
         if (isCreatePage(this.props.location.pathname)) {
-            instance.$save(true, `${resource}Create`);
+            instance.$save(true);
         } else {
-            instance.$update(true, `${resource}Edit`);
+            instance.$update(true);
         }
     }
 
     handleDelete = (): void => {
-        let instanceKey: string = this.props.params.resource;
-        instanceKey += isCreatePage(this.props.location.pathname) ? 'Create' : 'Edit';
-        this.props.instance.$delete(true, instanceKey);
+        this.props.instance.$delete(true);
     };
 
     render(): JSX.Element {
@@ -79,9 +82,9 @@ export class EditPageImpl extends React.Component<EditPageProps, void> {
 }
 
 function mapStateToProps(state, ownProps): Object {
-    let instanceKey: string = ownProps.params.resource;
-    instanceKey += isCreatePage(ownProps.location.pathname) ? 'Create' : 'Edit';
-    let instance: BaseModel = state.instances.get(instanceKey);
+    let instanceType: string = isCreatePage(ownProps.location.pathname) ? 'create' : 'edit';
+    let instance: BaseModel = ModelService.getModel(ownProps.params.resource)
+            .get<BaseModel>(ownProps.params.resourceID, true, () => {}, () => {}, instanceType as 'create' | 'edit');
     return {
         instance
     };

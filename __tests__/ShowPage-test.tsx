@@ -12,7 +12,7 @@ import {resolver} from '../src/resolver';
 import {IInitializerData} from './../src/utils/initializeTestCase';
 import {IShallowTestUtils} from '../src/interfaces/interfaces';
 import {IInstanceContainerProps} from '../src/interfaces/interfaces';
-import configureStore from '../src/store/store';
+import {configureStore} from '../src/store/store';
 import {Provider} from 'react-redux';
 import {fromJS} from 'immutable';
 import {PAGE_NOT_FOUND} from '../src/constants';
