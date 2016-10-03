@@ -3,13 +3,15 @@ import * as React from 'react';
 export interface INavMenuLauncherIconProps {
     onClick?: () => void;
     position?: string;
+    style?: React.CSSProperties;
 }
 
 export class NavMenuLauncherIcon extends React.Component<INavMenuLauncherIconProps, void> {
 
     static defaultProps: INavMenuLauncherIconProps = {
         onClick: () => {},
-        position: 'left'
+        position: 'left',
+        style: {}
     };
 
     handleClick = (): void => {
@@ -18,9 +20,21 @@ export class NavMenuLauncherIcon extends React.Component<INavMenuLauncherIconPro
 
     render(): JSX.Element {
         return(
-            <span className={`burger-icon highlight-on-hover float-${this.props.position}`} onClick={this.handleClick}>
+            <span 
+                style={this.props.style}
+                className={`burger-icon highlight-on-hover float-${this.props.position}`}
+                onClick={this.handleClick}>
                 <span className="fa fa-bars" />
             </span>
         );
     }
 }
+
+const navMenuLauncherIcon: React.CSSProperties = {
+    padding: '10px',
+    display: 'inline-block',
+    ':hover' : {
+        background: 'rgba(0,0,0,0.2)',
+        cursor: 'pointer'
+    }
+};
