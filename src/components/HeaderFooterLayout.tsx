@@ -48,6 +48,13 @@ export interface IHeaderFooterLayoutProps {
     children?: any;
     open?: boolean;
     toggleNav?: () => void;
+    style?: {
+                header: React.CSSProperties,
+                nav: React.CSSProperties,
+                content: React.CSSProperties,
+                footer: React.CSSProperties,
+                navIcon: React.CSSProperties
+            };
 }
 
 const mapStateToProps = (state): {open: boolean}  => {
@@ -68,6 +75,18 @@ export class HeaderFooterLayoutImpl extends React.Component<IHeaderFooterLayoutP
     footer: JSX.Element;
     content: JSX.Element;
     nav: JSX.Element;
+
+    static defaultProps: IHeaderFooterLayoutProps = {
+        menuPosition: 'left',
+        style: {
+            header: {},
+            nav: {},
+            content: {},
+            footer: {},
+            navIcon: {}
+        }
+    };
+
     private isNavBarPresent: boolean = false;
 
     parseChild = (child): void => {
@@ -126,7 +145,7 @@ export class HeaderFooterLayoutImpl extends React.Component<IHeaderFooterLayoutP
     }
 
     render(): JSX.Element {
-        const { toggleNav, menuPosition } = this.props;
+        const { toggleNav, menuPosition, style} = this.props;
         let navMenuClasses = `nav-menu ${menuPosition}`;
         let menuClosePosition = (menuPosition === 'left') ? -100 : 100;
         let closeButtonClasses = 'fa fa-times highlight-on-hover ';
@@ -138,7 +157,7 @@ export class HeaderFooterLayoutImpl extends React.Component<IHeaderFooterLayoutP
                     <Motion style={{x: spring(this.props.open ? 0 : menuClosePosition )}}>
                         {({x}) =>
                         <div className={navMenuClasses} style={{ WebkitTransform: `translate3d(${x}%, 0, 0)`,
-                                    transform: `translate3d(${x}%, 0, 0)`,}}>
+                                    transform: `translate3d(${x}%, 0, 0)`}}>
                             <i className={closeButtonClasses} onClick={toggleNav}/>
                             {this.nav}
                         </div>
@@ -153,19 +172,23 @@ export class HeaderFooterLayoutImpl extends React.Component<IHeaderFooterLayoutP
         return (
             <div>
                 {getNavMenu()}
-                <div className="header">
+                <div className="header" style={style.header}>
                     {(() => {
                         if (this.isNavBarPresent) {
-                            return ( <NavMenuLauncherIcon position={`${this.props.menuPosition}`}
-                                    onClick={toggleNav}/>);
+                            return (
+                                    <NavMenuLauncherIcon
+                                        style={style.navIcon}
+                                        position={`${this.props.menuPosition}`}
+                                        onClick={toggleNav}/>
+                                );
                             }
                         })()}
                     {this.header}
                 </div>
-                <div className="content">
+                <div className="content" style={style.content}>
                     {this.content}
                 </div>
-                <div className="footer">
+                <div className="footer" style={style.footer}>
                     {this.footer}
                 </div>
             </div>

@@ -6,3 +6,4 @@ export * from './components-stateful/index';
 export * from './models/BaseModel';
 export * from './errors/index';
 export * from './config';
+export * from './actions/modelActions';
