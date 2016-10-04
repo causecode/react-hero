@@ -53,3 +53,11 @@ export const toggleNav = (): {type: string} => {
     };
 };
 
+export const saveAllInstances = (instanceList: any[], resource: string) => {
+    return {
+        type: 'SAVE_ALL_INSTANCES',
+        resource,
+        instanceList
+    };
+};
+

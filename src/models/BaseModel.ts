@@ -16,6 +16,8 @@ import {
 const objectAssign: any = require<any>('object-assign');
 const getValues: (state: any) => any = require<{getValues: (state: any) => any}>('redux-form').getValues;
 import {ModelService} from '../utils/modelService';
+import {saveAllInstances} from '../actions/modelActions';
+import {findInstanceByID} from '../utils/storeService';
 
 const FETCH_ERR_MSG = `Request couldn't be processed.`;
 
@@ -31,6 +33,11 @@ export class BaseModel {
         this.properties = properties;
     }
 
+    static getResourceName(): string {
+        let resourceName: string = this.name.substr(0, this.name.indexOf('Model'));
+        return resourceName[0].toLowerCase() + resourceName.slice(1, resourceName.length);
+    }
+
     $save(flush: boolean = true,
           headers: Object = {},
             successCallBack = ( (...args: any[]) => {} ),
@@ -44,7 +51,7 @@ export class BaseModel {
                     failureCallBack(err);
                 });
         } else {
-            store.dispatch(saveInstance(this));
+            store.dispatch(saveInstance(this, this.resourceName));
         }
     }
 
@@ -61,7 +68,7 @@ export class BaseModel {
                     failureCallBack(err);
                 });
         } else {
-            store.dispatch(updateInstance(this));
+            store.dispatch(updateInstance(this, this.resourceName));
         }
     }
 
@@ -78,7 +85,7 @@ export class BaseModel {
                     failureCallBack(err);
                 });
         } else {
-            store.dispatch(deleteInstance(this));
+            store.dispatch(deleteInstance(this, this.resourceName));
         }
     }
 
@@ -88,8 +95,7 @@ export class BaseModel {
         successCallBack: Function = () => {},
         failureCallBack: Function = () => {}
     ) {
-        let resourceName: string = this.name.substr(0, this.name.indexOf('Model')).toLowerCase();
-        resourceName = resourceName[0].toLowerCase() + resourceName.slice(1, resourceName.length);
+        let resourceName: string = this.getResourceName();
 
             if (!valueInStore) {
                 // Fetch list data from server and save it in the store followed by returning it.
@@ -110,31 +116,51 @@ export class BaseModel {
 
         // Fetch list from store.
         let listData = store.getState().data;
-        return listData.toJS ? listData.toJS() : listData;
+        return listData.getIn([`${resourceName}List`, 'instanceList'], []);
     }
 
-    static get<T>(
+    static saveAll(instanceDataList: any[]) {
+        if (!instanceDataList || !instanceDataList.length) {
+            return;
+        }
+
+        let resource: string = this.getResourceName();
+        let Model: typeof BaseModel = ModelService.getModel(resource);
+
+        if (Model === BaseModel) {
+            throw new Error(`Model for resource ${resource} not registered`);
+        }
+        instanceDataList = instanceDataList.map(instanceData => {
+            if (instanceData instanceof Model) {
+                return instanceData;
+            }
+            return new Model(instanceData);
+        });
+
+        store.dispatch(saveAllInstances(instanceDataList, resource));
+    }
+
+    static get<T extends BaseModel>(
         id: string,
         valueInStore?: boolean,
         successCallBack?: Function,
         failureCallBack?: Function
     ): T;
-    static get<T>(
+    static get<T extends BaseModel>(
         id: string,
         valueInStore?: boolean,
         successCallBack?: Function,
         failureCallBack?: Function,
         instanceType?: 'edit' | 'create'
     ): T;
-    static get<T>(
+    static get<T extends BaseModel>(
         id: string,
         valueInStore: boolean = false,
         successCallBack: Function = () => {},
         failureCallBack: Function = () => {},
         instanceType?: 'edit' | 'create'
     ): T {
-        let resourceName: string = this.name.substr(0, this.name.indexOf('Model'));
-        resourceName = resourceName[0].toLowerCase() + resourceName.slice(1, resourceName.length);
+        let resourceName: string = this.getResourceName();
         if (!valueInStore && instanceType !== 'create') {
             // Fetch Instance Data from the server and save it in the store.
             let path: string = `${resourceName}/${id}`;
@@ -160,7 +186,7 @@ export class BaseModel {
         } else if (instanceType === 'create') {
             requiredInstance = instances[`${resourceName}Create`];
         } else {
-            requiredInstance = ModelService.findInstanceByID<T>(state, resourceName, id).instance;
+            requiredInstance = findInstanceByID<any>(state, resourceName, id).instance;
         }
         return requiredInstance;
     }
