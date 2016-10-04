@@ -1,5 +1,6 @@
 declare interface String {
     capitalize(): string;
+    decapitalize(): string;
 }
 
 declare interface Function {

@@ -37,11 +37,18 @@ function dataReducer(state = INITIAL_STATE, action ) {
         case FETCH_INSTANCE_DATA_FULFILLED:
             let instanceResource = action.resource || '';
             Model = ModelService.getModel(instanceResource);
-            let instance;
+            let instance = {};
             if (action.payload) {
-                instance = action.payload[`${instanceResource}Instance`]
-                    || action.payload[`instance`]
-                    || action.payload;
+                let payloadData = action.payload;
+                for (let key in payloadData) {
+                    if (payloadData.hasOwnProperty(key)) {
+                        if (payloadData[key].constructor === Array) {
+                            instance[key] = payloadData[key];
+                        } else {
+                            (<any>Object).assign(instance, payloadData[key]);
+                        }
+                    }
+                }
             } else {
                 throw new MissingActionPayloadError();
             }

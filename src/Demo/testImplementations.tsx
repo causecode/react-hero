@@ -21,6 +21,25 @@ import {BaseModel} from '../models/BaseModel';
 
 ModelService.registerAll(UserModel, BlogModel);
 
+const headerFooterLayoutStyles = {
+        header: {
+            padding: 'none'
+        },
+        nav: {
+            padding: 'none'
+        },
+        content: {
+            color: '#888'
+        },
+        footer: {
+            backgroundColor: '#888',
+            fontSize: '15px',
+            color: 'white'
+        },
+        navIcon: {
+            color: '#777'
+        }
+};
 export class NewPage extends React.Component<any, any> {
 
     constructor() {
@@ -29,7 +48,7 @@ export class NewPage extends React.Component<any, any> {
 
     render() {
         return (
-            <HeaderFooterLayout menuPosition="left">
+            <HeaderFooterLayout menuPosition="left" style={headerFooterLayoutStyles}>
             <HeaderView>
                 <Content>
                     <Title>New App</Title>
@@ -39,7 +58,7 @@ export class NewPage extends React.Component<any, any> {
                             <ButtonListItem><Link to="/resp">Responsive View Page</Link></ButtonListItem>
                             <ButtonListItem><Link to="/blog/list">Blog List</Link></ButtonListItem>
                             <ButtonListItem><Link to="/user/list">User List</Link></ButtonListItem>
-                        </ButtonList>
+                    </ButtonList>
                 </Content>
             </HeaderView>
             <ContentView>

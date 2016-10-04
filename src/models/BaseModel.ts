@@ -2,6 +2,7 @@ import {store} from '../store/store';
 import {saveInstance, updateInstance, deleteInstance} from '../actions/modelActions';
 import {resolver} from '../resolver';
 import {HTTP} from '../api/server/index';
+import '../utils/appService';
 import {InvalidInstanceDataError} from '../errors/InvalidInstanceDataError';
 import {
     FETCH_INSTANCE_DATA,
@@ -46,6 +47,7 @@ export class BaseModel {
             HTTP.postRequest(`${this.resourceName}`, headers, this.properties)
                 .then((response) => {
                     successCallBack(response);
+                    this.properties = response.data;
                     store.dispatch(saveInstance(this, this.resourceName));
                 }, (err) => {
                     failureCallBack(err);
@@ -92,10 +94,12 @@ export class BaseModel {
     static list(
         filters = {},
         valueInStore: boolean = false,
+        headers: Object = {},
         successCallBack: Function = () => {},
         failureCallBack: Function = () => {}
     ) {
-        let resourceName: string = this.getResourceName();
+        let resourceName: string = this.name.substr(0, this.name.indexOf('Model'));
+        resourceName = resourceName[0].toLowerCase() + resourceName.slice(1, resourceName.length);
 
             if (!valueInStore) {
                 // Fetch list data from server and save it in the store followed by returning it.
@@ -108,6 +112,7 @@ export class BaseModel {
                         resourceName,
                         path,
                         filters,
+                        headers,
                         successCallBack,
                         failureCallBack
                     )()
@@ -140,42 +145,47 @@ export class BaseModel {
         store.dispatch(saveAllInstances(instanceDataList, resource));
     }
 
-    static get<T extends BaseModel>(
-        id: string,
-        valueInStore?: boolean,
-        successCallBack?: Function,
-        failureCallBack?: Function
-    ): T;
-    static get<T extends BaseModel>(
-        id: string,
-        valueInStore?: boolean,
-        successCallBack?: Function,
-        failureCallBack?: Function,
-        instanceType?: 'edit' | 'create'
-    ): T;
-    static get<T extends BaseModel>(
-        id: string,
-        valueInStore: boolean = false,
-        successCallBack: Function = () => {},
-        failureCallBack: Function = () => {},
-        instanceType?: 'edit' | 'create'
-    ): T {
-        let resourceName: string = this.getResourceName();
-        if (!valueInStore && instanceType !== 'create') {
-            // Fetch Instance Data from the server and save it in the store.
-            let path: string = `${resourceName}/${id}`;
-            store.dispatch(
-                getPromiseAction(
-                    FETCH_INSTANCE_DATA,
-                    resourceName,
-                    path,
-                    {},
-                    successCallBack,
-                    failureCallBack,
-                    instanceType
-                )()
-            );
-        }
+    static get<T>(
+       id: string,
+       valueInStore?: boolean,
+       headers?: {},
+       successCallBack?: Function,
+       failureCallBack?: Function
+   ): T;
+   static get<T>(
+       id: string,
+       valueInStore?: boolean,
+       headers?: {},
+       successCallBack?: Function,
+       failureCallBack?: Function,
+       instanceType?: 'edit' | 'create'
+   ): T;
+   static get<T>(
+       id: string,
+       valueInStore: boolean = false,
+       headers?: {},
+       successCallBack: Function = () => {},
+       failureCallBack: Function = () => {},
+       instanceType?: 'edit' | 'create'
+   ): T {
+       let resourceName: string = this.name.substr(0, this.name.indexOf('Model'));
+       resourceName = resourceName[0].toLowerCase() + resourceName.slice(1, resourceName.length);
+       if (!valueInStore && instanceType !== 'create') {
+           // Fetch Instance Data from the server and save it in the store.
+           let path: string = `${resourceName}/${id}`;
+           store.dispatch(
+               getPromiseAction(
+                   FETCH_INSTANCE_DATA,
+                   resourceName,
+                   path,
+                   {},
+                   headers,
+                   successCallBack,
+                   failureCallBack,
+                   instanceType
+               )()
+           );
+       }
 
         let state = store.getState();
         let instances = state.data;
@@ -198,6 +208,7 @@ function getPromiseAction(
     resource: string,
     path: string,
     filters: Object,
+    headers: Object = {},
     successCallBack: Function,
     failureCallBack: Function,
     instanceType: string = ''
@@ -207,7 +218,7 @@ function getPromiseAction(
             return dispatch({
                 type,
                 payload: {
-                    promise: getData(path, filters),
+                    promise: getData(path, headers, filters),
                 },
                 resource,
                 successCallBack,
@@ -219,9 +230,9 @@ function getPromiseAction(
         };
 }
 
-export function getData(path: string, filters = {}): Promise<{}> {
+export function getData(path: string, filters = {}, headers: Object = {}): Promise<{}> {
     return new Promise((resolve, reject) => {
-        return HTTP.getRequest(path, filters)
+        return HTTP.getRequest(path, headers, filters)
             .then<void>((response) => {
                 resolve(response);
             })
