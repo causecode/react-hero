@@ -56,7 +56,8 @@ export class PagedListImpl extends React.Component<IPagedListProps, void> {
         this.fetchInstanceList(resource);
     };
 
-    handlePagination = (pageNumber: number): void => {
+    // TODO remove any from handlePagination
+    handlePagination: any = (pageNumber: number, e: React.SyntheticEvent): void => {
         this.fetchInstanceList(this.props.resource, {offset: (pageNumber - 1) * this.props.max});
         this.props.setPage(pageNumber, this.props.resource);
     };
