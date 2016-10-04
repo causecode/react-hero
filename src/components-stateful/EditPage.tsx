@@ -29,6 +29,7 @@ export class EditPageImpl extends React.Component<EditPageProps, void> {
         ModelService.getModel(resource).get(
             resourceID,
             false,
+            {},
             () => {},
             () => {},
             'edit'
@@ -84,7 +85,7 @@ export class EditPageImpl extends React.Component<EditPageProps, void> {
 function mapStateToProps(state, ownProps): Object {
     let instanceType: string = isCreatePage(ownProps.location.pathname) ? 'create' : 'edit';
     let instance: BaseModel = ModelService.getModel(ownProps.params.resource)
-            .get<BaseModel>(ownProps.params.resourceID, true, () => {}, () => {}, instanceType as 'create' | 'edit');
+            .get<BaseModel>(ownProps.params.resourceID, true, {}, () => {}, () => {}, instanceType as 'create' | 'edit');
     return {
         instance
     };
