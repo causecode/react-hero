@@ -17,7 +17,7 @@ import {
 const objectAssign: any = require<any>('object-assign');
 const getValues: (state: any) => any = require<{getValues: (state: any) => any}>('redux-form').getValues;
 import {ModelService} from '../utils/modelService';
-import {saveAllInstances} from '../actions/modelActions';
+import {saveAllInstances, unsetList} from '../actions/modelActions';
 import {findInstanceByID} from '../utils/storeService';
 
 const FETCH_ERR_MSG = `Request couldn't be processed.`;
@@ -92,6 +92,10 @@ export class BaseModel {
         } else {
             store.dispatch(deleteInstance(this, this.resourceName));
         }
+    }
+
+    static unsetList() {
+        store.dispatch(unsetList(this.getResourceName()));
     }
 
     static list(
