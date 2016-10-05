@@ -7,7 +7,8 @@ import {
     CREATE_INSTANCE,
     SET_PAGE,
     TOGGLE_FILTERS,
-    TOGGLE_NAV
+    TOGGLE_NAV,
+    UNSET_RESOURCE_LIST
 } from '../constants';
 
 export interface IInstanceAction {
@@ -40,6 +41,13 @@ export const setPage = (pageNumber: number, resource: string): {type: string, re
         pageNumber: pageNumber
     };
 };
+
+export const unsetList = (resource: string) => {
+    return {
+        type: UNSET_RESOURCE_LIST,
+        resource
+    }
+}
 
 export const toggleFilters = (): {type: string} => {
     return {

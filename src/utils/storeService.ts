@@ -120,7 +120,8 @@ export function findInstanceInList<T>(instanceList: T[], id: string) {
             requiredInstance = instance;
             index = i;
             return false; // stop looping.
-        }
+			}
+	return true;
     });
 
     return {instance: requiredInstance, index};

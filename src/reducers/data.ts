@@ -7,7 +7,8 @@ import {
     FETCH_INSTANCE_LIST_FULFILLED,
     FETCH_INSTANCE_LIST_ERROR,
     TOGGLE_FILTERS,
-    SET_PAGE
+    SET_PAGE,
+    UNSET_RESOURCE_LIST
 } from '../constants';
 import {MissingActionPayloadError} from '../errors/MissingActionPayloadError';
 import {FETCH_INSTANCE_DATA_START} from '../constants';
@@ -124,6 +125,9 @@ function dataReducer(state = INITIAL_STATE, action ) {
 
         case CREATE_INSTANCE:
             return state.set(`${action.instance.resourceName}Create`, action.instance);
+
+        case UNSET_RESOURCE_LIST: 
+            return state.deleteIn([`${action.resource}List`, 'instanceList'])
 
         default:
             return state;

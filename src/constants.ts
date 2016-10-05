@@ -10,6 +10,7 @@ export const FETCH_INSTANCE_LIST_START: string = 'FETCH_INSTANCE_LIST_START';
 export const FETCH_INSTANCE_LIST_FULFILLED: string = 'FETCH_INSTANCE_LIST_FULFILLED';
 export const FETCH_INSTANCE_LIST_ERROR: string = 'FETCH_INSTANCE_LIST_ERROR';
 export const SET_PAGE: string = 'SET_PAGE';
+export const UNSET_RESOURCE_LIST: string = 'UNSET_RESOURCE_LIST'
 export const TOGGLE_FILTERS: string = 'TOGGLE_FILTERS';
 export const CREATE_INSTANCE: string = 'CREATE_INSTANCE';
 export const TOGGLE_NAV: string = 'TOGGLE_NAV';
