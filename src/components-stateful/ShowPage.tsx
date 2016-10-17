@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {BaseModel} from '../models/BaseModel';
+import {DefaultModel} from '../models/DefaultModel';
 import {GenericShowPage} from './../components/CRUD/GenericShowPage';
 import {ComponentService} from '../utils/componentService';
 const connect: any = require<any>('react-redux').connect;
@@ -12,7 +13,7 @@ import {ErrorPage} from '../components/ErrorPage';
 export class ShowPageImpl extends React.Component<IInstanceContainerProps, void> {
 
     static defaultProps: IInstanceContainerProps = {
-        instance: new BaseModel({}),
+        instance: new DefaultModel({}),
         params: {resource: '', resourceID: ''}
     };
 

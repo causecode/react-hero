@@ -7,6 +7,7 @@ function getProperties() {
 }
 export class BlogModel extends BaseModel {
 
+    static resourceName:string = 'blog';
     constructor(properties: any) {
         super(Object.keys(properties).length ? properties : getProperties());
         if (Object.keys(properties).length) {
@@ -18,6 +19,8 @@ export class BlogModel extends BaseModel {
 }
 
 export class UserModel extends BaseModel {
+
+    static resourceName: string = 'user';
     constructor(properties: any) {
         super(properties);
         this.properties = properties;

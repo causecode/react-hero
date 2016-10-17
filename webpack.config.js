@@ -5,8 +5,13 @@ var argv = process.argv;
 var isProduction = argv.indexOf('--production') != -1;
 var path = require('path');
 var PORT = 8080;
+var HOST = 'localhost';
 if (argv.indexOf('--port') > -1) {
     PORT = argv[argv.indexOf('--port') + 1];
+}
+
+if (argv.indexOf('--host') > -1) {
+	HOST = argv[argv.indexOf('--host') + 1];
 }
 
 var plugins = [];
@@ -35,7 +40,7 @@ if (isProduction) {
 } else {
     // Adding Development environment specific features.
     entryPoints.push(
-        'webpack-dev-server/client?http://localhost:' + PORT,
+        'webpack-dev-server/client?http://' + HOST + ':' + PORT,
         'webpack/hot/only-dev-server'  // Used to enable hot reloading in webpack.
     );
 

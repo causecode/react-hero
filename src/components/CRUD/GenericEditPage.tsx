@@ -5,6 +5,7 @@ import {MissingInstanceError} from '../../errors/MissingInstanceError';
 import {Stub} from '../../interfaces/interfaces';
 import {IInstancePageProps} from '../../interfaces/interfaces';
 import {BaseModel} from '../../models/BaseModel';
+import {DefaultModel} from '../../models/DefaultModel';
 import {ModelService} from '../../utils/modelService';
 import {IInjectedProps} from 'react-router';
 import {connect} from 'react-redux';
@@ -23,7 +24,7 @@ export class GenericEditPage extends React.Component<IGenericEditPageProps, {ins
         isCreatePage: false,
         handleSubmit: (instance: BaseModel, e: Event): void => {},
         params: {resource: ''},
-        instance: new BaseModel({})
+        instance: new DefaultModel({})
     };
 
     constructor(props: IGenericEditPageProps) {

@@ -2,7 +2,7 @@ import 'whatwg-fetch';
 import * as axios from 'axios';
 import {config} from '../../config';
 
-export const BASE_URL = config.serverUrl;
+export const BASE_URL: string = config.APIUrl || config.serverUrl;
 
 export module HTTP {
 

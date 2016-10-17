@@ -1,8 +1,9 @@
+import { MODEL_RESOURCE_ERROR, MISSING_ID_IN_METHOD } from './../constants';
 import {store} from '../store/store';
 import {saveInstance, updateInstance, deleteInstance} from '../actions/modelActions';
 import {resolver} from '../resolver';
 import {HTTP} from '../api/server/index';
-import '../utils/appService';
+import {isEmpty} from '../utils/appService';
 import {InvalidInstanceDataError} from '../errors/InvalidInstanceDataError';
 import {
     FETCH_INSTANCE_DATA,
@@ -22,21 +23,25 @@ import {findInstanceByID} from '../utils/storeService';
 
 const FETCH_ERR_MSG = `Request couldn't be processed.`;
 
+// TODO add generic type for the properties to be passed to BaseModel i.e. BaseModel<P>.
 export class BaseModel {
-    resourceName: string;
     key: string;
+    static resourceName: string;
+    resourceName: string;
 
     constructor(public properties) {
-        let className: string = (this.constructor as Function & {name: string}).name;
-        // Dynamically assigning resource name from class Name
-        let resource: string = className.substr(0, className.indexOf('Model'));
-        this.resourceName = resource[0].toLowerCase() + resource.slice(1, resource.length);
         this.properties = properties;
+        if (!this.constructor[`resourceName`]) {
+            throw new Error(MODEL_RESOURCE_ERROR);
+        }
+        this.resourceName = this.constructor[`resourceName`];
     }
 
-    static getResourceName(): string {
-        let resourceName: string = this.name.substr(0, this.name.indexOf('Model'));
-        return resourceName[0].toLowerCase() + resourceName.slice(1, resourceName.length);
+    static getResourceName() {
+        if (!this.resourceName) {
+            throw new Error(MODEL_RESOURCE_ERROR);
+        }
+        return this.resourceName;
     }
 
     $save(flush: boolean = true,
@@ -45,7 +50,7 @@ export class BaseModel {
             failureCallBack = ( (...args: any[]) => {} )): void {
         if (flush) {
             HTTP.postRequest(`${this.resourceName}`, headers, this.properties)
-                .then((response) => {
+                .then((response: Axios.AxiosXHR<{}>) => {
                     successCallBack(response);
                     this.properties = response.data;
                     store.dispatch(saveInstance(this, this.resourceName));
@@ -62,6 +67,9 @@ export class BaseModel {
             successCallBack = ( (...args: any[]) => {} ),
             failureCallBack = ( (...args: any[]) => {} )): void {
         if (flush) {
+            if (!this.properties || !this.properties.hasOwnProperty('id')) {
+                throw new Error(MISSING_ID_IN_METHOD('$update'));
+            }
             HTTP.putRequest(`${this.resourceName}`, headers, this.properties)
                 .then((response) => {
                     successCallBack(response);
@@ -79,7 +87,10 @@ export class BaseModel {
             successCallBack = ( (...args: any[]) => {} ),
             failureCallBack = ( (...args: any[]) => {} )): void {
         if (flush) {
-            HTTP.deleteRequest(`${this.resourceName}/${this.properties.id}`, headers)
+            if (!this.properties.hasOwnProperty('id')) {
+                throw new Error(MISSING_ID_IN_METHOD('$delete'));
+            }
+            HTTP.deleteRequest(`${this.resourceName}/${this.properties.id }`, headers)
                 .then((response) => {
                     successCallBack(response);
                     store.dispatch(deleteInstance(this, this.resourceName));
@@ -100,10 +111,10 @@ export class BaseModel {
         valueInStore: boolean = false,
         headers: Object = {},
         successCallBack: Function = () => {},
-        failureCallBack: Function = () => {}
+        failureCallBack: Function = () => {},
+        state?: {data?: any}
     ) {
-        let resourceName: string = this.name.substr(0, this.name.indexOf('Model'));
-        resourceName = resourceName[0].toLowerCase() + resourceName.slice(1, resourceName.length);
+        let resourceName: string = this.getResourceName();
 
             if (!valueInStore) {
                 // Fetch list data from server and save it in the store followed by returning it.
@@ -124,7 +135,8 @@ export class BaseModel {
             }
 
         // Fetch list from store.
-        let listData = store.getState().data;
+        state = !isEmpty(state) ? state : store.getState(); 
+        let listData = state.data;
         return listData.getIn([`${resourceName}List`, 'instanceList'], []);
     }
 
@@ -149,32 +161,34 @@ export class BaseModel {
         store.dispatch(saveAllInstances(instanceDataList, resource));
     }
 
-    static get<T>(
-       id: string,
-       valueInStore?: boolean,
-       headers?: {},
-       successCallBack?: Function,
-       failureCallBack?: Function
-   ): T;
-   static get<T>(
+    static get<T extends BaseModel>(
        id: string,
        valueInStore?: boolean,
        headers?: {},
        successCallBack?: Function,
        failureCallBack?: Function,
-       instanceType?: 'edit' | 'create'
+       state?: {data?: any}
    ): T;
-   static get<T>(
+   static get<T extends BaseModel>(
+       id: string,
+       valueInStore?: boolean,
+       headers?: {},
+       successCallBack?: Function,
+       failureCallBack?: Function,
+       state?: {data?: any},
+       operation?: 'edit' | 'create'
+   ): T;
+   static get<T extends BaseModel>(
        id: string,
        valueInStore: boolean = false,
        headers?: {},
        successCallBack: Function = () => {},
        failureCallBack: Function = () => {},
-       instanceType?: 'edit' | 'create'
+       state?: {data?: any},
+       operation?: 'edit' | 'create'
    ): T {
-       let resourceName: string = this.name.substr(0, this.name.indexOf('Model'));
-       resourceName = resourceName[0].toLowerCase() + resourceName.slice(1, resourceName.length);
-       if (!valueInStore && instanceType !== 'create') {
+       let resourceName: string = this.getResourceName();
+       if (!valueInStore && operation !== 'create') {
            // Fetch Instance Data from the server and save it in the store.
            let path: string = `${resourceName}/${id}`;
            store.dispatch(
@@ -186,18 +200,18 @@ export class BaseModel {
                    headers,
                    successCallBack,
                    failureCallBack,
-                   instanceType
+                   operation
                )()
            );
        }
 
-        let state = store.getState();
+        state = !isEmpty(state) ? state : store.getState();
         let instances = state.data;
         instances = instances.toJS ? instances.toJS() : instances;
         let requiredInstance: T;
-        if (instanceType === 'edit') {
+        if (operation === 'edit') {
             requiredInstance = instances[`${resourceName}Edit`];
-        } else if (instanceType === 'create') {
+        } else if (operation === 'create') {
             requiredInstance = instances[`${resourceName}Create`];
         } else {
             requiredInstance = findInstanceByID<any>(state, resourceName, id).instance;
@@ -215,20 +229,20 @@ function getPromiseAction(
     headers: Object = {},
     successCallBack: Function,
     failureCallBack: Function,
-    instanceType: string = ''
+    operation: string = ''
 ) {
     return () =>
         (dispatch) => {
             return dispatch({
                 type,
                 payload: {
-                    promise: getData(path, headers, filters),
+                    promise: getData(path, filters, headers),
                 },
                 resource,
                 successCallBack,
                 failureCallBack,
                 actionParams: {
-                    isEditPageInstance: instanceType === 'edit'
+                    isEditPageInstance: operation === 'edit'
                 }
             });
         };

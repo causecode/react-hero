@@ -15,6 +15,7 @@ export const TOGGLE_FILTERS: string = 'TOGGLE_FILTERS';
 export const CREATE_INSTANCE: string = 'CREATE_INSTANCE';
 export const TOGGLE_NAV: string = 'TOGGLE_NAV';
 
+// Error messages.
 export const PAGE_NOT_FOUND: string = 'Page not found.';
 export const INSTANTIATION_ERROR: string = 'Instantiation Failed: Trying to create a new instance of DeviceTypes. '
         + 'Please use one of the predefined Device types.';
@@ -23,3 +24,7 @@ export const RESOURCE_DATA_UNINTIALIZED: (resource: string) => string = (resourc
     return `Resource Data not initialized for resource ${resource}`;
 };
 export const INVALID_INSTANCE: string = 'Invalid Instance passed to setInstance';
+export const MODEL_RESOURCE_ERROR: string = 'Model cannot be initialized without resourceName';
+export const MISSING_ID_IN_METHOD = (methodName: string) => { 
+    return `Cannot perform ${methodName} when the instance does not have an id.` 
+}
