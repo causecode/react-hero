@@ -3,10 +3,11 @@ import {Table, Row, Col} from 'react-bootstrap';
 import {MissingInstanceError} from '../../errors/MissingInstanceError';
 import {IInstancePageProps} from '../../interfaces/interfaces';
 import {BaseModel} from '../../models/BaseModel';
+import {DefaultModel} from '../../models/DefaultModel';
 
 export class GenericShowPage extends React.Component<IInstancePageProps, {}> {
     static defaultProps: IInstancePageProps = {
-        instance: new BaseModel({})
+        instance: new DefaultModel({})
     };
 
     render(): JSX.Element {

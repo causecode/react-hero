@@ -5,6 +5,7 @@ import * as Bootstrap from 'react-bootstrap';
 import {Motion, spring} from 'react-motion';
 import {toggleNav} from '../actions/modelActions';
 import {MapStateToProps} from 'react-redux';
+const objectAssign: any = require<any>('object-assign');
 
 // Importing connect this way because of bug in react-redux type definition
 // TODO Revisit https://github.com/DefinitelyTyped/DefinitelyTyped/issues/8866
@@ -156,8 +157,8 @@ export class HeaderFooterLayoutImpl extends React.Component<IHeaderFooterLayoutP
                 return (
                     <Motion style={{x: spring(this.props.open ? 0 : menuClosePosition )}}>
                         {({x}) =>
-                        <div className={navMenuClasses} style={{ WebkitTransform: `translate3d(${x}%, 0, 0)`,
-                                    transform: `translate3d(${x}%, 0, 0)`}}>
+                        <div className={navMenuClasses} style={objectAssign({}, { WebkitTransform: `translate3d(${x}%, 0, 0)`,
+                                    transform: `translate3d(${x}%, 0, 0)`}, style.nav || {})}>
                             <i className={closeButtonClasses} onClick={toggleNav}/>
                             {this.nav}
                         </div>

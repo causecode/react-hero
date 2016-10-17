@@ -1,6 +1,7 @@
 let config: {
     reactHero: {
         serverUrl: string;
+        APIUrl: string;
     };
 } = require<any>('../../../package.json');
 

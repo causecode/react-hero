@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {DefaultModel} from '../models/DefaultModel';
 import {BaseModel} from '../models/BaseModel';
 import {GenericEditPage} from './../components/CRUD/GenericEditPage';
 import {ComponentService} from '../utils/componentService';
@@ -14,12 +15,14 @@ function isCreatePage(pathName: string): boolean {
     return pathName.toLowerCase().indexOf('create') > -1;
 }
 
-export type EditPageProps = IInstanceContainerProps & IInjectedProps & {createInstance?: (instance: BaseModel) => void};
+export type EditPageProps = IInstanceContainerProps & 
+        IInjectedProps & 
+        {createInstance?: (instance: DefaultModel) => void};
 
 export class EditPageImpl extends React.Component<EditPageProps, void> {
 
     static defaultProps: EditPageProps = {
-        instance: new BaseModel({}),
+        instance: new DefaultModel({}),
         params: {resource: '', resourceID: ''},
         location: {pathname: ''},
         createInstance: () => {}
@@ -32,6 +35,7 @@ export class EditPageImpl extends React.Component<EditPageProps, void> {
             {},
             () => {},
             () => {},
+            {},
             'edit'
         );
     }
