@@ -16,7 +16,13 @@ require<any>('../../styles/index.css');
 require<any>('bootstrap/dist/css/bootstrap.min.css');
 require<any>('font-awesome/css/font-awesome.min.css');
 
+const headerType: string = 'Header';
+const contentType: string = 'Content';
+const footerType: string = 'Footer';
+const navigationMenuType = 'NavigationMenu';
+
 export class HeaderView extends React.Component<{}, {}> {
+	static componentType: string = headerType;
     // TODO Add Header specific behaviour.
     render(): JSX.Element {
         return <div>{this.props.children}</div>;
@@ -24,6 +30,7 @@ export class HeaderView extends React.Component<{}, {}> {
 }
 
 export class FooterView extends React.Component<{}, {}> {
+	static componentType: string = footerType;
     // TODO Add Footer specific behaviour.
     render(): JSX.Element {
         return <div>{this.props.children}</div>;
@@ -32,6 +39,7 @@ export class FooterView extends React.Component<{}, {}> {
 
 export class ContentView extends React.Component<{}, {}> {
     // TODO Add Content specific behaviour.
+	static componentType: string = contentType;
     render(): JSX.Element {
         return <div>{this.props.children}</div>;
     }
@@ -39,6 +47,7 @@ export class ContentView extends React.Component<{}, {}> {
 
 export class NavigationMenu extends React.Component<{}, {}> {
     // TODO Add NavigationMenu specific behaviour.
+	static componentType: string = navigationMenuType
     render(): JSX.Element {
         return <div>{this.props.children}</div>;
     }
@@ -91,17 +100,17 @@ export class HeaderFooterLayoutImpl extends React.Component<IHeaderFooterLayoutP
     private isNavBarPresent: boolean = false;
 
     parseChild = (child): void => {
-        switch (child.type.name) {
-            case 'HeaderView':
+        switch (child.type.componentType) {
+            case headerType:
                 this.header = child;
                 break;
-            case 'ContentView':
+            case contentType:
                 this.content = child;
                 break;
-            case 'FooterView':
+            case footerType:
                 this.footer = child;
                 break;
-            case 'NavigationMenu':
+            case navigationMenuType:
                 this.setNav(child);
                 break;
         }
