@@ -1,3 +1,4 @@
+import { DefaultModel } from './../models/DefaultModel';
 import {resolver} from '../resolver';
 import {BaseModel} from '../models/BaseModel';
 import {getEnvironment} from './appService';
@@ -11,7 +12,7 @@ module ModelService {
     }
 
     export function register(model: typeof BaseModel): void {
-        resolver.set(model.name.toLowerCase(), model);
+        resolver.set(model.resourceName.toLowerCase() + 'model', model);
     }
 
     export function registerAll(...models: typeof BaseModel[]): void {
@@ -27,7 +28,7 @@ module ModelService {
             return resolver.get(name);
         } else {
             warn(name);
-            return BaseModel;
+            return DefaultModel;
         }
     }
 
