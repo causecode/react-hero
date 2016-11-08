@@ -1,17 +1,23 @@
 import {combineReducers} from 'redux';
 import {open} from './open';
 import {dataReducer as data} from './data';
-const formReducer = require<any>('redux-form').reducer;
+const reduxFormReducer = require<any>('redux-form').reducer;
 import {modelReducer as instances} from './modelReducer';
 import {routerReducer} from 'react-router-redux';
 import {Reducer} from 'redux';
+const {combineForms} = require<any>('react-redux-form'); 
+
+let formsReducer = combineForms({
+    user: {}
+}, 'modelForms');
 
 let rootReducer: Reducer = combineReducers({
     open,
     data,
     instances,
     routing: routerReducer,
-    form: formReducer
+    form: reduxFormReducer,
+    modelForms: formsReducer 
 });
 
 export {rootReducer}

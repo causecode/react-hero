@@ -21,6 +21,15 @@ import {ModelService} from '../utils/modelService';
 import {saveAllInstances, unsetList} from '../actions/modelActions';
 import {findInstanceByID} from '../utils/storeService';
 
+export enum ModelPropTypes {
+    DATE,
+    ARRAY,
+    NUMBER,
+    STRING,
+    OBJECT,
+    BOOLEAN
+}
+
 const FETCH_ERR_MSG = `Request couldn't be processed.`;
 
 // TODO add generic type for the properties to be passed to BaseModel i.e. BaseModel<P>.
@@ -29,12 +38,18 @@ export class BaseModel {
     static resourceName: string;
     resourceName: string;
 
+    static propTypes: any = {};
+
     constructor(public properties) {
         this.properties = properties;
         if (!this.constructor[`resourceName`]) {
             throw new Error(MODEL_RESOURCE_ERROR);
         }
         this.resourceName = this.constructor[`resourceName`];
+    }
+
+    get propTypes(): {} {
+        return (this.constructor as Function & {propTypes: Object}).propTypes;
     }
 
     static getResourceName() {
