@@ -1,19 +1,19 @@
 import * as React from 'react';
-import { Grid, Col, Row, FormGroup, FormControl, ControlLabel, Button } from 'react-bootstrap';
+import { 
+    Grid, 
+    Col,
+    FormGroup,
+    Button,
+} from 'react-bootstrap';
 import { Link } from 'react-router';
-import {MissingInstanceError} from '../../errors/MissingInstanceError';
-import {Stub} from '../../interfaces/interfaces';
 import {IInstancePageProps} from '../../interfaces/interfaces';
-import {BaseModel} from '../../models/BaseModel';
+import { BaseModel } from '../../models/BaseModel';
 import {DefaultModel} from '../../models/DefaultModel';
-import {ModelService} from '../../utils/modelService';
-import {IInjectedProps} from 'react-router';
-import {connect} from 'react-redux';
-import {store }from '../../store/store';
+import { generateCRUDTemplate } from '../../utils/appService';
 
 export interface IGenericEditPageProps extends IInstancePageProps {
     isCreatePage: boolean;
-    handleSubmit: (instance: BaseModel, e: Event) => void;
+    handleSubmit: (instance: BaseModel, e: React.FormEvent) => void;
     handleDelete?: (instance: BaseModel) => void;
     params: {resource: string};
     instance: BaseModel;
@@ -22,7 +22,7 @@ export interface IGenericEditPageProps extends IInstancePageProps {
 export class GenericEditPage extends React.Component<IGenericEditPageProps, {instance: BaseModel}> {
     static defaultProps: IGenericEditPageProps = {
         isCreatePage: false,
-        handleSubmit: (instance: BaseModel, e: Event): void => {},
+        handleSubmit: (instance: BaseModel, e: React.FormEvent): void => {},
         params: {resource: ''},
         instance: new DefaultModel({})
     };
@@ -40,51 +40,37 @@ export class GenericEditPage extends React.Component<IGenericEditPageProps, {ins
         return this.props.params.resource || this.props.instance.resourceName || '';
     }
 
-    handleChange = (key: string, event: Event & {target: {value: string}}): void  => {
-        let instance = this.state.instance;
-        instance.properties[key] = event.target.value;
+    handleChange = (instance: BaseModel): void  => {
         this.setState({instance: instance});
     };
 
+    handleSubmit(context) {
+        return (e: React.FormEvent) => {
+            context.props.handleSubmit(context.state.instance, e);
+        };
+    }
+
     render(): JSX.Element {
-        let { instance, handleSubmit, handleDelete } = this.props;
-        let instanceKeys: string[] = Object.keys(instance.properties);
+        let { instance, handleDelete } = this.props;
         return (
-            <form className="data-edit-form" onSubmit={handleSubmit.bind(this, this.state.instance)}>
+            <form className="data-edit-form" onSubmit={this.handleSubmit(this)}>
                 <Grid>
-                    {instanceKeys.map(key => {
-                        return (
-                            <Row key={instanceKeys.indexOf(key)}>
-                                <FormGroup>
-                                    <Col sm={3}>
-                                        <ControlLabel>{key}</ControlLabel>
-                                    </Col>
-                                    <Col sm={4}>
-                                        <FormControl
-                                            type="text"
-                                            value={this.state.instance.properties[key]}
-                                            onChange={this.handleChange.bind(this, key)}
-                                        />
-                                    </Col>
-                                </FormGroup>
-                            </Row>
-                        );
-                    })}
+                    {generateCRUDTemplate(instance, this.handleChange)}
                     <FormGroup>
                         <Col sm={4} smOffset={3}>
                             <Button bsStyle="primary" type="submit">
                                 {(() => {return this.props.handleDelete ? 'Update' : 'Create';})()}
                             </Button>
-                            {(() => {
-                                if (handleDelete) {
-                                    return (
-                                    <Button bsStyle="danger" onClick={handleDelete.bind(this, this.state.instance)}>
-                                        Delete
-                                    </Button>
-                                        );
-                                    } else {
-                                    return;
-                                    }
+                                {(() => {
+                                    if (handleDelete) {
+                                        return (
+                                        <Button bsStyle="danger" onClick={handleDelete.bind(this, instance)}>
+                                            Delete
+                                        </Button>
+                                            );
+                                        } else {
+                                        return;
+                                        }
                                 })()}
                             <Link className="btn btn-default" to={`${this.getResource()}/list`}>Cancel</Link>
                         </Col>
