@@ -20,14 +20,18 @@ const getValues: (state: any) => any = require<{getValues: (state: any) => any}>
 import {ModelService} from '../utils/modelService';
 import {saveAllInstances, unsetList} from '../actions/modelActions';
 import {findInstanceByID} from '../utils/storeService';
+import { NO_PROP_TYPES } from '../constants';
 
-export enum ModelPropTypes {
-    DATE,
-    ARRAY,
-    NUMBER,
-    STRING,
-    OBJECT,
-    BOOLEAN
+export module ModelPropTypes {
+    export let DATE = () =>  { return {type: 'DATE' }; };
+    export let ARRAY = () =>  { return {type: 'ARRAY' }; };
+    export let NUMBER = () =>  { return {type: 'NUMBER' }; };
+    export let STRING = () =>  { return {type: 'STRING' }; };
+    export let OBJECT = () =>  { return {type: 'OBJECT' }; };
+    export let BOOLEAN = () =>  { return {type: 'BOOLEAN' }; };
+    export let ENUM = (enumInstance) => { 
+        return {type: 'ENUM', enum: enumInstance}; 
+    };
 }
 
 const FETCH_ERR_MSG = `Request couldn't be processed.`;
@@ -38,9 +42,13 @@ export class BaseModel {
     static resourceName: string;
     resourceName: string;
 
-    static propTypes: any = {};
+    static propTypes: any;
 
     constructor(public properties) {
+        let propTypes = this.constructor[`propTypes`]; 
+        if (!propTypes) {
+            throw new Error(NO_PROP_TYPES(this.constructor.name));
+        }
         this.properties = properties;
         if (!this.constructor[`resourceName`]) {
             throw new Error(MODEL_RESOURCE_ERROR);

@@ -10,11 +10,12 @@ import {
     ListGroupItem,
     Radio 
 } from 'react-bootstrap';
-import { isEmpty } from '../utils/appService';
-import { ModelPropTypes, BaseModel } from '../models/BaseModel';
-const {Control} = require<any>('react-redux-form');
-const TextControl = (props) => <Control.text model={props.model} className="form-control" />;
+import { BaseModel } from '../models/BaseModel';
+import { DefaultModel } from '../models/DefaultModel';
+const {Field} = require<any>('react-redux-form');
 const classNames: any = require<any>('classnames');
+import * as moment from 'moment';
+import { isEmpty } from '../utils/appService';
 
 export const Title = (props): JSX.Element => {
     return (
@@ -54,113 +55,71 @@ export const ButtonListItem = (props): JSX.Element => {
     );
 };
 
-export class DateInput extends React.Component<{propertyName: string, propertyValue: Date}, {value: string}> {
-    
-    static defaultProps = {
-        propertyValue: new Date(),
-        propertyName: ''
-    };
-
-    constructor(props) {
-         super();
-         this.state = {value: props.propertyValue};
-    }
-
-    handleChange = (e: React.FormEvent) => {
-        this.setState({value: e.target[`value`]});
-    }
-    
-    render(): JSX.Element {
-        return (
-            <FormGroup className="row" style={{margin: '0px'}}>
-                <Col sm={3}>
-                    <ControlLabel>{this.props.propertyName}</ControlLabel>
-                </Col>
-                <Col sm={4}>
-                    <FormControl type="date" onChange={this.handleChange} value={this.state.value} />
-                </Col>
-            </FormGroup>
-        );
-    }
+export interface IFormInputProps {
+    propertyName: string; 
+    propertyValue: string;
+    instance: BaseModel;
 }
 
-export class StringInput extends React.Component<{propertyName: string, propertyValue: string}, {value: string}> {
-    
-    static defaultProps = {
-        propertyValue: '',
-        propertyName: ''
+export const StringInput: React.ComponentClass<any> = InputFactory('text');
+export const NumberInput: React.ComponentClass<any> = InputFactory('number');
+export const DateInput: React.ComponentClass<any> = InputFactory('date');
+
+function InputFactory(type: string): any {
+    return class extends React.Component<any, void> {
+        
+        static defaultProps = {
+            propertyValue: '',
+            propertyName: '',
+        };
+
+        handleChange = (e: React.FormEvent) => {
+            // this.setState({value: e.target[`value`]});
+            let instance: BaseModel = this.props.instance;
+            instance.properties[this.props.propertyName] = e.target[`value`];
+            this.props.onChange(instance); 
+        }
+        
+        render(): JSX.Element {
+            let propertyValue = type === 'date' ? 
+                    moment(this.props.propertyValue).format('YYYY-MM-DD') : this.props.propertyValue;
+            return (
+                <FormGroup className="row" style={{margin: '0px'}}>
+                    <Col sm={3}>
+                        <ControlLabel>{this.props.propertyName}</ControlLabel>
+                    </Col>
+                    <Col sm={4}>
+                        <input 
+                                type={type} 
+                                className="form-control" 
+                                value={propertyValue} 
+                                onChange={this.handleChange}
+                        />
+                    </Col>
+                </FormGroup>
+            );
+        }
     };
-
-    constructor(props) {
-         super();
-         this.state = {value: props.propertyValue};
-    }
-
-    handleChange = (e: React.FormEvent) => {
-        this.setState({value: e.target[`value`]});
-    }
-    
-    render(): JSX.Element {
-        return (
-            <FormGroup className="row" style={{margin: '0px'}}>
-                <Col sm={3}>
-                    <ControlLabel>{this.props.propertyName}</ControlLabel>
-                </Col>
-                <Col sm={4}>
-                    <FormControl type="text" onChange={this.handleChange} value={this.state.value} />
-                </Col>
-            </FormGroup>
-        );
-    }
 }
 
-export class NumberInput extends React.Component<{propertyName: string, propertyValue: number}, {value: string}> {
-    
-    static defaultProps = {
-        propertyValue: 0,
-        propertyName: ''
-    };
-
-    constructor(props) {
-         super();
-         this.state = {value: props.propertyValue};
-    }
-
-    handleChange = (e: React.FormEvent) => {
-        this.setState({value: e.target[`value`]});
-    }
-    
-    render(): JSX.Element {
-        return (
-            <FormGroup className="row" style={{margin: '0px'}}>
-                <Col sm={3}>
-                    <ControlLabel>{this.props.propertyName}</ControlLabel>
-                </Col>
-                <Col sm={4}>
-                    <FormControl type="number" onChange={this.handleChange} value={this.state.value} />
-                </Col>
-            </FormGroup>
-        );
-    }
-}
-
-export class BooleanInput extends React.Component<{propertyName: string, propertyValue: boolean}, {value: string}> {
+export class BooleanInput extends React.Component<any, void> {
 
     static defaultProps = {
         propertyValue: false,
-        propertyName: ''
+        propertyName: '',
+        model: '',
+        instance: {}
     };
 
-    constructor(props) {
-         super();
-         this.state = {value: `option-${props.propertyValue.toString()}`};
-     }
-
     handleChange = (e: React.FormEvent) => {
-        this.setState({value: e.target[`value`]});
+        // this.setState({value: e.target[`value`]});
+        this.props.instance.properties[this.props.propertyName] = e.target[`value`] === 'option-true';
+        this.props.onChange(this.props.instance); 
     }
     
     render(): JSX.Element {
+        let propertyName: string = this.props.propertyName;
+        let propertyValue = this.props.instance.properties[propertyName];
         return (
             <FormGroup className="row" style={{margin: '0px'}}>
                 <Col sm={3}>
@@ -173,7 +132,7 @@ export class BooleanInput extends React.Component<{propertyName: string, propert
                                     onChange={this.handleChange} 
                                     value="option-true" 
                                     name={this.props.propertyName}
-                                    checked={this.state.value === 'option-true'}
+                                    checked={propertyValue}
                             >
                                 True
                             </Radio>
@@ -183,7 +142,7 @@ export class BooleanInput extends React.Component<{propertyName: string, propert
                                     onChange={this.handleChange}
                                     value="option-false"
                                     name={this.props.propertyName}
-                                    checked={this.state.value === 'option-false'}
+                                    checked={!propertyValue}
                             >
                                 False
                             </Radio>
@@ -195,24 +154,80 @@ export class BooleanInput extends React.Component<{propertyName: string, propert
     }
 }
 
-// TODO handle cases where the list is not a list of string.
-export class ListInput extends React.Component<{propertyName: string, propertyValue: string[]}, {list?: string[], newListItem?: string}> {
+export class DropDownInput extends React.Component<any, void> {
 
     static defaultProps = {
+        propertyValue: false,
+        propertyName: '',
+        model: '',
+        instance: {}
+    };
+
+    handleChange = (e: React.FormEvent) => {
+        this.props.instance.properties[this.props.propertyName] = e.target[`value`];
+        this.props.onChange(this.props.instance);
+    }
+    
+    render() {
+        return (
+            <FormGroup className="row" style={{margin: '0px'}}>
+                <Col sm={3}>
+                    <ControlLabel>{this.props.propertyName}</ControlLabel>
+                </Col>
+                <Col sm={4}>
+                    <select value={this.props.propertyValue} className="form-control" onChange={this.handleChange}>
+                    <option disabled value="" style={{color: 'grey', pointerEvents: 'none'}}>Select one..</option>
+                        {(() => {
+                            let enumInstance = this.props.enum;
+                            if (isEmpty(enumInstance)) {
+                                return;
+                            }
+                            return Object.keys(enumInstance).map((enumproperty: string, index: number) => {
+                                    if (
+                                            enumInstance.hasOwnProperty(enumproperty) && 
+                                            !isNaN(parseInt(enumproperty, 10))
+                                    ) {
+                                        return (
+                                            <option 
+                                                    key={`enumproperty-key-${index}`}
+                                                    value={enumproperty}
+                                            >
+                                            {enumInstance[enumproperty]}
+                                            </option>
+                                        ); 
+                                    }
+                                });
+                        })()}
+                    </select>
+                </Col>
+            </FormGroup> 
+        );      
+    }
+}
+
+// TODO handle cases where the list is not a list of string.
+export class ListInput extends React.Component<any, {newListItem?: string}> {
+
+    static defaultProps = {
+        instance: {},
         propertyValue: [],
         propertyName: '',
-        newListItem: ''
+        newListItem: '',
+        model: ''
     };
 
     constructor(props) {
         super();
-        this.state = {list: props.propertyValue, newListItem: ''};
+        this.state = {newListItem: ''};
     }
 
     addListItem = (e: React.FormEvent) => {
-        let currentList: string[] = this.state.list;
-        currentList.push(this.state.newListItem);
-        this.setState({list: currentList, newListItem: ''});
+        this.props.instance.properties[this.props.propertyName].push(this.state.newListItem);
+        this.props.onChange(this.props.instance);
+        this.setState({newListItem: ''});
+        // let currentList: string[] = this.state.list;
+        // currentList.push(this.state.newListItem);
+        // this.setState({list: currentList, newListItem: ''});
     }
 
     handleTextChange = (e: React.FormEvent) => {
@@ -220,6 +235,8 @@ export class ListInput extends React.Component<{propertyName: string, propertyVa
     }
 
     render(): JSX.Element {
+        let instance: BaseModel = this.props.instance;
+        let list = instance.properties[this.props.propertyName] || ['Nothing to show.'];
         return (
             <FormGroup className="row" style={{margin: '0px'}}>
                 <Col sm={3}>
@@ -227,16 +244,19 @@ export class ListInput extends React.Component<{propertyName: string, propertyVa
                 </Col>
                 <Col sm={4}>
                     <Row>
-                        <Col sm={8}>   
-                            <FormControl type="text" value={this.state.newListItem} onChange={this.handleTextChange} />
-                        </Col> 
+                        <Col sm={8}>
+                            <FormControl 
+                                    type="text" 
+                                    value={this.state.newListItem} 
+                                    onChange={this.handleTextChange} 
+                            />
+                        </Col>
                         <Col sm={4}>   
                             <Button bsStyle="default" onClick={this.addListItem}>Add</Button>
                         </Col> 
                     </Row>
                     <ListGroup style={{margin: '10px'}}>
                         {(() => {
-                            let list = isEmpty(this.state.list) ? ['Nothing to show.'] : this.state.list;
                             return list.map((listItem: string, index: number) => {
                                 return (
                                     <ListGroupItem key={`${this.props.propertyName}-${index}`}>

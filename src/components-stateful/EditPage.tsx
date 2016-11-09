@@ -10,6 +10,7 @@ import {IInjectedProps} from 'react-router';
 import {createInstance} from '../actions/modelActions';
 import {PAGE_NOT_FOUND} from '../constants';
 import {ErrorPage} from '../components/ErrorPage';
+import { BlogModel, Status } from '../Demo/testModel';
 
 function isCreatePage(pathName: string): boolean {
     return pathName.toLowerCase().indexOf('create') > -1;
@@ -56,7 +57,7 @@ export class EditPageImpl extends React.Component<EditPageProps, void> {
         }
     }
 
-    handleSubmit(instance: BaseModel, e: Event): void {
+    handleSubmit(instance: BaseModel, e: React.FormEvent): void {
         e.preventDefault();
         if (isCreatePage(this.props.location.pathname)) {
             instance.$save(true);
@@ -76,7 +77,7 @@ export class EditPageImpl extends React.Component<EditPageProps, void> {
             );
         }
         const childProps = {location: this.props.location, params: this.props.params,
-                handleSubmit: this.handleSubmit, handleDelete: this.handleDelete,
+                handleSubmit: this.handleSubmit.bind(this), handleDelete: this.handleDelete,
                 isCreatePage: isCreatePage(this.props.location.pathname), instance: this.props.instance};
         let Page: React.ComponentClass<void> = ComponentService
                 .getEditPage(this.props.params.resource) as React.ComponentClass<void>;
@@ -89,7 +90,14 @@ export class EditPageImpl extends React.Component<EditPageProps, void> {
 function mapStateToProps(state, ownProps): Object {
     let instanceType: string = isCreatePage(ownProps.location.pathname) ? 'create' : 'edit';
     let instance: BaseModel = ModelService.getModel(ownProps.params.resource)
-            .get<BaseModel>(ownProps.params.resourceID, true, {}, () => {}, () => {}, instanceType as 'create' | 'edit');
+            .get<BaseModel>(
+                    ownProps.params.resourceID, 
+                    true, 
+                    {}, 
+                    () => {}, 
+                    () => {}, 
+                    instanceType as 'create' | 'edit'
+            );
     return {
         instance
     };
