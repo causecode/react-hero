@@ -1,15 +1,9 @@
 import * as React from 'react';
-import { 
-    Grid, 
-    Col,
-    FormGroup,
-    Button,
-} from 'react-bootstrap';
-import { Link } from 'react-router';
+import {Grid, Col, FormGroup, Button} from 'react-bootstrap';
+import {Link} from 'react-router';
 import {IInstancePageProps} from '../../interfaces/interfaces';
-import { BaseModel } from '../../models/BaseModel';
-import {DefaultModel} from '../../models/DefaultModel';
-import { generateCRUDTemplate } from '../../utils/appService';
+import {BaseModel, DefaultModel} from '../../models/BaseModel';
+import {generateCRUDTemplate} from '../../utils/appService';
 
 export interface IGenericEditPageProps extends IInstancePageProps {
     isCreatePage: boolean;

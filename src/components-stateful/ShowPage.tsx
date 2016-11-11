@@ -1,12 +1,9 @@
 import * as React from 'react';
-import {BaseModel} from '../models/BaseModel';
-import {DefaultModel} from '../models/DefaultModel';
-import {GenericShowPage} from './../components/CRUD/GenericShowPage';
+import {DefaultModel, BaseModel} from '../models/BaseModel';
 import {ComponentService} from '../utils/componentService';
 const connect: any = require<any>('react-redux').connect;
 import {ModelService} from '../utils/modelService';
 import {IInstanceContainerProps} from '../interfaces/interfaces';
-import {ComponentType} from '../utils/componentService';
 import {PAGE_NOT_FOUND} from '../constants';
 import {ErrorPage} from '../components/ErrorPage';
 

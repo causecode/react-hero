@@ -1,5 +1,4 @@
 import {BaseModel} from '../models/BaseModel';
-import {ModelService} from '../utils/modelService';
 import {
     SAVE_INSTANCE,
     UPDATE_INSTANCE,
@@ -46,8 +45,8 @@ export const unsetList = (resource: string) => {
     return {
         type: UNSET_RESOURCE_LIST,
         resource
-    }
-}
+    };
+};
 
 export const toggleFilters = (): {type: string} => {
     return {

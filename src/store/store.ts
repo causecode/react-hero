@@ -46,7 +46,7 @@ function _getMiddleware(): Function {
 export function _getEnhancers() {
     let enhancers = [];
 
-    if (window.devToolsExtension) {
+    if (typeof(window) !== 'undefined' && window.devToolsExtension) {
         enhancers = [window.devToolsExtension()];
     }
 

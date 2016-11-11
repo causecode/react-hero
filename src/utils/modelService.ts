@@ -1,4 +1,4 @@
-import { DefaultModel } from './../models/DefaultModel';
+import { DefaultModel } from './../models/BaseModel';
 import {resolver} from '../resolver';
 import {BaseModel} from '../models/BaseModel';
 import {getEnvironment} from './appService';

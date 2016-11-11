@@ -14,7 +14,12 @@
     "test": "NODE_ENV=test jest --no-cache",
     "lint-ts": "tslint 'src/*.tsx' 'src/**/*.tsx' 'src/*.ts' 'src/**/*.ts'",
     "start:dev": "npm run clean && webpack-dev-server --watch --hot",
-    "postInstall": "typings install"
+    "cleanCLI": "rimraf bin",
+    "buildCLI": "npm run cleanCLI && tsc -p ./tsconfigCLI.json",
+    "linkCLI": "npm run buildCLI && npm link"
+  },
+  "bin": {
+    "RHCrud": "bin/createCrudScreen.js"
   },
   "repository": {
     "type": "git",
@@ -81,6 +86,7 @@
     "tslint-loader": "^2.1.4",
     "typescript": "^1.8.10",
     "typings": "^1.0.4",
+    "underscore": "^1.8.3",
     "url-loader": "^0.5.7",
     "webpack": "^1.13.1",
     "webpack-dev-server": "^1.14.1",

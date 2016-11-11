@@ -7,15 +7,17 @@ declare interface Function {
     name: string;
 }
 
-declare interface IRequire {
+declare interface NodeRequire {
     <T>(path: string): T;
     (paths: string[], callback: (...modules: any[]) => void): void;
     ensure: (paths: string[], callback: (require: <T>(path: string) => T) => void) => void;
-
-    requireActual?: IRequire;
 }
 
-declare var require: IRequire;
+declare interface Object {
+    each: (callback: (key: string, value: any) => void) => void;
+}
+
+declare var require: NodeRequire;
 
 declare interface Window {
     devToolsExtension: any;

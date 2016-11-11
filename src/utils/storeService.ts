@@ -1,4 +1,3 @@
-import {ModelService} from './modelService';
 import {BaseModel} from '../models/BaseModel';
 import {isEmpty} from './appService';
 import {fromJS} from 'immutable';
@@ -120,8 +119,8 @@ export function findInstanceInList<T>(instanceList: T[], id: string) {
             requiredInstance = instance;
             index = i;
             return false; // stop looping.
-			}
-	return true;
+            }
+    return true;
     });
 
     return {instance: requiredInstance, index};
