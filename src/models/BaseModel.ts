@@ -1,38 +1,17 @@
-import { MODEL_RESOURCE_ERROR, MISSING_ID_IN_METHOD } from './../constants';
+import {MODEL_RESOURCE_ERROR, MISSING_ID_IN_METHOD} from './../constants';
 import {store} from '../store/store';
 import {saveInstance, updateInstance, deleteInstance} from '../actions/modelActions';
-import {resolver} from '../resolver';
 import {HTTP} from '../api/server/index';
 import {isEmpty} from '../utils/appService';
-import {InvalidInstanceDataError} from '../errors/InvalidInstanceDataError';
-import {
-    FETCH_INSTANCE_DATA,
-    FETCH_INSTANCE_LIST,
-    FETCH_INSTANCE_LIST_START,
-    FETCH_INSTANCE_LIST_FULFILLED,
-    FETCH_INSTANCE_LIST_ERROR,
-    FETCH_INSTANCE_DATA_START,
-    FETCH_INSTANCE_DATA_FULFILLED,
-    FETCH_INSTANCE_DATA_ERROR
-} from '../constants';
-const objectAssign: any = require<any>('object-assign');
-const getValues: (state: any) => any = require<{getValues: (state: any) => any}>('redux-form').getValues;
+import {FETCH_INSTANCE_DATA, FETCH_INSTANCE_LIST} from '../constants';
+const objectAssign: any = require <any> ('object-assign');
+const getValues: (state : any) => any = require <{
+    getValues: (state : any) => any
+}> ('redux-form').getValues;
 import {ModelService} from '../utils/modelService';
 import {saveAllInstances, unsetList} from '../actions/modelActions';
 import {findInstanceByID} from '../utils/storeService';
-import { NO_PROP_TYPES } from '../constants';
-
-export module ModelPropTypes {
-    export let DATE = () =>  { return {type: 'DATE' }; };
-    export let ARRAY = () =>  { return {type: 'ARRAY' }; };
-    export let NUMBER = () =>  { return {type: 'NUMBER' }; };
-    export let STRING = () =>  { return {type: 'STRING' }; };
-    export let OBJECT = () =>  { return {type: 'OBJECT' }; };
-    export let BOOLEAN = () =>  { return {type: 'BOOLEAN' }; };
-    export let ENUM = (enumInstance) => { 
-        return {type: 'ENUM', enum: enumInstance}; 
-    };
-}
+import {NO_PROP_TYPES, NO_DEFAULT_PROPS} from '../constants';
 
 const FETCH_ERR_MSG = `Request couldn't be processed.`;
 
@@ -44,15 +23,25 @@ export class BaseModel {
 
     static propTypes: any;
 
+    static defaultProps;
+
     constructor(public properties) {
         let propTypes = this.constructor[`propTypes`]; 
+        let defaultProps = this.constructor[`defaultProps`];
+        
         if (!propTypes) {
             throw new Error(NO_PROP_TYPES(this.constructor.name));
         }
-        this.properties = properties;
+
+        if (!defaultProps) {
+            throw new Error(NO_DEFAULT_PROPS(this.constructor.name));
+        }
+
         if (!this.constructor[`resourceName`]) {
             throw new Error(MODEL_RESOURCE_ERROR);
         }
+        
+        this.properties = isEmpty(properties) ? defaultProps : properties ;
         this.resourceName = this.constructor[`resourceName`];
     }
 
@@ -281,4 +270,14 @@ export function getData(path: string, filters = {}, headers: Object = {}): Promi
                 reject(new Error(FETCH_ERR_MSG))
             );
     });
+}
+
+export class DefaultModel extends BaseModel {
+    
+    static resourceName: string = 'default';
+    static propTypes = {};
+    constructor(properties: any) {
+         super(properties);
+     }
+
 }

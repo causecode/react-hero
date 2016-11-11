@@ -11,8 +11,6 @@ import {
     Radio 
 } from 'react-bootstrap';
 import { BaseModel } from '../models/BaseModel';
-import { DefaultModel } from '../models/DefaultModel';
-const {Field} = require<any>('react-redux-form');
 const classNames: any = require<any>('classnames');
 import * as moment from 'moment';
 import { isEmpty } from '../utils/appService';
@@ -61,6 +59,14 @@ export interface IFormInputProps {
     instance: BaseModel;
 }
 
+const RightAlignControlLabel = (props) => {
+    return (
+        <ControlLabel style={{textAlign: 'right'}}>
+            {props.children}
+        </ControlLabel>
+    );
+};
+
 export const StringInput: React.ComponentClass<any> = InputFactory('text');
 export const NumberInput: React.ComponentClass<any> = InputFactory('number');
 export const DateInput: React.ComponentClass<any> = InputFactory('date');
@@ -86,7 +92,7 @@ function InputFactory(type: string): any {
             return (
                 <FormGroup className="row" style={{margin: '0px'}}>
                     <Col sm={3}>
-                        <ControlLabel>{this.props.propertyName}</ControlLabel>
+                        <RightAlignControlLabel>{this.props.propertyName}</RightAlignControlLabel>
                     </Col>
                     <Col sm={4}>
                         <input 
@@ -123,7 +129,7 @@ export class BooleanInput extends React.Component<any, void> {
         return (
             <FormGroup className="row" style={{margin: '0px'}}>
                 <Col sm={3}>
-                    <ControlLabel>{this.props.propertyName}</ControlLabel>
+                    <RightAlignControlLabel>{this.props.propertyName}</RightAlignControlLabel>
                 </Col>
                 <Col sm={4}>
                     <Row>
@@ -172,7 +178,7 @@ export class DropDownInput extends React.Component<any, void> {
         return (
             <FormGroup className="row" style={{margin: '0px'}}>
                 <Col sm={3}>
-                    <ControlLabel>{this.props.propertyName}</ControlLabel>
+                    <RightAlignControlLabel>{this.props.propertyName}</RightAlignControlLabel>
                 </Col>
                 <Col sm={4}>
                     <select value={this.props.propertyValue} className="form-control" onChange={this.handleChange}>
@@ -240,7 +246,7 @@ export class ListInput extends React.Component<any, {newListItem?: string}> {
         return (
             <FormGroup className="row" style={{margin: '0px'}}>
                 <Col sm={3}>
-                    <ControlLabel>{this.props.propertyName}</ControlLabel>
+                    <RightAlignControlLabel>{this.props.propertyName}</RightAlignControlLabel>
                 </Col>
                 <Col sm={4}>
                     <Row>
