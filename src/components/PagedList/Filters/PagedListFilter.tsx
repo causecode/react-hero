@@ -1,13 +1,9 @@
 import * as React from 'react';
 import {FormFactory} from './DynamicForm';
-import { Form, Button, Grid, Row } from 'react-bootstrap';
-import {DropDownFilter} from './DropDownFilter';
+import {Button} from 'react-bootstrap';
 import {store} from '../../../store/store';
 import {toggleFilters as toggle} from '../../../actions/modelActions';
-import {spring} from 'react-motion';
 import {IFilter, IPagedListFiltersProps} from '../../../interfaces/interfaces';
-import {FilterForm} from './DynamicForm';
-const ReduxForm: any = require<any>('redux-form');
 
 export class PagedListFilters extends React.Component<IPagedListFiltersProps, void> {
     filterProps: string[] = [];

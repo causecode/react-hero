@@ -1,23 +1,7 @@
-import {
-    FETCH_INSTANCE_DATA_START,
-    FETCH_INSTANCE_DATA_FULFILLED,
-    FETCH_INSTANCE_DATA_ERROR,
-    SAVE_INSTANCE,
-    DELETE_INSTANCE,
-    UPDATE_INSTANCE,
-    CREATE_INSTANCE,
-    TOGGLE_FILTERS
-} from '../constants';
 import {fromJS} from 'immutable';
-import {BaseModel} from '../models/BaseModel';
-import {resolver} from '../resolver';
-import {ModelService} from '../utils/modelService';
-import {MissingActionPayloadError} from '../errors/MissingActionPayloadError';
 const INITIAL_STATE = fromJS({});
 
 export function modelReducer(state = INITIAL_STATE, action) {
-    let Model: typeof BaseModel;
-    let modelInstanceKey = action.instance ? `${action.instance.resourceName}Model` : '';
     switch (action.type) {
         /*case SAVE_INSTANCE:
             return state.set(action.key, action.instance);

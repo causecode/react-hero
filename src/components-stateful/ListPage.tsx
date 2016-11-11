@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {ComponentService} from '../utils/componentService';
-import {PagedList} from './PagedList';
 import {IRouteParams} from '../interfaces/interfaces';
 
 export interface IListPage extends React.Props<void> {

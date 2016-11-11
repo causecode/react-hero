@@ -1,5 +1,5 @@
 import {FieldProp} from 'redux-form';
-import {Component, Props} from 'react';
+import {Props} from 'react';
 import {BaseModel} from '../models/BaseModel';
 
 // Data type for a stub function.

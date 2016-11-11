@@ -29,12 +29,3 @@ export class NavMenuLauncherIcon extends React.Component<INavMenuLauncherIconPro
         );
     }
 }
-
-const navMenuLauncherIcon: React.CSSProperties = {
-    padding: '10px',
-    display: 'inline-block',
-    ':hover' : {
-        background: 'rgba(0,0,0,0.2)',
-        cursor: 'pointer'
-    }
-};

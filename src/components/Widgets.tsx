@@ -8,12 +8,12 @@ import {
     Button,
     ListGroup,
     ListGroupItem,
-    Radio 
+    Radio
 } from 'react-bootstrap';
-import { BaseModel } from '../models/BaseModel';
+import {BaseModel} from '../models/BaseModel';
 const classNames: any = require<any>('classnames');
 import * as moment from 'moment';
-import { isEmpty } from '../utils/appService';
+import {isEmpty} from '../utils/appService';
 
 export const Title = (props): JSX.Element => {
     return (

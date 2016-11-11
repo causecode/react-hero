@@ -4,7 +4,7 @@ import * as _ from 'underscore';
 import * as fs from 'fs';
 import * as path from 'path';
 import {commandLine} from './commandLine';
-import {ModelPropTypes} from '../models/BaseModel';
+import {ModelPropTypes} from '../models/ModelPropTypes';
 let mkdirp: any = require<any>('mkdirp');
 
 function writeFile(fpath, contents, cb) {
@@ -33,10 +33,10 @@ let typescriptRoot = '/' + config.compilerOptions.rootDir;
 let typescriptOut = '/' + config.compilerOptions.outDir;
 
 if (!typescriptRoot) {
-    throw new Error('rootDir not defined in tsconfig.json')
+    throw new Error('rootDir not defined in tsconfig.json');
 }
 if (!typescriptOut) {
-    throw new Error('outDir not defined in tsconfig.json')
+    throw new Error('outDir not defined in tsconfig.json');
 }
 
 let modelModule: any = require<any>(projectRoot + typescriptOut + commandLine.modelPath);

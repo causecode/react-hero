@@ -1,8 +1,13 @@
 import * as React from 'react';
-import { BaseModel, ModelPropTypes } from '../models/BaseModel';
-import { ListInput, BooleanInput, NumberInput, StringInput, DateInput, DropDownInput } from '../components/Widgets';
-import { FormControl } from 'react-bootstrap';
-import { DropDownFilter } from '../components/PagedList/Filters/DropDownFilter';
+import {BaseModel} from '../models/BaseModel';
+import {
+    ListInput,
+    BooleanInput,
+    NumberInput,
+    StringInput,
+    DateInput,
+    DropDownInput
+} from '../components/Widgets';
 
 declare module process {
     export module env {
