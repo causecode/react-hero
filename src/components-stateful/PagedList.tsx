@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Table, Pagination } from 'react-bootstrap';
+import {Pagination} from 'react-bootstrap';
 import {PagedListFilters} from '../components/PagedList/Filters/PagedListFilter';
 import {DataGrid} from '../components/PagedList/DataGrid';
 import {setPage} from '../actions/modelActions';

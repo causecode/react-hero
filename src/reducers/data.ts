@@ -1,27 +1,22 @@
 import {fromJS} from 'immutable';
-import {resolver} from '../resolver';
 import {BaseModel} from '../models/BaseModel';
 import {ModelService} from '../utils/modelService';
+import {MissingActionPayloadError} from '../errors/MissingActionPayloadError';
 import {
     FETCH_INSTANCE_LIST_START,
     FETCH_INSTANCE_LIST_FULFILLED,
     FETCH_INSTANCE_LIST_ERROR,
     TOGGLE_FILTERS,
     SET_PAGE,
-    UNSET_RESOURCE_LIST
+    UNSET_RESOURCE_LIST,
+    FETCH_INSTANCE_DATA_FULFILLED,
+    FETCH_INSTANCE_DATA_START,
+    FETCH_INSTANCE_DATA_ERROR,
+    SAVE_INSTANCE,
+    UPDATE_INSTANCE,
+    DELETE_INSTANCE,
+    CREATE_INSTANCE
 } from '../constants';
-import {MissingActionPayloadError} from '../errors/MissingActionPayloadError';
-import {FETCH_INSTANCE_DATA_START} from '../constants';
-import {FETCH_INSTANCE_DATA_FULFILLED} from '../constants';
-import {FETCH_INSTANCE_DATA_ERROR} from '../constants';
-import {INVALID_STATE} from '../constants';
-import {RESOURCE_DATA_UNINTIALIZED} from '../constants';
-import {INVALID_INSTANCE} from '../constants';
-import {SAVE_INSTANCE} from '../constants';
-import {UPDATE_INSTANCE} from '../constants';
-import {DELETE_INSTANCE} from '../constants';
-import {CREATE_INSTANCE} from '../constants';
-import {isEmpty} from '../utils/appService';
 import * as StoreService from '../utils/storeService';
 
 const INITIAL_STATE = fromJS({
@@ -127,7 +122,7 @@ function dataReducer(state = INITIAL_STATE, action ) {
             return state.set(`${action.instance.resourceName}Create`, action.instance);
 
         case UNSET_RESOURCE_LIST: 
-            return state.deleteIn([`${action.resource}List`, 'instanceList'])
+            return state.deleteIn([`${action.resource}List`, 'instanceList']);
 
         default:
             return state;

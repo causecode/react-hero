@@ -1,4 +1,3 @@
-import {store} from '../store/store';
 const objectAssign: any = require<any>('object-assign');
 
 function isPromise(value): boolean {

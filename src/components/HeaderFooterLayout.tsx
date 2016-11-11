@@ -1,10 +1,7 @@
-import {ResponsiveView, IResponsiveView} from './ResponsiveView';
 import * as React from 'react';
 import {NavMenuLauncherIcon} from './NavMenuLauncherIcon';
-import * as Bootstrap from 'react-bootstrap';
 import {Motion, spring} from 'react-motion';
 import {toggleNav} from '../actions/modelActions';
-import {MapStateToProps} from 'react-redux';
 const objectAssign: any = require<any>('object-assign');
 
 // Importing connect this way because of bug in react-redux type definition
@@ -22,7 +19,7 @@ const footerType: string = 'Footer';
 const navigationMenuType = 'NavigationMenu';
 
 export class HeaderView extends React.Component<{}, {}> {
-	static componentType: string = headerType;
+    static componentType: string = headerType;
     // TODO Add Header specific behaviour.
     render(): JSX.Element {
         return <div>{this.props.children}</div>;
@@ -30,7 +27,7 @@ export class HeaderView extends React.Component<{}, {}> {
 }
 
 export class FooterView extends React.Component<{}, {}> {
-	static componentType: string = footerType;
+    static componentType: string = footerType;
     // TODO Add Footer specific behaviour.
     render(): JSX.Element {
         return <div>{this.props.children}</div>;
@@ -39,7 +36,7 @@ export class FooterView extends React.Component<{}, {}> {
 
 export class ContentView extends React.Component<{}, {}> {
     // TODO Add Content specific behaviour.
-	static componentType: string = contentType;
+    static componentType: string = contentType;
     render(): JSX.Element {
         return <div>{this.props.children}</div>;
     }
@@ -47,7 +44,7 @@ export class ContentView extends React.Component<{}, {}> {
 
 export class NavigationMenu extends React.Component<{}, {}> {
     // TODO Add NavigationMenu specific behaviour.
-	static componentType: string = navigationMenuType
+    static componentType: string = navigationMenuType;
     render(): JSX.Element {
         return <div>{this.props.children}</div>;
     }
@@ -166,8 +163,11 @@ export class HeaderFooterLayoutImpl extends React.Component<IHeaderFooterLayoutP
                 return (
                     <Motion style={{x: spring(this.props.open ? 0 : menuClosePosition )}}>
                         {({x}) =>
-                        <div className={navMenuClasses} style={objectAssign({}, { WebkitTransform: `translate3d(${x}%, 0, 0)`,
-                                    transform: `translate3d(${x}%, 0, 0)`}, style.nav || {})}>
+                        <div
+                                className={navMenuClasses}
+                                style={objectAssign({}, { WebkitTransform: `translate3d(${x}%, 0, 0)`,
+                                        transform: `translate3d(${x}%, 0, 0)`}, style.nav || {})}
+                        >
                             <i className={closeButtonClasses} onClick={toggleNav}/>
                             {this.nav}
                         </div>

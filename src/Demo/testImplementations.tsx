@@ -3,7 +3,6 @@ import {HeaderView, FooterView, ContentView, NavigationMenu} from './../componen
 import {HeaderFooterLayout} from './../components/HeaderFooterLayout';
 import {ResponsiveView} from './../components/ResponsiveView';
 import {Title, Description, Content, ButtonList, ButtonListItem} from './../components/Widgets';
-import {NavMenuLauncherIcon} from './../components/NavMenuLauncherIcon';
 import {Router, Route, Link} from 'react-router';
 import {hashHistory} from 'react-router';
 import {PagedList} from '../components-stateful/PagedList';
@@ -17,7 +16,6 @@ import {EditPage} from './../components-stateful/EditPage';
 import {ComponentService} from '../utils/componentService';
 import {ModelService} from '../utils/modelService';
 import {BlogModel, UserModel} from './testModel';
-import {BaseModel} from '../models/BaseModel';
 
 ModelService.registerAll(UserModel, BlogModel);
 

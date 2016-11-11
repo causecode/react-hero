@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {Table} from 'react-bootstrap';
 import {Link} from 'react-router';
-import {MissingInstanceListError} from '../../errors/MissingInstanceListError';
 import {BaseModel} from '../../models/BaseModel';
 
 export interface IDataGridProps extends React.Props<{}> {
