@@ -3,7 +3,8 @@ import {Grid, Col, FormGroup, Button} from 'react-bootstrap';
 import {Link} from 'react-router';
 import {IInstancePageProps} from '../../interfaces/interfaces';
 import {BaseModel, DefaultModel} from '../../models/BaseModel';
-import {generateCRUDTemplate} from '../../utils/appService';
+import { generateForm, getModelString, initializeForm } from '../../utils/appService';
+const {Form, Control} = require<any>('react-redux-form');
 
 export interface IGenericEditPageProps extends IInstancePageProps {
     isCreatePage: boolean;
@@ -34,9 +35,10 @@ export class GenericEditPage extends React.Component<IGenericEditPageProps, {ins
         return this.props.params.resource || this.props.instance.resourceName || '';
     }
 
-    handleChange = (instance: BaseModel): void  => {
-        this.setState({instance: instance});
-    };
+    // postChange = (): void  => {
+    //     this.forceUpdate();
+    //     // this.setState({instance: instance});
+    // };
 
     handleSubmit(context) {
         return (e: React.FormEvent) => {
@@ -44,12 +46,20 @@ export class GenericEditPage extends React.Component<IGenericEditPageProps, {ins
         };
     }
 
+    componentWillMount() {
+        initializeForm(this.props.instance);
+    }
+
     render(): JSX.Element {
         let { instance, handleDelete } = this.props;
         return (
-            <form className="data-edit-form" onSubmit={this.handleSubmit(this)}>
+            <Form
+                    className="data-edit-form"
+                    onSubmit={this.handleSubmit(this)}
+                    model={getModelString(instance.resourceName)}
+            >
                 <Grid>
-                    {generateCRUDTemplate(instance, this.handleChange)}
+                    {generateForm(instance, this.postChange)}
                     <FormGroup>
                         <Col sm={4} smOffset={3}>
                             <Button bsStyle="primary" type="submit">
@@ -70,7 +80,7 @@ export class GenericEditPage extends React.Component<IGenericEditPageProps, {ins
                         </Col>
                     </FormGroup>
                 </Grid>
-            </form>
+            </Form>
         );
     }
 }
