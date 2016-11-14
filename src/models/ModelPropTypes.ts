@@ -7,7 +7,7 @@ export module ModelPropTypes {
     }
     export interface IPropData {
         type : string;
-        propTypes?: IModelPropType;
+        propTypes?: {[key: string]: IModelPropType};
         enum?: Object;
     }
 
@@ -24,9 +24,9 @@ export module ModelPropTypes {
     export let ARRAY: IModelPropType = (propType: IPropData) => {
         return {type: arrayType, propType: propType};
     };
-    export let NUMBER: IModelPropType = () =>  { return {type: numberType }; };
-    export let STRING: IModelPropType = () =>  { return {type: stringType }; };
-    export let OBJECT: IModelPropType = (propTypes) =>  { return {type: objectType,  }; };
+    export let NUMBER: IModelPropType = () =>  { return {type: numberType}; };
+    export let STRING: IModelPropType = () =>  { return {type: stringType}; };
+    export let OBJECT = (propTypes) =>  { return {type: objectType, propTypes}; };
     export let BOOLEAN: IModelPropType = () =>  { return {type: booleanType }; };
     export let ENUM: IModelPropType = (enumInstance) => { 
         return {type: enumType, enum: enumInstance}; 

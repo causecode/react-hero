@@ -4,16 +4,22 @@ import {saveInstance, updateInstance, deleteInstance} from '../actions/modelActi
 import {HTTP} from '../api/server/index';
 import {isEmpty} from '../utils/appService';
 import {FETCH_INSTANCE_DATA, FETCH_INSTANCE_LIST} from '../constants';
-const objectAssign: any = require <any> ('object-assign');
-const getValues: (state : any) => any = require <{
-    getValues: (state : any) => any
-}> ('redux-form').getValues;
 import {ModelService} from '../utils/modelService';
 import {saveAllInstances, unsetList} from '../actions/modelActions';
 import {findInstanceByID} from '../utils/storeService';
 import {NO_PROP_TYPES, NO_DEFAULT_PROPS} from '../constants';
+import {ModelPropTypes} from './ModelPropTypes';
+import {fromJS} from 'immutable';
+const objectAssign: any = require <any> ('object-assign');
+const getValues: (state : any) => any = require <{
+    getValues: (state : any) => any
+}> ('redux-form').getValues;
 
 const FETCH_ERR_MSG = `Request couldn't be processed.`;
+
+export interface IPropTypes {
+    [key: string]: ModelPropTypes.IPropData;
+}
 
 // TODO add generic type for the properties to be passed to BaseModel i.e. BaseModel<P>.
 export class BaseModel {
@@ -21,7 +27,7 @@ export class BaseModel {
     static resourceName: string;
     resourceName: string;
 
-    static propTypes: any;
+    static propTypes: IPropTypes;
 
     static defaultProps;
 
@@ -279,6 +285,7 @@ export class DefaultModel extends BaseModel {
     
     static resourceName: string = 'default';
     static propTypes = {};
+    static defaultProps = {};
     constructor(properties: any) {
          super(properties);
      }
