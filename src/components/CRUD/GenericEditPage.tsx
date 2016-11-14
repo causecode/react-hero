@@ -3,7 +3,7 @@ import {Grid, Col, FormGroup, Button} from 'react-bootstrap';
 import {Link} from 'react-router';
 import {IInstancePageProps} from '../../interfaces/interfaces';
 import {BaseModel, DefaultModel} from '../../models/BaseModel';
-import { generateForm, getModelString, initializeForm } from '../../utils/appService';
+import {generateForm, getModelString, initializeForm} from '../../utils/appService';
 const {Form, Control} = require<any>('react-redux-form');
 
 export interface IGenericEditPageProps extends IInstancePageProps {

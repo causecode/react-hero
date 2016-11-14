@@ -11,24 +11,24 @@ export module ModelPropTypes {
         enum?: Object;
     }
 
-    export const dateType: string = 'DATE';
-    export const arrayType: string = 'ARRAY';
-    export const numberType: string = 'NUMBER';
-    export const stringType: string = 'STRING';
-    export const objectType: string = 'OBJECT';
-    export const booleanType: string = 'BOOLEAN';
-    export const enumType: string = 'ENUM';
+    export const dateInputType: string = 'date';
+    export const arrayInputType: string = 'list';
+    export const numberInputType: string = 'number';
+    export const stringInputType: string = 'text';
+    export const objectInputType: string = 'object';
+    export const booleanInputType: string = 'boolean';
+    export const enumInputType: string = 'select';
     export let DATE: IModelPropType = () => {
-        return {type: dateType};
+        return {type: dateInputType};
     };
     export let ARRAY: IModelPropType = (propType: IPropData) => {
-        return {type: arrayType, propType: propType};
+        return {type: arrayInputType, propType: propType};
     };
-    export let NUMBER: IModelPropType = () =>  { return {type: numberType}; };
-    export let STRING: IModelPropType = () =>  { return {type: stringType}; };
-    export let OBJECT = (propTypes) =>  { return {type: objectType, propTypes}; };
-    export let BOOLEAN: IModelPropType = () =>  { return {type: booleanType }; };
+    export let NUMBER: IModelPropType = () =>  { return {type: numberInputType}; };
+    export let STRING: IModelPropType = () =>  { return {type: stringInputType}; };
+    export let OBJECT = (propTypes) =>  { return {type: objectInputType, propTypes}; };
+    export let BOOLEAN: IModelPropType = () =>  { return {type: booleanInputType }; };
     export let ENUM: IModelPropType = (enumInstance) => { 
-        return {type: enumType, enum: enumInstance}; 
+        return {type: enumInputType, enum: enumInstance}; 
     };
 }
