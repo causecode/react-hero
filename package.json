@@ -19,7 +19,7 @@
     "linkCLI": "npm run buildCLI && npm link"
   },
   "bin": {
-    "RHCrud": "bin/createCrudScreen.js"
+    "RHCrud": "public/cli/createEditPage.js"
   },
   "repository": {
     "type": "git",
