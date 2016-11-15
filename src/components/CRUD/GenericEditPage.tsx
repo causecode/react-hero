@@ -3,12 +3,13 @@ import {Grid, Col, FormGroup, Button} from 'react-bootstrap';
 import {Link} from 'react-router';
 import {IInstancePageProps} from '../../interfaces/interfaces';
 import {BaseModel, DefaultModel} from '../../models/BaseModel';
-import {generateForm, getModelString, initializeForm} from '../../utils/appService';
-const {Form, Control} = require<any>('react-redux-form');
+import {generateForm, getModelString, initializeFormWithInstance} from '../../utils/appService';
+import {store} from '../../store/store';
+const {Form} = require<any>('react-redux-form');
 
 export interface IGenericEditPageProps extends IInstancePageProps {
     isCreatePage: boolean;
-    handleSubmit: (instance: BaseModel, e: React.FormEvent) => void;
+    handleSubmit: (instance: BaseModel) => void;
     handleDelete?: (instance: BaseModel) => void;
     params: {resource: string};
     instance: BaseModel;
@@ -17,7 +18,7 @@ export interface IGenericEditPageProps extends IInstancePageProps {
 export class GenericEditPage extends React.Component<IGenericEditPageProps, {instance: BaseModel}> {
     static defaultProps: IGenericEditPageProps = {
         isCreatePage: false,
-        handleSubmit: (instance: BaseModel, e: React.FormEvent): void => {},
+        handleSubmit: (instance: BaseModel): void => {},
         params: {resource: ''},
         instance: new DefaultModel({})
     };
@@ -35,31 +36,33 @@ export class GenericEditPage extends React.Component<IGenericEditPageProps, {ins
         return this.props.params.resource || this.props.instance.resourceName || '';
     }
 
-    // postChange = (): void  => {
-    //     this.forceUpdate();
-    //     // this.setState({instance: instance});
-    // };
+    fetchFormInstance = () => {
+        return store.getState().forms[`RHForms`][this.props.instance.resourceName];
+    }
 
-    handleSubmit(context) {
-        return (e: React.FormEvent) => {
-            context.props.handleSubmit(context.state.instance, e);
-        };
+    handleSubmit = () => {
+        // Not using connect here to avoid rerendering of component on change of instance properties.
+        this.props.handleSubmit(this.fetchFormInstance());
+    }
+
+    handleDelete = () => {
+        this.props.handleDelete(this.fetchFormInstance()); 
     }
 
     componentWillMount() {
-        initializeForm(this.props.instance);
+        initializeFormWithInstance(this.props.instance);
     }
 
     render(): JSX.Element {
-        let { instance, handleDelete } = this.props;
+        let {instance, handleDelete} = this.props;
         return (
             <Form
                     className="data-edit-form"
-                    onSubmit={this.handleSubmit(this)}
+                    onSubmit={this.handleSubmit}
                     model={getModelString(instance.resourceName)}
             >
                 <Grid>
-                    {generateForm(instance, this.postChange)}
+                    {generateForm(instance)}
                     <FormGroup>
                         <Col sm={4} smOffset={3}>
                             <Button bsStyle="primary" type="submit">
@@ -68,7 +71,7 @@ export class GenericEditPage extends React.Component<IGenericEditPageProps, {ins
                                 {(() => {
                                     if (handleDelete) {
                                         return (
-                                        <Button bsStyle="danger" onClick={handleDelete.bind(this, instance)}>
+                                        <Button bsStyle="danger" onClick={this.handleDelete}>
                                             Delete
                                         </Button>
                                             );

@@ -16,6 +16,9 @@ export const CREATE_INSTANCE: string = 'CREATE_INSTANCE';
 export const TOGGLE_NAV: string = 'TOGGLE_NAV';
 
 // Error messages.
+export const MISSING_PARAMETER = (paramName: string, functionName: string) => {
+    return `${paramName} not sent in the function ${functionName}`;
+};
 export const NO_PROP_TYPES = (modelName: string): string => `Cannot instantiate ${modelName}, No prop types defined.`;
 export const NO_DEFAULT_PROPS = (modelName: string): string => {
     return `Cannot instantiate ${modelName}, No defaultProps defined.`;

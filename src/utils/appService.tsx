@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {BaseModel, IPropTypes} from '../models/BaseModel';
+import {BaseModel} from '../models/BaseModel';
 import {ModelPropTypes} from '../models/ModelPropTypes';
 import {fromJS} from 'immutable';
 import {store} from '../store/store';
@@ -34,18 +34,14 @@ export function getModelString(...args: any[]): string {
     return `RHForms.${args.join('.')}`;
 }
 
-export function initializeForm<T extends BaseModel>(instance: T) {
+export function initializeFormWithInstance<T extends BaseModel>(instance: T) {
     if (isEmpty(instance) || isEmpty(instance.properties)) {
         return;
     }
-    for (let prop in instance.properties) {
-        if (instance.properties.hasOwnProperty(prop)) {
-            store.dispatch(actions.change(
-                getModelString(instance.resourceName, prop),
-                instance.properties[prop]
-            ));
-        }
-    }
+
+    let model: string = getModelString(instance.resourceName);
+
+    store.dispatch(actions.change(model, instance));
 }
 
 export function getIn(object: Object, path: string) {
@@ -54,7 +50,7 @@ export function getIn(object: Object, path: string) {
     return propertyValue.toJS ? propertyValue.toJS() : propertyValue;
 }
 
-export function generateSubForm(propertyName: string, object: Object, propTypes: IPropTypes, model: string) {
+export function generateSubForm(propertyName: string, object: Object, propTypes: any, model: string) {
     if (isEmpty(object)) {
         return;
     }
@@ -78,7 +74,7 @@ export function generateSubForm(propertyName: string, object: Object, propTypes:
     });
 
     return (
-        <FormGroup>
+        <FormGroup key={`sub-form-${propertyName}`}>
             <Col
                     sm={7}
                     smOffset={2}
@@ -94,7 +90,7 @@ export function generateSubForm(propertyName: string, object: Object, propTypes:
 export function generateForm<T extends BaseModel>(
         instance: T,
         model: string = '',
-        propTypes: IPropTypes = instance.propTypes
+        propTypes: any = instance.propTypes
 ): JSX.Element {
     return (
         <div>
@@ -102,22 +98,22 @@ export function generateForm<T extends BaseModel>(
                 let keyPath = model ? model + '.' + prop : prop; 
                 let propertyValue = getIn(instance.properties, keyPath);
                 let type: string = instance.propTypes[prop].type;
+                let modelString: string = getModelString(instance.resourceName, 'properties', keyPath);
                 if (type === ModelPropTypes.objectInputType) {
                     return generateSubForm(
                             prop, 
                             propertyValue, 
-                            getIn(instance.propTypes, keyPath).propTypes, 
-                            getModelString(instance.resourceName, keyPath)
+                            getIn(instance.propTypes, keyPath).propTypes,
+                            modelString 
                     );
                 }
-            
                 return (
                     <FormInput
                         type={instance.propTypes[prop].type}
                         enum={instance.propTypes[prop].enum}
                         key={`form-control-${instance.resourceName}-${index}`}
                         propertyName={prop} 
-                        model={getModelString(instance.resourceName, keyPath)}
+                        model={modelString}
                     />
                 );
             })}
