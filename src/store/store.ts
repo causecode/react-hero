@@ -2,9 +2,12 @@ import { Store, compose, createStore, applyMiddleware } from 'redux';
 import {rootReducer} from './../reducers/rootReducer';
 import {promiseMiddleware} from '../middleware/promiseMiddleware';
 import logger from './logger';
-import {getEnvironment} from '../utils/appService';
+import * as appService from '../utils/appService';
 const thunk = require<any>('redux-thunk').default;
 const MockStore = require<{default: any}>('redux-mock-store').default;
+
+// Doing this to avoid cyclic imports problem when used through commandline.
+let getEnvironment = appService.getEnvironment || (() => '');
 
 // MockStore interface copied from redux-mock-store index.d.ts file since interface is not exported.
 export interface IMockStore extends Store {

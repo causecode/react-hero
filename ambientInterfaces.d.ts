@@ -14,7 +14,7 @@ declare interface NodeRequire {
 }
 
 declare interface Object {
-    each: (callback: (key: string, value: any) => void) => void;
+    // each: (callback: (key: string, value: any) => void) => void;
 }
 
 declare var require: NodeRequire;
