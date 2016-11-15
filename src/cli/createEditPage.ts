@@ -67,20 +67,20 @@ for (let key in propTypes) {
         let inputType : string = '';
 
         switch (propTypes[key].type) {
-            case ModelPropTypes.dateType:
+            case ModelPropTypes.dateInputType:
                 inputType = 'Date';
                 break;
-            case ModelPropTypes.arrayType:
+            case ModelPropTypes.arrayInputType:
                 inputType = 'List';
                 break;
-            case ModelPropTypes.numberType:
+            case ModelPropTypes.numberInputType:
                 inputType = 'Number';
                 break;
                 // case ModelPropTypes.objectType:     inputType = 'Object';     break;
-            case ModelPropTypes.booleanType:
+            case ModelPropTypes.booleanInputType:
                 inputType = 'Boolean';
                 break;
-            case ModelPropTypes.enumType:
+            case ModelPropTypes.enumInputType:
                 inputType = 'DropDown';
                 break;
             default:

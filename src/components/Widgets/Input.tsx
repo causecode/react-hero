@@ -25,11 +25,11 @@ export interface IInputProps {
 
 let GenericInputTemplate = (props) => {
     let handleChange = (e: React.FormEvent) => {
-        this.props.onChange(e.target[`value`]);
+        props.onChange(e.target[`value`]);
     };
 
     return (
-        <input className="form-control" {...props} value={props.propertyValue} onChange={handleChange}/>
+        <input className="form-control" {...props} value={props.value} onChange={handleChange}/>
     );
 };
 
@@ -90,8 +90,9 @@ let DropDownInputTemplate = (props) => {
                     .keys(enumInstance)
                     .map((enumproperty : string, index : number) => {
                         if (enumInstance.hasOwnProperty(enumproperty) && !isNaN(parseInt(enumproperty, 10))) {
+                            
                             return (
-                                <option key={`enumproperty-key-${index}`} value={enumproperty}>
+                                <option key={`${enumInstance[enumproperty]}-${index}`} value={enumproperty}>
                                     {enumInstance[enumproperty]}
                                 </option>
                             );
@@ -102,11 +103,12 @@ let DropDownInputTemplate = (props) => {
     );
 };
 
+// TODO Add support for nested objects list in this component.
 class ListInputTemplate extends React.Component<any, any> {
 
     constructor(props) {
          super(props);
-         this.state = {text: ''};
+         this.state = {newListItem: ''};
     }
 
     handleTextChange = (e: React.FormEvent) => {
@@ -114,6 +116,7 @@ class ListInputTemplate extends React.Component<any, any> {
     }
 
     addListItem = (e: React.FormEvent) => {
+        this.setState({newListItem: ''});
         let propertyValue = this.props.propertyValue ? this.props.propertyValue.slice() : [] ;
         propertyValue.push(this.state.newListItem);
         this.props.onChange(propertyValue);
@@ -139,9 +142,7 @@ class ListInputTemplate extends React.Component<any, any> {
                     return list.map((listItem : string, index : number) => {
                         return (
                             <ListGroupItem
-                                style={{
-                                wordWrap: 'break-word'
-                            }}
+                                style={{wordWrap: 'break-word'}}
                                 key={`${this.props.propertyName}-${index}`}>
                                 {listItem}
                             </ListGroupItem>
@@ -175,7 +176,7 @@ class FormInputImpl extends React.Component<IInputProps, {}> {
         if (this.props.type === 'date') {
             propertyValue = moment(propertyValue).format('YYYY-MM-DD');
         }
-        let InputTemplate = this.getInputTemplate();
+        let InputTemplate: React.ComponentClass<any> = this.getInputTemplate() as React.ComponentClass<any>;
         return (
             <FormGroup className="row" style={{margin: '0px'}}>
                 <Col sm={3}>
@@ -184,6 +185,7 @@ class FormInputImpl extends React.Component<IInputProps, {}> {
                 <Col sm={4}>
                     <InputTemplate 
                         {...this.props}
+                        value={propertyValue}
                         onChange={this.handleChange}
                     />
                 </Col>

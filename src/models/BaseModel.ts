@@ -8,8 +8,6 @@ import {ModelService} from '../utils/modelService';
 import {saveAllInstances, unsetList} from '../actions/modelActions';
 import {findInstanceByID} from '../utils/storeService';
 import {NO_PROP_TYPES, NO_DEFAULT_PROPS} from '../constants';
-import {ModelPropTypes} from './ModelPropTypes';
-import {fromJS} from 'immutable';
 const objectAssign: any = require <any> ('object-assign');
 const getValues: (state : any) => any = require <{
     getValues: (state : any) => any
@@ -17,17 +15,14 @@ const getValues: (state : any) => any = require <{
 
 const FETCH_ERR_MSG = `Request couldn't be processed.`;
 
-export interface IPropTypes {
-    [key: string]: ModelPropTypes.IPropData;
-}
-
 // TODO add generic type for the properties to be passed to BaseModel i.e. BaseModel<P>.
 export class BaseModel {
     key: string;
     static resourceName: string;
     resourceName: string;
 
-    static propTypes: IPropTypes;
+    // TODO find a way to assign a generic type to this (Assigning a dictionary type to this throws an error)
+    static propTypes: any;
 
     static defaultProps;
 
@@ -51,8 +46,8 @@ export class BaseModel {
         this.resourceName = this.constructor[`resourceName`];
     }
 
-    get propTypes(): {} {
-        return (this.constructor as Function & {propTypes: Object}).propTypes;
+    get propTypes(): any {
+        return (this.constructor as Function & {propTypes: any}).propTypes;
     }
 
     static getResourceName() {
@@ -284,7 +279,7 @@ export function getData(path: string, filters = {}, headers: Object = {}): Promi
 export class DefaultModel extends BaseModel {
     
     static resourceName: string = 'default';
-    static propTypes = {};
+    static propTypes: any = {};
     static defaultProps = {};
     constructor(properties: any) {
          super(properties);
