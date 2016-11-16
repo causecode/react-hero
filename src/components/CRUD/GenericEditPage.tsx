@@ -8,36 +8,28 @@ import {store} from '../../store/store';
 const {Form} = require<any>('react-redux-form');
 
 export interface IGenericEditPageProps extends IInstancePageProps {
-    isCreatePage: boolean;
+    location?: {pathname?: string};
     handleSubmit: (instance: BaseModel) => void;
     handleDelete?: (instance: BaseModel) => void;
     params: {resource: string};
     instance: BaseModel;
 }
 
-export class GenericEditPage extends React.Component<IGenericEditPageProps, {instance: BaseModel}> {
+export class GenericEditPage extends React.Component<IGenericEditPageProps, void> {
     static defaultProps: IGenericEditPageProps = {
-        isCreatePage: false,
         handleSubmit: (instance: BaseModel): void => {},
         params: {resource: ''},
         instance: new DefaultModel({})
     };
-
-    constructor(props: IGenericEditPageProps) {
-        super();
-        this.state = { instance: props.instance };
-    }
-
-    componentWillReceiveProps(nextProps: IGenericEditPageProps) {
-        this.setState({instance: nextProps.instance});
-    }
 
     getResource(): string {
         return this.props.params.resource || this.props.instance.resourceName || '';
     }
 
     fetchFormInstance = () => {
-        return store.getState().forms[`RHForms`][this.props.instance.resourceName];
+        let instance = this.props.instance;
+        instance.properties = store.getState().forms[`RHForms`][this.props.instance.resourceName].properties; 
+        return instance;
     }
 
     handleSubmit = () => {
@@ -46,7 +38,9 @@ export class GenericEditPage extends React.Component<IGenericEditPageProps, {ins
     }
 
     handleDelete = () => {
-        this.props.handleDelete(this.fetchFormInstance()); 
+        if (this.props.handleDelete && this.props.handleDelete instanceof Function) {
+            this.props.handleDelete(this.fetchFormInstance()); 
+        }
     }
 
     componentWillMount() {
