@@ -2,14 +2,15 @@ import * as React from 'react';
 import {Table} from 'react-bootstrap';
 import {IInstancePageProps} from '../../interfaces/interfaces';
 import {DefaultModel} from '../../models/BaseModel';
+import {ModelPropTypes} from '../../models/ModelPropTypes';
 
-export class GenericShowPage extends React.Component<IInstancePageProps, {}> {
+export class GenericShowPage extends React.Component<IInstancePageProps, void> {
     static defaultProps: IInstancePageProps = {
         instance: new DefaultModel({})
     };
 
     render(): JSX.Element {
-        const { instance } =  this.props;
+        const {instance} =  this.props;
         let resource: string = this.props.resource || instance.resourceName;
         const instanceProperties = instance.properties;
         let instanceKeys: string[] = Object.keys(instanceProperties);
@@ -22,11 +23,36 @@ export class GenericShowPage extends React.Component<IInstancePageProps, {}> {
                     </tr>
                 </thead>
                 <tbody>
-                    {instanceKeys.map(key => {
+                    {instanceKeys.map((key: string, index: number) => {
+                        let currentPropType = instance.propTypes[key]; 
+                        if (
+                                currentPropType.type === ModelPropTypes.objectInputType 
+                        ) {
+                            return (
+                                <tr key={index}>
+                                    <td><strong>{key}</strong></td>
+                                    <td style={{padding: '0px'}}>
+                                        <Table>
+                                            <tbody>
+                                                {Object.keys(instanceProperties[key])
+                                                        .map((subKey: string, subIndex: number) => {
+                                                    return (
+                                                        <tr key={subIndex}>
+                                                            <td><strong>{subKey}</strong></td>
+                                                            <td>{instanceProperties[key][subKey].toString()}</td>
+                                                        </tr>
+                                                    );
+                                                })}        
+                                            </tbody>
+                                        </Table>
+                                    </td>
+                                </tr>
+                            );
+                        }
                         return (
-                            <tr key={instanceKeys.indexOf(key)}>
-                                <td className={`${resource}-property`}><strong>{key}</strong></td>
-                                <td className={`${resource}-value`}>{instanceProperties[key]}</td>
+                            <tr key={index}>
+                                <td><strong>{key}</strong></td>
+                                <td>{instanceProperties[key].toString()}</td>
                             </tr>
                         );
                     })}

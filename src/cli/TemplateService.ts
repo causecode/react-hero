@@ -2,6 +2,8 @@ import {commandLine} from './commandLine';
 import {getModelString} from '../utils/appService';
 import * as fs from 'fs';
 import * as _ from 'underscore';
+import * as appService from '../utils/appService';
+import { ModelPropTypes } from '../models/ModelPropTypes';
 
 require.extensions['.ejs'] = (module, filename) => {
     module.exports = fs.readFileSync(filename, 'utf8');
@@ -102,9 +104,9 @@ function generateFormTemplate(propTypes: any): string {
         formControls[prop] = inputTemplate(templateData);
     });
 
-    let EditTemplate: (...data: any[]) => string = 
+    let editTemplate: (...data: any[]) => string = 
             _.template(require<string>('../../templates/EditTemplate.ejs'));
-    return EditTemplate({
+    return editTemplate({
         resource: resource, 
         /* tslint:disable */
         modelPath: projectRoot + '/..' + typescriptRoot + commandLine.modelPath, // Assuming the file will always be generated 3 levels deep from the root.
@@ -114,4 +116,60 @@ function generateFormTemplate(propTypes: any): string {
     });
 }
 
-export{projectRoot, typescriptOut, generateFormTemplate};
+function generateSubShowPage(propertyName: string, propTypes: any): string {
+    if (appService.isEmpty(propTypes)) {
+        throw new Error(`Could not find propTypes while generating show Page for resource ${resource}`);
+    }
+    let subShowTemplate = _.template(require<string>('../../templates/SubShowTemplate.ejs'));
+    let tableRowTemplate = _.template(`<tr>
+                                    <td><strong><%= subPropertyName%></strong></td>
+                                    <td>{<%= subPropertyValue%>}</td>
+                                </tr>`); 
+    let tableRowMap = {};   
+    Object.keys(propTypes).forEach((prop: string, index: number) => {
+        tableRowMap[prop] = tableRowTemplate({
+            subPropertyName: prop,
+            subPropertyValue: `instance.properties.${propertyName}.${prop}.toString()`
+        });
+    });
+
+    return subShowTemplate({
+        tableRowMap
+    });
+}
+
+function generateShowTemplate(propTypes: any): string {
+    if (appService.isEmpty(propTypes)) {
+        throw new Error(`Could not find propTypes while generating show Page for resource ${resource}`);
+    }
+    let showTemplate = _.template(require<string>('../../templates/ShowTemplate.ejs'));
+
+    let tableRowTemplate = _.template(`<tr>
+                        <td><strong><%= propertyName%></strong></td>
+                        <td>{<%= propertyValue%>}</td>
+                    </tr>`); 
+
+    let tableRowMap = {};   
+    Object.keys(propTypes).forEach((prop: string, index: number) => {
+        if (!propTypes.hasOwnProperty(prop)) {
+            return;
+        }
+        let currentPropType = propTypes[prop];
+        if (currentPropType.type === ModelPropTypes.objectInputType) {
+            tableRowMap[prop] = generateSubShowPage(prop, currentPropType.propTypes);
+            return;
+        }
+
+        tableRowMap[prop] = tableRowTemplate({
+            propertyName: prop,
+            propertyValue: `instance.properties.${prop}.toString()`
+        });
+    });
+  
+    return showTemplate({
+        resource, 
+        tableRowMap,
+    });
+}
+
+export {projectRoot, typescriptOut, generateFormTemplate, generateShowTemplate};

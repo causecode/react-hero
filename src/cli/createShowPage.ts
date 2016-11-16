@@ -7,16 +7,12 @@ import {commandLine, InvalidCommandError} from './commandLine';
 let mkdirp: any = require<any>('mkdirp');
 let argv = process.argv;
 
-if (argv.indexOf('--modelPath') === -1) {
-    throw InvalidCommandError('modelPath');
-}
-
 if (argv.indexOf('--resource') === -1) {
     throw InvalidCommandError('resource');
 }
 
-if (argv.indexOf('--onCancel') === -1) {
-    throw InvalidCommandError('onCancel');
+if (argv.indexOf('--modelPath') === -1) {
+    throw InvalidCommandError('modelPath');
 }
 
 let {projectRoot, typescriptOut} = TemplateService;
@@ -36,11 +32,11 @@ function writeFile(fpath, contents, cb) {
 }
 
 writeFile(
-        path.join(__dirname, `${projectRoot}/src/components/${commandLine.resource}/Edit.tsx`), 
-        TemplateService.generateFormTemplate(propTypes), () => {}
+        path.join(__dirname, `${projectRoot}/src/components/${commandLine.resource}/Show.tsx`), 
+        TemplateService.generateShowTemplate(propTypes), () => {}
 );
 
 /* tslint:disable */
-console.log(`Edit.tsx File created at src/components/${commandLine.resource}/`);
+console.log(`Show.tsx File created at src/components/${commandLine.resource}/`);
 /* tslint:enable */
 
