@@ -1,0 +1,28 @@
+import * as React from 'react';
+import {Table} from 'react-bootstrap';
+import {ModelPropTypes, IInstancePageProps, DefaultModel} from 'react-hero';
+
+export class <%= resource.capitalize()%>ShowPage extends React.Component<IInstancePageProps, void> {
+    static defaultProps: IInstancePageProps = {
+        instance: new DefaultModel({})
+    };
+
+    render(): JSX.Element {
+        const {instance} =  this.props;
+        return (
+            <Table responsive bordered className="data-show-table">
+                <thead>
+                    <tr>
+                        <th>Property</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% _.keys(tableRowMap).forEach(function (key) { %>
+                    <%= tableRowMap[key]%>
+                    <% }) %>
+                </tbody>
+            </Table>
+        );
+    }
+}

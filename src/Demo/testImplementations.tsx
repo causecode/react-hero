@@ -2,7 +2,7 @@ import * as React from 'react';
 import {HeaderView, FooterView, ContentView, NavigationMenu} from './../components/HeaderFooterLayout';
 import {HeaderFooterLayout} from './../components/HeaderFooterLayout';
 import {ResponsiveView} from './../components/ResponsiveView';
-import {Title, Description, Content, ButtonList, ButtonListItem} from './../components/Widgets';
+import {Title, Description, Content, ButtonList, ButtonListItem} from '../components/Widgets/Widgets';
 import {Router, Route, Link} from 'react-router';
 import {hashHistory} from 'react-router';
 import {PagedList} from '../components-stateful/PagedList';
