@@ -1,11 +1,10 @@
 export interface ICommandLineArguments {
     modelPath?: string;
-    resource?: string;
+    modelName?: string;
     onCancel?: string;
     development?: string;
 }
 
-let InvalidCommandError = (optionName: string) => new Error(`--${optionName} option not specified`);    
 let commandLine: ICommandLineArguments = ((argv: string[]) => {
     let flags = argv
             .slice(1, argv.length)
@@ -23,4 +22,4 @@ let commandLine: ICommandLineArguments = ((argv: string[]) => {
 
 })(process.argv);
 
-export {commandLine, InvalidCommandError};
+export {commandLine};

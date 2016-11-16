@@ -16,6 +16,7 @@ export const CREATE_INSTANCE: string = 'CREATE_INSTANCE';
 export const TOGGLE_NAV: string = 'TOGGLE_NAV';
 
 // Error messages.
+export const INVALID_COMMAND_ERROR = (optionName: string): string => `--${optionName} option not specified`; 
 export const MISSING_PARAMETER = (paramName: string, functionName: string) => {
     return `${paramName} not sent in the function ${functionName}`;
 };

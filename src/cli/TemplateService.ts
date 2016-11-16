@@ -3,7 +3,8 @@ import {getModelString} from '../utils/appService';
 import * as fs from 'fs';
 import * as _ from 'underscore';
 import * as appService from '../utils/appService';
-import { ModelPropTypes } from '../models/ModelPropTypes';
+import {ModelPropTypes} from '../models/ModelPropTypes';
+import {BaseModel} from '../models/BaseModel';
 
 require.extensions['.ejs'] = (module, filename) => {
     module.exports = fs.readFileSync(filename, 'utf8');
@@ -12,7 +13,7 @@ require.extensions['.css'] = (module, filename) => {
     module.exports = '';
 };
 
-let projectRoot = commandLine.development ? '../../../..' : '../..';
+let projectRoot = commandLine.development ? '../..' : '../../../..';
 
 let config = require<any>(projectRoot + '/tsconfig.json');
 if (!config || !config.compilerOptions) {
@@ -38,7 +39,7 @@ let inputTemplateString = `<FormInput
                 />`;
 
 let inputTemplate = _.template(inputTemplateString);
-let {resource} = commandLine;
+let {modelName} = commandLine;
 
 interface ITemplateData {
     type: string;
@@ -48,7 +49,7 @@ interface ITemplateData {
     model: string;
 }
 
-function generateSubFormTemplate(propertyName, subPropTypes, model) {
+function generateSubFormTemplate(propertyName, subPropTypes, model, resourceName) {
     let formControls = {};
     Object.keys(subPropTypes).forEach((prop: string, index: number) => {
         if (!subPropTypes.hasOwnProperty(prop)) {
@@ -57,11 +58,11 @@ function generateSubFormTemplate(propertyName, subPropTypes, model) {
 
         let currentPropType = subPropTypes[prop];
         let enumInstance: string = currentPropType.enum ? 
-                `${resource.capitalize()}Model.propTypes[\`${propertyName}\`][\`${prop}\`].enum` : '';
+                `${modelName.capitalize()}Model.propTypes[\`${propertyName}\`][\`${prop}\`].enum` : '';
         let templateData: ITemplateData = {
             type: currentPropType.type,
             enumInstance,
-            key: `form-control-sub-${commandLine.resource}-${index}`,
+            key: `form-control-sub-${resourceName}-${index}`,
             propertyName: prop,
             model: model + '.' + prop    
         };
@@ -76,7 +77,9 @@ function generateSubFormTemplate(propertyName, subPropTypes, model) {
     });
 }
 
-function generateFormTemplate(propTypes: any): string {
+function generateFormTemplate(ModelClass: BaseModel): string {
+    let propTypes = ModelClass.propTypes;
+    let {resourceName} = ModelClass;
     let formControls: {[key: string]: string} = {};
     Object.keys(propTypes).forEach((prop: string, index: number) => {
         if (!propTypes.hasOwnProperty(prop)) {
@@ -89,19 +92,20 @@ function generateFormTemplate(propTypes: any): string {
             formControls[prop] = generateSubFormTemplate(
                     prop, 
                     currentPropType.propTypes, 
-                    getModelString(resource, 'properties', prop)
+                    getModelString(resourceName, 'properties', prop),
+                    resourceName
             );
 
             return;
         }
         let enumInstance: string = currentPropType.enum ? 
-                `${resource.capitalize()}Model.propTypes[\`${prop}\`].enum` : ''; 
+                `${modelName.capitalize()}Model.propTypes[\`${prop}\`].enum` : ''; 
         let templateData: ITemplateData = {
             type: currentPropType.type,
             enumInstance,
-            key: `form-control-${resource}-${index}`,
+            key: `form-control-${resourceName}-${index}`,
             propertyName: prop,
-            model: getModelString(resource, 'properties', prop)    
+            model: getModelString(resourceName, 'properties', prop)    
         };
 
         formControls[prop] = inputTemplate(templateData);
@@ -110,7 +114,7 @@ function generateFormTemplate(propTypes: any): string {
     let editTemplate: (...data: any[]) => string = 
             _.template(require<string>('../../templates/EditTemplate.ejs'));
     return editTemplate({
-        resource: resource, 
+        modelName, 
         /* tslint:disable */
         modelPath: projectRoot + '/..' + typescriptRoot + commandLine.modelPath, // Assuming the file will always be generated 3 levels deep from the root.
         /* tslint:enable */
@@ -119,9 +123,9 @@ function generateFormTemplate(propTypes: any): string {
     });
 }
 
-function generateSubShowPage(propertyName: string, propTypes: any): string {
+function generateSubShowPage(propertyName: string, propTypes: any, resourceName: string): string {
     if (appService.isEmpty(propTypes)) {
-        throw new Error(`Could not find propTypes while generating show Page for resource ${resource}`);
+        throw new Error(`Could not find propTypes while generating show Page for resource ${resourceName}`);
     }
     let subShowTemplate = _.template(require<string>('../../templates/SubShowTemplate.ejs'));
     let tableRowTemplate = _.template(`<tr>
@@ -141,9 +145,10 @@ function generateSubShowPage(propertyName: string, propTypes: any): string {
     });
 }
 
-function generateShowTemplate(propTypes: any): string {
+function generateShowTemplate(ModelClass: BaseModel): string {
+    let {propTypes, resourceName} = ModelClass.propTypes;
     if (appService.isEmpty(propTypes)) {
-        throw new Error(`Could not find propTypes while generating show Page for resource ${resource}`);
+        throw new Error(`Could not find propTypes while generating show Page for resource ${resourceName}`);
     }
     let showTemplate = _.template(require<string>('../../templates/ShowTemplate.ejs'));
 
@@ -159,7 +164,7 @@ function generateShowTemplate(propTypes: any): string {
         }
         let currentPropType = propTypes[prop];
         if (currentPropType.type === ModelPropTypes.objectInputType) {
-            tableRowMap[prop] = generateSubShowPage(prop, currentPropType.propTypes);
+            tableRowMap[prop] = generateSubShowPage(prop, currentPropType.propTypes, resourceName);
             return;
         }
 
@@ -170,7 +175,7 @@ function generateShowTemplate(propTypes: any): string {
     });
   
     return showTemplate({
-        resource, 
+        modelName, 
         tableRowMap,
     });
 }

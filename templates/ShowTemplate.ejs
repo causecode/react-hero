@@ -2,7 +2,7 @@ import * as React from 'react';
 import {Table} from 'react-bootstrap';
 import {ModelPropTypes, IInstancePageProps, DefaultModel} from 'react-hero';
 
-export class <%= resource.capitalize()%>ShowPage extends React.Component<IInstancePageProps, void> {
+export class <%= modelName.capitalize()%>ShowPage extends React.Component<IInstancePageProps, void> {
     static defaultProps: IInstancePageProps = {
         instance: new DefaultModel({})
     };
