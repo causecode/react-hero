@@ -4,6 +4,7 @@ export * from './utils/index';
 export * from './api/server/index';
 export * from './components-stateful/index';
 export * from './models/BaseModel';
+export * from './models/ModelPropTypes';
 export * from './errors/index';
 export * from './config';
 export * from './actions/modelActions';

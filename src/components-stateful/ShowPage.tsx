@@ -15,7 +15,7 @@ export class ShowPageImpl extends React.Component<IInstanceContainerProps, void>
     };
 
     fetchInstanceData(resource: string , resourceID: string): void {
-        ModelService.getModel(resource).get(resourceID, false, {}, () => {}, () => {}, 'edit');
+        ModelService.getModel(resource).get(resourceID, false, {}, () => {}, () => {}, {}, 'edit');
     }
 
     componentWillMount(): void {
@@ -40,7 +40,7 @@ export class ShowPageImpl extends React.Component<IInstanceContainerProps, void>
 
 function mapStateToProps(state, ownProps): {instance: BaseModel} {
     let instance: BaseModel = ModelService.getModel(ownProps.params.resource)
-            .get<BaseModel>(ownProps.params.resourceID, true, {}, () => {}, () => {}, 'edit');
+            .get<BaseModel>(ownProps.params.resourceID, true, {}, () => {}, () => {}, state, 'edit');
     return {
         instance
     };

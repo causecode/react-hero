@@ -1,6 +1,5 @@
 import * as React from 'react';
-import {DefaultModel} from '../models/DefaultModel';
-import {BaseModel} from '../models/BaseModel';
+import {BaseModel, DefaultModel} from '../models/BaseModel';
 import {GenericEditPage} from './../components/CRUD/GenericEditPage';
 import {ComponentService} from '../utils/componentService';
 const connect: any = require<any>('react-redux').connect;
@@ -95,7 +94,8 @@ function mapStateToProps(state, ownProps): Object {
                     true, 
                     {}, 
                     () => {}, 
-                    () => {}, 
+                    () => {},
+                    state,
                     instanceType as 'create' | 'edit'
             );
     return {

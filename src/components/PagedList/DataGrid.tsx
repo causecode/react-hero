@@ -15,7 +15,8 @@ export function DataGrid( { instanceList, properties, resource }: IDataGridProps
     }
     resource = instanceList[0] ? instanceList[0].resourceName : '';
     if (!properties.length) {
-        properties = Object.keys(instanceList[0].properties);
+        // TODO Better names for the properties array which is supposed to be send by the server.
+        properties = instanceList[0].columnNames || Object.keys(instanceList[0].properties);
     }
     return (
         <div className="data-grid">
@@ -25,15 +26,20 @@ export function DataGrid( { instanceList, properties, resource }: IDataGridProps
                     <tr className="data-grid-header">
                         <th>#</th>
                         {properties.map(function(property) {
-                            return ( <th key = {properties.indexOf(property)}>{property}</th> );
+                            return ( <th key = {properties.indexOf(property)}>{property.capitalize()}</th> );
                         })}
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {instanceList.map((instance) => {
+                    {instanceList.map((instance, index) => {
                         let instanceProperties = instance.properties;
                         return (
                         <tr key={instanceProperties.id} className="data-grid-row">
+                            <td>{index}</td>
+                            {properties.map(function(property) {
+                                return ( <td key={properties.indexOf(property)}>{instanceProperties[property]}</td> );
+                            })}
                             <td>
                                 <Link to={`/${resource}/edit/${instanceProperties.id}`}>
                                     <i className="fa fa-pencil" />
@@ -42,9 +48,6 @@ export function DataGrid( { instanceList, properties, resource }: IDataGridProps
                                     <i className="fa fa-location-arrow" />
                                 </Link>
                             </td>
-                            {properties.map(function(property) {
-                                return ( <td key={properties.indexOf(property)}>{instanceProperties[property]}</td> );
-                            })}
                         </tr>
                             );
                     })}
