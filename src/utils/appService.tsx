@@ -45,18 +45,17 @@ export function initializeFormWithInstance<T extends BaseModel>(instance: T) {
 }
 
 export function getIn(object: Object, path: string) {
-     let propertyValue = fromJS(object).getIn(path.split('.'));
-
+    let propertyValue = fromJS(object).getIn(path.split('.'));
+    if (!propertyValue) {
+        return '';
+    }
     return propertyValue.toJS ? propertyValue.toJS() : propertyValue;
 }
 
 export function generateSubForm(propertyName: string, object: Object, propTypes: any, model: string) {
-    if (isEmpty(object)) {
-        return;
-    }
 
-    let FormControls =  Object.keys(object).map((prop, index: number) => {
-        if (object.hasOwnProperty(prop)) {
+    let FormControls =  Object.keys(propTypes).map((prop, index: number) => {
+        if (propTypes.hasOwnProperty(prop)) {
             let type: string = propTypes[prop].type;
             if (type === 'object') {
                 type = ModelPropTypes.stringInputType;

@@ -36,7 +36,7 @@ let GenericInputTemplate = (props) => {
 let BooleanInputTemplate = (props) => {
     
     let handleChange = (e: React.FormEvent) => {
-        this.props.onChange((e.target[`value`] === 'option-true'));
+        props.onChange((e.target[`value`] === 'option-true'));
     };
 
     return (
@@ -174,7 +174,7 @@ class FormInputImpl extends React.Component<IInputProps, {}> {
     render() {
         let {propertyValue} = this.props;
         if (this.props.type === 'date') {
-            propertyValue = moment(propertyValue).format('YYYY-MM-DD');
+            propertyValue = propertyValue ? moment(propertyValue).format('YYYY-MM-DD') : '';
         }
         let InputTemplate: React.ComponentClass<any> = this.getInputTemplate() as React.ComponentClass<any>;
         return (
@@ -195,14 +195,9 @@ class FormInputImpl extends React.Component<IInputProps, {}> {
 }
 
 let mapStateToProps = (state, ownProps) => {
-    let value; 
     let data = state.forms;
     ownProps.model.split('.').forEach(prop => {
-        let keys = ownProps.model.split('.');
-        if (keys.indexOf(prop) === (keys.length - 1)) {
-            value = data[prop];
-        }
-        data = data[prop];
+        data = (data || {}).hasOwnProperty(prop) ? data[prop] : '';
     });
     return {
         propertyValue: data
