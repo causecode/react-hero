@@ -3,7 +3,8 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import * as TemplateService from './TemplateService';
-import {commandLine, InvalidCommandError} from './commandLine';
+import {commandLine} from './commandLine';
+import {INVALID_COMMAND_ERROR} from '../constants';
 let mkdirp: any = require<any>('mkdirp');
 
 generateEditPage();
@@ -11,15 +12,15 @@ generateEditPage();
 export function generateEditPage() {
     let argv = process.argv;
     if (argv.indexOf('--modelPath') === -1) {
-        throw InvalidCommandError('modelPath');
+        throw new Error(INVALID_COMMAND_ERROR('modelPath'));
     }
 
-    if (argv.indexOf('--resource') === -1) {
-        throw InvalidCommandError('resource');
+    if (argv.indexOf('--modelName') === -1) {
+        throw new Error(INVALID_COMMAND_ERROR('modelName'));
     }
 
     if (argv.indexOf('--onCancel') === -1) {
-        throw InvalidCommandError('onCancel');
+        throw new Error(INVALID_COMMAND_ERROR('onCancel'));
     }
 
     let {projectRoot, typescriptOut} = TemplateService;
@@ -28,22 +29,8 @@ export function generateEditPage() {
             projectRoot + typescriptOut + commandLine.modelPath
     );
 
-    let Model;
-    Object.keys(modelModule).forEach((key: string) => {
-        if (!modelModule.hasOwnProperty(key)) {
-            return;
-        }
-
-        if (modelModule[key].resourceName === commandLine.resource) {
-            Model = modelModule[key];
-        }
-    });
-
-    if (!Model) {
-        throw new Error('Model Class not found in file specified in modePath');
-    }
-
-    let propTypes = modelModule[`${commandLine.resource.capitalize()}Model`].propTypes;
+    let ModelClass = modelModule[`${commandLine.modelName.capitalize()}Model`]
+    // let propTypes = ModelClass.propTypes;
 
     function writeFile(fpath, contents, cb) {
     mkdirp(path.dirname(fpath), function (err) {
@@ -54,12 +41,12 @@ export function generateEditPage() {
     }
 
     writeFile(
-            path.join(__dirname, `${projectRoot}/src/components/${commandLine.resource}/Edit.tsx`), 
-            TemplateService.generateFormTemplate(propTypes), () => {}
+            path.join(__dirname, `${projectRoot}/src/components/${ModelClass.resourceName}/Edit.tsx`), 
+            TemplateService.generateFormTemplate(ModelClass), () => {}
     );
 
     /* tslint:disable */
-    console.log(`Edit.tsx File created at src/components/${commandLine.resource}/`);
+    console.log(`Edit.tsx File created at src/components/${ModelClass.resourceName}/`);
     /* tslint:enable */
 }
 

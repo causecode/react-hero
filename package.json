@@ -19,8 +19,8 @@
     "linkCLI": "npm run buildCLI && npm link"
   },
   "bin": {
-    "RH-generate-edit": "public/cli/createEditPage.js",
-    "RH-generate-show": "public/cli/createEditPage.js"
+    "RH-generate-edit": "public/cli/generateEditPage.js",
+    "RH-generate-show": "public/cli/generateEditPage.js"
   },
   "repository": {
     "type": "git",
