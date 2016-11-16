@@ -11,7 +11,6 @@ export class GenericShowPage extends React.Component<IInstancePageProps, void> {
 
     render(): JSX.Element {
         const {instance} =  this.props;
-        let resource: string = this.props.resource || instance.resourceName;
         const instanceProperties = instance.properties;
         let instanceKeys: string[] = Object.keys(instanceProperties);
         return (
