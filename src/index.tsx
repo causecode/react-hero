@@ -8,3 +8,4 @@ export * from './models/ModelPropTypes';
 export * from './errors/index';
 export * from './config';
 export * from './actions/modelActions';
+export * from './interfaces/interfaces';

@@ -23,7 +23,7 @@ module ComponentService {
         resolver.set(name, component);
     }
 
-    export function registerAll(type: 'edit' | 'create', ...components: ComponentType[]) {
+    export function registerAll(type: 'edit' | 'create' | 'list', ...components: ComponentType[]) {
         components.forEach((component) => {
             register(component, type);
         });

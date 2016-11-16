@@ -88,6 +88,7 @@ export class NewPage extends React.Component<any, any> {
 }
 
 class BlogListPage extends React.Component<{resource: string}, any> {
+    static resourceName: string = 'blog';
     render() {
         return (
             <div>
@@ -122,7 +123,7 @@ class BlogListPage extends React.Component<{resource: string}, any> {
     }
 }
 
-ComponentService.registerAll(BlogListPage);
+ComponentService.registerAll('list', BlogListPage);
 
 // This component is for testing.
 class UserEditPage extends React.Component<any, any> {
@@ -135,6 +136,7 @@ class UserEditPage extends React.Component<any, any> {
 
 // This list page is for testing
 class UserListPage extends React.Component<{params?: any}, any> {
+    static resourceName: string = 'user';
     render() {
         return (
             <div>
