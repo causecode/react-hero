@@ -6,7 +6,7 @@ import {StatelessComponent, ComponentClass} from 'react';
 import '../utils/appService';
 import {getEnvironment} from './appService';
 
-export type ComponentType = (ComponentClass<any> | StatelessComponent<any>);
+export type ComponentType = (ComponentClass<any> | StatelessComponent<any>) & {resourceName?: string};
 
 module ComponentService {
 
@@ -18,13 +18,14 @@ module ComponentService {
         }
     }
 
-    export function register(component: ComponentType & {name?: string} ) {
-        resolver.set(component.name.toLowerCase(), component);
+    export function register(component: ComponentType, type: 'edit' | 'create' | 'list' ) {
+        let name = `${component.resourceName}${type}`;
+        resolver.set(name, component);
     }
 
-    export function registerAll(...components: ComponentType[]) {
+    export function registerAll(type: 'edit' | 'create', ...components: ComponentType[]) {
         components.forEach((component) => {
-            register(component);
+            register(component, type);
         });
     }
 
@@ -39,23 +40,23 @@ module ComponentService {
     }
 
     export function hasListPage(name: string): boolean {
-        return hasComponent(name, 'listpage');
+        return hasComponent(name, 'list');
     }
 
     export function hasEditPage(name: string): boolean {
-        return hasComponent(name, 'editpage');
+        return hasComponent(name, 'edit');
     }
 
     export function hasShowPage(name: string): boolean {
-        return hasComponent(name, 'showpage');
+        return hasComponent(name, 'show');
     }
 
     export function hasCreatePage(name: string): boolean {
-        return hasComponent(name, 'createpage');
+        return hasComponent(name, 'create');
     }
 
     export function getListPage(name: string): ComponentType {
-        const type: string = 'listpage';
+        const type: string = 'list';
         if (hasListPage(name)) {
             return getComponent(name, type);
         } else {
@@ -65,7 +66,7 @@ module ComponentService {
     }
 
     export function getEditPage(name: string): ComponentType {
-        const type: string = 'editpage';
+        const type: string = 'edit';
         if (hasEditPage(name)) {
             return getComponent(name, type);
         } else {
@@ -75,7 +76,7 @@ module ComponentService {
     }
 
     export function getShowPage(name: string): ComponentType {
-        const type: string = 'showpage';
+        const type: string = 'show';
         if (hasShowPage(name)) {
             return getComponent(name, type);
         } else {
@@ -85,7 +86,7 @@ module ComponentService {
     }
 
     export function getCreatePage(name: string): ComponentType {
-        const type: string = 'createpage';
+        const type: string = 'create';
         if (hasCreatePage(name)) {
             return getComponent(name, type);
         } else {
