@@ -4,23 +4,29 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as TemplateService from './TemplateService';
 import {commandLine} from './commandLine';
-import {INVALID_COMMAND_ERROR} from '../constants';
+import {INVALID_COMMAND_ERROR, INVALID_MODEL_NAME} from '../constants';
 let mkdirp: any = require<any>('mkdirp');
 
 generateEditPage();
 
 export function generateEditPage() {
     let argv = process.argv;
+
+    let missingOptions: string[] = [];
     if (argv.indexOf('--modelPath') === -1) {
-        throw new Error(INVALID_COMMAND_ERROR('modelPath'));
+        missingOptions.push('modelPath');
     }
 
     if (argv.indexOf('--modelName') === -1) {
-        throw new Error(INVALID_COMMAND_ERROR('modelName'));
+        missingOptions.push('modelName');
     }
 
     if (argv.indexOf('--onCancel') === -1) {
-        throw new Error(INVALID_COMMAND_ERROR('onCancel'));
+        missingOptions.push('onCancel');
+    }
+
+    if (missingOptions.length) {
+        throw new Error(INVALID_COMMAND_ERROR(...missingOptions));
     }
 
     let {projectRoot, typescriptOut} = TemplateService;
@@ -30,14 +36,17 @@ export function generateEditPage() {
     );
 
     let ModelClass = modelModule[`${commandLine.modelName.capitalize()}Model`]
-    // let propTypes = ModelClass.propTypes;
+    
+    if (!ModelClass) {
+        throw new Error(INVALID_MODEL_NAME(commandLine.modelName, commandLine.modelPath));
+    }
 
     function writeFile(fpath, contents, cb) {
-    mkdirp(path.dirname(fpath), function (err) {
-        if (err) { return cb(err); };
+        mkdirp(path.dirname(fpath), function (err) {
+            if (err) { return cb(err); };
 
-        fs.writeFile(fpath, contents, cb);
-    });
+            fs.writeFile(fpath, contents, cb);
+        });
     }
 
     writeFile(

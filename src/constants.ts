@@ -16,7 +16,12 @@ export const CREATE_INSTANCE: string = 'CREATE_INSTANCE';
 export const TOGGLE_NAV: string = 'TOGGLE_NAV';
 
 // Error messages.
-export const INVALID_COMMAND_ERROR = (optionName: string): string => `--${optionName} option not specified`; 
+export const INVALID_COMMAND_ERROR = (...optionNames: string[]): string => {
+    return `The following command line arguments were not specified: ${optionNames.toString()}`;
+}; 
+export const INVALID_MODEL_NAME = (modelName: string, modelPath: string): string => {
+    return `Cannot find ${modelName} in ${modelPath}`;
+}; 
 export const MISSING_PARAMETER = (paramName: string, functionName: string) => {
     return `${paramName} not sent in the function ${functionName}`;
 };
