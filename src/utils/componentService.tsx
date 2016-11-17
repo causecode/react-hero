@@ -17,13 +17,14 @@ module ComponentService {
                 ` Using Generic${type.capitalize()} instead.`);
         }
     }
+    export type pageType = 'edit' | 'create' | 'list'
 
-    export function register(component: ComponentType, type: 'edit' | 'create' | 'list' ) {
+    export function register(component: ComponentType, type: pageType) {
         let name = `${component.resourceName}${type}`;
         resolver.set(name, component);
     }
 
-    export function registerAll(type: 'edit' | 'create', ...components: ComponentType[]) {
+    export function registerAll(type: pageType, ...components: ComponentType[]) {
         components.forEach((component) => {
             register(component, type);
         });

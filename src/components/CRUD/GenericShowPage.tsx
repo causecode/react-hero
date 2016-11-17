@@ -1,8 +1,9 @@
 import * as React from 'react';
 import {Table} from 'react-bootstrap';
-import {IInstancePageProps} from '../../interfaces/interfaces';
+import {IInstancePageProps} from '../../interfaces';
 import {DefaultModel} from '../../models/BaseModel';
 import {ModelPropTypes} from '../../models/ModelPropTypes';
+import {isEmpty} from '../../utils/appService';
 
 export class GenericShowPage extends React.Component<IInstancePageProps, void> {
     static defaultProps: IInstancePageProps = {
@@ -12,6 +13,9 @@ export class GenericShowPage extends React.Component<IInstancePageProps, void> {
     render(): JSX.Element {
         const {instance} =  this.props;
         const instanceProperties = instance.properties;
+        if (isEmpty(instanceProperties)) {
+            throw new Error('Instance not found while rendering GenericShowPage');
+        }
         let instanceKeys: string[] = Object.keys(instanceProperties);
         return (
             <Table responsive bordered className="data-show-table">

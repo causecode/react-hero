@@ -12,8 +12,8 @@ export function promiseMiddleware({ dispatch }) {
             return next(action);
         }
 
-        const { type, payload, resource, successCallBack, failureCallBack, actionParams} = action;
-        const { promise, data } = payload;
+        const {type, payload, resource, successCallBack, failureCallBack, actionParams} = action;
+        const {promise, data} = payload;
         const PENDING: string = `${type}_START`;
         const FULFILLED: string = `${type}_FULFILLED`;
         const REJECTED: string = `${type}_ERROR`;

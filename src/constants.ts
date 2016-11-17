@@ -16,6 +16,8 @@ export const CREATE_INSTANCE: string = 'CREATE_INSTANCE';
 export const TOGGLE_NAV: string = 'TOGGLE_NAV';
 
 // Error messages.
+export const MISSING_ACTION_PAYLOAD: string = 'No Data in the Action Payload. ' +
+        'Please make sure you are returning an instanceList from the server.';
 export const INVALID_COMMAND_ERROR = (...optionNames: string[]): string => {
     return `The following command line arguments were not specified: ${optionNames.toString()}`;
 }; 

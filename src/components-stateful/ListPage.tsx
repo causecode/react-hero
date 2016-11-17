@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {ComponentService} from '../utils/componentService';
-import {IRouteParams} from '../interfaces/interfaces';
+import {IRouteParams} from '../interfaces';
 
 export interface IListPage extends React.Props<void> {
     params?: IRouteParams;

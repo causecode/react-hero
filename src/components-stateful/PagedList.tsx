@@ -72,23 +72,24 @@ export class PagedListImpl extends React.Component<IPagedListProps, void> {
                     <Link to={`${this.props.resource}/create`} ><i className="fa fa-plus" /></Link>
                 </h2>
                 <PagedListFilters resource={this.props.resource}>
-                        {this.props.children}
+                    {this.props.children}
                 </PagedListFilters>
                 <DataGrid
-                    instanceList={ this.props.instanceList }
-                    properties={ this.props.properties }
+                        instanceList={ this.props.instanceList }
+                        properties={ this.props.properties }
                 />
                 <Pagination
-                    prev
-                    next
-                    first
-                    last
-                    ellipsis
-                    boundaryLinks
-                    maxButtons={5}
-                    items={items}
-                    activePage={activePage}
-                    onSelect={this.handlePagination} />
+                        prev
+                        next
+                        first
+                        last
+                        ellipsis
+                        boundaryLinks
+                        maxButtons={5}
+                        items={items}
+                        activePage={activePage}
+                        onSelect={this.handlePagination} 
+                />
             </div>
         );
     };
@@ -96,7 +97,7 @@ export class PagedListImpl extends React.Component<IPagedListProps, void> {
 
 function mapStateToProps(state, ownProps): IPagedListStateProps {
     let instanceList: IPagedListStateProps & {toJS?: () => IPagedListStateProps} =
-            state.data.get(`${ownProps.resource}List`, {} );
+            state.data.get(`${ownProps.resource}List`, {});
     instanceList = instanceList.toJS ? instanceList.toJS() : instanceList;
     return {
         properties: instanceList.properties,

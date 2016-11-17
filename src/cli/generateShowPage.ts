@@ -5,6 +5,8 @@ import * as path from 'path';
 import * as TemplateService from './TemplateService';
 import {commandLine} from './commandLine';
 import {INVALID_COMMAND_ERROR, INVALID_MODEL_NAME} from '../constants';
+import './init';
+import {BaseModel} from '../models/BaseModel';
 let mkdirp: any = require<any>('mkdirp');
 
 generateShowPage();
@@ -30,7 +32,7 @@ export function generateShowPage() {
     let modelModule: any = require<any>(
             projectRoot + typescriptOut + commandLine.modelPath
     );
-    let ModelClass = modelModule[`${commandLine.modelName.capitalize()}Model`];
+    let ModelClass: typeof BaseModel = modelModule[`${commandLine.modelName.capitalize()}Model`];
 
     if (!ModelClass) {
         throw new Error(INVALID_MODEL_NAME(commandLine.modelName, commandLine.modelPath));
@@ -45,11 +47,11 @@ export function generateShowPage() {
     }
 
     writeFile(
-            path.join(__dirname, `${projectRoot}/src/components/${ModelClass.resource}/Show.tsx`), 
-            TemplateService.generateShowTemplate(ModelClass), () => {}
+            path.join(__dirname, `${projectRoot}/src/components/${ModelClass.resourceName}/Show.tsx`), 
+            TemplateService.generateShowPage(ModelClass), () => {}
     );
 
     /* tslint:disable */
-    console.log(`Show.tsx File created at src/components/${ModelClass.resource}/`);
+    console.log(`Show.tsx File created at src/components/${ModelClass.resourceName}/`);
     /* tslint:enable */
 }

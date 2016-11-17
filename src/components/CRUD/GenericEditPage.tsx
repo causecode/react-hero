@@ -1,10 +1,10 @@
 import * as React from 'react';
 import {Grid, Col, FormGroup, Button} from 'react-bootstrap';
 import {Link} from 'react-router';
-import {IInstancePageProps} from '../../interfaces/interfaces';
+import {IInstancePageProps} from '../../interfaces';
 import {BaseModel, DefaultModel} from '../../models/BaseModel';
-import {generateForm, getModelString, initializeFormWithInstance} from '../../utils/appService';
-import {store} from '../../store/store';
+import {generateForm, getModelString, initializeFormWithInstance, isEmpty} from '../../utils/appService';
+import {store} from '../../store';
 const {Form} = require<any>('react-redux-form');
 
 export interface IGenericEditPageProps extends IInstancePageProps {
@@ -26,29 +26,32 @@ export class GenericEditPage extends React.Component<IGenericEditPageProps, void
         return this.props.params.resource || this.props.instance.resourceName || '';
     }
 
-    fetchFormInstance = () => {
+    fetchFormInstance = (): BaseModel => {
         let instance = this.props.instance;
         instance.properties = store.getState().forms[`RHForms`][this.props.instance.resourceName].properties; 
         return instance;
     }
 
-    handleSubmit = () => {
+    handleSubmit = (): void => {
         // Not using connect here to avoid rerendering of component on change of instance properties.
         this.props.handleSubmit(this.fetchFormInstance());
     }
 
-    handleDelete = () => {
+    handleDelete = (): void => {
         if (this.props.handleDelete && this.props.handleDelete instanceof Function) {
             this.props.handleDelete(this.fetchFormInstance()); 
         }
     }
 
-    componentWillMount() {
+    componentWillMount(): void {
         initializeFormWithInstance(this.props.instance);
     }
 
     render(): JSX.Element {
         let {instance, handleDelete} = this.props;
+        if (isEmpty(instance) || isEmpty(instance.properties)) {
+            throw new Error('Instance not found while rendering GenericEditPage');
+        }
         return (
             <Form
                     className="data-edit-form"

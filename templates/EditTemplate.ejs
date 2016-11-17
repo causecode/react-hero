@@ -2,7 +2,7 @@ import * as React from 'react';
 import {<%= modelName%>Model} from '<%= modelPath%>';
 import {ControlLabel, FormGroup, Col, Button, Grid} from 'react-bootstrap';
 import {Link} from 'react-router';
-import {FormInput} from 'react-hero';
+import {FormInput, IInstancePageProps} from 'react-hero';
 
 export interface I<%= modelName%>EditPageProps extends IInstancePageProps {
     handleSubmit: (instance: <%= modelName%>Model, e: React.FormEvent) => void;

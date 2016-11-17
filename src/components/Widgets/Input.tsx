@@ -12,7 +12,7 @@ import {
 } from 'react-bootstrap';
 import * as moment from 'moment';
 import {isEmpty} from '../../utils/appService';
-import {store} from '../../store/store';
+import {store} from '../../store';
 import {connect} from 'react-redux';
 const {actions} = require<any>('react-redux-form');
 
@@ -195,9 +195,9 @@ class FormInputImpl extends React.Component<IInputProps, {}> {
 }
 
 let mapStateToProps = (state, ownProps) => {
-    let data = state.forms;
+    let data = state.forms || {};
     ownProps.model.split('.').forEach(prop => {
-        data = (data || {}).hasOwnProperty(prop) ? data[prop] : '';
+        data = data.hasOwnProperty(prop) ? data[prop] : '';
     });
     return {
         propertyValue: data

@@ -2,7 +2,7 @@ import * as React from 'react';
 import {DefaultModel, BaseModel} from '../models/BaseModel';
 import {ComponentService} from '../utils/componentService';
 import {ModelService} from '../utils/modelService';
-import {IInstanceContainerProps} from '../interfaces/interfaces';
+import {IInstanceContainerProps} from '../interfaces';
 import {IInjectedProps} from 'react-router';
 import {createInstance} from '../actions/modelActions';
 import {PAGE_NOT_FOUND} from '../constants';

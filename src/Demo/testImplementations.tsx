@@ -122,7 +122,7 @@ class BlogListPage extends React.Component<{resource: string}, any> {
     }
 }
 
-ComponentService.registerAll(BlogListPage);
+ComponentService.registerAll('list', BlogListPage);
 
 // This component is for testing.
 class UserEditPage extends React.Component<any, any> {

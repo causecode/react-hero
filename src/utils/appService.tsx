@@ -2,7 +2,7 @@ import * as React from 'react';
 import {BaseModel} from '../models/BaseModel';
 import {ModelPropTypes} from '../models/ModelPropTypes';
 import {fromJS} from 'immutable';
-import {store} from '../store/store';
+import {store} from '../store';
 import {ControlLabel, Col, FormGroup} from 'react-bootstrap';
 import {FormInput} from '../components/Widgets';
 const {actions} = require<any>('react-redux-form');

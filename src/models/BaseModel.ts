@@ -1,5 +1,5 @@
 import {MODEL_RESOURCE_ERROR, MISSING_ID_IN_METHOD} from './../constants';
-import {store} from '../store/store';
+import {store} from '../store';
 import {saveInstance, updateInstance, deleteInstance} from '../actions/modelActions';
 import {HTTP} from '../api/server/index';
 import {isEmpty} from '../utils/appService';
@@ -8,7 +8,7 @@ import {ModelService} from '../utils/modelService';
 import {saveAllInstances, unsetList} from '../actions/modelActions';
 import {findInstanceByID} from '../utils/storeService';
 import {NO_PROP_TYPES, NO_DEFAULT_PROPS} from '../constants';
-import {Dictionary} from '../interfaces/interfaces';
+import {Dictionary} from '../interfaces';
 const objectAssign: any = require <any> ('object-assign');
 const getValues: (state : any) => any = require <{
     getValues: (state : any) => any
@@ -59,10 +59,10 @@ export class BaseModel {
     }
 
     $save(flush: boolean = true,
-          headers: Object = {},
+            headers: Object = {},
             successCallBack = ( (...args: any[]) => {} ),
-            failureCallBack = ( (...args: any[]) => {} ),
-            headers: Object = {}): void {
+            failureCallBack = ( (...args: any[]) => {} )
+    ): void {
         if (flush) {
             HTTP.postRequest(`${this.resourceName}`, headers, this.properties)
                 .then((response: Axios.AxiosXHR<{}>) => {
@@ -80,8 +80,8 @@ export class BaseModel {
     $update(flush: boolean = true,
             headers: Object = {},
             successCallBack = ( (...args: any[]) => {} ),
-            failureCallBack = ( (...args: any[]) => {} ),
-            headers: Object = {}): void {
+            failureCallBack = ( (...args: any[]) => {} )
+    ): void {
         if (flush) {
             if (!this.properties || !this.properties.hasOwnProperty('id')) {
                 throw new Error(MISSING_ID_IN_METHOD('$update'));
@@ -101,8 +101,8 @@ export class BaseModel {
     $delete(flush: boolean = true,
             headers: Object = {},
             successCallBack = ( (...args: any[]) => {} ),
-            failureCallBack = ( (...args: any[]) => {} ),
-            headers: Object = {}): void {
+            failureCallBack = ( (...args: any[]) => {} )
+    ): void {
         if (flush) {
             if (!this.properties.hasOwnProperty('id')) {
                 throw new Error(MISSING_ID_IN_METHOD('$delete'));
@@ -165,9 +165,6 @@ export class BaseModel {
         let resource: string = this.getResourceName();
         let Model: typeof BaseModel = ModelService.getModel(resource);
 
-        if (Model === BaseModel) {
-            throw new Error(`Model for resource ${resource} not registered`);
-        }
         instanceDataList = instanceDataList.map(instanceData => {
             if (instanceData instanceof Model) {
                 return instanceData;

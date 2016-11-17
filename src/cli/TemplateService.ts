@@ -1,46 +1,12 @@
-import {commandLine} from './commandLine';
-import {getModelString, isEmpty} from '../utils/appService';
-import * as fs from 'fs';
 import * as _ from 'underscore';
 import * as appService from '../utils/appService';
+import {commandLine} from './commandLine';
+import {getModelString, isEmpty} from '../utils/appService';
 import {ModelPropTypes} from '../models/ModelPropTypes';
 import {BaseModel} from '../models/BaseModel';
+import {projectRoot, typescriptOut} from './projectConfig';
 
-require.extensions['.ejs'] = (module, filename) => {
-    module.exports = fs.readFileSync(filename, 'utf8');
-};
-require.extensions['.css'] = (module, filename) => {
-    module.exports = '';
-};
-
-let projectRoot = commandLine.development ? '../..' : '../../../..';
-
-let config = require<any>(projectRoot + '/tsconfig.json');
-if (!config || !config.compilerOptions) {
-    throw new Error('Could not find typescript configuration. ' + 
-            'Make sure you have created a tsconfig.json in your project root with a rootDir and outDir. ');
-}
-let typescriptRoot = '/' + config.compilerOptions.rootDir;
-let typescriptOut = '/' + config.compilerOptions.outDir;
-
-if (!typescriptRoot) {
-    throw new Error('rootDir not defined in tsconfig.json');
-}
-if (!typescriptOut) {
-    throw new Error('outDir not defined in tsconfig.json');
-}
-
-let inputTemplateString = `<FormInput 
-                        type="<%= type%>"
-                        <% if (enumInstance) { %>enum={<%= enumInstance%>}<% } %>
-                        key="<%= key%>"
-                        propertyName="<%= propertyName%>"
-                        model="<%= model%>"    
-                />`;
-
-let inputTemplate = _.template(inputTemplateString);
-
-interface ITemplateData {
+interface IFormTemplateData {
     type: string;
     enumInstance: string;
     key: string;
@@ -48,9 +14,18 @@ interface ITemplateData {
     model: string;
 }
 
-function generateSubFormTemplate(propertyName, subPropTypes, model, resourceName) {
+function generateSubFormPage(propertyName, subPropTypes, model, resourceName) {
     let formControls = {};
     let {modelName} = commandLine;
+    let inputTemplateString = `<FormInput 
+                                        type="<%= type%>"
+                                        <% if (enumInstance) { %>enum={<%= enumInstance%>}<% } %>
+                                        key="<%= key%>"
+                                        propertyName="<%= propertyName%>"
+                                        model="<%= model%>"    
+                                />`;
+
+    let inputTemplate = _.template(inputTemplateString);
     Object.keys(subPropTypes).forEach((prop: string, index: number) => {
         if (!subPropTypes.hasOwnProperty(prop)) {
             return;
@@ -59,7 +34,7 @@ function generateSubFormTemplate(propertyName, subPropTypes, model, resourceName
         let currentPropType = subPropTypes[prop];
         let enumInstance: string = currentPropType.enum ? 
                 `${modelName.capitalize()}Model.propTypes[\`${propertyName}\`][\`${prop}\`].enum` : '';
-        let templateData: ITemplateData = {
+        let templateData: IFormTemplateData = {
             type: currentPropType.type,
             enumInstance,
             key: `form-control-sub-${resourceName}-${index}`,
@@ -77,10 +52,19 @@ function generateSubFormTemplate(propertyName, subPropTypes, model, resourceName
     });
 }
 
-function generateFormTemplate(ModelClass: typeof BaseModel): string {
+function generateFormPage(ModelClass: typeof BaseModel): string {
     let {resourceName, propTypes} = ModelClass;
     let {modelName} = commandLine;
     let formControls: {[key: string]: string} = {};
+    let inputTemplateString = `<FormInput 
+                        type="<%= type%>"
+                        <% if (enumInstance) { %>enum={<%= enumInstance%>}<% } %>
+                        key="<%= key%>"
+                        propertyName="<%= propertyName%>"
+                        model="<%= model%>"    
+                />`;
+
+    let inputTemplate = _.template(inputTemplateString);
     if (!isEmpty(propTypes)) {
         Object.keys(propTypes).forEach((prop: string, index: number) => {
             if (!propTypes.hasOwnProperty(prop)) {
@@ -90,7 +74,7 @@ function generateFormTemplate(ModelClass: typeof BaseModel): string {
             let currentPropType = propTypes[prop];
 
             if (currentPropType.type === 'object') {
-                formControls[prop] = generateSubFormTemplate(
+                formControls[prop] = generateSubFormPage(
                         prop, 
                         currentPropType.propTypes, 
                         getModelString(resourceName, 'properties', prop),
@@ -101,7 +85,7 @@ function generateFormTemplate(ModelClass: typeof BaseModel): string {
             }
             let enumInstance: string = currentPropType.enum ? 
                     `${modelName.capitalize()}Model.propTypes[\`${prop}\`].enum` : ''; 
-            let templateData: ITemplateData = {
+            let templateData: IFormTemplateData = {
                 type: currentPropType.type,
                 enumInstance,
                 key: `form-control-${resourceName}-${index}`,
@@ -118,7 +102,7 @@ function generateFormTemplate(ModelClass: typeof BaseModel): string {
     return editTemplate({
         modelName, 
         /* tslint:disable */
-        modelPath: projectRoot + '/..' + typescriptRoot + commandLine.modelPath, // Assuming the file will always be generated 3 levels deep from the root.
+        modelPath: `../../..${commandLine.modelPath[0] === '/' ? commandLine.modelPath : `/${commandLine.modelPath}`}`, // Assuming the file will always be generated 3 levels deep from the root.
         /* tslint:enable */
         cancelDestination: commandLine.onCancel,
         formControls
@@ -147,7 +131,7 @@ function generateSubShowPage(propertyName: string, propTypes: any, resourceName:
     });
 }
 
-function generateShowTemplate(ModelClass: typeof BaseModel): string {
+function generateShowPage(ModelClass: typeof BaseModel): string {
     let {propTypes, resourceName} = ModelClass;
     if (appService.isEmpty(propTypes)) {
         throw new Error(`Could not find propTypes while generating show Page for resource ${resourceName}`);
@@ -182,4 +166,4 @@ function generateShowTemplate(ModelClass: typeof BaseModel): string {
     });
 }
 
-export {projectRoot, typescriptOut, generateFormTemplate, generateShowTemplate};
+export {projectRoot, typescriptOut, generateFormPage, generateShowPage};

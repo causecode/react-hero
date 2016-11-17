@@ -1,9 +1,10 @@
 import * as React from 'react';
 import {FormFactory} from './DynamicForm';
 import {Button} from 'react-bootstrap';
-import {store} from '../../../store/store';
+import {store} from '../../../store';
 import {toggleFilters as toggle} from '../../../actions/modelActions';
-import {IFilter, IPagedListFiltersProps} from '../../../interfaces/interfaces';
+import {IFilter, IPagedListFiltersProps} from '../../../interfaces';
+import {isEmpty} from '../../../utils/appService';
 
 export class PagedListFilters extends React.Component<IPagedListFiltersProps, void> {
     filterProps: string[] = [];
@@ -38,20 +39,19 @@ export class PagedListFilters extends React.Component<IPagedListFiltersProps, vo
         let DynamicForm = this.DynamicForm;
         this.constructFilters();
         let children: React.ReactNode = this.props.children;
-        if (children) {
-            return (
-                <div className="paged-list-filters">
-                    <Button onClick={this.toggleFilters}>
-                        <i className="fa fa-filter"/>
-                    </Button>
-                    <DynamicForm fields={this.filterProps} resource={this.props.resource} filtersOpen={false}>
-                        {children}
-                    </DynamicForm>
-                </div>
-            );
-        } else {
+        if (isEmpty(children)) {
             return <div></div>;
         }
+        return (
+            <div className="paged-list-filters">
+                <Button onClick={this.toggleFilters}>
+                    <i className="fa fa-filter"/>
+                </Button>
+                <DynamicForm fields={this.filterProps} resource={this.props.resource} filtersOpen={false}>
+                    {children}
+                </DynamicForm>
+            </div>
+        );
     }
 
 }

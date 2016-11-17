@@ -1,7 +1,6 @@
 import {fromJS} from 'immutable';
 import {BaseModel} from '../models/BaseModel';
 import {ModelService} from '../utils/modelService';
-import {MissingActionPayloadError} from '../errors/MissingActionPayloadError';
 import {
     FETCH_INSTANCE_LIST_START,
     FETCH_INSTANCE_LIST_FULFILLED,
@@ -18,6 +17,7 @@ import {
     CREATE_INSTANCE
 } from '../constants';
 import * as StoreService from '../utils/storeService';
+import {MISSING_ACTION_PAYLOAD} from '../constants';
 
 const INITIAL_STATE = fromJS({
     filtersOpen: false,
@@ -46,7 +46,7 @@ function dataReducer(state = INITIAL_STATE, action ) {
                     }
                 }
             } else {
-                throw new MissingActionPayloadError();
+                throw new Error(MISSING_ACTION_PAYLOAD);
             }
 
             let modelInstance = new Model(instance);
@@ -77,7 +77,7 @@ function dataReducer(state = INITIAL_STATE, action ) {
                     return new Model(instance);
                 });
             } else {
-                throw new MissingActionPayloadError();
+                throw new Error(MISSING_ACTION_PAYLOAD);
             }
             let listProps = {};
             listProps = fromJS({
