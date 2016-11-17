@@ -8,6 +8,7 @@ import {ModelService} from '../utils/modelService';
 import {saveAllInstances, unsetList} from '../actions/modelActions';
 import {findInstanceByID} from '../utils/storeService';
 import {NO_PROP_TYPES, NO_DEFAULT_PROPS} from '../constants';
+import {Dictionary} from '../interfaces/interfaces';
 const objectAssign: any = require <any> ('object-assign');
 const getValues: (state : any) => any = require <{
     getValues: (state : any) => any
@@ -22,9 +23,9 @@ export class BaseModel {
     resourceName: string;
 
     // TODO find a way to assign a generic type to this (Assigning a dictionary type to this throws an error)
-    static propTypes: any;
+    static propTypes: Dictionary<any>;
 
-    static defaultProps;
+    static defaultProps: Dictionary<any>;
 
     constructor(public properties) {
         let propTypes = this.constructor[`propTypes`]; 

@@ -1,5 +1,5 @@
 import {commandLine} from './commandLine';
-import {getModelString} from '../utils/appService';
+import {getModelString, isEmpty} from '../utils/appService';
 import * as fs from 'fs';
 import * as _ from 'underscore';
 import * as appService from '../utils/appService';
@@ -39,7 +39,6 @@ let inputTemplateString = `<FormInput
                 />`;
 
 let inputTemplate = _.template(inputTemplateString);
-let {modelName} = commandLine;
 
 interface ITemplateData {
     type: string;
@@ -51,6 +50,7 @@ interface ITemplateData {
 
 function generateSubFormTemplate(propertyName, subPropTypes, model, resourceName) {
     let formControls = {};
+    let {modelName} = commandLine;
     Object.keys(subPropTypes).forEach((prop: string, index: number) => {
         if (!subPropTypes.hasOwnProperty(prop)) {
             return;
@@ -77,39 +77,41 @@ function generateSubFormTemplate(propertyName, subPropTypes, model, resourceName
     });
 }
 
-function generateFormTemplate(ModelClass: BaseModel): string {
-    let propTypes = ModelClass.propTypes;
-    let {resourceName} = ModelClass;
+function generateFormTemplate(ModelClass: typeof BaseModel): string {
+    let {resourceName, propTypes} = ModelClass;
+    let {modelName} = commandLine;
     let formControls: {[key: string]: string} = {};
-    Object.keys(propTypes).forEach((prop: string, index: number) => {
-        if (!propTypes.hasOwnProperty(prop)) {
-            return;
-        }
+    if (!isEmpty(propTypes)) {
+        Object.keys(propTypes).forEach((prop: string, index: number) => {
+            if (!propTypes.hasOwnProperty(prop)) {
+                return;
+            }
 
-        let currentPropType = propTypes[prop];
+            let currentPropType = propTypes[prop];
 
-        if (currentPropType.type === 'object') {
-            formControls[prop] = generateSubFormTemplate(
-                    prop, 
-                    currentPropType.propTypes, 
-                    getModelString(resourceName, 'properties', prop),
-                    resourceName
-            );
+            if (currentPropType.type === 'object') {
+                formControls[prop] = generateSubFormTemplate(
+                        prop, 
+                        currentPropType.propTypes, 
+                        getModelString(resourceName, 'properties', prop),
+                        resourceName
+                );
 
-            return;
-        }
-        let enumInstance: string = currentPropType.enum ? 
-                `${modelName.capitalize()}Model.propTypes[\`${prop}\`].enum` : ''; 
-        let templateData: ITemplateData = {
-            type: currentPropType.type,
-            enumInstance,
-            key: `form-control-${resourceName}-${index}`,
-            propertyName: prop,
-            model: getModelString(resourceName, 'properties', prop)    
-        };
+                return;
+            }
+            let enumInstance: string = currentPropType.enum ? 
+                    `${modelName.capitalize()}Model.propTypes[\`${prop}\`].enum` : ''; 
+            let templateData: ITemplateData = {
+                type: currentPropType.type,
+                enumInstance,
+                key: `form-control-${resourceName}-${index}`,
+                propertyName: prop,
+                model: getModelString(resourceName, 'properties', prop)    
+            };
 
-        formControls[prop] = inputTemplate(templateData);
-    });
+            formControls[prop] = inputTemplate(templateData);
+        });
+    }
 
     let editTemplate: (...data: any[]) => string = 
             _.template(require<string>('../../templates/EditTemplate.ejs'));
@@ -145,8 +147,8 @@ function generateSubShowPage(propertyName: string, propTypes: any, resourceName:
     });
 }
 
-function generateShowTemplate(ModelClass: BaseModel): string {
-    let {propTypes, resourceName} = ModelClass.propTypes;
+function generateShowTemplate(ModelClass: typeof BaseModel): string {
+    let {propTypes, resourceName} = ModelClass;
     if (appService.isEmpty(propTypes)) {
         throw new Error(`Could not find propTypes while generating show Page for resource ${resourceName}`);
     }
@@ -175,7 +177,7 @@ function generateShowTemplate(ModelClass: BaseModel): string {
     });
   
     return showTemplate({
-        modelName, 
+        modelName: commandLine.modelName, 
         tableRowMap,
     });
 }

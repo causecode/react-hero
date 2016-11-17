@@ -16,6 +16,9 @@ export interface IShallowTestUtils {
     isDOMComponent: any;
 }
 
+// Type for a generic object
+export type Dictionary<T> = {[key: string]: T}
+
 // Data passed in the Instance Page routes.
 export interface IRouteParams {
     resource: string;

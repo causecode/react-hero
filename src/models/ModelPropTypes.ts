@@ -1,3 +1,4 @@
+import { Dictionary } from '../interfaces/interfaces';
 export module ModelPropTypes {
     
     export interface IModelPropType {
@@ -26,7 +27,7 @@ export module ModelPropTypes {
     };
     export let NUMBER: IModelPropType = () =>  { return {type: numberInputType}; };
     export let STRING: IModelPropType = () =>  { return {type: stringInputType}; };
-    export let OBJECT = (propTypes) =>  { return {type: objectInputType, propTypes}; };
+    export let OBJECT = (propTypes: Dictionary<any>) =>  { return {type: objectInputType, propTypes}; };
     export let BOOLEAN: IModelPropType = () =>  { return {type: booleanInputType }; };
     export let ENUM: IModelPropType = (enumInstance) => { 
         return {type: enumInputType, enum: enumInstance}; 

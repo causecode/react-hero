@@ -44,6 +44,26 @@ export class BlogModel extends BaseModel {
     }
 }
 
+let blogInstance = new BlogModel({
+        id: 10, 
+        name: 'My test blog',
+        dateCreated: new Date().setDate(new Date().getDate() + 10),
+        guestList: ['abc', 'qwe'],
+        address: {
+            lineOne: 'this is line one', 
+            lineTwo: 'this.is line two', 
+            flatNumber: 12, 
+            current: true, 
+            livingSince: new Date(), 
+            residents: ['Nahush', 'Piyush'],
+            isCurrent: IsCurrent.YES 
+        },
+        enabled: false,
+        status: Status.FIRED,
+    });
+
+export {blogInstance}
+
 export class UserModel extends BaseModel {
 
     static resourceName: string = 'user';

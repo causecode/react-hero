@@ -1,16 +1,14 @@
 import * as React from 'react';
-import {DefaultModel} from '../models/DefaultModel';
-import {BaseModel} from '../models/BaseModel';
-import {GenericEditPage} from './../components/CRUD/GenericEditPage';
+import {DefaultModel, BaseModel} from '../models/BaseModel';
 import {ComponentService} from '../utils/componentService';
-const connect: any = require<any>('react-redux').connect;
 import {ModelService} from '../utils/modelService';
 import {IInstanceContainerProps} from '../interfaces/interfaces';
 import {IInjectedProps} from 'react-router';
 import {createInstance} from '../actions/modelActions';
 import {PAGE_NOT_FOUND} from '../constants';
 import {ErrorPage} from '../components/ErrorPage';
-import { BlogModel, Status } from '../Demo/testModel';
+import {IGenericEditPageProps} from '../components/CRUD/GenericEditPage';
+import {connect} from 'react-redux';
 
 function isCreatePage(pathName: string): boolean {
     return pathName.toLowerCase().indexOf('create') > -1;
@@ -57,8 +55,7 @@ export class EditPageImpl extends React.Component<EditPageProps, void> {
         }
     }
 
-    handleSubmit(instance: BaseModel, e: React.FormEvent): void {
-        e.preventDefault();
+    handleSubmit(instance: BaseModel): void {
         if (isCreatePage(this.props.location.pathname)) {
             instance.$save(true);
         } else {
@@ -76,9 +73,11 @@ export class EditPageImpl extends React.Component<EditPageProps, void> {
                 <ErrorPage message={PAGE_NOT_FOUND}/>
             );
         }
-        const childProps = {location: this.props.location, params: this.props.params,
-                handleSubmit: this.handleSubmit.bind(this), handleDelete: this.handleDelete,
-                isCreatePage: isCreatePage(this.props.location.pathname), instance: this.props.instance};
+        const childProps: IGenericEditPageProps = {location: this.props.location, params: this.props.params,
+                handleSubmit: this.handleSubmit.bind(this), instance: this.props.instance};
+        if (!isCreatePage(this.props.location.pathname)) {
+            childProps.handleDelete = this.handleDelete; 
+        }
         let Page: React.ComponentClass<void> = ComponentService
                 .getEditPage(this.props.params.resource) as React.ComponentClass<void>;
         return(
@@ -97,13 +96,13 @@ function mapStateToProps(state, ownProps): Object {
                     () => {}, 
                     () => {}, 
                     instanceType as 'create' | 'edit'
-            );
+        );
     return {
         instance
     };
 }
 
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps(dispatch): {createInstance?: (instance: BaseModel) => void} {
    return {
        createInstance: (instance) => {
            dispatch(createInstance(instance));
