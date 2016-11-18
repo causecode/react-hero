@@ -1,10 +1,14 @@
+import * as fs from 'fs';
+import * as path from 'path';
 import * as _ from 'underscore';
 import * as appService from '../utils/appService';
 import {commandLine} from './commandLine';
 import {getModelString, isEmpty} from '../utils/appService';
 import {ModelPropTypes} from '../models/ModelPropTypes';
 import {BaseModel} from '../models/BaseModel';
-import {projectRoot, typescriptOut} from './projectConfig';
+// import {projectRoot, typescriptOut} from './projectConfig';
+import {INVALID_COMMAND_ERROR} from '../constants';
+let mkdirp: any = require<any>('mkdirp');
 
 interface IFormTemplateData {
     type: string;
@@ -12,6 +16,41 @@ interface IFormTemplateData {
     key: string;
     propertyName: string;
     model: string;
+}
+
+export function writeFile(fpath, contents, cb) {
+    mkdirp(path.dirname(fpath), function (err) {
+        if (err) { return cb(err); };
+
+        fs.writeFile(fpath, contents, cb);
+    });
+}
+
+export function parseOptions(...options: string[]) {
+    let missingOptions = [];
+    options.forEach((option : string) => {
+        if (option.indexOf('--') === 0) {
+            option = option.slice(2);
+        }
+        if (!commandLine[option]) {
+            missingOptions.push(option);
+        }
+    });
+
+    if (missingOptions.length) {
+        throw new Error(INVALID_COMMAND_ERROR(...missingOptions));
+    }
+}
+
+export function generateListPage(ModelClass: typeof BaseModel) {
+    let {resourceName} = ModelClass;
+    let {modelName} = commandLine;
+    let listTemplate = _.template(require<string>('../../templates/ListTemplate.ejs'));
+
+    return listTemplate({
+        modelName,
+        resourceName 
+    });
 }
 
 function generateSubFormPage(propertyName, subPropTypes, model, resourceName) {
@@ -33,7 +72,7 @@ function generateSubFormPage(propertyName, subPropTypes, model, resourceName) {
 
         let currentPropType = subPropTypes[prop];
         let enumInstance: string = currentPropType.enum ? 
-                `${modelName.capitalize()}Model.propTypes[\`${propertyName}\`][\`${prop}\`].enum` : '';
+                `${modelName.capitalize()}Model.propTypes.${propertyName}.propTypes[\`${prop}\`].enum` : '';
         let templateData: IFormTemplateData = {
             type: currentPropType.type,
             enumInstance,
@@ -52,7 +91,7 @@ function generateSubFormPage(propertyName, subPropTypes, model, resourceName) {
     });
 }
 
-function generateFormPage(ModelClass: typeof BaseModel): string {
+export function generateFormPage(ModelClass: typeof BaseModel): string {
     let {resourceName, propTypes} = ModelClass;
     let {modelName} = commandLine;
     let formControls: {[key: string]: string} = {};
@@ -84,7 +123,7 @@ function generateFormPage(ModelClass: typeof BaseModel): string {
                 return;
             }
             let enumInstance: string = currentPropType.enum ? 
-                    `${modelName.capitalize()}Model.propTypes[\`${prop}\`].enum` : ''; 
+                    `${modelName.capitalize()}Model.propTypes.${prop}.enum` : ''; 
             let templateData: IFormTemplateData = {
                 type: currentPropType.type,
                 enumInstance,
@@ -101,8 +140,9 @@ function generateFormPage(ModelClass: typeof BaseModel): string {
             _.template(require<string>('../../templates/EditTemplate.ejs'));
     return editTemplate({
         modelName, 
+        resourceName,
         /* tslint:disable */
-        modelPath: `../../..${commandLine.modelPath[0] === '/' ? commandLine.modelPath : `/${commandLine.modelPath}`}`, // Assuming the file will always be generated 3 levels deep from the root.
+        modelPath: `../..${commandLine.modelPath[0] === '/' ? commandLine.modelPath : `/${commandLine.modelPath}`}`, // Assuming the file will always be generated 3 levels deep from the root.
         /* tslint:enable */
         cancelDestination: commandLine.onCancel,
         formControls
@@ -115,9 +155,9 @@ function generateSubShowPage(propertyName: string, propTypes: any, resourceName:
     }
     let subShowTemplate = _.template(require<string>('../../templates/SubShowTemplate.ejs'));
     let tableRowTemplate = _.template(`<tr>
-                                    <td><strong><%= subPropertyName%></strong></td>
-                                    <td>{<%= subPropertyValue%>}</td>
-                                </tr>`); 
+                                        <td><strong><%= subPropertyName%></strong></td>
+                                        <td>{<%= subPropertyValue%>}</td>
+                                    </tr>`); 
     let tableRowMap = {};   
     Object.keys(propTypes).forEach((prop: string, index: number) => {
         tableRowMap[prop] = tableRowTemplate({
@@ -127,11 +167,12 @@ function generateSubShowPage(propertyName: string, propTypes: any, resourceName:
     });
 
     return subShowTemplate({
+        propertyName,
         tableRowMap
     });
 }
 
-function generateShowPage(ModelClass: typeof BaseModel): string {
+export function generateShowPage(ModelClass: typeof BaseModel): string {
     let {propTypes, resourceName} = ModelClass;
     if (appService.isEmpty(propTypes)) {
         throw new Error(`Could not find propTypes while generating show Page for resource ${resourceName}`);
@@ -162,8 +203,7 @@ function generateShowPage(ModelClass: typeof BaseModel): string {
   
     return showTemplate({
         modelName: commandLine.modelName, 
+        resourceName,
         tableRowMap,
     });
 }
-
-export {projectRoot, typescriptOut, generateFormPage, generateShowPage};

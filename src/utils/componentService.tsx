@@ -17,7 +17,7 @@ module ComponentService {
                 ` Using Generic${type.capitalize()} instead.`);
         }
     }
-    export type pageType = 'edit' | 'create' | 'list'
+    export type pageType = 'edit' | 'create' | 'list' | 'show';
 
     export function register(component: ComponentType, type: pageType) {
         let name = `${component.resourceName}${type}`;

@@ -2,7 +2,7 @@ import * as React from 'react';
 import {<%= modelName%>Model} from '<%= modelPath%>';
 import {ControlLabel, FormGroup, Col, Button, Grid} from 'react-bootstrap';
 import {Link} from 'react-router';
-import {FormInput, IInstancePageProps} from 'react-hero';
+import {FormInput, IInstancePageProps, initializeFormWithInstance} from 'react-hero';
 
 export interface I<%= modelName%>EditPageProps extends IInstancePageProps {
     handleSubmit: (instance: <%= modelName%>Model, e: React.FormEvent) => void;
@@ -15,6 +15,8 @@ export interface I<%= modelName%>EditPageState {
 
 export class <%= modelName%>EditPage extends React.Component<I<%= modelName%>EditPageProps, I<%= modelName%>EditPageState> { 
 
+    static resourceName: string = '<%= resourceName%>';
+    
     constructor(props: I<%= modelName%>EditPageProps) {
          super();
          this.state = {instance: props.instance};
@@ -33,9 +35,13 @@ export class <%= modelName%>EditPage extends React.Component<I<%= modelName%>Edi
         this.setState({instance: instance});
     };
 
+    componentWillMount(): void {
+        initializeFormWithInstance(this.props.instance);
+    }
+
     render() {
         return (
-            <form onSubmit={this.handleSubmit}>
+            <form className="<%= resourceName%>-edit-page" onSubmit={this.handleSubmit}>
             <Grid>
                 <% _.keys(formControls).forEach(function (key) { %>
                 <%= formControls[key]%>

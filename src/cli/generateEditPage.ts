@@ -1,37 +1,18 @@
 #! /usr/bin/env node
 
-import * as fs from 'fs';
 import * as path from 'path';
 import * as TemplateService from './TemplateService';
 import {commandLine} from './commandLine';
-import {INVALID_COMMAND_ERROR, INVALID_MODEL_NAME} from '../constants';
-import './init';
+import {INVALID_MODEL_NAME} from '../constants';
 import {BaseModel} from '../models/BaseModel';
-let mkdirp: any = require<any>('mkdirp');
+import {projectRoot, typescriptOut} from './projectConfig';
+import './init';
 
 generateEditPage();
 
 export function generateEditPage() {
-    let argv = process.argv;
 
-    let missingOptions: string[] = [];
-    if (argv.indexOf('--modelPath') === -1) {
-        missingOptions.push('modelPath');
-    }
-
-    if (argv.indexOf('--modelName') === -1) {
-        missingOptions.push('modelName');
-    }
-
-    if (argv.indexOf('--onCancel') === -1) {
-        missingOptions.push('onCancel');
-    }
-
-    if (missingOptions.length) {
-        throw new Error(INVALID_COMMAND_ERROR(...missingOptions));
-    }
-
-    let {projectRoot, typescriptOut} = TemplateService;
+    TemplateService.parseOptions('modelPath', 'modelName', 'onCancel');
 
     let modelModule: any = require<any>(
             projectRoot + typescriptOut + commandLine.modelPath
@@ -43,21 +24,15 @@ export function generateEditPage() {
         throw new Error(INVALID_MODEL_NAME(commandLine.modelName, commandLine.modelPath));
     }
 
-    function writeFile(fpath, contents, cb) {
-        mkdirp(path.dirname(fpath), function (err) {
-            if (err) { return cb(err); };
+    let {resourceName} = ModelClass;
 
-            fs.writeFile(fpath, contents, cb);
-        });
-    }
-
-    writeFile(
-            path.join(__dirname, `${projectRoot}/src/components/${ModelClass.resourceName}/Edit.tsx`), 
+    TemplateService.writeFile(
+            path.join(__dirname, `${projectRoot}/src/components/${resourceName}/${resourceName.capitalize()}Form.tsx`), 
             TemplateService.generateFormPage(ModelClass), () => {}
     );
 
     /* tslint:disable */
-    console.log(`Edit.tsx File created at src/components/${ModelClass.resourceName}/`);
+    console.log(`${resourceName.capitalize()}Form.tsx File created at src/components/${ModelClass.resourceName}/`);
     /* tslint:enable */
 }
 

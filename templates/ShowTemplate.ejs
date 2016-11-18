@@ -3,6 +3,9 @@ import {Table} from 'react-bootstrap';
 import {ModelPropTypes, IInstancePageProps, DefaultModel} from 'react-hero';
 
 export class <%= modelName.capitalize()%>ShowPage extends React.Component<IInstancePageProps, void> {
+
+    static resourceName: string = '<%= resourceName%>';
+    
     static defaultProps: IInstancePageProps = {
         instance: new DefaultModel({})
     };
@@ -10,7 +13,7 @@ export class <%= modelName.capitalize()%>ShowPage extends React.Component<IInsta
     render(): JSX.Element {
         const {instance} =  this.props;
         return (
-            <Table responsive bordered className="data-show-table">
+            <Table responsive bordered className="<%= resourceName%>-show-page">
                 <thead>
                     <tr>
                         <th>Property</th>

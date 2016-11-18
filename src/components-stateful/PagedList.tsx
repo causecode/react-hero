@@ -96,14 +96,14 @@ export class PagedListImpl extends React.Component<IPagedListProps, void> {
 }
 
 function mapStateToProps(state, ownProps): IPagedListStateProps {
-    let instanceList: IPagedListStateProps & {toJS?: () => IPagedListStateProps} =
+    let resourceData: IPagedListStateProps & {toJS?: () => IPagedListStateProps} =
             state.data.get(`${ownProps.resource}List`, {});
-    instanceList = instanceList.toJS ? instanceList.toJS() : instanceList;
+    resourceData = resourceData.toJS ? resourceData.toJS() : resourceData;
     return {
-        properties: instanceList.properties,
-        instanceList: instanceList.instanceList,
-        totalCount:  instanceList.totalCount,
-        activePage: instanceList.activePage
+        properties: resourceData.properties,
+        instanceList: resourceData.instanceList,
+        totalCount:  resourceData.totalCount,
+        activePage: resourceData.activePage
     };
 }
 
