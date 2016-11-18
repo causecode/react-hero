@@ -19,7 +19,6 @@ export module ModelPropTypes {
     export const objectInputType: string = 'object';
     export const booleanInputType: string = 'boolean';
     export const enumInputType: string = 'select';
-    
     export let DATE: IModelPropType = () => {
         return {type: dateInputType};
     };

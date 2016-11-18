@@ -12,22 +12,12 @@ export enum IsCurrent {
 }
 
 export class BlogModel extends BaseModel {
-    static propTypes = {
-        dateCreated: ModelPropTypes.DATE(),
-        guestList: ModelPropTypes.ARRAY(ModelPropTypes.STRING()),
+    static propTypes = {        
         id: ModelPropTypes.NUMBER(),
-        name: ModelPropTypes.STRING(),
-        enabled: ModelPropTypes.BOOLEAN(),
-        status: ModelPropTypes.ENUM(Status),
-        address: ModelPropTypes.OBJECT({
-            lineOne: ModelPropTypes.STRING(),
-            lineTwo: ModelPropTypes.STRING(),
-            flatNumber: ModelPropTypes.NUMBER(),
-            current: ModelPropTypes.BOOLEAN(),
-            livingSince: ModelPropTypes.DATE(),
-            residents: ModelPropTypes.ARRAY(ModelPropTypes.STRING()),
-            isCurrent: ModelPropTypes.ENUM(IsCurrent)
-        })
+        author: ModelPropTypes.STRING(),
+        blogIMGSrc: ModelPropTypes.STRING(),
+        dateCreated: ModelPropTypes.STRING(),
+        lastUpdated: ModelPropTypes.STRING()
     };
 
     static defaultProps = {
@@ -73,7 +63,10 @@ export class UserModel extends BaseModel {
     };
 
     static propTypes =  {
-        name: ModelPropTypes.STRING()
+        id: ModelPropTypes.NUMBER(),
+        firstName: ModelPropTypes.STRING(),
+        lastName: ModelPropTypes.STRING(),
+        age: ModelPropTypes.STRING()
     };
 
     constructor(properties: any) {

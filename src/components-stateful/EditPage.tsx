@@ -94,9 +94,10 @@ function mapStateToProps(state, ownProps): Object {
                     true, 
                     {}, 
                     () => {}, 
-                    () => {}, 
+                    () => {},
+                    state,
                     instanceType as 'create' | 'edit'
-        );
+            );
     return {
         instance
     };
