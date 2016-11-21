@@ -38,7 +38,17 @@ export function DataGrid( { instanceList, properties, resource }: IDataGridProps
                         <tr key={instanceProperties.id} className="data-grid-row">
                             <td>{index}</td>
                             {properties.map(function(property) {
-                                return ( <td key={properties.indexOf(property)}>{instanceProperties[property]}</td> );
+                                return ( 
+                                        <td key={properties.indexOf(property)}>
+                                            {(() => {
+                                                if (property.indexOf('.') > 0) {
+                                                    return instanceProperties.getNestedData(property);
+                                                } else {
+                                                    return instanceProperties[property];
+                                                }
+                                            })()}
+                                        </td> 
+                                    );
                             })}
                             <td>
                                 <Link to={`/${resource}/edit/${instanceProperties.id}`}>

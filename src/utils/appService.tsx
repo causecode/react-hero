@@ -26,6 +26,14 @@ String.prototype.capitalize = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
 };
 
+Object.prototype.getNestedData = function(nestedPath: string) {
+    let data = this;
+    nestedPath.toString().split('.').forEach(item => {
+        data = data[item];
+    });
+    return data;
+};
+
 export function isEmpty(obj: Object): boolean {
     return (!obj || !Object.keys(obj).length);
 }

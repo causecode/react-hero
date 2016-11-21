@@ -17,7 +17,11 @@ export class BlogModel extends BaseModel {
         author: ModelPropTypes.STRING(),
         blogIMGSrc: ModelPropTypes.STRING(),
         dateCreated: ModelPropTypes.STRING(),
-        lastUpdated: ModelPropTypes.STRING()
+        lastUpdated: ModelPropTypes.STRING(),
+        name: ({
+            firstname: ModelPropTypes.STRING(),
+            lastname: ModelPropTypes.STRING()
+        })
     };
 
     static defaultProps = {
@@ -29,6 +33,15 @@ export class BlogModel extends BaseModel {
 
     static resourceName: string = 'blog';
 
+    static columnNames: string[] = [
+            'id',
+            'author',
+            'dateCreated',
+            'lastUpdated',
+            'name.firstname',
+            'name.lastname'
+        ];
+        
     constructor(properties?: any) {
         super(properties);
     }
