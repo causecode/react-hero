@@ -43,7 +43,11 @@ export function DataGrid( { instanceList, properties, resource }: IDataGridProps
                                 </Link>
                             </td>
                             {properties.map(function(property) {
-                                return ( <td key={properties.indexOf(property)}>{instanceProperties[property]}</td> );
+                                return ( 
+                                    <td key={properties.indexOf(property)}>
+                                        {instanceProperties[property].toString()}
+                                    </td> 
+                                );
                             })}
                         </tr>
                             );

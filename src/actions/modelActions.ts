@@ -3,7 +3,6 @@ import {
     SAVE_INSTANCE,
     UPDATE_INSTANCE,
     DELETE_INSTANCE,
-    CREATE_INSTANCE,
     SET_PAGE,
     TOGGLE_FILTERS,
     TOGGLE_NAV,
@@ -31,7 +30,6 @@ export type ModelActionCreatorType = (instance: BaseModel, key?: string) => IIns
 export const saveInstance: ModelActionCreatorType = ModelActionFactory(SAVE_INSTANCE);
 export const updateInstance: ModelActionCreatorType = ModelActionFactory(UPDATE_INSTANCE);
 export const deleteInstance: ModelActionCreatorType = ModelActionFactory(DELETE_INSTANCE);
-export const createInstance: ModelActionCreatorType = ModelActionFactory(CREATE_INSTANCE);
 
 export const setPage = (pageNumber: number, resource: string): {type: string, resource: string, pageNumber: number} => {
     return {

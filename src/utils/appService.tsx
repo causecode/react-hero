@@ -34,12 +34,13 @@ export function getModelString(...args: any[]): string {
     return `RHForms.${args.join('.')}`;
 }
 
-export function initializeFormWithInstance<T extends BaseModel>(instance: T) {
+export function initializeFormWithInstance<T extends BaseModel>(instance: T, isCreate: boolean = false) {
     if (isEmpty(instance) || isEmpty(instance.properties)) {
         return;
     }
 
-    let model: string = getModelString(instance.resourceName);
+    let formModelString: string = isCreate ? `${instance.resourceName}Create` : `${instance.resourceName}Edit`;  
+    let model: string = getModelString(formModelString);
 
     store.dispatch(actions.change(model, instance));
 }
@@ -88,6 +89,7 @@ export function generateSubForm(propertyName: string, object: Object, propTypes:
 
 export function generateForm<T extends BaseModel>(
         instance: T,
+        isCreatePage: boolean,
         model: string = '',
         propTypes: any = instance.propTypes
 ): JSX.Element {
@@ -97,7 +99,8 @@ export function generateForm<T extends BaseModel>(
                 let keyPath = model ? model + '.' + prop : prop; 
                 let propertyValue = getIn(instance.properties, keyPath);
                 let type: string = instance.propTypes[prop].type;
-                let modelString: string = getModelString(instance.resourceName, 'properties', keyPath);
+                let formModelString = isCreatePage ? `${instance.resourceName}Create` : `${instance.resourceName}Edit`;
+                let modelString: string = getModelString(formModelString, 'properties', keyPath);
                 if (type === ModelPropTypes.objectInputType) {
                     return generateSubForm(
                             prop, 
