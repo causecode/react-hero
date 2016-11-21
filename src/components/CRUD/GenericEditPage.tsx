@@ -3,7 +3,7 @@ import {Grid, Col, FormGroup, Button} from 'react-bootstrap';
 import {Link} from 'react-router';
 import {IInstancePageProps} from '../../interfaces';
 import {BaseModel, DefaultModel} from '../../models/BaseModel';
-import {generateForm, getModelString, initializeFormWithInstance, isEmpty} from '../../utils/appService';
+import {generateForm, getModelString, isEmpty} from '../../utils/appService';
 import {store} from '../../store';
 const {Form} = require<any>('react-redux-form');
 

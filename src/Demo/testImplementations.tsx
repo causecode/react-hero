@@ -16,6 +16,7 @@ import {EditPage} from './../components-stateful/EditPage';
 import {ComponentService} from '../utils/componentService';
 import {ModelService} from '../utils/modelService';
 import {BlogModel, UserModel} from './testModel';
+require<void>('../init');
 
 ModelService.registerAll(UserModel, BlogModel);
 

@@ -3,7 +3,6 @@ import {GenericListPage} from '../components/CRUD/GenericListPage';
 import {GenericEditPage} from '../components/CRUD/GenericEditPage';
 import {GenericShowPage} from '../components/CRUD/GenericShowPage';
 import {StatelessComponent, ComponentClass} from 'react';
-import '../utils/appService';
 import {getEnvironment} from './appService';
 
 export type ComponentType = (ComponentClass<any> | StatelessComponent<any>) & {resourceName?: string};

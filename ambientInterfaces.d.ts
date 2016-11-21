@@ -15,6 +15,17 @@ declare interface NodeRequire {
 
 declare var require: NodeRequire;
 
+declare interface Object {
+    isEmpty: () => boolean;
+    each: (callback: Function) => void;
+    equals: (obj: any) => boolean;    
+}
+
+declare interface Array<T> {
+    each: (callback: Function) => void;
+    equals: (obj: any) => boolean;
+}
+
 declare interface Window {
     devToolsExtension: any;
 }
