@@ -28,10 +28,22 @@ String.prototype.capitalize = function() {
 
 Object.prototype.getNestedData = function(nestedPath: string) {
     let data = this;
-    nestedPath.toString().split('.').forEach(item => {
-        data = data[item];
-    });
-    return data;
+    let result: string = '';
+    if (data) {
+        nestedPath.split('.').forEach((item) => {
+            if (data.constructor === Array) {
+                data.forEach((innerItem, index) => {
+                    result = `${result} ${innerItem[item].toString()}`;
+                });
+            } else {
+                data = data[item];
+            }
+            if (data.constructor !== Array && data.constructor !== Object) {
+                result = `${result} ${data}`;
+            }
+        });
+    }
+    return result;
 };
 
 export function isEmpty(obj: Object): boolean {
