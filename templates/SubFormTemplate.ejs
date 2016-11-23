@@ -1,12 +1,12 @@
 <FormGroup key={`sub-form-<%= propertyName%>`}>
-                        <Col
-                                sm={7}
-                                smOffset={2}
-                                style={{border: '1px solid lightgrey', borderRadius: '10px', marginBottom: '20px'}}
-                        >
+                    <Col
+                            sm={7}
+                            smOffset={2}
+                            style={{border: '1px solid lightgrey', borderRadius: '10px', marginBottom: '20px'}}
+                    >
                         <ControlLabel style={{textAlign: 'left'}}><%= propertyName%></ControlLabel>
-                                <% _.keys(formControls).forEach(function (key) { %>
-                                <%= formControls[key]%>
-                                <% }) %>
-                        </Col>
+                        <% _.keys(formControls).forEach(function (key) { %>
+                        <%= formControls[key]%>
+                        <% }) %>
+                    </Col>
                 </FormGroup>

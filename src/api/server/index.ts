@@ -1,4 +1,3 @@
-import 'whatwg-fetch';
 import * as axios from 'axios';
 import {config} from '../../config';
 

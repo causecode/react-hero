@@ -23,7 +23,7 @@ declare interface Object {
 
 declare interface Array<T> {
     each: (callback: Function) => void;
-    equals: (obj: any) => boolean;
+    equals: (obj: T[]) => boolean;
 }
 
 declare interface Window {

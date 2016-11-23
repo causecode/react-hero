@@ -6,7 +6,6 @@ import {commandLine} from './commandLine';
 import {INVALID_MODEL_NAME} from '../constants';
 import {BaseModel} from '../models/BaseModel';
 import {projectRoot, typescriptOut} from './projectConfig';
-import './init';
 
 generateShowPage();
 

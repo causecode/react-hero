@@ -48,9 +48,9 @@ function equals<T>(obj: Object | Array<T>) {
     return this === obj;
 }
 
-Object.prototype.isEmpty = isEmpty;
-Object.prototype.each = objectEach;
-Object.prototype.equals = equals;
+// Object.prototype.isEmpty = isEmpty;
+// Object.prototype.each = objectEach;
+// Object.prototype.equals = equals;
 Array.prototype.each = arrayEach;
 Array.prototype.equals = equals;
 String.prototype.capitalize = capitalize;

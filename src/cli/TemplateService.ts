@@ -9,6 +9,7 @@ import {BaseModel} from '../models/BaseModel';
 // import {projectRoot, typescriptOut} from './projectConfig';
 import {INVALID_COMMAND_ERROR} from '../constants';
 let mkdirp: any = require<any>('mkdirp');
+import './cliInit';
 
 interface IFormTemplateData {
     type: string;
@@ -57,12 +58,12 @@ function generateSubFormPage(propertyName, subPropTypes, model, resourceName) {
     let formControls = {};
     let {modelName} = commandLine;
     let inputTemplateString = `<FormInput 
-                                        type="<%= type%>"
-                                        <% if (enumInstance) { %>enum={<%= enumInstance%>}<% } %>
-                                        key="<%= key%>"
-                                        propertyName="<%= propertyName%>"
-                                        model="<%= model%>"    
-                                />`;
+                                type="<%= type%>"
+                                <% if (enumInstance) { %>enum={<%= enumInstance%>}<% } %>
+                                key="<%= key%>"
+                                propertyName="<%= propertyName%>"
+                                model="<%= model%>"    
+                        />`;
 
     let inputTemplate = _.template(inputTemplateString);
     Object.keys(subPropTypes).forEach((prop: string, index: number) => {

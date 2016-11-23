@@ -4,7 +4,6 @@ import {projectRoot, typescriptOut} from './projectConfig';
 import {commandLine} from './commandLine';
 import {BaseModel} from '../models/BaseModel';
 import {INVALID_MODEL_NAME} from '../constants';
-import './init';
 
 generateListPage();
 
