@@ -25,8 +25,8 @@ export function DataGrid( { instanceList, properties, resource }: IDataGridProps
                 <thead>
                     <tr className="data-grid-header">
                         <th>#</th>
-                        {properties.map(function(property) {
-                            return ( <th key = {properties.indexOf(property)}>{property.capitalize()}</th> );
+                        {properties.map(function(property: string, index: number) {
+                            return ( <th key={index}>{property.capitalize()}</th> );
                         })}
                         <th>Actions</th>
                     </tr>
@@ -35,16 +35,16 @@ export function DataGrid( { instanceList, properties, resource }: IDataGridProps
                     {instanceList.map((instance, index) => {
                         let instanceProperties = instance.properties;
                         return (
-                        <tr key={instanceProperties.id} className="data-grid-row">
+                        <tr key={index} className="data-grid-row">
                             <td>{index}</td>
-                            {properties.map(function(property) {
+                            {properties.map(function(property: string, index: number) {
                                 return ( 
-                                        <td key={properties.indexOf(property)}>
+                                        <td key={`property-${index}`}>
                                             {(() => {
                                                 if (property.indexOf('.') > 0) {
                                                     return instanceProperties.getNestedData(property);
                                                 } else {
-                                                    return instanceProperties[property];
+                                                    return instanceProperties[property].toString();
                                                 }
                                             })()}
                                         </td> 

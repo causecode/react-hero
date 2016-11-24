@@ -1,4 +1,4 @@
-import { Store, compose, createStore, applyMiddleware } from 'redux';
+import {Store, compose, createStore, applyMiddleware} from 'redux';
 import {rootReducer} from './../reducers/rootReducer';
 import {promiseMiddleware} from '../middleware/promiseMiddleware';
 import logger from './logger';

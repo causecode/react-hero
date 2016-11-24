@@ -6,6 +6,7 @@ import {ModelService} from '../utils/modelService';
 import {IInstanceContainerProps} from '../interfaces';
 import {PAGE_NOT_FOUND} from '../constants';
 import {ErrorPage} from '../components/ErrorPage';
+import {store} from '../store/index';
 
 export class ShowPageImpl extends React.Component<IInstanceContainerProps, void> {
 
@@ -15,7 +16,7 @@ export class ShowPageImpl extends React.Component<IInstanceContainerProps, void>
     };
 
     fetchInstanceData(resource: string , resourceID: string): void {
-        ModelService.getModel(resource).get(resourceID, false, {}, () => {}, () => {}, {}, 'edit');
+        ModelService.getModel(resource).get(resourceID, false, {}, () => {}, () => {}, store.getState(), 'edit');
     }
 
     componentWillMount(): void {

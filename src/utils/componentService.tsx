@@ -3,7 +3,6 @@ import {GenericListPage} from '../components/CRUD/GenericListPage';
 import {GenericEditPage} from '../components/CRUD/GenericEditPage';
 import {GenericShowPage} from '../components/CRUD/GenericShowPage';
 import {StatelessComponent, ComponentClass} from 'react';
-import '../utils/appService';
 import {getEnvironment} from './appService';
 
 export type ComponentType = (ComponentClass<any> | StatelessComponent<any>) & {resourceName?: string};
@@ -17,7 +16,7 @@ module ComponentService {
                 ` Using Generic${type.capitalize()} instead.`);
         }
     }
-    export type pageType = 'edit' | 'create' | 'list'
+    export type pageType = 'edit' | 'create' | 'list' | 'show';
 
     export function register(component: ComponentType, type: pageType) {
         let name = `${component.resourceName}${type}`;
@@ -93,6 +92,14 @@ module ComponentService {
         } else {
             warn(name, type);
             return GenericEditPage;
+        }
+    }
+
+    export function getFormPage(name: string, isCreatePage: boolean): ComponentType {
+        if (isCreatePage) {
+            return getCreatePage(name)
+        } else {
+            return getEditPage(name);
         }
     }
 }

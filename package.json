@@ -19,7 +19,9 @@
   },
   "bin": {
     "RH-generate-edit": "public/cli/generateEditPage.js",
-    "RH-generate-show": "public/cli/generateShowPage.js"
+    "RH-generate-show": "public/cli/generateShowPage.js",
+    "RH-generate-list": "public/cli/generateListPage.js",
+    "RH-generate-all": "public/cli/generateAll.js"
   },
   "repository": {
     "type": "git",

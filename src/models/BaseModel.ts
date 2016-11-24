@@ -209,7 +209,7 @@ export class BaseModel {
        headers?: {},
        successCallBack: Function = () => {},
        failureCallBack: Function = () => {},
-       state?: {data?: any},
+       state?: {forms?: any},
        operation?: 'edit' | 'create'
    ): T {
        let resourceName: string = this.getResourceName();
@@ -224,26 +224,24 @@ export class BaseModel {
                    {},
                    headers,
                    successCallBack,
-                   failureCallBack,
-                   operation
+                   failureCallBack
                )()
            );
        }
 
         state = !isEmpty(state) ? state : store.getState();
-        let instances = state.data;
-        instances = instances.toJS ? instances.toJS() : instances;
-        let requiredInstance: T;
-        if (operation === 'edit') {
-            requiredInstance = instances[`${resourceName}Edit`];
-        } else if (operation === 'create') {
-            requiredInstance = instances[`${resourceName}Create`];
-        } else {
-            requiredInstance = findInstanceByID<any>(state, resourceName, id).instance;
+        let listInstance = findInstanceByID<any>(state, resourceName, id).instance;
+        if (!operation) {
+            return listInstance;
         }
-        return requiredInstance;
-    }
+        
+        let formInstances = state.forms.RHForms || {};
+        formInstances = formInstances.toJS ? formInstances.toJS() : formInstances;
+        let instanceKey = operation === 'edit' ? `${resourceName}Edit` : `${resourceName}Create`;
+        let formInstance = formInstances[instanceKey];
 
+        return formInstance || listInstance;
+    }
 }
 
 function getPromiseAction(
@@ -253,8 +251,7 @@ function getPromiseAction(
     filters: Object,
     headers: Object = {},
     successCallBack: Function,
-    failureCallBack: Function,
-    operation: string = ''
+    failureCallBack: Function
 ) {
     return () =>
         (dispatch) => {
@@ -266,9 +263,6 @@ function getPromiseAction(
                 resource,
                 successCallBack,
                 failureCallBack,
-                actionParams: {
-                    isEditPageInstance: operation === 'edit'
-                }
             });
         };
 }

@@ -5,6 +5,7 @@ import {DefaultModel} from '../../models/BaseModel';
 import {ModelPropTypes} from '../../models/ModelPropTypes';
 import {isEmpty} from '../../utils/appService';
 
+// TODO handle how dates are displayed.
 export class GenericShowPage extends React.Component<IInstancePageProps, void> {
     static defaultProps: IInstancePageProps = {
         instance: new DefaultModel({})

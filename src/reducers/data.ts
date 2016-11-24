@@ -15,7 +15,6 @@ import {
     SAVE_INSTANCE,
     UPDATE_INSTANCE,
     DELETE_INSTANCE,
-    CREATE_INSTANCE
 } from '../constants';
 import * as StoreService from '../utils/storeService';
 import {MISSING_ACTION_PAYLOAD} from '../constants';
@@ -50,14 +49,8 @@ function dataReducer(state = INITIAL_STATE, action ) {
                 throw new Error(MISSING_ACTION_PAYLOAD);
             }
 
-            let modelInstance = new Model(instance);
-
-            if (action.isEditPageInstance) {
-                return state.set(`${instanceResource}Edit`, modelInstance);
-            } else {
-                return StoreService.setInstanceInList(state, instanceResource, modelInstance, true);
-            }
-
+            return StoreService.setInstanceInList(state, instanceResource, new Model(instance), true);
+            
         case FETCH_INSTANCE_DATA_ERROR:
             return state.set(`${action.resource}Edit`, fromJS({
                 hasError: true,
@@ -118,9 +111,6 @@ function dataReducer(state = INITIAL_STATE, action ) {
 
         case DELETE_INSTANCE:
             return StoreService.deleteAllInstances(state, action.resource, action.instance);
-
-        case CREATE_INSTANCE:
-            return state.set(`${action.instance.resourceName}Create`, action.instance);
 
         case UNSET_RESOURCE_LIST: 
             return state.deleteIn([`${action.resource}List`, 'instanceList']);

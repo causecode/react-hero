@@ -1,11 +1,17 @@
 import * as React from 'react';
 import {BaseModel} from '../models/BaseModel';
 import {ModelPropTypes} from '../models/ModelPropTypes';
-import {fromJS} from 'immutable';
 import {store} from '../store';
 import {ControlLabel, Col, FormGroup} from 'react-bootstrap';
 import {FormInput} from '../components/Widgets';
+import * as moment from 'moment';
+import {IImmutable} from '../interfaces/index';
 const {actions} = require<any>('react-redux-form');
+
+export interface IAppServiceConfig {
+    alertType?: string;
+    alertTimeOut?: number;
+}
 
 declare module process {
     export module env {
@@ -13,18 +19,39 @@ declare module process {
     }
 }
 
+export function objectEquals<T>(obj1: Object | Array<T>, obj2: Object | Array<T>) {
+    // Adding try catch here to avoid 'Converting circular structure to JSON' error.
+    try {
+        if ((obj1 instanceof Object && obj2 instanceof Object) || 
+                (obj1 instanceof Array && obj2 instanceof Array)
+        ) {
+            return (
+                JSON.stringify(obj1) ===
+                JSON.stringify(obj2)
+            );
+        }
+    } catch (e) {
+        return obj1 === obj2;
+    }
+
+    return obj1 === obj2;
+}
+
 export function getEnvironment(): string {
     return process.env.NODE_ENV;
 }
 
-export interface IAppServiceConfig {
-    alertType?: string;
-    alertTimeOut?: number;
+export function parseWidgetDate(date: number | string | Date): string {
+    let timestamp: number = date as number;
+    if (date instanceof Date) {
+        timestamp = date.getTime();
+    }
+    if (typeof date === 'string') {
+        timestamp = parseInt(date, 10); 
+    }
+    return moment(timestamp).format('YYYY-MM-DD');
 }
 
-String.prototype.capitalize = function() {
-    return this.charAt(0).toUpperCase() + this.slice(1);
-};
 
 Object.prototype.getNestedData = function(nestedPath: string) {
     let data = this;
@@ -54,25 +81,28 @@ export function getModelString(...args: any[]): string {
     return `RHForms.${args.join('.')}`;
 }
 
-export function initializeFormWithInstance<T extends BaseModel>(instance: T) {
+export function initializeFormWithInstance<T extends BaseModel>(instance: T, isCreate: boolean = false) {
     if (isEmpty(instance) || isEmpty(instance.properties)) {
         return;
     }
 
-    let model: string = getModelString(instance.resourceName);
+    let formModelString: string = isCreate ? `${instance.resourceName}Create` : `${instance.resourceName}Edit`;  
+    let model: string = getModelString(formModelString);
 
     store.dispatch(actions.change(model, instance));
 }
 
-export function getIn(object: Object, path: string) {
-    let propertyValue = fromJS(object).getIn(path.split('.'));
-    if (!propertyValue) {
-        return '';
-    }
+export function isImmutable(obj: Object | IImmutable): obj is IImmutable {
+    return (obj as IImmutable).toJS !== undefined;
+}
+
+export function getIn(object: Object | IImmutable, path: string, defaultValue: Object = '') {
+    let immutableObject = isImmutable(object) ? object.toJS() : object; 
+    let propertyValue: IImmutable = (immutableObject as IImmutable).getIn(path.split('.'), defaultValue) as IImmutable;
     return propertyValue.toJS ? propertyValue.toJS() : propertyValue;
 }
 
-export function generateSubForm(propertyName: string, object: Object, propTypes: any, model: string) {
+export function generateSubForm(propertyName: string, propTypes: any, model: string) {
 
     let FormControls =  Object.keys(propTypes).map((prop, index: number) => {
         if (propTypes.hasOwnProperty(prop)) {
@@ -108,6 +138,7 @@ export function generateSubForm(propertyName: string, object: Object, propTypes:
 
 export function generateForm<T extends BaseModel>(
         instance: T,
+        isCreatePage: boolean,
         model: string = '',
         propTypes: any = instance.propTypes
 ): JSX.Element {
@@ -117,12 +148,12 @@ export function generateForm<T extends BaseModel>(
                 let keyPath = model ? model + '.' + prop : prop; 
                 let propertyValue = getIn(instance.properties, keyPath);
                 let type: string = instance.propTypes[prop].type;
-                let modelString: string = getModelString(instance.resourceName, 'properties', keyPath);
+                let formModelString = isCreatePage ? `${instance.resourceName}Create` : `${instance.resourceName}Edit`;
+                let modelString: string = getModelString(formModelString, 'properties', keyPath);
                 if (type === ModelPropTypes.objectInputType) {
                     return generateSubForm(
                             prop, 
-                            propertyValue, 
-                            getIn(instance.propTypes, keyPath).propTypes,
+                            (getIn(instance.propTypes, keyPath) as typeof BaseModel).propTypes,
                             modelString 
                     );
                 }

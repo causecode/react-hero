@@ -10,8 +10,7 @@ import {
     ListGroupItem,
     Radio
 } from 'react-bootstrap';
-import * as moment from 'moment';
-import {isEmpty} from '../../utils/appService';
+import {isEmpty, parseWidgetDate} from '../../utils/appService';
 import {store} from '../../store';
 import {connect} from 'react-redux';
 const {actions} = require<any>('react-redux-form');
@@ -29,7 +28,7 @@ let GenericInputTemplate = (props) => {
     };
 
     return (
-        <input className="form-control" {...props} value={props.value} onChange={handleChange}/>
+        <input type={props.type} className="form-control" value={props.value} onChange={handleChange}/>
     );
 };
 
@@ -174,7 +173,7 @@ class FormInputImpl extends React.Component<IInputProps, {}> {
     render() {
         let {propertyValue} = this.props;
         if (this.props.type === 'date') {
-            propertyValue = propertyValue ? moment(propertyValue).format('YYYY-MM-DD') : '';
+            propertyValue = propertyValue ? parseWidgetDate(propertyValue) : '';
         }
         let InputTemplate: React.ComponentClass<any> = this.getInputTemplate() as React.ComponentClass<any>;
         return (
@@ -204,5 +203,4 @@ let mapStateToProps = (state, ownProps) => {
     };
 };
 
-let FormInput = connect(mapStateToProps)(FormInputImpl);
-export {FormInput};
+export let FormInput = connect(mapStateToProps)(FormInputImpl);

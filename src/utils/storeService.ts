@@ -115,7 +115,7 @@ export function findInstanceInList<T>(instanceList: T[], id: string) {
         if (!properties || !properties.id) {
             return true; // continue to next instance.
         }
-        if (properties.id === id) {
+        if (properties.id.toString() === id) {
             requiredInstance = instance;
             index = i;
             return false; // stop looping.

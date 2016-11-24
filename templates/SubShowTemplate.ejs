@@ -1,7 +1,12 @@
-    <Table>
-                            <tbody>
-                                <% _.keys(tableRowMap).forEach(function (key) { %>
-                                <%= tableRowMap[key]%>
-                                <% }) %>        
-                            </tbody>
-                        </Table>
+<tr>
+                        <td><strong><%= propertyName%></strong></td>
+                        <td style={{padding: '0px'}}>
+                            <Table>
+                                <tbody>
+                                    <% _.keys(tableRowMap).forEach(function (key) { %>
+                                    <%= tableRowMap[key]%>
+                                    <% }) %>        
+                                </tbody>
+                            </Table>
+                        </td>
+                    </tr>

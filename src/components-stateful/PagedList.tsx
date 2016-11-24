@@ -56,7 +56,10 @@ export class PagedListImpl extends React.Component<IPagedListProps, void> {
         this.fetchInstanceList(resource);
     };
 
-    // TODO remove any from handlePagination
+    /*
+     * Using any here because the type defined by react-bootstrap i.e. SelectCallback was not assignable here.
+     * TODO Remove any in handlePagination.
+     */
     handlePagination: any = (pageNumber: number, e: React.SyntheticEvent): void => {
         this.fetchInstanceList(this.props.resource, {offset: (pageNumber - 1) * this.props.max});
         this.props.setPage(pageNumber, this.props.resource);
@@ -96,14 +99,14 @@ export class PagedListImpl extends React.Component<IPagedListProps, void> {
 }
 
 function mapStateToProps(state, ownProps): IPagedListStateProps {
-    let instanceList: IPagedListStateProps & {toJS?: () => IPagedListStateProps} =
+    let resourceData: IPagedListStateProps & {toJS?: () => IPagedListStateProps} =
             state.data.get(`${ownProps.resource}List`, {});
-    instanceList = instanceList.toJS ? instanceList.toJS() : instanceList;
+    resourceData = resourceData.toJS ? resourceData.toJS() : resourceData;
     return {
-        properties: instanceList.properties,
-        instanceList: instanceList.instanceList,
-        totalCount:  instanceList.totalCount,
-        activePage: instanceList.activePage
+        properties: resourceData.properties,
+        instanceList: resourceData.instanceList,
+        totalCount:  resourceData.totalCount,
+        activePage: resourceData.activePage
     };
 }
 

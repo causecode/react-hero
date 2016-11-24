@@ -2,4 +2,4 @@
 
 import {generateEditPage} from './generatorService';
 
-generateEditPage('edit');
+generateEditPage('create');

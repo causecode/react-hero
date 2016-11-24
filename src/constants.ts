@@ -12,7 +12,7 @@ export const FETCH_INSTANCE_LIST_ERROR: string = 'FETCH_INSTANCE_LIST_ERROR';
 export const SET_PAGE: string = 'SET_PAGE';
 export const UNSET_RESOURCE_LIST: string = 'UNSET_RESOURCE_LIST';
 export const TOGGLE_FILTERS: string = 'TOGGLE_FILTERS';
-export const CREATE_INSTANCE: string = 'CREATE_INSTANCE';
+// export const CREATE_INSTANCE: string = 'CREATE_INSTANCE';
 export const TOGGLE_NAV: string = 'TOGGLE_NAV';
 
 // Error messages.
@@ -32,6 +32,7 @@ export const NO_DEFAULT_PROPS = (modelName: string): string => {
     return `Cannot instantiate ${modelName}, No defaultProps defined.`;
 }; 
 export const PAGE_NOT_FOUND: string = 'Page not found.';
+export const INSTANCE_NOT_FOUND: string = 'Instance not found.';
 export const INSTANTIATION_ERROR: string = 'Instantiation Failed: Trying to create a new instance of DeviceTypes. '
         + 'Please use one of the predefined Device types.';
 export const INVALID_STATE: string = 'Invalid State.';
