@@ -1,19 +1,20 @@
 import * as React from 'react';
 import {Table} from 'react-bootstrap';
-import {ModelPropTypes, IInstancePageProps, DefaultModel} from 'react-hero';
+import {ModelPropTypes, IInstancePageProps} from 'react-hero';
+import {<%= modelName%>Model} from '<%= modelPath%>';
 
 export class <%= modelName.capitalize()%>ShowPage extends React.Component<IInstancePageProps, void> {
 
     static resourceName: string = '<%= resourceName%>';
     
     static defaultProps: IInstancePageProps = {
-        instance: new DefaultModel({})
+        instance: new <%= modelName%>Model({})
     };
 
     render(): JSX.Element {
         const {instance} =  this.props;
         return (
-            <Table responsive bordered className="<%= resourceName%>-show-page">
+            <Table responsive bordered>
                 <thead>
                     <tr>
                         <th>Property</th>

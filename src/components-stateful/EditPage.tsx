@@ -8,7 +8,9 @@ import {INSTANCE_NOT_FOUND} from '../constants';
 import {ErrorPage} from '../components/ErrorPage';
 import {IGenericEditPageProps} from '../components/CRUD/GenericEditPage';
 import {connect} from 'react-redux';
-import {isEmpty, initializeFormWithInstance} from '../utils/appService';
+import {isEmpty, initializeFormWithInstance, objectEquals} from '../utils/appService';
+import {store} from '../store';
+import '../init';
 
 function isCreatePage(pathName: string): boolean {
     if (!pathName) {
@@ -20,16 +22,14 @@ export type EditPageProps = IInstanceContainerProps &
         IInjectedProps
 
 export class EditPageImpl extends React.Component<EditPageProps, void> {
-    isCreatePage: boolean;
     static defaultProps: EditPageProps = {
         instance: new DefaultModel({}),
         params: {resource: '', resourceID: ''},
         location: {pathname: ''},
     };
 
-    constructor(props) {
-        super();
-        this.isCreatePage = isCreatePage(props.location.pathname) ;
+    isCreatePage(): boolean {
+        return isCreatePage(this.props.location.pathname)
     }
 
     fetchInstanceFromServer = (): void =>  {
@@ -41,20 +41,21 @@ export class EditPageImpl extends React.Component<EditPageProps, void> {
                 {},
                 () => {},
                 () => {},
+                store.getState(),
                 'edit'
             );
         }
     }
 
     componentWillMount(): void {
-        if (!this.isCreatePage) {
+        if (!this.isCreatePage()) {
             this.fetchInstanceFromServer();
         }
-        initializeFormWithInstance(this.props.instance, this.isCreatePage);
+        initializeFormWithInstance(this.props.instance, this.isCreatePage());
     }
 
     handleSubmit = (instance: BaseModel): void => {
-        if (this.isCreatePage) {
+        if (this.isCreatePage()) {
             instance.$save(true);
         } else {
             instance.$update(true);
@@ -68,8 +69,8 @@ export class EditPageImpl extends React.Component<EditPageProps, void> {
     componentWillReceiveProps(nextProps: EditPageProps) {
         let currentInstance = this.props.instance;
         let nextInstance = nextProps.instance;
-        if (!nextInstance.equals(currentInstance)) {
-            initializeFormWithInstance(nextProps.instance, this.isCreatePage);
+        if (!objectEquals(nextInstance, currentInstance)) {
+            initializeFormWithInstance(nextProps.instance, this.isCreatePage());
         }
     }
 
@@ -90,9 +91,9 @@ export class EditPageImpl extends React.Component<EditPageProps, void> {
         }
         const childProps: IGenericEditPageProps = {location: this.props.location, params: this.props.params,
                 handleSubmit: this.handleSubmit, instance, handleDelete: this.handleDelete, 
-                isCreatePage: this.isCreatePage};
-        let Page: React.ComponentClass<void> = ComponentService
-                .getEditPage(this.props.params.resource) as React.ComponentClass<void>;
+                isCreatePage: this.isCreatePage()};
+        let Page = ComponentService
+                .getFormPage(this.props.params.resource, this.isCreatePage()) ;
         return(
             <Page {...childProps}/>
         );
@@ -109,7 +110,8 @@ function mapStateToProps(state, ownProps): Object {
                         true, 
                         {}, 
                         () => {}, 
-                        () => {}, 
+                        () => {},
+                        '' as 'edit' | 'create', 
                         state
                     );
     } else {

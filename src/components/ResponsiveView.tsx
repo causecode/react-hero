@@ -1,5 +1,5 @@
 import * as React from 'react';
-import '../utils/appService';
+import '../init';
 import {INSTANTIATION_ERROR} from '../constants';
 export class DeviceTypes {
 

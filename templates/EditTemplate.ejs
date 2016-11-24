@@ -3,56 +3,56 @@ import {<%= modelName%>Model} from '<%= modelPath%>';
 import {ControlLabel, FormGroup, Col, Button, Grid} from 'react-bootstrap';
 import {Link} from 'react-router';
 import {FormInput, IInstancePageProps, initializeFormWithInstance} from 'react-hero';
+import {store} from '../../../store';
 
-export interface I<%= modelName%>EditPageProps extends IInstancePageProps {
-    handleSubmit: (instance: <%= modelName%>Model, e: React.FormEvent) => void;
-    handleDelete: (instance: <%= modelName%>Model, e: React.FormEvent) => void;
-}
-
-export interface I<%= modelName%>EditPageState {
+export interface I<%= componentName%>PageProps extends IInstancePageProps {
+    handleSubmit: (instance: <%= modelName%>Model) => void;
+    handleDelete: (instance: <%= modelName%>Model) => void;
     instance: <%= modelName%>Model;
+    isCreatePage: boolean;
 }
 
-export class <%= modelName%>EditPage extends React.Component<I<%= modelName%>EditPageProps, I<%= modelName%>EditPageState> { 
+export class <%= componentName%>Page extends React.Component<I<%= componentName%>PageProps, void> { 
 
     static resourceName: string = '<%= resourceName%>';
     
-    constructor(props: I<%= modelName%>EditPageProps) {
-         super();
-         this.state = {instance: props.instance};
-     }
+    fetchStoreInstance = (): <%= modelName%>Model => {
+        let instance = this.props.instance;
+        let instanceKey = this.props.isCreatePage ? `${instance.resourceName}Create` : `${instance.resourceName}Edit`;
+        instance.properties = store.getState().forms[`RHForms`][instanceKey].properties; 
+        return instance;
+    }
 
     handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        this.props.handleSubmit(this.state.instance, e);
+        // Not using connect here to avoid rerendering of component on change of instance properties.
+        this.props.handleSubmit(this.fetchStoreInstance());
     }
 
     handleDelete = (e: React.FormEvent) => {
-        this.props.handleDelete(this.state.instance, e);
+        if (this.props.handleDelete && this.props.handleDelete instanceof Function) {
+            this.props.handleDelete(this.fetchStoreInstance()); 
+        }
     }
 
-    handleChange = (instance: <%= modelName%>Model): void  => {
-        this.setState({instance: instance});
-    };
-
-    componentWillMount(): void {
-        initializeFormWithInstance(this.props.instance);
-    }
-
-    render() {
+    render(): JSX.Element {
         return (
-            <form className="<%= resourceName%>-edit-page" onSubmit={this.handleSubmit}>
+            <form onSubmit={this.handleSubmit}>
             <Grid>
                 <% _.keys(formControls).forEach(function (key) { %>
                 <%= formControls[key]%>
                 <% }) %>
                 <FormGroup>
                     <Col sm={4} smOffset={3}>
-                        <Button style={{margin: '0px 10px'}} bsStyle="primary" type="submit">Update</Button>
+                        <Button style={{margin: '0px 10px'}} bsStyle="primary" type="submit">
+                            Update
+                        </Button>
                         <Button style={{margin: '0px 10px'}} bsStyle="danger" onClick={this.handleDelete}>
                             Delete
                         </Button>
-                        <Link style={{margin: '0px 10px'}} className="btn btn-default" to={'<%= cancelDestination%>'}>Cancel</Link>
+                        <Link style={{margin: '0px 10px'}} className="btn btn-default" to={'<%= cancelDestination%>'}>
+                            Cancel
+                        </Link>
                     </Col>
                 </FormGroup>
                 </Grid>

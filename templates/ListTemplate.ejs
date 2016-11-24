@@ -6,7 +6,7 @@ export class <%= modelName%>ListPage extends React.Component<{}, void> {
 
     render(): JSX.Element {
         return (
-            <div className="<%= resourceName%>-list-page">
+            <div>
                 <PagedList resource={this.constructor[`resourceName`]} max={20}>
                     {/*<DropDownFilter
                         label="mention label here"

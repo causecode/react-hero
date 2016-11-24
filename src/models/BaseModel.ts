@@ -189,8 +189,8 @@ export class BaseModel {
        headers?: {},
        successCallBack?: Function,
        failureCallBack?: Function,
+       state?: {data?: any},
        operation?: 'edit' | 'create',
-       state?: {data?: any}
    ): T;
    static get<T extends BaseModel>(
        id: string,
@@ -198,8 +198,8 @@ export class BaseModel {
        headers?: {},
        successCallBack: Function = () => {},
        failureCallBack: Function = () => {},
+       state?: {forms?: any},
        operation?: 'edit' | 'create',
-       state?: {forms?: any}
    ): T {
        let resourceName: string = this.getResourceName();
        if (!valueInStore && operation !== 'create') {

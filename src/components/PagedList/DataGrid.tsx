@@ -24,16 +24,16 @@ export function DataGrid( { instanceList, properties, resource }: IDataGridProps
                 <thead>
                     <tr className="data-grid-header">
                         <th>#</th>
-                        {properties.map(function(property) {
-                            return ( <th key = {properties.indexOf(property)}>{property}</th> );
+                        {properties.map(function(property: string, index: number) {
+                            return ( <th key={index}>{property}</th> );
                         })}
                     </tr>
                 </thead>
                 <tbody>
-                    {instanceList.map((instance) => {
+                    {instanceList.map((instance, index) => {
                         let instanceProperties = instance.properties;
                         return (
-                        <tr key={instanceProperties.id} className="data-grid-row">
+                        <tr key={index} className="data-grid-row">
                             <td>
                                 <Link to={`/${resource}/edit/${instanceProperties.id}`}>
                                     <i className="fa fa-pencil" />
@@ -42,10 +42,10 @@ export function DataGrid( { instanceList, properties, resource }: IDataGridProps
                                     <i className="fa fa-location-arrow" />
                                 </Link>
                             </td>
-                            {properties.map(function(property) {
+                            {properties.map(function(property: string, index: number) {
                                 return ( 
-                                    <td key={properties.indexOf(property)}>
-                                        {instanceProperties[property].toString()}
+                                    <td key={`property-${index}`}>
+                                        {(instanceProperties[property]).toString()}
                                     </td> 
                                 );
                             })}

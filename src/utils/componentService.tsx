@@ -94,6 +94,14 @@ module ComponentService {
             return GenericEditPage;
         }
     }
+
+    export function getFormPage(name: string, isCreatePage: boolean): ComponentType {
+        if (isCreatePage) {
+            return getCreatePage(name)
+        } else {
+            return getEditPage(name);
+        }
+    }
 }
 
 export {ComponentService};

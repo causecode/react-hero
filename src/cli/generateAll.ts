@@ -1,9 +1,5 @@
-import {generateEditPage} from './generateEditPage';
-import {generateShowPage} from './generateShowPage';
-import {generateListPage} from './generateListPage';
+#! /usr/bin/env node
 
-export function generateAll() {
-    generateEditPage();
-    generateShowPage();
-    generateListPage();
-}
+import {generateAll} from './generatorService';
+
+generateAll();

@@ -56,7 +56,10 @@ export class PagedListImpl extends React.Component<IPagedListProps, void> {
         this.fetchInstanceList(resource);
     };
 
-    // TODO remove any from handlePagination
+    /*
+     * Using any here because the type defined by react-bootstrap i.e. SelectCallback was not assignable here.
+     * TODO Remove any in handlePagination.
+     */
     handlePagination: any = (pageNumber: number, e: React.SyntheticEvent): void => {
         this.fetchInstanceList(this.props.resource, {offset: (pageNumber - 1) * this.props.max});
         this.props.setPage(pageNumber, this.props.resource);

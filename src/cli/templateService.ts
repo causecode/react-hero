@@ -14,7 +14,6 @@ import './cliInit';
 interface IFormTemplateData {
     type: string;
     enumInstance: string;
-    key: string;
     propertyName: string;
     model: string;
 }
@@ -58,9 +57,9 @@ function generateSubFormPage(propertyName, subPropTypes, model, resourceName) {
     let formControls = {};
     let {modelName} = commandLine;
     let inputTemplateString = `<FormInput 
-                                type="<%= type%>"
-                                <% if (enumInstance) { %>enum={<%= enumInstance%>}<% } %>
-                                key="<%= key%>"
+                                type="<%= type%>" ` + 
+                                `<% if (enumInstance) { %>` + ` 
+                                enum={<%= enumInstance%>}<% } %>` + `
                                 propertyName="<%= propertyName%>"
                                 model="<%= model%>"    
                         />`;
@@ -77,7 +76,6 @@ function generateSubFormPage(propertyName, subPropTypes, model, resourceName) {
         let templateData: IFormTemplateData = {
             type: currentPropType.type,
             enumInstance,
-            key: `form-control-sub-${resourceName}-${index}`,
             propertyName: prop,
             model: model + '.' + prop    
         };
@@ -92,19 +90,30 @@ function generateSubFormPage(propertyName, subPropTypes, model, resourceName) {
     });
 }
 
-export function generateFormPage(ModelClass: typeof BaseModel): string {
+export function generateFormPage(ModelClass: typeof BaseModel, pageType: 'edit' | 'create'): string {
     let {resourceName, propTypes} = ModelClass;
     let {modelName} = commandLine;
+    
     let formControls: {[key: string]: string} = {};
     let inputTemplateString = `<FormInput 
-                        type="<%= type%>"
-                        <% if (enumInstance) { %>enum={<%= enumInstance%>}<% } %>
-                        key="<%= key%>"
+                        type="<%= type%>" ` + 
+                        `<% if (enumInstance) { %>` + ` 
+                        enum={<%= enumInstance%>}<% } %>` + `
                         propertyName="<%= propertyName%>"
                         model="<%= model%>"    
                 />`;
 
     let inputTemplate = _.template(inputTemplateString);
+    let formModelString: string = resourceName;
+    let componentName: string = modelName;
+    if (pageType === 'edit') {
+        formModelString += 'Edit';
+        componentName += 'Edit';
+    } else if (pageType === 'create') {
+        formModelString += 'Create';
+        componentName += 'Create';
+    }
+
     if (!isEmpty(propTypes)) {
         Object.keys(propTypes).forEach((prop: string, index: number) => {
             if (!propTypes.hasOwnProperty(prop)) {
@@ -113,14 +122,15 @@ export function generateFormPage(ModelClass: typeof BaseModel): string {
 
             let currentPropType = propTypes[prop];
 
+            let model: string = getModelString(formModelString, 'properties', prop) 
+
             if (currentPropType.type === 'object') {
                 formControls[prop] = generateSubFormPage(
                         prop, 
                         currentPropType.propTypes, 
-                        getModelString(resourceName, 'properties', prop),
+                        model,
                         resourceName
                 );
-
                 return;
             }
             let enumInstance: string = currentPropType.enum ? 
@@ -128,9 +138,8 @@ export function generateFormPage(ModelClass: typeof BaseModel): string {
             let templateData: IFormTemplateData = {
                 type: currentPropType.type,
                 enumInstance,
-                key: `form-control-${resourceName}-${index}`,
                 propertyName: prop,
-                model: getModelString(resourceName, 'properties', prop)    
+                model    
             };
 
             formControls[prop] = inputTemplate(templateData);
@@ -141,6 +150,7 @@ export function generateFormPage(ModelClass: typeof BaseModel): string {
             _.template(require<string>('../../templates/EditTemplate.ejs'));
     return editTemplate({
         modelName, 
+        componentName,
         resourceName,
         /* tslint:disable */
         modelPath: `../..${commandLine.modelPath[0] === '/' ? commandLine.modelPath : `/${commandLine.modelPath}`}`, // Assuming the file will always be generated 3 levels deep from the root.
@@ -204,6 +214,9 @@ export function generateShowPage(ModelClass: typeof BaseModel): string {
   
     return showTemplate({
         modelName: commandLine.modelName, 
+        /* tslint:disable */
+        modelPath: `../..${commandLine.modelPath[0] === '/' ? commandLine.modelPath : `/${commandLine.modelPath}`}`, // Assuming the file will always be generated 3 levels deep from the root.
+        /* tslint:enable */
         resourceName,
         tableRowMap,
     });
