@@ -111,8 +111,8 @@ function mapStateToProps(state, ownProps): Object {
                         {}, 
                         () => {}, 
                         () => {},
-                        '' as 'edit' | 'create', 
-                        state
+                        state,
+                        '' as 'edit' | 'create' 
                     );
     } else {
         instance = new ModelClass({});

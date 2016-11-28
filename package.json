@@ -19,6 +19,7 @@
   },
   "bin": {
     "RH-generate-edit": "public/cli/generateEditPage.js",
+    "RH-generate-create": "public/cli/generateCreatePage.js",
     "RH-generate-show": "public/cli/generateShowPage.js",
     "RH-generate-list": "public/cli/generateListPage.js",
     "RH-generate-all": "public/cli/generateAll.js"
@@ -29,23 +30,15 @@
   },
   "jest": {
     "verbose": true,
-    "scriptPreprocessor": "<rootDir>/preprocessor.js",
-    "preprocessorIgnorePatterns": [
-      "<rootDir>/node_modules/",
-      "<rootDir>/typings/"
-    ],
-    "testFileExtensions": [
+    "transform": {
+      "^.+\\.(ts|tsx)$": "<rootDir>/preprocessor.js"
+    },
+    "moduleFileExtensions": [
       "ts",
       "tsx",
       "js"
     ],
-    "unmockedModulePathPatterns": [
-      "react"
-    ],
-    "moduleNameMapper": {
-      "^.+\\.(css|less)$": "<rootDir>/__mocks__/styleMock.js",
-      "^.+\\.(gif|ttf|eot|svg)$": "<rootDir>/__mocks__/fileMock.js"
-    }
+    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx)$"
   },
   "keywords": [],
   "author": "",
@@ -54,15 +47,22 @@
   "dependencies": {
     "axios": "^0.12.0",
     "bootstrap": "^3.3.6",
+    "classnames": "^2.2.5",
     "css-loader": "^0.23.1",
+    "es5-shim": "^4.5.9",
+    "es6-promise": "^3.2.1",
     "extract-text-webpack-plugin": "^1.0.1",
     "file-loader": "^0.8.5",
     "font-awesome": "^4.6.1",
     "html-webpack-plugin": "^2.19.0",
+    "immutable": "^3.8.1",
+    "jest": "^17.0.3",
+    "jest-cli": "^17.0.3",
     "json-loader": "^0.5.4",
     "moment": "^2.15.2",
-    "react": "^15.1.0",
-    "react-bootstrap": "^0.29.4",
+    "object-assign": "^4.1.0",
+    "react": "^15.4.0",
+    "react-bootstrap": "^0.30.6",
     "react-di": "^0.3.1",
     "react-dom": "^15.1.0",
     "react-hot-loader": "^1.3.0",
@@ -72,28 +72,24 @@
     "react-router": "^2.4.1",
     "react-router-redux": "^4.0.5",
     "react-shallow-testutils": "^2.0.0",
-    "redux": "^3.5.2",
+    "redux": "^3.6.0",
+    "redux-form": "^5.2.5",
+    "redux-logger": "^2.6.1",
+    "redux-mock-store": "^1.2.1",
+    "redux-thunk": "^2.1.0",
+    "source-map-loader": "^0.1.5",
     "style-loader": "^0.13.1",
-    "ts-loader": "^0.8.2",
+    "ts-loader": "^1.2.2",
     "tslint": "^3.11.0",
     "tslint-loader": "^2.1.4",
-    "typescript": "^1.8.10",
+    "typescript": "^2.1.1",
+    "typings": "^1.0.4",
     "underscore": "^1.8.3",
+    "unroll": "git+ssh://git@bitbucket.org/causecode/unroll.git#remove-title-dependency",
     "url-loader": "^0.5.7",
     "webpack": "^1.13.1",
     "webpack-dev-server": "^1.14.1",
-    "redux-thunk": "^2.1.0",
-    "redux-mock-store": "^1.1.2",
-    "redux-form": "^5.2.5",
-    "redux-logger": "^2.6.1",
-    "es6-promise": "^3.2.1",
-    "whatwg-fetch": "^1.0.0",
-    "classnames": "^2.2.5",
-    "source-map-loader": "^0.1.5",
-    "typings": "^1.0.4",
-    "immutable": "^3.8.1",
-    "object-assign": "^4.1.0",
-    "es5-shim": "^4.5.9"
+    "whatwg-fetch": "^1.0.0"
   },
   "devDependencies": {
     "autoprefixer": "^6.3.6",
@@ -105,11 +101,12 @@
     "babel-preset-stage-3": "^6.11.0",
     "concurrently": "^2.1.0",
     "cssnano": "^3.7.1",
-    "jest-cli": "^13.0.0",
+    "jest": "^17.0.3",
+    "jest-cli": "^17.0.3",
     "postcss-cssnext": "^2.6.0",
     "postcss-loader": "^0.9.1",
     "raw-loader": "^0.5.1",
-    "react-addons-test-utils": "^15.2.0",
+    "react-addons-test-utils": "^15.4.0",
     "redux-localstorage": "^0.4.1",
     "rimraf": "^2.5.2",
     "stylelint": "^6.6.0",

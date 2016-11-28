@@ -2,12 +2,11 @@ import {Store, compose, createStore, applyMiddleware} from 'redux';
 import {rootReducer} from './../reducers/rootReducer';
 import {promiseMiddleware} from '../middleware/promiseMiddleware';
 import logger from './logger';
-import * as appService from '../utils/appService';
+import {getEnvironment} from '../utils/appService';
 const thunk = require<any>('redux-thunk').default;
-const MockStore = require<{default: any}>('redux-mock-store').default;
+const configureMockStore: Function = require<{default: any}>('redux-mock-store').default;
 
 // Doing this to avoid cyclic imports problem when used through commandline.
-let getEnvironment = appService.getEnvironment || (() => '');
 
 // MockStore interface copied from redux-mock-store index.d.ts file since interface is not exported.
 export interface IMockStore extends Store {
@@ -20,8 +19,10 @@ export interface IMockStore extends Store {
 
 export function configureStore(initialState): Store | IMockStore {
     let store: Store | IMockStore;
-    if ( getEnvironment() === 'test') {
-         store = (MockStore as Function)()(initialState, rootReducer, _getMiddleware());
+    // Using process.env.NODE_ENV instead of appService.getEnvironment because appService Import was returning empty.
+    if (process.env.NODE_ENV === 'test') {
+        store = configureMockStore()(initialState)
+        // store = configureMockStore(_getMiddleware())(initialState, rootReducer, _getMiddleware());
     } else {
         store = compose(
             _getMiddleware(),
@@ -38,7 +39,7 @@ function _getMiddleware(): Function {
         thunk,
     ];
 
-    if (getEnvironment() === 'development') {
+    if (process.env.NODE_ENV === 'development') {
         middleware.push(logger);
     }
 

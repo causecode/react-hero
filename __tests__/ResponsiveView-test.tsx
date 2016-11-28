@@ -2,7 +2,6 @@ import {DeviceTypes} from '../src/components/ResponsiveView';
 jest.unmock('../src/components/ResponsiveView');
 import {ResponsiveView} from '../src/components/ResponsiveView';
 import * as TestUtils from 'react-addons-test-utils';
-import * as ReactDOM from 'react-dom';
 import * as React from 'react';
 import {INSTANTIATION_ERROR} from '../src/constants';
 const unroll: any = require<any>('unroll');
@@ -132,7 +131,7 @@ describe('Test Device Types enum', () => {
 
 describe('Test Responsive View', () => {
 
-    let mockWindow: (propertyValue: number) => {}, oldGetComputedStyle: typeof window.getComputedStyle;
+    let mockWindow: (propertyValue: number) => void, oldGetComputedStyle: typeof window.getComputedStyle;
     oldGetComputedStyle = window.getComputedStyle;
 
     beforeEach(() => {
@@ -189,9 +188,9 @@ describe('Test Responsive View', () => {
 
         unroll('renders in #device device', (done, testArgs) => {
             mockWindow(testArgs.mockId);
-            let view: React.Component<void, void> = TestUtils.renderIntoDocument<React.Component<void, void>>(
+            let view = TestUtils.renderIntoDocument<void>(
                 <ResponsiveViewImpl />
-            );
+            ) as React.Component<void, {}>;
             expect(TestUtils.scryRenderedDOMComponentsWithTag(view, 'div')[0].textContent).toBe(testArgs.device);
             done();
         }, [
@@ -208,9 +207,9 @@ describe('Test Responsive View', () => {
         it('renders Responsive View directly', () => {
             mockWindow(DesktopMockID);
 
-            let view: ResponsiveView<void, void> = TestUtils.renderIntoDocument<ResponsiveView<void, void>>(
+            let view: React.Component<void, {}> = TestUtils.renderIntoDocument<void>(
                 <ResponsiveView/>
-            );
+            ) as React.Component<void, {}>;
 
             expect(view).toBeTruthy();
             expect(TestUtils.scryRenderedDOMComponentsWithTag(view, 'div').length).toEqual(1);
@@ -237,9 +236,9 @@ describe('Test Responsive View', () => {
 
             unroll('renders on #device device', (done, testArgs) => {
                 mockWindow(testArgs.mockId);
-                let view: React.Component<void, void> = TestUtils.renderIntoDocument<React.Component<void, void>>(
+                let view: React.Component<void, {}> = TestUtils.renderIntoDocument<void>(
                     <TestView />
-                );
+                ) as React.Component<void, {}>;
                 expect(TestUtils.scryRenderedDOMComponentsWithTag(view, 'div')[0].textContent).toEqual(testArgs.device);
                 done();
             }, [
@@ -266,9 +265,9 @@ describe('Test Responsive View', () => {
 
         unroll('renders on #device device', (done, testArgs) => {
             mockWindow(testArgs.mockId);
-            let view: React.Component<void, void> = TestUtils.renderIntoDocument<React.Component<void, void>>(
+            let view: React.Component<void, {}> = TestUtils.renderIntoDocument<void>(
                 <DefaultView />
-            );
+            ) as React.Component<void, {}>;
             expect(TestUtils.scryRenderedDOMComponentsWithTag(view, 'div')[0].textContent).toEqual('Default');
             done();
         }, [

@@ -6,6 +6,7 @@ import {ControlLabel, Col, FormGroup} from 'react-bootstrap';
 import {FormInput} from '../components/Widgets';
 import * as moment from 'moment';
 import {IImmutable} from '../interfaces/index';
+import {fromJS} from 'immutable';
 const {actions} = require<any>('react-redux-form');
 
 export interface IAppServiceConfig {
@@ -77,7 +78,7 @@ export function isImmutable(obj: Object | IImmutable): obj is IImmutable {
 }
 
 export function getIn(object: Object | IImmutable, path: string, defaultValue: Object = '') {
-    let immutableObject = isImmutable(object) ? object.toJS() : object; 
+    let immutableObject = isImmutable(object) ? object : fromJS(object) ;
     let propertyValue: IImmutable = (immutableObject as IImmutable).getIn(path.split('.'), defaultValue) as IImmutable;
     return propertyValue.toJS ? propertyValue.toJS() : propertyValue;
 }

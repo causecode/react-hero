@@ -1,7 +1,7 @@
 import * as appService from './utils/appService';
 let packageJson: any = require('../../../package.json');
-// let localConfigJson: any = require('../../../package.json');
-let localConfigJson: any = require('../../../localConfig.json');
+let localConfigJson: any = require('../../../package.json');
+// let localConfigJson: any = require('../../../localConfig.json');
 // let configLocation: string = getEnvironment() === 'production' ? packageLocation : localConfigLocation;
 
 // Doing this to avoid cyclic imports problem when used through commandline.
