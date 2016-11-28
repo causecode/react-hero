@@ -44,6 +44,9 @@ export function DataGrid( { instanceList, properties, resource }: IDataGridProps
                                                 if (property.indexOf('.') > 0) {
                                                     return instanceProperties.getNestedData(property);
                                                 } else {
+                                                    if (!instanceProperties[property]) {
+                                                        return instanceProperties[property];    
+                                                    }
                                                     return instanceProperties[property].toString();
                                                 }
                                             })()}
