@@ -37,6 +37,11 @@ export interface IInstancePageProps {
     resource?: string;
 }
 
+export interface IImmutable {
+    toJS: () => Object;
+    getIn: (keys : string[], defaultVaue : Object) => Object | IImmutable;
+}
+
 // Basic interface used by all filters.
 export interface IFilter {
     label?: string;

@@ -9,6 +9,7 @@ import {saveAllInstances, unsetList} from '../actions/modelActions';
 import {findInstanceByID} from '../utils/storeService';
 import {NO_PROP_TYPES, NO_DEFAULT_PROPS} from '../constants';
 import {Dictionary} from '../interfaces';
+import {fromJS} from 'immutable';
 const objectAssign: any = require <any> ('object-assign');
 const getValues: (state : any) => any = require <{
     getValues: (state : any) => any
@@ -63,7 +64,8 @@ export class BaseModel {
         return this.resourceName;
     }
 
-    $save(flush: boolean = true,
+    $save(
+            flush: boolean = true,
             headers: Object = {},
             successCallBack = ( (...args: any[]) => {} ),
             failureCallBack = ( (...args: any[]) => {} )
@@ -82,7 +84,8 @@ export class BaseModel {
         }
     }
 
-    $update(flush: boolean = true,
+    $update(
+            flush: boolean = true,
             headers: Object = {},
             successCallBack = ( (...args: any[]) => {} ),
             failureCallBack = ( (...args: any[]) => {} )
@@ -103,7 +106,8 @@ export class BaseModel {
         }
     }
 
-    $delete(flush: boolean = true,
+    $delete(
+            flush: boolean = true,
             headers: Object = {},
             successCallBack = ( (...args: any[]) => {} ),
             failureCallBack = ( (...args: any[]) => {} )
@@ -158,7 +162,8 @@ export class BaseModel {
 
         // Fetch list from store.
         state = !isEmpty(state) ? state : store.getState(); 
-        let listData = state.data;
+        let data = state.data || {};
+        let listData = data.toJS ? data : fromJS(data); // converting to Immutable so that getIn can be called.
         return listData.getIn([`${resourceName}List`, 'instanceList'], []);
     }
 
