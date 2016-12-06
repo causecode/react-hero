@@ -105,3 +105,18 @@ module ComponentService {
 }
 
 export {ComponentService};
+
+// const modules: any = require<any>('../../../../src/components');
+// for (let component in modules) {
+//     if (modules[component]) {
+//         if (modules[component].resourceName) {
+//             if (component.indexOf('Edit') > -1) {
+//                 ComponentService.register(modules[component], 'edit');
+//             } else if (component.indexOf('List') > -1) {
+//                 ComponentService.register(modules[component], 'list');
+//             } else if (component.indexOf('Show') > -1) {
+//                 ComponentService.register(modules[component], 'show');
+//             }
+//         }
+//     }
+// }

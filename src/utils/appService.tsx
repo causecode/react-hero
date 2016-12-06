@@ -53,7 +53,9 @@ export function parseWidgetDate(date: number | string | Date): string {
     return moment(timestamp).format('YYYY-MM-DD');
 }
 
-
+/**
+ * TODO Figure out different approach to getNestedData.
+ */
 Object.prototype.getNestedData = function(nestedPath: string) {
     let data = this;
     let result: string = '';
