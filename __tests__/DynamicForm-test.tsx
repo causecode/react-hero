@@ -10,7 +10,7 @@ const ShallowTestUtils: IShallowTestUtils = require<IShallowTestUtils>('react-sh
 import {initializeTestCase} from './../src/utils/initializeTestCase';
 import * as React from 'react';
 import {Button} from 'react-bootstrap';
-import {IShallowTestUtils} from '../src/interfaces/interfaces';
+import {IShallowTestUtils} from '../src/interfaces';
 import {IInitializerData} from '../src/utils/initializeTestCase';
 import {FormFactory} from '../src/components/PagedList/Filters/DynamicForm';
 import {Provider} from 'react-redux';
@@ -19,7 +19,7 @@ import {reducer as formReducer} from 'redux-form';
 import {createStore, Store} from 'redux';
 import {rootReducer} from '../src/reducers/rootReducer';
 import {findDOMNode} from 'react-dom';
-import {IFilter} from '../src/interfaces/interfaces';
+import {IFilter} from '../src/interfaces';
 import {BaseModel} from '../src/models/BaseModel';
 
 interface IReduxFormStoreValue {
@@ -86,47 +86,6 @@ describe('render a simple FilterForm', () => {
         sendFilters = jest.fn();
     });
 
-    it('renders a simple filterForm', () => {
-        renderer.render(
-            <FilterForm fields={reduxFormFields} filtersOpen={false} resource={resource} sendFilters={sendFilters}>
-                {children}
-            </FilterForm>
-        );
-
-        let form = renderer.getRenderOutput();
-
-        let innerForm: Element = ShallowTestUtils.findWithClass(form, 'filter-form');
-        expect(innerForm).toBeTruthy();
-
-        let dropdown = ShallowTestUtils.findAllWithType(form, DropDownFilter);
-        let range = ShallowTestUtils.findAllWithType(form, RangeFilter);
-        let dateRange = ShallowTestUtils.findAllWithType(form, DateRangeFilter);
-        let query = ShallowTestUtils.findAllWithType(form, QueryFilter);
-
-        expect(ShallowTestUtils.findWithClass(form, 'hide')).toBeTruthy();
-        expect(ShallowTestUtils.findWithClass(form, 'filter-button')).toBeTruthy();
-
-        expect(dropdown.length).toEqual(2);
-        expect(dropdown[0].props.fields.length).toEqual(1);
-        expect(dropdown[0].props.fields[0]).toEqual(reduxFormFields[dropdown[0].props.paramName]);
-        expect(dropdown[1].props.fields.length).toEqual(1);
-        expect(dropdown[1].props.fields[0]).toEqual(reduxFormFields[dropdown[1].props.paramName]);
-
-        expect(range.length).toEqual(1);
-        expect(range[0].props.fields.length).toEqual(2);
-        expect(range[0].props.fields[0]).toEqual(reduxFormFields[`${range[0].props.paramName}From`]);
-        expect(range[0].props.fields[1]).toEqual(reduxFormFields[`${range[0].props.paramName}To`]);
-
-        expect(dateRange.length).toEqual(1);
-        expect(dateRange[0].props.fields.length).toEqual(2);
-        expect(dateRange[0].props.fields[0]).toEqual(reduxFormFields[`${dateRange[0].props.paramName}From`]);
-        expect(dateRange[0].props.fields[1]).toEqual(reduxFormFields[`${dateRange[0].props.paramName}To`]);
-
-        expect(query.length).toEqual(1);
-        expect(query[0].props.fields.length).toEqual(1);
-        expect(query[0].props.fields[0]).toEqual(reduxFormFields[query[0].props.paramName]);
-    });
-
     it('renders a FilterForm without any props', () => {
         renderer.render(
             <FilterForm />
@@ -136,18 +95,6 @@ describe('render a simple FilterForm', () => {
         let innerForm = ShallowTestUtils.findWithType(form, 'form');
         expect(innerForm).toBeTruthy();
         expect(ShallowTestUtils.findWithType(innerForm, Button)).toBeTruthy();
-    });
-
-    it('renders a FilterForm with fields but no children', () => {
-        renderer.render(
-            <FilterForm fields={{abc: {name: 'abc'}, dev: {name: 'dev'}}}/>
-        );
-
-        let form = renderer.getRenderOutput();
-
-        expect(form.props.children.length).toEqual(2);
-        expect(form.props.children[0]).toBeFalsy();
-        expect(ShallowTestUtils.findWithType(form, Button)).toBeTruthy();
     });
 
     it('renders a FilterForm with incorrect fields and Children', () => {
@@ -195,6 +142,47 @@ describe('render a simple FilterForm', () => {
 
     });
 
+    it('renders a simple filterForm', () => {
+        renderer.render(
+            <FilterForm fields={reduxFormFields} filtersOpen={false} resource={resource} sendFilters={sendFilters}>
+                {children}
+            </FilterForm>
+        );
+
+        let form = renderer.getRenderOutput();
+
+        let innerForm: Element = ShallowTestUtils.findWithClass(form, 'filter-form');
+        expect(innerForm).toBeTruthy();
+
+        let dropdown = ShallowTestUtils.findAllWithType(form, DropDownFilter);
+        let range = ShallowTestUtils.findAllWithType(form, RangeFilter);
+        let dateRange = ShallowTestUtils.findAllWithType(form, DateRangeFilter);
+        let query = ShallowTestUtils.findAllWithType(form, QueryFilter);
+
+        expect(ShallowTestUtils.findWithClass(form, 'hide')).toBeTruthy();
+        expect(ShallowTestUtils.findWithClass(form, 'filter-button')).toBeTruthy();
+
+        expect(dropdown.length).toEqual(2);
+        expect(dropdown[0].props.fields.length).toEqual(1);
+        expect(dropdown[0].props.fields[0]).toEqual(reduxFormFields[dropdown[0].props.paramName]);
+        expect(dropdown[1].props.fields.length).toEqual(1);
+        expect(dropdown[1].props.fields[0]).toEqual(reduxFormFields[dropdown[1].props.paramName]);
+
+        expect(range.length).toEqual(1);
+        expect(range[0].props.fields.length).toEqual(2);
+        expect(range[0].props.fields[0]).toEqual(reduxFormFields[`${range[0].props.paramName}From`]);
+        expect(range[0].props.fields[1]).toEqual(reduxFormFields[`${range[0].props.paramName}To`]);
+
+        expect(dateRange.length).toEqual(1);
+        expect(dateRange[0].props.fields.length).toEqual(2);
+        expect(dateRange[0].props.fields[0]).toEqual(reduxFormFields[`${dateRange[0].props.paramName}From`]);
+        expect(dateRange[0].props.fields[1]).toEqual(reduxFormFields[`${dateRange[0].props.paramName}To`]);
+
+        expect(query.length).toEqual(1);
+        expect(query[0].props.fields.length).toEqual(1);
+        expect(query[0].props.fields[0]).toEqual(reduxFormFields[query[0].props.paramName]);
+    });
+
     it('renders a FilterForm with a div child', () => {
         renderer.render(
             <FilterForm>
@@ -207,6 +195,20 @@ describe('render a simple FilterForm', () => {
         expect(form).toBeTruthy();
         expect(ShallowTestUtils.findWithType(form, 'div')).toBeTruthy();
     });
+
+    it('renders a FilterForm with fields but no children', () => {
+        renderer.render(
+            <FilterForm fields={{abc: {name: 'abc'}, dev: {name: 'dev'}}}/>
+        );
+
+        let form = renderer.getRenderOutput();
+
+        expect(form.props.children.length).toEqual(2);
+        expect(form.props.children[0]).toBeFalsy();
+        expect(ShallowTestUtils.findWithType(form, Button)).toBeTruthy();
+    });
+
+
 
     it('renders a Dynamic Form and saves form data in the <resource>Filters key', () => {
         let testDynamicFormData: {data: Object} = {data: fromJS({filtersOpen: true})};
