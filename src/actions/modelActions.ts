@@ -16,7 +16,7 @@ export interface IInstanceAction {
     instance: BaseModel;
 }
 
-function ModelActionFactory(type: string) {
+export function ModelActionFactory(type: string) {
     return (instance: BaseModel, resource: string): IInstanceAction => {
         return {
             type,

@@ -6,7 +6,7 @@ import {ModelService} from '../utils/modelService';
 import {IInstanceContainerProps} from '../interfaces';
 import {PAGE_NOT_FOUND} from '../constants';
 import {ErrorPage} from '../components/ErrorPage';
-import {store} from '../store/index';
+import {store} from '../store';
 
 export class ShowPageImpl extends React.Component<IInstanceContainerProps, void> {
 

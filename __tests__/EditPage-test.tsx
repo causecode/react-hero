@@ -1,28 +1,28 @@
-import {GenericEditPage} from '../src/components/CRUD/GenericEditPage';
 jest.unmock('../src/components-stateful/EditPage');
-import {modelReducer} from '../src/reducers/modelReducer';
-import {EditPageImpl, EditPageProps, EditPage} from '../src/components-stateful/EditPage';
 import * as React from 'react';
 import * as TestUtils from 'react-addons-test-utils';
-const ShallowTestUtils: IShallowTestUtils = require<IShallowTestUtils>('react-shallow-testutils');
-import {initializeTestCase} from './../src/utils/initializeTestCase';
-import { BaseModel, DefaultModel } from '../src/models/BaseModel';
-import {ModelPropTypes} from '../src/models/ModelPropTypes';
-import {ComponentService} from '../src/utils/componentService';
-import {ModelService} from '../src/utils/modelService';
-import {resolver} from '../src/resolver';
-import {IInitializerData} from './../src/utils/initializeTestCase';
-import {IShallowTestUtils} from '../src/interfaces/';
+import {EditPageImpl, EditPageProps, EditPage} from '../src/components-stateful/EditPage';
+import {BaseModel, DefaultModel} from '../src/models/BaseModel';
 import {IInstanceContainerProps} from '../src/interfaces/';
-import {createStore} from 'redux';
-import {INSTANCE_NOT_FOUND} from '../src/constants';
-import {ErrorPage} from '../src/components/ErrorPage';
-import {store} from '../src/store/';
-import {Provider} from 'react-redux';
-import {configureStore }from '../src/store/';
-import {fromJS} from 'immutable';
-import ClassType = __React.ClassType;
 import {IGenericEditPageProps} from '../src/components/CRUD/GenericEditPage';
+import {initializeTestCase} from './../src/utils/initializeTestCase';
+import {INSTANCE_NOT_FOUND} from '../src/constants';
+import {IShallowTestUtils} from '../src/interfaces/';
+import {IInitializerData} from './../src/utils/initializeTestCase';
+import {ComponentService} from '../src/utils/componentService';
+import {GenericEditPage} from '../src/components/CRUD/GenericEditPage';
+import {ModelPropTypes} from '../src/models/ModelPropTypes';
+import {configureStore}from '../src/store/';
+import {modelReducer} from '../src/reducers/modelReducer';
+import {ModelService} from '../src/utils/modelService';
+import {createStore} from 'redux';
+import {ErrorPage} from '../src/components/ErrorPage';
+import {Provider} from 'react-redux';
+import {resolver} from '../src/resolver';
+import {fromJS} from 'immutable';
+import {store} from '../src/store/';
+import ClassType = __React.ClassType;
+const ShallowTestUtils: IShallowTestUtils = require<IShallowTestUtils>('react-shallow-testutils');
 let unroll = require<any>('unroll');
 
 unroll.use(it);
@@ -53,6 +53,9 @@ describe('Test EditPage', () => {
         BaseModel.get = jest.fn<typeof BaseModel.get>();
     });
 
+    /**
+     * TODO uncomment this when a function being called by a mocked function is mocked.
+     */
     // unroll('renders an EditPage on a #path path', (done, testArgs) => {
     //     // let createInstance: jest.Mock<() => {}> = jest.fn<() => {}>();
     //     renderer.render(
@@ -190,6 +193,22 @@ describe('Test EditPage', () => {
         renderedInstance.$save = jest.fn<typeof renderedInstance.$save>();
         renderedInstance.$update = jest.fn<typeof renderedInstance.$update>();
         renderedInstance.$delete = jest.fn<typeof renderedInstance.$delete>();
+        
+        it('renders the EditPage with the store', () => {
+            ModelService.getModel = jest.fn<any>();
+            BaseModel.get = jest.fn<typeof BaseModel.get>();
+            let storeInstances: {testCreate?: BaseModel, testEdit?: BaseModel} = {};
+            storeInstances['testEdit'] = renderedInstance;
+            
+            let page: React.Component<void, void> = TestUtils.renderIntoDocument<React.Component<void, void>>(
+                <Provider store = {configureStore({instances: fromJS(storeInstances)})}>
+                    <EditPage
+                        params={{resource: resource, resourceID: resourceID}}
+                        location={{pathname: 'edit'}}
+                    />
+                </Provider>
+            );
+        });
 
         // unroll('renders the EditPage with the store on the #path path', (done, testArgs) => {
 

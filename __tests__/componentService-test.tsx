@@ -10,13 +10,11 @@ const unroll: any = require<any>('unroll');
 
 unroll.use(it);
 
-class TestComponent extends React.Component<void, void> {}
 class TestListPage extends React.Component<void, void> {}
 class TestEditPage extends React.Component<void, void> {}
 class TestShowPage extends React.Component<void, void> {}
 class TestCreatePage extends React.Component<void, void> {}
 let pages = {
-    TestComponent,
     TestListPage,
     TestEditPage,
     TestShowPage,
@@ -29,31 +27,13 @@ let pages = {
 
 describe('Test Component Service', () => {
 
-    it('registers the component in the React DI resolver object', () => {
-        ComponentService.register(TestComponent);
-
-        expect(resolver.has('testcomponent')).toBe(true);
-        expect(resolver.get('testcomponent')).toEqual(TestComponent);
-    });
-
-    it('registers the list of components in the React DI resolver object', () => {
-       class AbcComponent extends React.Component<void, void> {}
-        ComponentService.registerAll(AbcComponent, TestComponent);
-
-        expect(resolver.has('testcomponent')).toBeTruthy();
-        expect(resolver.has('abccomponent')).toBeTruthy();
-        expect(resolver.get('testcomponent')).toEqual(TestComponent);
-        expect(resolver.get('abccomponent')).toEqual(AbcComponent);
-    });
-
     describe('Component Service retrieval functions', () => {
 
         beforeEach(() => {
-            ComponentService.register(TestComponent);
-            ComponentService.register(TestListPage);
-            ComponentService.register(TestEditPage);
-            ComponentService.register(TestShowPage);
-            ComponentService.register(TestCreatePage);
+            ComponentService.register(TestListPage, 'list');
+            ComponentService.register(TestEditPage, 'edit');
+            ComponentService.register(TestShowPage, 'show');
+            ComponentService.register(TestCreatePage, 'create');
         });
 
         it('checks if the specified component has been registered', () => {
