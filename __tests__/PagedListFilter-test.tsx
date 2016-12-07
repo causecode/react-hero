@@ -11,7 +11,6 @@ import {DropDownFilter} from '../src/components/PagedList/Filters/DropDownFilter
 import {QueryFilter} from '../src/components/PagedList/Filters/QueryFilter';
 import {RangeFilter} from '../src/components/PagedList/Filters/RangeFilter';
 import {IInitializerData} from './../src/utils/initializeTestCase';
-import {DynamicForm} from '../src/components/PagedList/Filters/DynamicForm';
 
 describe('Test PagedList Filters', () => {
     let { renderer, resource }: IInitializerData = initializeTestCase();

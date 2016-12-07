@@ -5,7 +5,7 @@ import {GenericListPage} from '../src/components/CRUD/GenericListPage';
 import {GenericShowPage} from '../src/components/CRUD/GenericShowPage';
 import * as TestUtils from 'react-addons-test-utils';
 import * as React from 'react';
-import {IInstancePageProps} from '../src/interfaces/interfaces';
+import {IInstancePageProps} from '../src/interfaces';
 const unroll: any = require<any>('unroll');
 
 unroll.use(it);

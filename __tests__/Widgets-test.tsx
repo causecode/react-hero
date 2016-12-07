@@ -7,7 +7,7 @@ import * as React from 'react';
 import * as TestUtils from 'react-addons-test-utils';
 import * as ReactDOM from 'react-dom';
 import {Wrapper} from './../src/components/Wrapper';
-import {IShallowTestUtils} from '../src/interfaces/interfaces';
+import {IShallowTestUtils} from '../src/interfaces';
 const unroll: any = require<any>('unroll');
 
 unroll.use(it);

@@ -11,16 +11,13 @@ import * as React from 'react';
 import * as TestUtils from 'react-addons-test-utils';
 import {Link} from 'react-router';
 import {Provider} from 'react-redux';
-import {PagedListFilters} from '../src/components/PagedList/Filters/PagedListFilter';
 import {Wrapper} from './../src/components/Wrapper';
-import {IShallowTestUtils} from '../src/interfaces/interfaces';
+import {IShallowTestUtils} from '../src/interfaces';
 import {IPagedListProps} from '../src/components-stateful/PagedList';
 import * as actions from '../src/actions/modelActions';
 import {Store, createStore} from 'redux';
 import {dataReducer} from '../src/reducers/data';
-import {configureStore} from '../src/store/store';
-import {IMockStore, store} from '../src/store/store';
-import {Provider} from 'react-redux';
+import {configureStore, IMockStore, store} from '../src/store';
 import {fromJS} from 'immutable';
 
 const ShallowTestUtils: IShallowTestUtils = require<IShallowTestUtils>('react-shallow-testutils');

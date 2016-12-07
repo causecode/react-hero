@@ -1,7 +1,7 @@
 import {promiseMiddleware} from '../src/middleware/promiseMiddleware';
 import {Store} from 'redux';
 import 'babel-polyfill';
-import {Stub} from '../src/interfaces/interfaces';
+import {Stub} from '../src/interfaces';
 const unroll: any = require<any>('unroll');
 
 unroll.use(it);
