@@ -39,14 +39,3 @@ module ModelService {
 }
 
 export {ModelService};
-
-// const modules: any = require<any>('../../../../src/models');
-// for (let component in modules) {
-//     if (modules[component]) {
-//         if (modules[component].resourceName) {
-//             if (component.indexOf('Model') > -1) {
-//                 ModelService.register(modules[component]);
-//             }
-//         }
-//     }
-// }

@@ -53,38 +53,6 @@ describe('Test EditPage', () => {
         BaseModel.get = jest.fn<typeof BaseModel.get>();
     });
 
-    /**
-     * TODO uncomment this when a function being called by a mocked function is mocked.
-     */
-    // unroll('renders an EditPage on a #path path', (done, testArgs) => {
-    //     // let createInstance: jest.Mock<() => {}> = jest.fn<() => {}>();
-    //     renderer.render(
-    //         <EditPageImpl
-    //             params={{resource: resource, resourceID: resourceID}}
-    //             instance={instances[resource]}
-    //             location={{pathname: testArgs.path}}
-    //         />
-    //     );
-
-    //     // let page = renderer.getRenderOutput();
-    //     // expect(page).toBeTruthy();
-    //     // let renderedPage = ShallowTestUtils.findWithType(page, GenericEditPage);
-    //     // expect(renderedPage.props.location.pathname).toBe(testArgs.path);
-    //     // expect(renderedPage.props.params.resource).toEqual(resource);
-    //     // expect(renderedPage.props.params.resourceID).toEqual(resourceID);
-    //     // expect(renderedPage.props.instance).toEqual(instances[resource]);
-    //     // expect(renderedPage.props.isCreatePage).toEqual(testArgs.isCreatePage);
-    //     // if (testArgs.path === createPath) {
-    //     //     let Model: typeof BaseModel = ModelService.getModel(resource);
-    //     //     expect(createInstance).toBeCalledWith(new Model({}));
-    //     // }
-    //     done();
-    // }, [
-    //     ['path', 'isCreatePage'],
-    //     [editPath, false],
-    //     [createPath, true]
-    // ]);
-
     it('renders a simple EditPage without a resourceID', () => {
         renderer.render(
             <EditPageImpl
@@ -209,48 +177,6 @@ describe('Test EditPage', () => {
                 </Provider>
             );
         });
-
-        // unroll('renders the EditPage with the store on the #path path', (done, testArgs) => {
-
-        //     let storeInstances: {testCreate?: BaseModel, testEdit?: BaseModel} = {};
-        //     storeInstances[testArgs.key] = renderedInstance;
-        //     // let page: React.Component<void, void> = TestUtils.renderIntoDocument<React.Component<void, void>>(
-        //     //     <Provider store = {configureStore({instances: fromJS(storeInstances)})}>
-        //     //         <EditPage
-        //     //             params={{resource: resource, resourceID}}
-        //     //             location={{pathname: testArgs.path}}
-        //     //         />
-        //     //     </Provider>
-        //     // );
-
-        //     // expect(page).toBeTruthy();
-        //     // expect(TestModel.get).toBeCalledWith(1);
-        //     // let renderedPage: React.ReactElement<IGenericEditPageProps> = TestUtils
-        //     //     .findRenderedComponentWithType
-        //     //     (
-        //     //         page,
-        //     //         GenericEditPage as any
-        //     //     ) as React.ReactElement<IGenericEditPageProps>;
-
-        //     // expect(renderedPage).toBeTruthy();
-        //     // expect(renderedPage.props.isCreatePage).toEqual(testArgs.isCreatePage);
-        //     // expect(renderedPage.props.location.pathname).toEqual(testArgs.path);
-        //     // expect(renderedPage.props.params.resource).toEqual(resource);
-        //     // expect(renderedPage.props.params.resourceID).toEqual(resourceID);
-
-        //     // // Submitting form in GenericEditPage.
-        //     // TestUtils.Simulate.submit(TestUtils.findRenderedDOMComponentWithTag(page, 'form'));
-        //     // expect(renderedInstance[testArgs.saveMethod]).toBeCalledWith(true, testArgs.key);
-        //     // done();
-
-        //     // // Clicking delete button in GenericEditPage.
-        //     // TestUtils.Simulate.click(TestUtils.findRenderedDOMComponentWithTag(page, 'button')[1]);
-        //     // expect(renderedInstance.$delete).toBeCalledWith(true, testArgs.key);
-        // }, [
-        //     ['path', 'key', 'saveMethod', 'isCreatePage'],
-        //     [editPath, `${resource}Edit`, '$update', false],
-        //     [createPath, `${resource}Create`, '$save', true]
-        // ]);
 
     });
 
