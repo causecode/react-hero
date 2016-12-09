@@ -1,8 +1,10 @@
-import {BaseModel} from '../src/models/BaseModel';
 jest.unmock('../src/utils/modelService');
-import {ModelService} from '../src/utils/modelService';
-import {resolver} from '../src/resolver';
+
 import {getEnvironment} from '../src/utils/appService';
+import {ModelService} from '../src/utils/modelService';
+import {BaseModel} from '../src/models/BaseModel';
+import {resolver} from '../src/resolver';
+
 const unroll: any = require<any>('unroll');
 
 unroll.use(it);
@@ -57,12 +59,12 @@ describe('Test Model Service', () => {
             done();
 
         }, [
-            ['modelKey', 'expectation', 'model'],
-            ['test', true, TestModel],
-            ['testModel', true, TestModel],
-            ['TestModel', true, TestModel],
-            ['abc', false, BaseModel],
-            ['abcModel', false, BaseModel]
+                ['modelKey', 'expectation', 'model'],
+                ['test', true, TestModel],
+                ['testModel', true, TestModel],
+                ['TestModel', true, TestModel],
+                ['abc', false, BaseModel],
+                ['abcModel', false, BaseModel]
         ]);
 
     });

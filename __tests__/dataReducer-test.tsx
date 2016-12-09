@@ -29,7 +29,7 @@ unroll.use(it);
 export interface IActionData {
     type: string;
     resource: string;
-    payload:{
+    payload: {
         instanceList: {data: string}[]
     };
     pageNumber: number;
@@ -117,12 +117,12 @@ describe('Data-dataReducer', () => {
         expect(successListAction.get(`${resourceString}List`).has(testArgs.name)).toBeTruthy();
         done();
     }, [
-        ['name'],
-        ['hasError'],
-        ['instanceList'],
-        ['isLoading'],
-        ['properties'],
-        ['totalCount']
+            ['name'],
+            ['hasError'],
+            ['instanceList'],
+            ['isLoading'],
+            ['properties'],
+            ['totalCount']
     ]);
 
     it('should throw error when Payload is not provided.', () => {
@@ -171,7 +171,7 @@ describe('Data-dataReducer', () => {
         let instanceAfterUnset: IFromJS = dataReducer(
                 INITIAL_STATE, 
                 actionData(UNSET_RESOURCE_LIST, payloadString, pageNo, resourceString)
-            ); 
+        ); 
         expect(instanceAfterUnset.get(`${resourceString}List`)).toBeFalsy();
     });
 });

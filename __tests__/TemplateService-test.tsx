@@ -1,10 +1,12 @@
 jest.unmock('../src/cli/TemplateService');
-import * as TemplateService from '../src/cli/TemplateService';
-import { ModelPropTypes } from '../src/models/ModelPropTypes';
-import { BaseModel } from '../src/models/BaseModel';
+
+import * as TemplateService from '../src/cli/templateService';
+import {ModelPropTypes} from '../src/models/ModelPropTypes';
+import {BaseModel} from '../src/models/BaseModel';
+
+const unroll = require<any>('unroll');
 let _ = require<any>('underscore');
 let commandLine = require<any>('../src/cli/commandLine');
-const unroll = require<any>('unroll');
 
 unroll.use(it);
 
@@ -146,9 +148,9 @@ describe('Test generateFormTemplate method of TemplateService', () => {
         });
         done();
     }, [
-        ['modelClass', 'title'],
-        [TestModelInvaidPropTypes, 'propTypes are invalid']
-        [TestModelEmptyPropTypes, 'propTypes are undefined']
+            ['modelClass', 'title'],
+            [TestModelInvaidPropTypes, 'propTypes are invalid']
+            [TestModelEmptyPropTypes, 'propTypes are undefined']
     ]);
 
 });
@@ -259,9 +261,9 @@ describe('Test generateShowTemplate method of TemplateService', () => {
         });
         done();
     }, [
-        ['modelClass', 'title'],
-        [TestModelInvaidPropTypes, 'propTypes are invalid']
-        [TestModelEmptyPropTypes, 'propTypes are undefined']
+            ['modelClass', 'title'],
+            [TestModelInvaidPropTypes, 'propTypes are invalid']
+            [TestModelEmptyPropTypes, 'propTypes are undefined']
     ]);
 
 });

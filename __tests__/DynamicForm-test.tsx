@@ -1,26 +1,29 @@
-import drop = __React.__Addons.TestUtils.Simulate.drop;
 jest.unmock('../src/components/PagedList/Filters/DynamicForm');
-import {FilterForm} from '../src/components/PagedList/Filters/DynamicForm';
-import * as TestUtils from 'react-addons-test-utils';
-import {DateRangeFilter} from '../src/components/PagedList/Filters/DateRangeFilter';
-import {DropDownFilter} from '../src/components/PagedList/Filters/DropDownFilter';
-import {QueryFilter} from '../src/components/PagedList/Filters/QueryFilter';
-import {RangeFilter} from '../src/components/PagedList/Filters/RangeFilter';
-const ShallowTestUtils: IShallowTestUtils = require<IShallowTestUtils>('react-shallow-testutils');
-import {initializeTestCase} from './../src/utils/initializeTestCase';
+
 import * as React from 'react';
-import {Button} from 'react-bootstrap';
+import * as TestUtils from 'react-addons-test-utils';
+import {reducer as formReducer} from 'redux-form';
+import {IPagedListFiltersProps} from '../src/interfaces/index';
+import {initializeTestCase} from './../src/utils/initializeTestCase';
+import {createStore, Store} from 'redux';
 import {IShallowTestUtils} from '../src/interfaces';
 import {IInitializerData} from '../src/utils/initializeTestCase';
+import {DateRangeFilter} from '../src/components/PagedList/Filters/DateRangeFilter';
+import {DropDownFilter} from '../src/components/PagedList/Filters/DropDownFilter';
+import {RangeFilter} from '../src/components/PagedList/Filters/RangeFilter';
+import {QueryFilter} from '../src/components/PagedList/Filters/QueryFilter';
 import {FormFactory} from '../src/components/PagedList/Filters/DynamicForm';
-import {Provider} from 'react-redux';
-import {fromJS} from 'immutable';
-import {reducer as formReducer} from 'redux-form';
-import {createStore, Store} from 'redux';
 import {rootReducer} from '../src/reducers/rootReducer';
 import {findDOMNode} from 'react-dom';
-import {IFilter} from '../src/interfaces';
+import {FilterForm} from '../src/components/PagedList/Filters/DynamicForm';
 import {BaseModel} from '../src/models/BaseModel';
+import {Provider} from 'react-redux';
+import {IFilter} from '../src/interfaces';
+import {Button} from 'react-bootstrap';
+import {fromJS} from 'immutable';
+import drop = __React.__Addons.TestUtils.Simulate.drop;
+
+const ShallowTestUtils: IShallowTestUtils = require<IShallowTestUtils>('react-shallow-testutils');
 
 interface IReduxFormStoreValue {
     visited: boolean;
@@ -149,7 +152,7 @@ describe('render a simple FilterForm', () => {
             </FilterForm>
         );
 
-        let form = renderer.getRenderOutput();
+        let form: React.ReactElement<IPagedListFiltersProps> = renderer.getRenderOutput();
 
         let innerForm: Element = ShallowTestUtils.findWithClass(form, 'filter-form');
         expect(innerForm).toBeTruthy();
@@ -190,7 +193,7 @@ describe('render a simple FilterForm', () => {
             </FilterForm>
         );
 
-        let form = renderer.getRenderOutput();
+        let form: React.ReactElement<IPagedListFiltersProps> = renderer.getRenderOutput();
 
         expect(form).toBeTruthy();
         expect(ShallowTestUtils.findWithType(form, 'div')).toBeTruthy();
@@ -201,7 +204,7 @@ describe('render a simple FilterForm', () => {
             <FilterForm fields={{abc: {name: 'abc'}, dev: {name: 'dev'}}}/>
         );
 
-        let form = renderer.getRenderOutput();
+        let form: React.ReactElement<IPagedListFiltersProps> = renderer.getRenderOutput();
 
         expect(form.props.children.length).toEqual(2);
         expect(form.props.children[0]).toBeFalsy();

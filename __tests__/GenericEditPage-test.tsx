@@ -1,12 +1,13 @@
-import {BaseModel} from '../src/models/BaseModel';
 jest.unmock('../src/components/CRUD/GenericEditPage');
 jest.unmock('react-bootstrap');
-import {GenericEditPage} from '../src/components/CRUD/GenericEditPage';
+
 import * as TestUtils from 'react-addons-test-utils';
-import {Grid} from 'react-bootstrap';
-import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import * as React from 'react';
+import {GenericEditPage} from '../src/components/CRUD/GenericEditPage';
 import {Row, Button} from 'react-bootstrap';
+import {BaseModel} from '../src/models/BaseModel';
+import {Grid} from 'react-bootstrap';
 import {Link} from 'react-router';
 
 describe('Test Generic Edit Page', () => {

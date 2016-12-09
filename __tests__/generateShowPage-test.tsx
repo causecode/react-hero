@@ -1,12 +1,14 @@
 jest.unmock('../src/cli/generatorService');
 jest.unmock('../src/cli/commandLine');
 jest.unmock('../src/cli/templateService');
-import {generateShowPage} from '../src/cli/generatorService';
-import {ModelPropTypes} from '../src/models/ModelPropTypes';
-import {INVALID_COMMAND_ERROR, INVALID_MODEL_NAME} from '../src/constants';
-import {BaseModel} from '../src/models/BaseModel';
+
 import * as fs from 'fs';
 import * as path from 'path';
+import {INVALID_COMMAND_ERROR, INVALID_MODEL_NAME} from '../src/constants';
+import {generateShowPage} from '../src/cli/generatorService';
+import {ModelPropTypes} from '../src/models/ModelPropTypes';
+import {BaseModel} from '../src/models/BaseModel';
+
 let TemplateService = require<any>('../src/cli/templateService');
 
 let {projectRoot, typescriptOut} = TemplateService;
@@ -49,10 +51,10 @@ describe('Test generateShowPage function', () => {
         }).toThrow(new Error(INVALID_COMMAND_ERROR(...testArgs.missingArgs)));
         done();
     }, [
-        ['argv', 'missingArgs'],
-        [[], ['modelPath', 'modelName']],
-        [['--modelPath', testModelPath], ['modelName']],
-        [['--modelName', testModelName], ['modelPath']]
+            ['argv', 'missingArgs'],
+            [[], ['modelPath', 'modelName']],
+            [['--modelPath', testModelPath], ['modelName']],
+            [['--modelName', testModelName], ['modelPath']]
     ]);
 
     it('should throw an error if invalid model name is specified', () => {

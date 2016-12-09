@@ -12,7 +12,7 @@ export enum IsCurrent {
 }
 
 export class BlogModel extends BaseModel {
-    static propTypes = {        
+    static propTypes = {
         id: ModelPropTypes.NUMBER(),
         author: ModelPropTypes.STRING(),
         blogIMGSrc: ModelPropTypes.STRING(),
@@ -34,13 +34,13 @@ export class BlogModel extends BaseModel {
     static resourceName: string = 'blog';
 
     static columnNames: string[] = [
-            'id',
-            'author',
-            'dateCreated',
-            'lastUpdated',
-            'name.firstname',
-            'name.lastname'
-        ];
+        'id',
+        'author',
+        'dateCreated',
+        'lastUpdated',
+        'name.firstname',
+        'name.lastname'
+    ];
         
     constructor(properties?: any) {
         super(properties);
@@ -75,7 +75,7 @@ export class UserModel extends BaseModel {
         name: ''
     };
 
-    static propTypes =  {
+    static propTypes = {
         id: ModelPropTypes.NUMBER(),
         firstName: ModelPropTypes.STRING(),
         lastName: ModelPropTypes.STRING(),

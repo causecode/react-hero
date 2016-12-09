@@ -1,5 +1,14 @@
-import {NavMenuLauncherIcon} from '../src/components/NavMenuLauncherIcon';
 jest.unmock('../src/components/HeaderFooterLayout');
+
+import * as TestUtils from 'react-addons-test-utils';
+import * as ReactDOM from 'react-dom';
+import * as React from 'react';
+import {HeaderFooterLayoutImpl} from '../src/components/HeaderFooterLayout';
+import {NavMenuLauncherIcon} from '../src/components/NavMenuLauncherIcon';
+import {Provider, connect} from 'react-redux';
+import {ReactComponent} from 'react-router';
+import IMockStore from '../src/store';
+import {store} from '../src/store';
 import {
     HeaderFooterLayout,
     NavigationMenu,
@@ -7,15 +16,8 @@ import {
     FooterView,
     ContentView
 } from '../src/components/HeaderFooterLayout';
-import {ReactComponent} from 'react-router';
-import * as TestUtils from 'react-addons-test-utils';
-import * as React from 'react';
-import {store} from '../src/store/store';
+
 const store = require.requireActual<IMockStore>('../src/store/store');
-import {Provider, connect} from 'react-redux';
-import * as ReactDOM from 'react-dom';
-import IMockStore from '../src/store/store';
-import {HeaderFooterLayoutImpl} from '../src/components/HeaderFooterLayout';
 
 describe('Test HeaderFooterLayout', () => {
 

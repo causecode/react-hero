@@ -1,11 +1,13 @@
-import {MissingInstanceError} from '../src/errors/MissingInstanceError';
 jest.unmock('../src/components/CRUD/GenericShowPage');
-import {BaseModel} from '../src/models/BaseModel';
+
+import * as React from 'react';
+import * as TestUtils from 'react-addons-test-utils';
+import {MissingInstanceError} from '../src/errors/MissingInstanceError';
+import {IInstancePageProps} from '../src/interfaces';
 import {GenericListPage} from '../src/components/CRUD/GenericListPage';
 import {GenericShowPage} from '../src/components/CRUD/GenericShowPage';
-import * as TestUtils from 'react-addons-test-utils';
-import * as React from 'react';
-import {IInstancePageProps} from '../src/interfaces';
+import {BaseModel} from '../src/models/BaseModel';
+
 const unroll: any = require<any>('unroll');
 
 unroll.use(it);
@@ -35,9 +37,9 @@ describe('Test Generic Show Page', () => {
         }
         done();
     }, [
-        ['title', 'page', 'resource'],
-        ['without a resource', <GenericShowPage instance={ModelInstance} />, 'base'],
-        ['with a resource', <GenericShowPage instance={ModelInstance} resource="test"/>, 'test']
+            ['title', 'page', 'resource'],
+            ['without a resource', <GenericShowPage instance={ModelInstance} />, 'base'],
+            ['with a resource', <GenericShowPage instance={ModelInstance} resource="test"/>, 'test']
     ]);
 
     it('renders a GenericShowPage without any props', () => {

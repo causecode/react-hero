@@ -1,9 +1,10 @@
-import {DeviceTypes} from '../src/components/ResponsiveView';
 jest.unmock('../src/components/ResponsiveView');
-import {ResponsiveView} from '../src/components/ResponsiveView';
 import * as TestUtils from 'react-addons-test-utils';
 import * as React from 'react';
 import {INSTANTIATION_ERROR} from '../src/constants';
+import {ResponsiveView} from '../src/components/ResponsiveView';
+import {DeviceTypes} from '../src/components/ResponsiveView';
+
 const unroll: any = require<any>('unroll');
 
 unroll.use(it);
@@ -50,14 +51,14 @@ describe('Test Device Types enum', () => {
         done();
 
     }, [
-        ['deviceType', 'expectedName', 'expectedId'],
-        [DeviceTypes.DESKTOP, Desktop, DesktopMockID],
-        [DeviceTypes.TABLET, Tablet, TabletMockID],
-        [DeviceTypes.TABLET_PORTRAIT, TabletPortrait, TabletPortraitMockID],
-        [DeviceTypes.TABLET_LANDSCAPE, TabletLandscape, TabletLandscapeMockID],
-        [DeviceTypes.MOBILE, Mobile, MobileMockID],
-        [DeviceTypes.MOBILE_PORTRAIT, MobilePortrait, MobilePortraitMockID],
-        [DeviceTypes.MOBILE_LANDSCAPE, MobileLandscape, MobileLandscapeMockID],
+            ['deviceType', 'expectedName', 'expectedId'],
+            [DeviceTypes.DESKTOP, Desktop, DesktopMockID],
+            [DeviceTypes.TABLET, Tablet, TabletMockID],
+            [DeviceTypes.TABLET_PORTRAIT, TabletPortrait, TabletPortraitMockID],
+            [DeviceTypes.TABLET_LANDSCAPE, TabletLandscape, TabletLandscapeMockID],
+            [DeviceTypes.MOBILE, Mobile, MobileMockID],
+            [DeviceTypes.MOBILE_PORTRAIT, MobilePortrait, MobilePortraitMockID],
+            [DeviceTypes.MOBILE_LANDSCAPE, MobileLandscape, MobileLandscapeMockID]
     ]);
 
     unroll('gets the device type from id or string for #deviceName', (done: Function, testArgs) => {
@@ -68,14 +69,14 @@ describe('Test Device Types enum', () => {
         done();
 
     }, [
-        ['deviceId', 'deviceName', 'deviceType'],
-        [DesktopMockID, Desktop, DeviceTypes.DESKTOP],
-        [TabletMockID, Tablet, DeviceTypes.TABLET],
-        [TabletPortraitMockID, TabletPortrait, DeviceTypes.TABLET_PORTRAIT],
-        [TabletLandscapeMockID, TabletLandscape, DeviceTypes.TABLET_LANDSCAPE],
-        [MobileMockID, Mobile, DeviceTypes.MOBILE],
-        [MobilePortraitMockID, MobilePortrait, DeviceTypes.MOBILE_PORTRAIT],
-        [MobileLandscapeMockID, MobileLandscape, DeviceTypes.MOBILE_LANDSCAPE]
+            ['deviceId', 'deviceName', 'deviceType'],
+            [DesktopMockID, Desktop, DeviceTypes.DESKTOP],
+            [TabletMockID, Tablet, DeviceTypes.TABLET],
+            [TabletPortraitMockID, TabletPortrait, DeviceTypes.TABLET_PORTRAIT],
+            [TabletLandscapeMockID, TabletLandscape, DeviceTypes.TABLET_LANDSCAPE],
+            [MobileMockID, Mobile, DeviceTypes.MOBILE],
+            [MobilePortraitMockID, MobilePortrait, DeviceTypes.MOBILE_PORTRAIT],
+            [MobileLandscapeMockID, MobileLandscape, DeviceTypes.MOBILE_LANDSCAPE]
     ]);
 
     unroll('gets the current device and checks whether it is equal to #device',
@@ -86,14 +87,14 @@ describe('Test Device Types enum', () => {
         done();
 
     }, [
-        ['mockId', 'expectedDeviceType', 'device'],
-        [DesktopMockID, DeviceTypes.DESKTOP, Desktop],
-        [TabletMockID, DeviceTypes.TABLET, Tablet],
-        [TabletPortraitMockID, DeviceTypes.TABLET_PORTRAIT, TabletPortrait],
-        [TabletLandscapeMockID, DeviceTypes.TABLET_LANDSCAPE, TabletLandscape],
-        [MobileMockID, DeviceTypes.MOBILE, Mobile],
-        [MobilePortraitMockID, DeviceTypes.MOBILE_PORTRAIT, MobilePortrait],
-        [MobileLandscapeMockID, DeviceTypes.MOBILE_LANDSCAPE, MobileLandscape],
+            ['mockId', 'expectedDeviceType', 'device'],
+            [DesktopMockID, DeviceTypes.DESKTOP, Desktop],
+            [TabletMockID, DeviceTypes.TABLET, Tablet],
+            [TabletPortraitMockID, DeviceTypes.TABLET_PORTRAIT, TabletPortrait],
+            [TabletLandscapeMockID, DeviceTypes.TABLET_LANDSCAPE, TabletLandscape],
+            [MobileMockID, DeviceTypes.MOBILE, Mobile],
+            [MobilePortraitMockID, DeviceTypes.MOBILE_PORTRAIT, MobilePortrait],
+            [MobileLandscapeMockID, DeviceTypes.MOBILE_LANDSCAPE, MobileLandscape]
     ]);
 
     it('checks if a device other than the ones specified is used', () => {
@@ -117,14 +118,14 @@ describe('Test Device Types enum', () => {
         done();
 
     }, [
-        ['mockId', 'device', 'isMobile', 'isTablet', 'isDesktop'],
-        [DesktopMockID, Desktop, false, false, true],
-        [TabletMockID, Tablet, false, true, false],
-        [TabletPortraitMockID, TabletPortrait, false, true, false],
-        [TabletLandscapeMockID, TabletLandscape, false, true, false],
-        [MobileMockID, Mobile, true, false, false],
-        [MobilePortraitMockID, MobilePortrait, true, false, false],
-        [MobileLandscapeMockID, MobileLandscape, true, false, false],
+            ['mockId', 'device', 'isMobile', 'isTablet', 'isDesktop'],
+            [DesktopMockID, Desktop, false, false, true],
+            [TabletMockID, Tablet, false, true, false],
+            [TabletPortraitMockID, TabletPortrait, false, true, false],
+            [TabletLandscapeMockID, TabletLandscape, false, true, false],
+            [MobileMockID, Mobile, true, false, false],
+            [MobilePortraitMockID, MobilePortrait, true, false, false],
+            [MobileLandscapeMockID, MobileLandscape, true, false, false]
     ]);
 
 });
@@ -194,14 +195,14 @@ describe('Test Responsive View', () => {
             expect(TestUtils.scryRenderedDOMComponentsWithTag(view, 'div')[0].textContent).toBe(testArgs.device);
             done();
         }, [
-            ['mockId', 'device'],
-            [DesktopMockID, Desktop],
-            [TabletMockID, Tablet],
-            [TabletPortraitMockID, TabletPortrait],
-            [TabletLandscapeMockID, TabletLandscape],
-            [MobileMockID, Mobile],
-            [MobilePortraitMockID, MobilePortrait],
-            [MobileLandscapeMockID, MobileLandscape]
+                ['mockId', 'device'],
+                [DesktopMockID, Desktop],
+                [TabletMockID, Tablet],
+                [TabletPortraitMockID, TabletPortrait],
+                [TabletLandscapeMockID, TabletLandscape],
+                [MobileMockID, Mobile],
+                [MobilePortraitMockID, MobilePortrait],
+                [MobileLandscapeMockID, MobileLandscape]
         ]);
 
         it('renders Responsive View directly', () => {
@@ -242,14 +243,14 @@ describe('Test Responsive View', () => {
                 expect(TestUtils.scryRenderedDOMComponentsWithTag(view, 'div')[0].textContent).toEqual(testArgs.device);
                 done();
             }, [
-                ['mockId', 'device'],
-                [DesktopMockID, Desktop],
-                [TabletMockID, Tablet],
-                [TabletPortraitMockID, Tablet],
-                [TabletLandscapeMockID, Tablet],
-                [MobileMockID, Mobile],
-                [MobilePortraitMockID, Mobile],
-                [MobileLandscapeMockID, Mobile]
+                    ['mockId', 'device'],
+                    [DesktopMockID, Desktop],
+                    [TabletMockID, Tablet],
+                    [TabletPortraitMockID, Tablet],
+                    [TabletLandscapeMockID, Tablet],
+                    [MobileMockID, Mobile],
+                    [MobilePortraitMockID, Mobile],
+                    [MobileLandscapeMockID, Mobile]
             ]);
 
         });
@@ -271,14 +272,14 @@ describe('Test Responsive View', () => {
             expect(TestUtils.scryRenderedDOMComponentsWithTag(view, 'div')[0].textContent).toEqual('Default');
             done();
         }, [
-            ['mockId', 'device'],
-            [DesktopMockID, Desktop],
-            [TabletMockID, Tablet],
-            [TabletPortraitMockID, TabletPortrait],
-            [TabletLandscapeMockID, TabletLandscape],
-            [MobileMockID, Mobile],
-            [MobilePortraitMockID, MobilePortrait],
-            [MobileLandscapeMockID, MobileLandscape]
+                ['mockId', 'device'],
+                [DesktopMockID, Desktop],
+                [TabletMockID, Tablet],
+                [TabletPortraitMockID, TabletPortrait],
+                [TabletLandscapeMockID, TabletLandscape],
+                [MobileMockID, Mobile],
+                [MobilePortraitMockID, MobilePortrait],
+                [MobileLandscapeMockID, MobileLandscape]
         ]);
 
     });

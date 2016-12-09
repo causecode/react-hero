@@ -39,19 +39,19 @@ export function DataGrid( { instanceList, properties, resource }: IDataGridProps
                             <td>{index}</td>
                             {properties.map(function(property: string, index: number) {
                                 return ( 
-                                        <td key={`property-${index}`}>
-                                            {(() => {
-                                                if (property.indexOf('.') > 0) {
-                                                    return instanceProperties.getNestedData(property);
-                                                } else {
-                                                    if (!instanceProperties[property]) {
-                                                        return instanceProperties[property];    
-                                                    }
-                                                    return instanceProperties[property].toString();
+                                    <td key={`property-${index}`}>
+                                        {(() => {
+                                            if (property.indexOf('.') > 0) {
+                                                return instanceProperties.getNestedData(property);
+                                            } else {
+                                                if (!instanceProperties[property]) {
+                                                    return instanceProperties[property];    
                                                 }
-                                            })()}
-                                        </td> 
-                                    );
+                                                return instanceProperties[property].toString();
+                                            }
+                                        })()}
+                                    </td> 
+                                );
                             })}
                             <td>
                                 <Link to={`/${resource}/edit/${instanceProperties.id}`}>

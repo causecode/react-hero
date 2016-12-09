@@ -1,5 +1,9 @@
 jest.unmock('../src/actions/modelActions');
+
 import * as Actions from '../src/actions/modelActions';
+import {initializeTestCase} from './../src/utils/initializeTestCase';
+import {IInitializerData} from './../src/utils/initializeTestCase';
+import {BaseModel} from '../src/models/BaseModel';
 import {
     SAVE_INSTANCE,
     UPDATE_INSTANCE,
@@ -10,9 +14,7 @@ import {
     UNSET_RESOURCE_LIST,
     SAVE_ALL_INSTANCES
 } from '../src/constants';
-import {BaseModel} from '../src/models/BaseModel';
-import {initializeTestCase} from './../src/utils/initializeTestCase';
-import {IInitializerData} from './../src/utils/initializeTestCase';
+
 const unroll: any = require<any>('unroll');
 
 unroll.use(it);
@@ -30,7 +32,7 @@ describe('instanceActions', () => {
         {id: 2, title: 'abc'}
     ];
 
-    function expectedValue(type: string, resource?: string, pageNumber?: number,) {
+    function expectedValue(type: string, resource?: string, pageNumber?: number) {
         return {
             type,
             resource,
@@ -38,7 +40,7 @@ describe('instanceActions', () => {
         };
     }
 
-    function expectedValueForSavingAllInstances(type: string, resource?: string, instanceList?: IInstanceList[],) {
+    function expectedValueForSavingAllInstances(type: string, resource?: string, instanceList?: IInstanceList[]) {
         return {
             type,
             resource,
@@ -71,7 +73,7 @@ describe('instanceActions', () => {
                 .toEqual(expectedValueForSavingAllInstances(SAVE_ALL_INSTANCES, testResource, testInstanceList));
     });
 
-    it('should create an action for ', () => {
+    it('should create an action for Save Update and Delete instance', () => {
         let ModelActionFactory = jest.fn();
         Actions.saveInstance(instances[resource]);
         Actions.updateInstance(instances[resource]);

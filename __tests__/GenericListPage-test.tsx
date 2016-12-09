@@ -1,10 +1,12 @@
-import {IGenericListPageProps} from '../src/components/CRUD/GenericListPage';
 jest.unmock('../src/components/CRUD/GenericListPage');
 jest.mock('../src/components-stateful/PagedList');
-import {GenericListPage} from '../src/components/CRUD/GenericListPage';
+
 import * as React from 'react';
 import * as TestUtils from 'react-addons-test-utils';
+import {IGenericListPageProps} from '../src/components/CRUD/GenericListPage';
+import {GenericListPage} from '../src/components/CRUD/GenericListPage';
 import {PagedList} from '../src/components-stateful/PagedList';
+
 const unroll: any = require<any>('unroll');
 
 unroll.use(it);
@@ -26,8 +28,8 @@ describe('Test Generic List Page', () => {
         expect(pagedList.props.resource).toEqual(testArgs.resource);
         done();
     }, [
-        ['title', 'page', 'resource'],
-        ['with props', <GenericListPage resource="test"/>, 'test'],
-        ['without props', <GenericListPage />, '']
+            ['title', 'page', 'resource'],
+            ['with props', <GenericListPage resource="test"/>, 'test'],
+            ['without props', <GenericListPage />, '']
     ]);
 });

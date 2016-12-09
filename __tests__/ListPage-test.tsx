@@ -1,4 +1,5 @@
 jest.unmock('../src/components-stateful/ListPage');
+
 import * as React from 'react';
 import {GenericListPage, IGenericListPageProps} from '../src/components/CRUD/GenericListPage';
 import {initializeTestCase} from './../src/utils/initializeTestCase';
@@ -6,6 +7,7 @@ import {IShallowTestUtils} from '../src/interfaces';
 import {ComponentService} from '../src/utils/componentService';
 import {IInitializerData} from './../src/utils/initializeTestCase';
 import {ListPage} from '../src/components-stateful/ListPage';
+
 const ShallowTestUtils: IShallowTestUtils = require<IShallowTestUtils>('react-shallow-testutils');
 
 describe('test List Page', () => {

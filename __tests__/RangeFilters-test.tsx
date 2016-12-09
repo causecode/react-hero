@@ -1,14 +1,16 @@
 jest.unmock('../src/components/PagedList/Filters/DateRangeFilter');
 jest.unmock('../src/components/PagedList/Filters/RangeFilter');
+
 import * as React from 'react';
 import * as TestUtils from 'react-addons-test-utils';
-import {Wrapper} from '../src/components/Wrapper';
 import * as ReactDOM from 'react-dom';
 import {FormGroup, ControlLabel, FormControl} from 'react-bootstrap';
 import {DateRangeFilter} from '../src/components/PagedList/Filters/DateRangeFilter';
 import {RangeFilter} from '../src/components/PagedList/Filters/RangeFilter';
+import {Wrapper} from '../src/components/Wrapper';
 import {IFilter} from '../src/interfaces';
 import '../src/utils/appService';
+
 const unroll: any = require<any>('unroll');
 
 unroll.use(it);
@@ -37,9 +39,9 @@ describe('DateRangeFilter test cases', () => {
         expect(component[1].props.name).toEqual(`${paramName}To`);
         done();
     }, [
-        ['title', 'filter'],
-        ['DateRangeFilter', DateRangeFilter],
-        ['RangeFilter', RangeFilter]
+                ['title', 'filter'],
+                ['DateRangeFilter', DateRangeFilter],
+                ['RangeFilter', RangeFilter]
     ]);
 
     unroll('should use paramName if label is not provided in #title', (done, testArgs) => {
@@ -53,8 +55,8 @@ describe('DateRangeFilter test cases', () => {
         expect(component.props.children).toEqual(paramName.capitalize());
         done();
     }, [
-        ['title', 'filter'],
-        ['DateRangeFilter', DateRangeFilter],
-        ['RangeFilter', RangeFilter]
+                ['title', 'filter'],
+                ['DateRangeFilter', DateRangeFilter],
+                ['RangeFilter', RangeFilter]
     ]);
 });

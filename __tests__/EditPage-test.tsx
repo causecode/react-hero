@@ -1,4 +1,5 @@
 jest.unmock('../src/components-stateful/EditPage');
+
 import * as React from 'react';
 import * as TestUtils from 'react-addons-test-utils';
 import {EditPageImpl, EditPageProps, EditPage} from '../src/components-stateful/EditPage';
@@ -13,7 +14,6 @@ import {ComponentService} from '../src/utils/componentService';
 import {GenericEditPage} from '../src/components/CRUD/GenericEditPage';
 import {ModelPropTypes} from '../src/models/ModelPropTypes';
 import {configureStore}from '../src/store/';
-import {modelReducer} from '../src/reducers/modelReducer';
 import {ModelService} from '../src/utils/modelService';
 import {createStore} from 'redux';
 import {ErrorPage} from '../src/components/ErrorPage';
@@ -22,6 +22,7 @@ import {resolver} from '../src/resolver';
 import {fromJS} from 'immutable';
 import {store} from '../src/store/';
 import ClassType = __React.ClassType;
+
 const ShallowTestUtils: IShallowTestUtils = require<IShallowTestUtils>('react-shallow-testutils');
 let unroll = require<any>('unroll');
 

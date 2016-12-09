@@ -1,7 +1,7 @@
 import * as React from 'react';
-import {Button} from 'react-bootstrap';
 import {IPagedListFiltersProps} from '../../../interfaces';
 import {ModelService} from '../../../utils/modelService';
+import {Button} from 'react-bootstrap';
 const ReduxForm: any = require<any>('redux-form');
 const classNames: any = require<any>('classnames');
 

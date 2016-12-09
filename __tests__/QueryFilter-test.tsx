@@ -1,17 +1,19 @@
 jest.unmock('../src/components/PagedList/Filters/QueryFilter');
-import * as React from 'react';
+
 import * as TestUtils from 'react-addons-test-utils';
-import {Wrapper} from '../src/components/Wrapper';
 import * as ReactDOM from 'react-dom';
+import * as React from 'react';
 import {FormGroup, ControlLabel, FormControl} from 'react-bootstrap';
 import {QueryFilter, IQueryFilter} from '../src/components/PagedList/Filters/QueryFilter';
+import {Wrapper} from '../src/components/Wrapper';
 import {IFilter} from '../src/interfaces';
 import '../src/utils/appService';
+
 const unroll: any = require<any>('unroll');
 
 unroll.use(it);
 
-describe( 'Queryfilter', () => {
+describe( 'Test Cases for Query Filter', () => {
     let paramNameData: string = 'test';
     let fieldValues: {name: string}[] = [
         {name: `${paramNameData}From`},

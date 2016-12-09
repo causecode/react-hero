@@ -1,8 +1,10 @@
 jest.unmock('../src/api/server/index');
+
 import { HTTP, BASE_URL } from '../src/api/server/index';
 import 'babel-polyfill';
-let axios = require('axios');
+
 const unroll: any = require<any>('unroll');
+let axios = require('axios');
 
 unroll.use(it);
 
@@ -29,10 +31,10 @@ describe('Test server api methods', () => {
             expect(axios).toBeCalledWith(expectedGetConfig);
             done();
         }, [
-            ['title', 'path', 'data', 'expectedURL', 'headers'],
-            ['all parameters', successPath, data, BASE_URL + successPath + '?' + HTTP.serialize(data), headers],
-            ['path and empty data', successPath, {}, BASE_URL + successPath, {}],
-            ['empty params', '', {}, BASE_URL, {}]
+                ['title', 'path', 'data', 'expectedURL', 'headers'],
+                ['all parameters', successPath, data, BASE_URL + successPath + '?' + HTTP.serialize(data), headers],
+                ['path and empty data', successPath, {}, BASE_URL + successPath, {}],
+                ['empty params', '', {}, BASE_URL, {}]
         ]);
 
         it('calls getRequest with url', async () => {
@@ -63,10 +65,10 @@ describe('Test server api methods', () => {
             expect(axios).toBeCalledWith(postConfig);
             done();
         }, [
-            ['title', 'path', 'data', 'headers'],
-            ['all parameters', successPath, data, headers],
-            ['empty data', successPath, {}, {}],
-            ['empty params', '', {}, {}],
+                ['title', 'path', 'data', 'headers'],
+                ['all parameters', successPath, data, headers],
+                ['empty data', successPath, {}, {}],
+                ['empty params', '', {}, {}]
         ]);
 
         it('calls postRequest with url', async() => {
@@ -105,9 +107,9 @@ describe('Test server api methods', () => {
             expect(axios).toBeCalledWith(putConfig);
             done();
         }, [
-            ['title', 'path', 'data', 'headers'],
-            ['empty data and successPath', successPath, data, headers],
-            ['empty params', '', {}, {}],
+                ['title', 'path', 'data', 'headers'],
+                ['empty data and successPath', successPath, data, headers],
+                ['empty params', '', {}, {}]
         ]);
 
         it('calls putRequest with url', async() => {

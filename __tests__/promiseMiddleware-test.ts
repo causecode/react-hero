@@ -1,7 +1,8 @@
 import {promiseMiddleware} from '../src/middleware/promiseMiddleware';
 import {Store} from 'redux';
-import 'babel-polyfill';
 import {Stub} from '../src/interfaces';
+import 'babel-polyfill';
+
 const unroll: any = require<any>('unroll');
 
 unroll.use(it);
@@ -69,12 +70,12 @@ describe('Test promise middleware', () => {
         expect(dispatchCalls[1][0].payload).toEqual(testArgs.response);
         done();
     }, [
-        ['path', 'response', 'type', 'action'],
-        [successPath, successObject, SUCCESS, getAction(successPath)],
-        [failurePath, failureObject, ERROR, getAction(failurePath)],
-        [successPath, {}, SUCCESS, getAction(successPath, () => {
-            return new Promise((resolve) => { resolve({successObject}); });
-        })]
+            ['path', 'response', 'type', 'action'],
+            [successPath, successObject, SUCCESS, getAction(successPath)],
+            [failurePath, failureObject, ERROR, getAction(failurePath)],
+            [successPath, {}, SUCCESS, getAction(successPath, () => {
+                return new Promise((resolve) => { resolve({successObject}); });
+            })]
     ]);
 
     describe('executes callbacks if passed', () => {

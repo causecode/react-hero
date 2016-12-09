@@ -1,24 +1,25 @@
-import {BaseModel} from '../src/models/BaseModel';
 jest.unmock('../src/components-stateful/PagedList');
-jest.mock('react-bootstrap');
 jest.unmock('../src/reducers/data');
 jest.unmock('../src/actions/modelActions');
-import {Pagination} from 'react-bootstrap';
-import {DataGrid} from '../src/components/PagedList/DataGrid';
-import {PagedListImpl, PagedList} from '../src/components-stateful/PagedList';
-import {PagedListFilters} from '../src/components/PagedList/Filters/PagedListFilter';
+jest.mock('react-bootstrap');
+
 import * as React from 'react';
 import * as TestUtils from 'react-addons-test-utils';
-import {Link} from 'react-router';
+import * as actions from '../src/actions/modelActions';
+import {configureStore, IMockStore, store} from '../src/store';
+import {PagedListImpl, PagedList} from '../src/components-stateful/PagedList';
+import {Store, createStore} from 'redux';
+import {IShallowTestUtils} from '../src/interfaces';
+import {PagedListFilters} from '../src/components/PagedList/Filters/PagedListFilter';
+import {IPagedListProps} from '../src/components-stateful/PagedList';
+import {dataReducer} from '../src/reducers/data';
+import {Pagination} from 'react-bootstrap';
+import {BaseModel} from '../src/models/BaseModel';
+import {DataGrid} from '../src/components/PagedList/DataGrid';
 import {Provider} from 'react-redux';
 import {Wrapper} from './../src/components/Wrapper';
-import {IShallowTestUtils} from '../src/interfaces';
-import {IPagedListProps} from '../src/components-stateful/PagedList';
-import * as actions from '../src/actions/modelActions';
-import {Store, createStore} from 'redux';
-import {dataReducer} from '../src/reducers/data';
-import {configureStore, IMockStore, store} from '../src/store';
 import {fromJS} from 'immutable';
+import {Link} from 'react-router';
 
 const ShallowTestUtils: IShallowTestUtils = require<IShallowTestUtils>('react-shallow-testutils');
 

@@ -1,16 +1,18 @@
-import {FilterForm} from '../src/components/PagedList/Filters/DynamicForm';
 jest.unmock('../src/components/PagedList/Filters/PagedListFilter');
-import {PagedListFilters} from '../src/components/PagedList/Filters/PagedListFilter';
+
 import * as React from 'react';
 import * as TestUtils from 'react-addons-test-utils';
 import {initializeTestCase} from './../src/utils/initializeTestCase';
-const ShallowTestUtils: any = require<any>('react-shallow-testutils');
-import {Button} from 'react-bootstrap';
+import {PagedListFilters} from '../src/components/PagedList/Filters/PagedListFilter';
+import {IInitializerData} from './../src/utils/initializeTestCase';
 import {DateRangeFilter} from '../src/components/PagedList/Filters/DateRangeFilter';
 import {DropDownFilter} from '../src/components/PagedList/Filters/DropDownFilter';
 import {QueryFilter} from '../src/components/PagedList/Filters/QueryFilter';
 import {RangeFilter} from '../src/components/PagedList/Filters/RangeFilter';
-import {IInitializerData} from './../src/utils/initializeTestCase';
+import {FilterForm} from '../src/components/PagedList/Filters/DynamicForm';
+import {Button} from 'react-bootstrap';
+
+const ShallowTestUtils: any = require<any>('react-shallow-testutils');
 
 describe('Test PagedList Filters', () => {
     let { renderer, resource }: IInitializerData = initializeTestCase();

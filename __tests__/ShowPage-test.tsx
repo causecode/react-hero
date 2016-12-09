@@ -1,23 +1,25 @@
-import {GenericShowPage} from '../src/components/CRUD/GenericShowPage';
 jest.unmock('../src/components-stateful/ShowPage');
-import {ShowPageImpl, ShowPage} from '../src/components-stateful/ShowPage';
+
 import * as React from 'react';
 import * as TestUtils from 'react-addons-test-utils';
-const ShallowTestUtils: IShallowTestUtils = require<IShallowTestUtils>('react-shallow-testutils');
-import {initializeTestCase} from './../src/utils/initializeTestCase';
-import {BaseModel} from '../src/models/BaseModel';
-import {ComponentService} from '../src/utils/componentService';
-import {ModelService} from '../src/utils/modelService';
-import {resolver} from '../src/resolver';
-import {IInitializerData} from './../src/utils/initializeTestCase';
-import {IShallowTestUtils} from '../src/interfaces';
 import {IInstanceContainerProps} from '../src/interfaces';
+import {ShowPageImpl, ShowPage} from '../src/components-stateful/ShowPage';
+import {initializeTestCase} from './../src/utils/initializeTestCase';
+import {IShallowTestUtils} from '../src/interfaces';
+import {ComponentService} from '../src/utils/componentService';
+import {IInitializerData} from './../src/utils/initializeTestCase';
+import {GenericShowPage} from '../src/components/CRUD/GenericShowPage';
 import {configureStore} from '../src/store';
+import {PAGE_NOT_FOUND} from '../src/constants';
+import {ModelPropTypes} from '../src/models/ModelPropTypes';
+import {ModelService} from '../src/utils/modelService';
+import {ErrorPage} from '../src/components/ErrorPage';
+import {BaseModel} from '../src/models/BaseModel';
+import {resolver} from '../src/resolver';
 import {Provider} from 'react-redux';
 import {fromJS} from 'immutable';
-import {PAGE_NOT_FOUND} from '../src/constants';
-import {ErrorPage} from '../src/components/ErrorPage';
-import {ModelPropTypes} from '../src/models/ModelPropTypes';
+
+const ShallowTestUtils: IShallowTestUtils = require<IShallowTestUtils>('react-shallow-testutils');
 
 describe('Test ShowPage', () => {
     let initializerData: IInitializerData = initializeTestCase();

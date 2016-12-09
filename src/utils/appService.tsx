@@ -54,27 +54,29 @@ export function parseWidgetDate(date: number | string | Date): string {
 }
 
 /**
- * TODO Figure out different approach to getNestedData.
+ * TODO create a function getNestedData().
  */
-// Object.prototype.getNestedData = function(nestedPath: string) {
-//     let data = this;
-//     let result: string = '';
-//     if (data) {
-//         nestedPath.split('.').forEach((item) => {
-//             if (data.constructor === Array) {
-//                 data.forEach((innerItem, index) => {
-//                     result = `${result} ${innerItem[item].toString()}`;
-//                 });
-//             } else {
-//                 data = data[item];
-//             }
-//             if (data.constructor !== Array && data.constructor !== Object) {
-//                 result = `${result} ${data}`;
-//             }
-//         });
-//     }
-//     return result;
-// };
+/*
+Object.prototype.getNestedData = function(nestedPath: string) {
+    let data = this;
+    let result: string = '';
+    if (data) {
+        nestedPath.split('.').forEach((item) => {
+            if (data.constructor === Array) {
+                data.forEach((innerItem, index) => {
+                    result = `${result} ${innerItem[item].toString()}`;
+                });
+            } else {
+                data = data[item];
+            }
+            if (data.constructor !== Array && data.constructor !== Object) {
+                result = `${result} ${data}`;
+            }
+        });
+    }
+    return result;
+};
+*/
 
 export function isEmpty(obj: Object): boolean {
     return (!obj || !Object.keys(obj).length);
