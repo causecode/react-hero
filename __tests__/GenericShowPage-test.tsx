@@ -37,9 +37,9 @@ describe('Test Generic Show Page', () => {
         }
         done();
     }, [
-            ['title', 'page', 'resource'],
-            ['without a resource', <GenericShowPage instance={ModelInstance} />, 'base'],
-            ['with a resource', <GenericShowPage instance={ModelInstance} resource="test"/>, 'test']
+        ['title', 'page', 'resource'],
+        ['without a resource', <GenericShowPage instance={ModelInstance} />, 'base'],
+        ['with a resource', <GenericShowPage instance={ModelInstance} resource="test"/>, 'test']
     ]);
 
     it('renders a GenericShowPage without any props', () => {

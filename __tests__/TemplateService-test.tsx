@@ -148,9 +148,9 @@ describe('Test generateFormTemplate method of TemplateService', () => {
         });
         done();
     }, [
-            ['modelClass', 'title'],
-            [TestModelInvaidPropTypes, 'propTypes are invalid']
-            [TestModelEmptyPropTypes, 'propTypes are undefined']
+        ['modelClass', 'title'],
+        [TestModelInvaidPropTypes, 'propTypes are invalid']
+        [TestModelEmptyPropTypes, 'propTypes are undefined']
     ]);
 
 });
@@ -261,9 +261,9 @@ describe('Test generateShowTemplate method of TemplateService', () => {
         });
         done();
     }, [
-            ['modelClass', 'title'],
-            [TestModelInvaidPropTypes, 'propTypes are invalid']
-            [TestModelEmptyPropTypes, 'propTypes are undefined']
+        ['modelClass', 'title'],
+        [TestModelInvaidPropTypes, 'propTypes are invalid']
+        [TestModelEmptyPropTypes, 'propTypes are undefined']
     ]);
 
 });

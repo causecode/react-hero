@@ -117,12 +117,12 @@ describe('Data-dataReducer', () => {
         expect(successListAction.get(`${resourceString}List`).has(testArgs.name)).toBeTruthy();
         done();
     }, [
-            ['name'],
-            ['hasError'],
-            ['instanceList'],
-            ['isLoading'],
-            ['properties'],
-            ['totalCount']
+        ['name'],
+        ['hasError'],
+        ['instanceList'],
+        ['isLoading'],
+        ['properties'],
+        ['totalCount']
     ]);
 
     it('should throw error when Payload is not provided.', () => {

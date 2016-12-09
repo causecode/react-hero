@@ -59,12 +59,12 @@ describe('Test Model Service', () => {
             done();
 
         }, [
-                ['modelKey', 'expectation', 'model'],
-                ['test', true, TestModel],
-                ['testModel', true, TestModel],
-                ['TestModel', true, TestModel],
-                ['abc', false, BaseModel],
-                ['abcModel', false, BaseModel]
+            ['modelKey', 'expectation', 'model'],
+            ['test', true, TestModel],
+            ['testModel', true, TestModel],
+            ['TestModel', true, TestModel],
+            ['abc', false, BaseModel],
+            ['abcModel', false, BaseModel]
         ]);
 
     });

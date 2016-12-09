@@ -51,10 +51,10 @@ describe('Test generateEditPage function', () => {
         }).toThrow(new Error(INVALID_COMMAND_ERROR(...testArgs.missingArgs)));
         done();
     }, [
-            ['argv', 'missingArgs'],
-            [[], ['modelPath', 'modelName', 'onCancel']],
-            [['--modelPath', testModelPath], ['modelName', 'onCancel']],
-            [['--modelPath', testModelPath, '--modelName', testModelName], ['onCancel']]
+        ['argv', 'missingArgs'],
+        [[], ['modelPath', 'modelName', 'onCancel']],
+        [['--modelPath', testModelPath], ['modelName', 'onCancel']],
+        [['--modelPath', testModelPath, '--modelName', testModelName], ['onCancel']]
     ]);
 
     it('should throw an error if invalid model name is specified', () => {

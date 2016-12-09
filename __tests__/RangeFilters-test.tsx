@@ -39,9 +39,9 @@ describe('DateRangeFilter test cases', () => {
         expect(component[1].props.name).toEqual(`${paramName}To`);
         done();
     }, [
-                ['title', 'filter'],
-                ['DateRangeFilter', DateRangeFilter],
-                ['RangeFilter', RangeFilter]
+        ['title', 'filter'],
+        ['DateRangeFilter', DateRangeFilter],
+        ['RangeFilter', RangeFilter]
     ]);
 
     unroll('should use paramName if label is not provided in #title', (done, testArgs) => {
@@ -55,8 +55,8 @@ describe('DateRangeFilter test cases', () => {
         expect(component.props.children).toEqual(paramName.capitalize());
         done();
     }, [
-                ['title', 'filter'],
-                ['DateRangeFilter', DateRangeFilter],
-                ['RangeFilter', RangeFilter]
+        ['title', 'filter'],
+        ['DateRangeFilter', DateRangeFilter],
+        ['RangeFilter', RangeFilter]
     ]);
 });

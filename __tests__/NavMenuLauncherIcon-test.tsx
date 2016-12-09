@@ -25,9 +25,9 @@ describe('Test NavMenuLauncherIcon', () => {
         expect(onClick).toBeCalled();
         done();
     }, [
-            ['position'],
-            ['left'],
-            ['right']
+        ['position'],
+        ['left'],
+        ['right']
     ]);
 
     it('renders a NavMenuLauncherIcon without any props', () => {

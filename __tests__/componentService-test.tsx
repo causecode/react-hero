@@ -49,11 +49,11 @@ describe('Test Component Service', () => {
             expect(ComponentService[testArgs.methodName]('aaaa')).toEqual(false);
             done();
         }, [
-                ['methodName'],
-                ['hasListPage'],
-                ['hasEditPage'],
-                ['hasShowPage'],
-                ['hasCreatePage']
+            ['methodName'],
+            ['hasListPage'],
+            ['hasEditPage'],
+            ['hasShowPage'],
+            ['hasCreatePage']
         ]);
 
         unroll('retrieves the #type Pages', (done, testArgs) => {
@@ -63,11 +63,11 @@ describe('Test Component Service', () => {
             expect(ComponentService[`get${testArgs.type}Page`]('')).toEqual(pages[`Generic${testArgs.type}Page`]);
             done();
         }, [
-                ['type'],
-                ['List'],
-                ['Create'],
-                ['Edit'],
-                ['Show']
+            ['type'],
+            ['List'],
+            ['Create'],
+            ['Edit'],
+            ['Show']
         ]);
 
         it('logs a warning in the development Environment if component is not found', () => {

@@ -42,11 +42,11 @@ describe('Test for AppService', () => {
         expect(isObjectEmpty).toEqual(testArgs.isObjectEmpty);
         done();
     }, [
-            ['object', 'isObjectEmpty'],
-            [JSON.stringify({id: 1}), false],
-            ['abc', false],
-            [1, true],
-            [JSON.stringify({}), true]
+        ['object', 'isObjectEmpty'],
+        [JSON.stringify({id: 1}), false],
+        ['abc', false],
+        [1, true],
+        [JSON.stringify({}), true]
     ]);
 
     unroll('returns the model string for the FormInputs with modelString array #array', (done, testArgs) => {
@@ -161,14 +161,14 @@ describe('Test for AppService', () => {
         expect(getIn(object, testArgs.keyPath, testArgs.defaultValue)).toEqual(testArgs.valueReturned);
         done();
     }, [
-            ['object', 'keyPath', 'defaultValue', 'valueReturned', 'fromJS'],
-            [JSON.stringify({id: 10}), 'id', 1, 10, false],
-            [JSON.stringify({id: 10}), 'id.name', 1, 1, false],
-            [JSON.stringify({id: {name: 'abc'}}), 'id', 1, {name: 'abc'}, false],
-            [JSON.stringify({id: 10}), 'id', 1, 10, true],
-            [JSON.stringify({id: 10}), 'id.name', 1, 1, true],
-            [JSON.stringify({id: {name: 'abc'}}), 'id', 1, {name: 'abc'}, true],
-            [JSON.stringify({id: 10}), 'id.name', 1, 1, true]
+        ['object', 'keyPath', 'defaultValue', 'valueReturned', 'fromJS'],
+        [JSON.stringify({id: 10}), 'id', 1, 10, false],
+        [JSON.stringify({id: 10}), 'id.name', 1, 1, false],
+        [JSON.stringify({id: {name: 'abc'}}), 'id', 1, {name: 'abc'}, false],
+        [JSON.stringify({id: 10}), 'id', 1, 10, true],
+        [JSON.stringify({id: 10}), 'id.name', 1, 1, true],
+        [JSON.stringify({id: {name: 'abc'}}), 'id', 1, {name: 'abc'}, true],
+        [JSON.stringify({id: 10}), 'id.name', 1, 1, true]
     ]);
 
 });

@@ -51,10 +51,10 @@ describe('Test generateShowPage function', () => {
         }).toThrow(new Error(INVALID_COMMAND_ERROR(...testArgs.missingArgs)));
         done();
     }, [
-            ['argv', 'missingArgs'],
-            [[], ['modelPath', 'modelName']],
-            [['--modelPath', testModelPath], ['modelName']],
-            [['--modelName', testModelName], ['modelPath']]
+        ['argv', 'missingArgs'],
+        [[], ['modelPath', 'modelName']],
+        [['--modelPath', testModelPath], ['modelName']],
+        [['--modelName', testModelName], ['modelPath']]
     ]);
 
     it('should throw an error if invalid model name is specified', () => {
