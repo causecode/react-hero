@@ -56,12 +56,12 @@ export interface IHeaderFooterLayoutProps {
     open?: boolean;
     toggleNav?: () => void;
     style?: {
-                header: React.CSSProperties,
-                nav: React.CSSProperties,
-                content: React.CSSProperties,
-                footer: React.CSSProperties,
-                navIcon: React.CSSProperties
-            };
+            header: React.CSSProperties,
+            nav: React.CSSProperties,
+            content: React.CSSProperties,
+            footer: React.CSSProperties,
+            navIcon: React.CSSProperties
+        };
 }
 
 const mapStateToProps = (state): {open: boolean}  => {

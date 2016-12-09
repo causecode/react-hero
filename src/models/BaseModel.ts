@@ -229,7 +229,7 @@ export class BaseModel {
             return listInstance;
         }
         
-        let formInstances = state.forms.RHForms || {};
+        let formInstances = state.forms.rhForms || {};
         formInstances = formInstances.toJS ? formInstances.toJS() : formInstances;
         let instanceKey = operation === 'edit' ? `${resourceName}Edit` : `${resourceName}Create`;
         let formInstance = formInstances[instanceKey];

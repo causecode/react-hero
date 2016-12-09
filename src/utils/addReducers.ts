@@ -14,6 +14,6 @@ export const addReducers = (ReducerConfig: Object): Reducer => {
         data,
         routing: routerReducer,
         form: reduxFormReducer,
-        forms: combineForms({RHForms: {}})
+        forms: combineForms({rhForms: {}})
     }));
 };

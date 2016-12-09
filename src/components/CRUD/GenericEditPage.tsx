@@ -31,7 +31,7 @@ export class GenericEditPage extends React.Component<IGenericEditPageProps, void
     fetchStoreInstance = (): BaseModel => {
         let instance = this.props.instance;
         let instanceKey = this.props.isCreatePage ? `${instance.resourceName}Create` : `${instance.resourceName}Edit`;
-        instance.properties = store.getState().forms[`RHForms`][instanceKey].properties; 
+        instance.properties = store.getState().forms[`rhForms`][instanceKey].properties; 
         return instance;
     }
 

@@ -11,7 +11,7 @@ let rootReducer: Reducer = combineReducers({
     data,
     routing: routerReducer,
     form: reduxFormReducer,
-    forms: combineForms({RHForms: {}})
+    forms: combineForms({rhForms: {}})
 });
 
 export {rootReducer};

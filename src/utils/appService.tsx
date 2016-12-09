@@ -59,7 +59,7 @@ export function isEmpty(obj: Object): boolean {
 }
 
 export function getModelString(...args: any[]): string {
-    return `RHForms.${args.join('.')}`;
+    return `rhForms.${args.join('.')}`;
 }
 
 export function initializeFormWithInstance<T extends BaseModel>(instance: T, isCreate: boolean = false) {

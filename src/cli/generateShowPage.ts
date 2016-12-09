@@ -1,5 +1,5 @@
 #! /usr/bin/env node
 
-import {generateShowPage} from './generatorService';
+import {getShowPage} from './generatorService';
 
-generateShowPage();
+getShowPage();
