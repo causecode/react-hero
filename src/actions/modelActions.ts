@@ -6,7 +6,8 @@ import {
     SET_PAGE,
     TOGGLE_FILTERS,
     TOGGLE_NAV,
-    UNSET_RESOURCE_LIST
+    UNSET_RESOURCE_LIST,
+    SAVE_ALL_INSTANCES
 } from '../constants';
 
 export interface IInstanceAction {
@@ -15,7 +16,7 @@ export interface IInstanceAction {
     instance: BaseModel;
 }
 
-function ModelActionFactory(type: string) {
+export function ModelActionFactory(type: string) {
     return (instance: BaseModel, resource: string): IInstanceAction => {
         return {
             type,
@@ -60,7 +61,7 @@ export const toggleNav = (): {type: string} => {
 
 export const saveAllInstances = (instanceList: any[], resource: string) => {
     return {
-        type: 'SAVE_ALL_INSTANCES',
+        type: SAVE_ALL_INSTANCES,
         resource,
         instanceList
     };

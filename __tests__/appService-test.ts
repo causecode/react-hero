@@ -1,5 +1,6 @@
 jest.unmock('../src/utils/appService.tsx');
 jest.unmock('immutable');
+
 import {BaseModel} from '../src/models/BaseModel';
 import {store, IMockStore} from '../src/store';
 import {fromJS} from 'immutable';
@@ -13,6 +14,7 @@ import {
     initializeFormWithInstance
 } from '../src/utils/appService';
 import {ModelPropTypes} from '../src/models/ModelPropTypes';
+
 const unroll = require<any>('unroll');
 
 unroll.use(it);
@@ -44,7 +46,7 @@ describe('Test for AppService', () => {
         [JSON.stringify({id: 1}), false],
         ['abc', false],
         [1, true],
-        [JSON.stringify({}), true],
+        [JSON.stringify({}), true]
     ]);
 
     unroll('returns the model string for the FormInputs with modelString array #array', (done, testArgs) => {
@@ -77,14 +79,14 @@ describe('Test for AppService', () => {
         expect(objectEquals(object1, object2)).toEqual(testArgs.areObjectsEqual);
         done();
     }, [
-        ['object1', 'object2', 'areObjectsEqual'],
-        [JSON.stringify({}), JSON.stringify({}), true],
-        [JSON.stringify({id: 1}), JSON.stringify({id: 1}), true],
-        [JSON.stringify({id: 1}), JSON.stringify({id: 2}), false],
-        [1, 2, false],
-        [1, 1, true],
-        ['abc', 'abc', true],
-        ['abc', 'ab', false]
+            ['object1', 'object2', 'areObjectsEqual'],
+            [JSON.stringify({}), JSON.stringify({}), true],
+            [JSON.stringify({id: 1}), JSON.stringify({id: 1}), true],
+            [JSON.stringify({id: 1}), JSON.stringify({id: 2}), false],
+            [1, 2, false],
+            [1, 1, true],
+            ['abc', 'abc', true],
+            ['abc', 'ab', false]
     ]);
 
     unroll('constructs the date string from #date required by the date form control', (done, testArgs) => {
@@ -93,11 +95,11 @@ describe('Test for AppService', () => {
         expect(dateString).toEqual(testArgs.dateString);
         done();
     }, [
-        ['date', 'dateString'],
-        ['abc', 'Invalid date'],
-        ['1479933241738', '2016-11-24'],
-        [1479933241738, '2016-11-24'],
-        [new Date(), '2016-11-24']
+            ['date', 'dateString'],
+            ['abc', 'Invalid date'],
+            ['1479933241738', '2016-11-24'],
+            [1479933241738, '2016-11-24'],
+            [new Date(), '2016-11-24']
     ]);
 
     describe('Tests the initializeFormWithInstance method', () => {
@@ -131,11 +133,11 @@ describe('Test for AppService', () => {
             expect(action.value).toEqual(testInstance);
             done();
         }, [
-            ['properties', 'numberOfActions', 'isCreatePage', 'formModelSuffix'],
-            [JSON.stringify({id: 1}), 1, true, 'Create'],
-            [JSON.stringify({}), 1, true, 'Create'],
-            [JSON.stringify({id: 1}), 1, false, 'Edit'],
-            [JSON.stringify({}), 1, false, 'Edit']
+                ['properties', 'numberOfActions', 'isCreatePage', 'formModelSuffix'],
+                [JSON.stringify({id: 1}), 1, true, 'Create'],
+                [JSON.stringify({}), 1, true, 'Create'],
+                [JSON.stringify({id: 1}), 1, false, 'Edit'],
+                [JSON.stringify({}), 1, false, 'Edit']
         ]);
 
         it('does not initialize the form models with an instance if the instance ' + 

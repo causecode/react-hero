@@ -53,6 +53,28 @@ export function parseWidgetDate(date: number | string | Date): string {
     return moment(timestamp).format('YYYY-MM-DD');
 }
 
+/**
+ * TODO create a function getNestedData().
+ */
+
+export function getInnerData(data: any, nestedPath: string) {
+    let result: string = '';
+    if (data) {
+        nestedPath.split('.').forEach((item) => {
+            if (data.constructor === Array) {
+                data.forEach((innerItem, index) => {
+                    result = `${result} ${innerItem[item].toString()}`;
+                });
+            } else {
+                data = data[item];
+            }
+            if (data.constructor !== Array && data.constructor !== Object) {
+                result = `${result} ${data}`;
+            }
+        });
+    }
+    return result;
+};
 
 export function isEmpty(obj: Object): boolean {
     return (!obj || !Object.keys(obj).length);

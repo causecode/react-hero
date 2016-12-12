@@ -1,22 +1,25 @@
-import {GenericShowPage} from '../src/components/CRUD/GenericShowPage';
 jest.unmock('../src/components-stateful/ShowPage');
-import {ShowPageImpl, ShowPage} from '../src/components-stateful/ShowPage';
+
 import * as React from 'react';
 import * as TestUtils from 'react-addons-test-utils';
-const ShallowTestUtils: IShallowTestUtils = require<IShallowTestUtils>('react-shallow-testutils');
+import {IInstanceContainerProps} from '../src/interfaces';
+import {ShowPageImpl, ShowPage} from '../src/components-stateful/ShowPage';
 import {initializeTestCase} from './../src/utils/initializeTestCase';
-import {BaseModel} from '../src/models/BaseModel';
+import {IShallowTestUtils} from '../src/interfaces';
 import {ComponentService} from '../src/utils/componentService';
-import {ModelService} from '../src/utils/modelService';
-import {resolver} from '../src/resolver';
 import {IInitializerData} from './../src/utils/initializeTestCase';
-import {IShallowTestUtils} from '../src/interfaces/interfaces';
-import {IInstanceContainerProps} from '../src/interfaces/interfaces';
-import {configureStore} from '../src/store/store';
+import {GenericShowPage} from '../src/components/CRUD/GenericShowPage';
+import {configureStore} from '../src/store';
+import {PAGE_NOT_FOUND} from '../src/constants';
+import {ModelPropTypes} from '../src/models/ModelPropTypes';
+import {ModelService} from '../src/utils/modelService';
+import {ErrorPage} from '../src/components/ErrorPage';
+import {BaseModel} from '../src/models/BaseModel';
+import {resolver} from '../src/resolver';
 import {Provider} from 'react-redux';
 import {fromJS} from 'immutable';
-import {PAGE_NOT_FOUND} from '../src/constants';
-import {ErrorPage} from '../src/components/ErrorPage';
+
+const ShallowTestUtils: IShallowTestUtils = require<IShallowTestUtils>('react-shallow-testutils');
 
 describe('Test ShowPage', () => {
     let initializerData: IInitializerData = initializeTestCase();
@@ -30,24 +33,6 @@ describe('Test ShowPage', () => {
         BaseModel.get = jest.fn<Function>();
     });
 
-    it('renders a ShowPage with the store', () => {
-        let page: React.Component<void, void> = TestUtils.renderIntoDocument<React.Component<void, void>>(
-            <Provider store={configureStore({instances: fromJS({testEditPage: {}})})} >
-                <ShowPage params={{resource, resourceID}}/>
-            </Provider>
-        );
-
-        expect(page).toBeTruthy();
-        let renderedPage: React.ReactElement<IInstanceContainerProps> = TestUtils
-            .findRenderedComponentWithType(page, GenericShowPage) as React.ReactElement<IInstanceContainerProps>;
-        expect(renderedPage).toBeTruthy();
-        expect(renderedPage.props.resource).toEqual(resource);
-        expect(TestUtils.findRenderedComponentWithType(page, GenericShowPage));
-        expect(BaseModel.get).toBeCalledWith(resourceID);
-
-    });
-
-
     function testRenderedPageProps(page: React.ReactElement<IInstanceContainerProps>, instance: BaseModel
             , resourceParam: string) {
         let renderedPage = ShallowTestUtils.findWithType(page, GenericShowPage);
@@ -57,48 +42,31 @@ describe('Test ShowPage', () => {
         expect(BaseModel.get).toBeCalled();
     }
 
-    it('renders a simple Show Page', () => {
-        renderer.render(
-            <ShowPageImpl
-                params={{resource: resource}}
-                instance={instances[resource]}
-            />
-        );
-
-        let page: React.ReactElement<IInstanceContainerProps> = renderer.getRenderOutput();
-        expect(page).toBeTruthy();
-        expect(page.props.resource).toBe(resource);
-        expect(page.props.instance).toEqual(instances[resource]);
-        testRenderedPageProps(page, instances[resource], resource);
-    });
-
-    it('renders an ShowPage without any props', () => {
-        renderer.render(
-            <ShowPageImpl />
-        );
-
-        let page: React.ReactElement<IInstanceContainerProps> = renderer.getRenderOutput();
-        expect(page).toBeTruthy();
-        expect(page.props.resource).toBe('');
-        expect(page.props.instance).toEqual(new BaseModel({}));
-        testRenderedPageProps(page, new BaseModel({}), '');
-    });
-
     it('renders an ShowPage with user implemented ShowPage registered', () => {
-        class TestShowPage extends React.Component<{}, {}> {}
+        class TestShowPage extends React.Component<void, void> {
+            static resourceName: string = 'test';
+        }
+
         class TestModel extends BaseModel {
+            static resourceName: string = 'test';
+            static propTypes = {
+                id: ModelPropTypes.NUMBER()
+            };
+            static defaultProps = {
+                id: 0
+            };
             constructor(data) {
                 super(data);
             }
         }
 
         ModelService.register(TestModel);
-        ComponentService.register(TestShowPage);
+        ComponentService.register(TestShowPage, 'show');
 
         expect(resolver.has('testmodel')).toEqual(true);
         expect(resolver.get('testmodel')).toEqual(TestModel);
-        expect(resolver.has('testshowpage')).toEqual(true);
-        expect(resolver.get('testshowpage')).toEqual(TestShowPage);
+        expect(resolver.has('testshow')).toEqual(true);
+        expect(resolver.get('testshow')).toEqual(TestShowPage);
 
         renderer.render(
             <ShowPageImpl params={{resource: resource}} instance={new TestModel({})}/>
@@ -119,7 +87,7 @@ describe('Test ShowPage', () => {
         renderer.render(
             <ShowPageImpl params={{resource: resource}} instance={new TestPage()}/>
         );
-        let page: React.ReactElement<IInstanceContainerProps> = renderer.getRenderOutput();
+        let page: React.ReactElement<{message: string}> = renderer.getRenderOutput();
         expect(page.type).toEqual(ErrorPage);
         expect(page.props.message).toEqual(PAGE_NOT_FOUND);
     });

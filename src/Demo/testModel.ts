@@ -13,20 +13,14 @@ export enum IsCurrent {
 
 export class BlogModel extends BaseModel {
     static propTypes = {
-        dateCreated: ModelPropTypes.DATE(),
-        guestList: ModelPropTypes.ARRAY(ModelPropTypes.STRING()),
         id: ModelPropTypes.NUMBER(),
-        name: ModelPropTypes.STRING(),
-        enabled: ModelPropTypes.BOOLEAN(),
-        status: ModelPropTypes.ENUM(Status),
-        address: ModelPropTypes.OBJECT({
-            lineOne: ModelPropTypes.STRING(),
-            lineTwo: ModelPropTypes.STRING(),
-            flatNumber: ModelPropTypes.NUMBER(),
-            current: ModelPropTypes.BOOLEAN(),
-            livingSince: ModelPropTypes.DATE(),
-            residents: ModelPropTypes.ARRAY(ModelPropTypes.STRING()),
-            isCurrent: ModelPropTypes.ENUM(IsCurrent)
+        author: ModelPropTypes.STRING(),
+        blogIMGSrc: ModelPropTypes.STRING(),
+        dateCreated: ModelPropTypes.STRING(),
+        lastUpdated: ModelPropTypes.STRING(),
+        name: ({
+            firstname: ModelPropTypes.STRING(),
+            lastname: ModelPropTypes.STRING()
         })
     };
 
@@ -39,6 +33,15 @@ export class BlogModel extends BaseModel {
 
     static resourceName: string = 'blog';
 
+    static columnNames: string[] = [
+        'id',
+        'author',
+        'dateCreated',
+        'lastUpdated',
+        'name.firstname',
+        'name.lastname'
+    ];
+        
     constructor(properties?: any) {
         super(properties);
     }
@@ -72,8 +75,11 @@ export class UserModel extends BaseModel {
         name: ''
     };
 
-    static propTypes =  {
-        name: ModelPropTypes.STRING()
+    static propTypes = {
+        id: ModelPropTypes.NUMBER(),
+        firstName: ModelPropTypes.STRING(),
+        lastName: ModelPropTypes.STRING(),
+        age: ModelPropTypes.STRING()
     };
 
     constructor(properties: any) {

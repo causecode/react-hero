@@ -7,3 +7,4 @@ export * from './models';
 export * from './interfaces';
 export * from './config';
 export * from './actions/modelActions';
+export * from './interfaces';

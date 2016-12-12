@@ -1,17 +1,14 @@
-import {BaseModel} from '../src/models/BaseModel';
 jest.unmock('../src/components/CRUD/GenericEditPage');
 jest.unmock('react-bootstrap');
-import {GenericEditPage} from '../src/components/CRUD/GenericEditPage';
+
 import * as TestUtils from 'react-addons-test-utils';
-import {Grid} from 'react-bootstrap';
-import * as React from 'react';
-import {FormControl} from 'react-bootstrap';
-import {Input} from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
+import * as React from 'react';
+import {GenericEditPage} from '../src/components/CRUD/GenericEditPage';
 import {Row, Button} from 'react-bootstrap';
-import {MissingInstanceError} from '../src/errors/MissingInstanceError';
+import {BaseModel} from '../src/models/BaseModel';
+import {Grid} from 'react-bootstrap';
 import {Link} from 'react-router';
-import {initializeTestCase} from './../src/utils/initializeTestCase';
 
 describe('Test Generic Edit Page', () => {
     let handleSubmit: jest.Mock<Function>, handleDelete: jest.Mock<Function>;
@@ -56,11 +53,13 @@ describe('Test Generic Edit Page', () => {
     it('renders a simple GenericEditPage', () => {
 
         let editPage: React.Component<void, void> = TestUtils.renderIntoDocument<React.Component<void, void>>(
-            <GenericEditPage instance={ModelInstance}
+            <GenericEditPage
                     handleSubmit={handleSubmit}
                     handleDelete={handleDelete}
                     params={params}
-                    instance={ModelInstance}/>
+                    instance={ModelInstance}
+                    isCreatePage={false}
+                />
         );
 
         genericEditPageTests(editPage);

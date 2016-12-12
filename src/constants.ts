@@ -1,6 +1,7 @@
 export const SAVE_INSTANCE: string = 'SAVE_INSTANCE';
 export const UPDATE_INSTANCE: string = 'UPDATE_INSTANCE';
 export const DELETE_INSTANCE: string = 'DELETE_INSTANCE';
+export const SAVE_ALL_INSTANCES: string = 'SAVE_ALL_INSTANCES';
 export const FETCH_INSTANCE_DATA: string = 'FETCH_INSTANCE_DATA';
 export const FETCH_INSTANCE_LIST: string = 'FETCH_INSTANCE_LIST';
 export const FETCH_INSTANCE_DATA_START: string = 'FETCH_INSTANCE_DATA_START';

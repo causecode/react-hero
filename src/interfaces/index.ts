@@ -63,3 +63,8 @@ export interface IFromJS {
     get: Function;
     toJS: Function;
 }
+
+export interface IImmutable {
+    toJS: () => Object;
+    getIn: (keys : string[], defaultVaue : Object) => Object | IImmutable;
+}

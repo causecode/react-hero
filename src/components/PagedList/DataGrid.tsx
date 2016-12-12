@@ -2,6 +2,7 @@ import * as React from 'react';
 import {Table} from 'react-bootstrap';
 import {Link} from 'react-router';
 import {BaseModel} from '../../models/BaseModel';
+import {getInnerData} from '../../utils/appService';
 
 export interface IDataGridProps extends React.Props<{}> {
     instanceList: BaseModel[];
@@ -15,7 +16,8 @@ export function DataGrid( { instanceList, properties, resource }: IDataGridProps
     }
     resource = instanceList[0] ? instanceList[0].resourceName : '';
     if (!properties.length) {
-        properties = Object.keys(instanceList[0].properties);
+        // TODO Better names for the properties array which is supposed to be send by the server.
+        properties = instanceList[0].columnNames || Object.keys(instanceList[0].properties);
     }
     return (
         <div className="data-grid">
@@ -25,8 +27,9 @@ export function DataGrid( { instanceList, properties, resource }: IDataGridProps
                     <tr className="data-grid-header">
                         <th>#</th>
                         {properties.map(function(property: string, index: number) {
-                            return ( <th key={index}>{property}</th> );
+                            return ( <th key={index}>{property.capitalize()}</th> );
                         })}
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -34,6 +37,23 @@ export function DataGrid( { instanceList, properties, resource }: IDataGridProps
                         let instanceProperties = instance.properties;
                         return (
                         <tr key={index} className="data-grid-row">
+                            <td>{index}</td>
+                            {properties.map(function(property: string, index: number) {
+                                return ( 
+                                    <td key={`property-${index}`}>
+                                        {(() => {
+                                            if (property.indexOf('.') > 0) {
+                                                return getInnerData(instanceProperties, property);
+                                            } else {
+                                                if (!instanceProperties[property]) {
+                                                    return instanceProperties[property];    
+                                                }
+                                                return instanceProperties[property].toString();
+                                            }
+                                        })()}
+                                    </td> 
+                                );
+                            })}
                             <td>
                                 <Link to={`/${resource}/edit/${instanceProperties.id}`}>
                                     <i className="fa fa-pencil" />
@@ -42,13 +62,6 @@ export function DataGrid( { instanceList, properties, resource }: IDataGridProps
                                     <i className="fa fa-location-arrow" />
                                 </Link>
                             </td>
-                            {properties.map(function(property: string, index: number) {
-                                return ( 
-                                    <td key={`property-${index}`}>
-                                        {(instanceProperties[property]).toString()}
-                                    </td> 
-                                );
-                            })}
                         </tr>
                             );
                     })}

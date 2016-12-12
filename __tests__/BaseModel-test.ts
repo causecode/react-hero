@@ -3,9 +3,8 @@ jest.unmock('../src/models/BaseModel');
 import {DefaultModel, getData} from '../src/models/BaseModel';
 import {HTTP} from '../src/api/server/index';
 import 'babel-polyfill';
-import {IMockStore} from '../src/store';
 import * as axios from 'axios';
-import {store, IMockStore} from '../src/store/index';
+import {IMockStore} from '../src/store/index';
 import {FETCH_INSTANCE_DATA} from '../src/constants';
 const unroll: any = require<any>('unroll');
 const store = require<any>('../src/store').store as IMockStore; 
@@ -145,7 +144,6 @@ describe('Test Base Model', () => {
         //             [`${ModelInstance.resourceName}/delete/${ModelInstance.properties.id}`]);
         // });
 
-        
         it('calls the methods with flush false', async() => {
             await testWithFlushFalse(ModelInstance, 'save', HTTP.postRequest);
             await testWithFlushFalse(ModelInstance, 'update', HTTP.putRequest);
@@ -182,9 +180,9 @@ describe('Test Base Model', () => {
         beforeEach(() => {
             innerDispatch = jest.fn<typeof store.dispatch>();
             store.dispatch = jest.fn<Function>((fn) => fn(innerDispatch));
-            // store.getState = jest.fn<Function>(() => {
-            //     return {instances: {}};
-            // });
+            store.getState = jest.fn<Function>(() => {
+                return {instances: {}};
+            });
         });
 
         it('calls the get method without valueStore. ', async () => {
@@ -208,7 +206,7 @@ describe('Test Base Model', () => {
         });
     });
 
-    /*describe('Tests list method.', () => {
+    describe('Tests list method.', () => {
 
         let filters: {} = {};
         beforeEach(() => {
@@ -232,9 +230,9 @@ describe('Test Base Model', () => {
             expect(store.getState).toBeCalled();
             expect(store.dispatch).toBeCalled();
         });
-    });*/
+    });
 
-    /*describe('Tests getData function ', () => {
+    describe('Tests getData function ', () => {
         let incorrectPath: string = 'test/123';
         beforeEach(() => {
             HTTP.getRequest = jest.fn<Function>((path) => {
@@ -244,7 +242,7 @@ describe('Test Base Model', () => {
         });
         unroll('successfully calls to: #path', (done, testArgs) => {
             getData(testArgs.path, {});
-            expect(HTTP.getRequest).toBeCalledWith(testArgs.path, {});
+            expect(HTTP.getRequest).toBeCalledWith(testArgs.path, {}, {});
             expect(HTTP.getRequest).not.toBeCalledWith(incorrectPath);
             done();
         }, [
@@ -253,5 +251,5 @@ describe('Test Base Model', () => {
             ['demo/show/123']
         ]);
 
-    });*/
+    });
 });

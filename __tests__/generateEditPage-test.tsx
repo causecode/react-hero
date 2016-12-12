@@ -1,13 +1,15 @@
-jest.unmock('../src/cli/generateEditPage');
+jest.unmock('../src/cli/generatorService');
 jest.unmock('../src/cli/commandLine');
-jest.unmock('../src/cli/TemplateService');
-import { generateEditPage } from '../src/cli/generateEditPage';
-import {ModelPropTypes} from '../src/models/ModelPropTypes';
-import { INVALID_COMMAND_ERROR, INVALID_MODEL_NAME } from '../src/constants';
-import { BaseModel } from '../src/models/BaseModel';
+jest.unmock('../src/cli/templateService');
+
 import * as fs from 'fs';
 import * as path from 'path';
-let TemplateService = require<any>('../src/cli/TemplateService');
+import {INVALID_COMMAND_ERROR, INVALID_MODEL_NAME} from '../src/constants';
+import {generateEditPage} from '../src/cli/generatorService';
+import {ModelPropTypes} from '../src/models/ModelPropTypes';
+import {BaseModel} from '../src/models/BaseModel';
+
+let TemplateService = require<any>('../src/cli/templateService');
 
 let {projectRoot, typescriptOut} = TemplateService;
 
@@ -52,7 +54,7 @@ describe('Test generateEditPage function', () => {
         ['argv', 'missingArgs'],
         [[], ['modelPath', 'modelName', 'onCancel']],
         [['--modelPath', testModelPath], ['modelName', 'onCancel']],
-        [['--modelPath', testModelPath, '--modelName', testModelName], ['onCancel']],
+        [['--modelPath', testModelPath, '--modelName', testModelName], ['onCancel']]
     ]);
 
     it('should throw an error if invalid model name is specified', () => {

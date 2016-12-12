@@ -1,6 +1,7 @@
 import {fromJS} from 'immutable';
 import {BaseModel} from '../models/BaseModel';
 import {ModelService} from '../utils/modelService';
+import {MissingActionPayloadError} from '../errors/MissingActionPayloadError';
 import {
     FETCH_INSTANCE_LIST_START,
     FETCH_INSTANCE_LIST_FULFILLED,

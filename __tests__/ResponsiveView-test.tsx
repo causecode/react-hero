@@ -1,9 +1,10 @@
-import {DeviceTypes} from '../src/components/ResponsiveView';
 jest.unmock('../src/components/ResponsiveView');
-import {ResponsiveView} from '../src/components/ResponsiveView';
 import * as TestUtils from 'react-addons-test-utils';
 import * as React from 'react';
 import {INSTANTIATION_ERROR} from '../src/constants';
+import {ResponsiveView} from '../src/components/ResponsiveView';
+import {DeviceTypes} from '../src/components/ResponsiveView';
+
 const unroll: any = require<any>('unroll');
 
 unroll.use(it);
@@ -57,7 +58,7 @@ describe('Test Device Types enum', () => {
         [DeviceTypes.TABLET_LANDSCAPE, TabletLandscape, TabletLandscapeMockID],
         [DeviceTypes.MOBILE, Mobile, MobileMockID],
         [DeviceTypes.MOBILE_PORTRAIT, MobilePortrait, MobilePortraitMockID],
-        [DeviceTypes.MOBILE_LANDSCAPE, MobileLandscape, MobileLandscapeMockID],
+        [DeviceTypes.MOBILE_LANDSCAPE, MobileLandscape, MobileLandscapeMockID]
     ]);
 
     unroll('gets the device type from id or string for #deviceName', (done: Function, testArgs) => {
@@ -93,7 +94,7 @@ describe('Test Device Types enum', () => {
         [TabletLandscapeMockID, DeviceTypes.TABLET_LANDSCAPE, TabletLandscape],
         [MobileMockID, DeviceTypes.MOBILE, Mobile],
         [MobilePortraitMockID, DeviceTypes.MOBILE_PORTRAIT, MobilePortrait],
-        [MobileLandscapeMockID, DeviceTypes.MOBILE_LANDSCAPE, MobileLandscape],
+        [MobileLandscapeMockID, DeviceTypes.MOBILE_LANDSCAPE, MobileLandscape]
     ]);
 
     it('checks if a device other than the ones specified is used', () => {
@@ -124,7 +125,7 @@ describe('Test Device Types enum', () => {
         [TabletLandscapeMockID, TabletLandscape, false, true, false],
         [MobileMockID, Mobile, true, false, false],
         [MobilePortraitMockID, MobilePortrait, true, false, false],
-        [MobileLandscapeMockID, MobileLandscape, true, false, false],
+        [MobileLandscapeMockID, MobileLandscape, true, false, false]
     ]);
 
 });

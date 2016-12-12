@@ -25,6 +25,7 @@ export class BaseModel {
 
     // TODO find a way to assign a generic type to this (Assigning a dictionary type to this throws an error)
     static propTypes: Dictionary<any>;
+    static columnNames: any;
 
     static defaultProps: Dictionary<any>;
 
@@ -46,6 +47,10 @@ export class BaseModel {
         
         this.properties = isEmpty(properties) ? defaultProps : properties ;
         this.resourceName = this.constructor[`resourceName`];
+    }
+
+    get columnNames(): any {
+        return (this.constructor as Function & {columnNames: any}).columnNames;
     }
 
     get propTypes(): any {
@@ -140,7 +145,7 @@ export class BaseModel {
             if (!valueInStore) {
                 // Fetch list data from server and save it in the store followed by returning it.
                 let path: string = resourceName;
-                let filterFormData = getValues(store.getState().form.dynamic);
+                let filterFormData = getValues(store.getState().form[`${resourceName}Filters`]);
                 objectAssign(filters, filterFormData);
                 store.dispatch(
                     getPromiseAction(
@@ -166,6 +171,12 @@ export class BaseModel {
         if (!instanceDataList || !instanceDataList.length) {
             return;
         }
+        instanceDataList = instanceDataList.map(instanceData => {
+            if (instanceData instanceof Model) {
+                return instanceData;
+            }
+            return new Model(instanceData);
+        });
 
         let resource: string = this.getResourceName();
         let Model: typeof BaseModel = ModelService.getModel(resource);
@@ -195,7 +206,7 @@ export class BaseModel {
        successCallBack?: Function,
        failureCallBack?: Function,
        state?: {data?: any},
-       operation?: 'edit' | 'create',
+       operation?: 'edit' | 'create'
    ): T;
    static get<T extends BaseModel>(
        id: string,
@@ -204,7 +215,7 @@ export class BaseModel {
        successCallBack: Function = () => {},
        failureCallBack: Function = () => {},
        state?: {forms?: any},
-       operation?: 'edit' | 'create',
+       operation?: 'edit' | 'create'
    ): T {
        let resourceName: string = this.getResourceName();
        if (!valueInStore && operation !== 'create') {
