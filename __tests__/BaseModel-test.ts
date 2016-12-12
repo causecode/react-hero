@@ -180,9 +180,9 @@ describe('Test Base Model', () => {
         beforeEach(() => {
             innerDispatch = jest.fn<typeof store.dispatch>();
             store.dispatch = jest.fn<Function>((fn) => fn(innerDispatch));
-            // store.getState = jest.fn<Function>(() => {
-            //     return {instances: {}};
-            // });
+            store.getState = jest.fn<Function>(() => {
+                return {instances: {}};
+            });
         });
 
         it('calls the get method without valueStore. ', async () => {
@@ -206,7 +206,7 @@ describe('Test Base Model', () => {
         });
     });
 
-    /*describe('Tests list method.', () => {
+    describe('Tests list method.', () => {
 
         let filters: {} = {};
         beforeEach(() => {
@@ -230,9 +230,9 @@ describe('Test Base Model', () => {
             expect(store.getState).toBeCalled();
             expect(store.dispatch).toBeCalled();
         });
-    });*/
+    });
 
-    /*describe('Tests getData function ', () => {
+    describe('Tests getData function ', () => {
         let incorrectPath: string = 'test/123';
         beforeEach(() => {
             HTTP.getRequest = jest.fn<Function>((path) => {
@@ -242,7 +242,7 @@ describe('Test Base Model', () => {
         });
         unroll('successfully calls to: #path', (done, testArgs) => {
             getData(testArgs.path, {});
-            expect(HTTP.getRequest).toBeCalledWith(testArgs.path, {});
+            expect(HTTP.getRequest).toBeCalledWith(testArgs.path, {}, {});
             expect(HTTP.getRequest).not.toBeCalledWith(incorrectPath);
             done();
         }, [
@@ -251,5 +251,5 @@ describe('Test Base Model', () => {
             ['demo/show/123']
         ]);
 
-    });*/
+    });
 });
