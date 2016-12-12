@@ -1,4 +1,4 @@
-jest.unmock('../src/cli/TemplateService');
+jest.unmock('../src/cli/templateService');
 
 import * as TemplateService from '../src/cli/templateService';
 import {ModelPropTypes} from '../src/models/ModelPropTypes';

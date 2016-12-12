@@ -53,10 +53,6 @@ export function parseWidgetDate(date: number | string | Date): string {
     return moment(timestamp).format('YYYY-MM-DD');
 }
 
-/**
- * TODO create a function getNestedData().
- */
-
 export function getInnerData(data: any, nestedPath: string) {
     let result: string = '';
     if (data) {

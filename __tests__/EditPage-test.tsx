@@ -32,12 +32,6 @@ function generalEditPageTests(renderedPage, instance: BaseModel, resource: strin
     expect(renderedPage).toBeTruthy();
     expect(renderedPage.props.instance).toEqual(instance);
     expect(renderedPage.props.params.resource).toEqual(resource);
-    /*
-     * Commenting these out so that later when a work around for checking function equality is found
-     * these test cases can also be executed.
-     */
-    // expect(renderedPage.props.handleSubmit.toString()).toEqual(handleSubmit.toString());
-    // expect(renderedPage.props.handleDelete.toString()).toEqual(handleDelete.toString());
 }
 
 describe('Test EditPage', () => {

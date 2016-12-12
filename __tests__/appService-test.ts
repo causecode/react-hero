@@ -52,7 +52,7 @@ describe('Test for AppService', () => {
     unroll('returns the model string for the FormInputs with modelString array #array', (done, testArgs) => {
 
         let modelString: string = getModelString(...testArgs.array);
-        expect(modelString).toEqual(`RHForms.${testArgs.array.join('.')}`);
+        expect(modelString).toEqual(`rhForms.${testArgs.array.join('.')}`);
         done();
     }, [
         ['array'],
@@ -98,8 +98,7 @@ describe('Test for AppService', () => {
             ['date', 'dateString'],
             ['abc', 'Invalid date'],
             ['1479933241738', '2016-11-24'],
-            [1479933241738, '2016-11-24'],
-            [new Date(), '2016-11-24']
+            [1479933241738, '2016-11-24']
     ]);
 
     describe('Tests the initializeFormWithInstance method', () => {
@@ -129,7 +128,7 @@ describe('Test for AppService', () => {
             }
             let action = actions[0];
             expect(action.type).toEqual('rrf/change');
-            expect(action.model).toEqual(`RHForms.${TestModel.resourceName}${testArgs.formModelSuffix}`);
+            expect(action.model).toEqual(`rhForms.${TestModel.resourceName}${testArgs.formModelSuffix}`);
             expect(action.value).toEqual(testInstance);
             done();
         }, [

@@ -21,6 +21,7 @@ import {Provider} from 'react-redux';
 import {IFilter} from '../src/interfaces';
 import {Button} from 'react-bootstrap';
 import {fromJS} from 'immutable';
+import '../src/init';
 import drop = __React.__Addons.TestUtils.Simulate.drop;
 
 const ShallowTestUtils: IShallowTestUtils = require<IShallowTestUtils>('react-shallow-testutils');

@@ -10,6 +10,7 @@ import {RangeFilter} from '../src/components/PagedList/Filters/RangeFilter';
 import {Wrapper} from '../src/components/Wrapper';
 import {IFilter} from '../src/interfaces';
 import '../src/utils/appService';
+import '../src/init';
 
 const unroll: any = require<any>('unroll');
 
