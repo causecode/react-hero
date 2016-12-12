@@ -3,10 +3,6 @@ declare interface String {
     decapitalize(): string;
 }
 
-declare interface Object {
-    getNestedData(nestedPath: string): any;
-}
-
 declare interface Function {
     name: string;
 }

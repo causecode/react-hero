@@ -2,6 +2,7 @@ import * as React from 'react';
 import {Table} from 'react-bootstrap';
 import {Link} from 'react-router';
 import {BaseModel} from '../../models/BaseModel';
+import {getInnerData} from '../../utils/appService';
 
 export interface IDataGridProps extends React.Props<{}> {
     instanceList: BaseModel[];
@@ -42,7 +43,7 @@ export function DataGrid( { instanceList, properties, resource }: IDataGridProps
                                     <td key={`property-${index}`}>
                                         {(() => {
                                             if (property.indexOf('.') > 0) {
-                                                return instanceProperties.getNestedData(property);
+                                                return getInnerData(instanceProperties, property);
                                             } else {
                                                 if (!instanceProperties[property]) {
                                                     return instanceProperties[property];    

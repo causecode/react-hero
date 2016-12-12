@@ -56,9 +56,8 @@ export function parseWidgetDate(date: number | string | Date): string {
 /**
  * TODO create a function getNestedData().
  */
-/*
-Object.prototype.getNestedData = function(nestedPath: string) {
-    let data = this;
+
+export function getInnerData(data: any, nestedPath: string) {
     let result: string = '';
     if (data) {
         nestedPath.split('.').forEach((item) => {
@@ -76,7 +75,6 @@ Object.prototype.getNestedData = function(nestedPath: string) {
     }
     return result;
 };
-*/
 
 export function isEmpty(obj: Object): boolean {
     return (!obj || !Object.keys(obj).length);
