@@ -1,11 +1,11 @@
 import * as React from 'react';
-import {Button} from 'react-bootstrap';
-import {IPagedListFiltersProps} from '../../../interfaces/interfaces';
+import {IPagedListFiltersProps} from '../../../interfaces';
 import {ModelService} from '../../../utils/modelService';
+import {Button} from 'react-bootstrap';
 const ReduxForm: any = require<any>('redux-form');
 const classNames: any = require<any>('classnames');
 
-export class FilterForm extends React.Component<IPagedListFiltersProps, {}> {
+export class InnerFilterForm extends React.Component<IPagedListFiltersProps, void> {
 
     static defaultProps: IPagedListFiltersProps = {
         filtersOpen: false,
@@ -65,9 +65,9 @@ function mapStateToProps(state): {filtersOpen: boolean} {
     };
 }
 
-let DynamicForm = ReduxForm.reduxForm(
-    {form: 'dynamic'},
-    mapStateToProps
-)(FilterForm);
-
-export {DynamicForm};
+export function createFilterForm(resource): typeof InnerFilterForm {
+    return ReduxForm.reduxForm(
+        {form: `${resource}Filters`},
+        mapStateToProps
+    )(InnerFilterForm);
+}

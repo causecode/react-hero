@@ -1,87 +1,85 @@
 import * as React from 'react';
-import { Grid, Col, Row, FormGroup, FormControl, ControlLabel, Button } from 'react-bootstrap';
-import { Link } from 'react-router';
-import {MissingInstanceError} from '../../errors/MissingInstanceError';
-import {Stub} from '../../interfaces/interfaces';
-import {IInstancePageProps} from '../../interfaces/interfaces';
-import {BaseModel} from '../../models/BaseModel';
+import {Grid, Col, FormGroup, Button} from 'react-bootstrap';
+import {Link} from 'react-router';
+import {IInstancePageProps} from '../../interfaces';
+import {BaseModel, DefaultModel} from '../../models/BaseModel';
+import {generateForm, getModelString, isEmpty} from '../../utils/appService';
+import {store} from '../../store';
+const {Form} = require<any>('react-redux-form');
 
 export interface IGenericEditPageProps extends IInstancePageProps {
-    handleSubmit: (instance: BaseModel, e: Event) => void;
+    location?: {pathname?: string};
+    handleSubmit: (instance: BaseModel) => void;
     handleDelete?: (instance: BaseModel) => void;
-}
-
-export interface IGenericEditPageState {
+    params: {resource: string};
     instance: BaseModel;
+    isCreatePage: boolean;
 }
 
-export class GenericEditPage extends React.Component<IGenericEditPageProps, IGenericEditPageState> {
-
-constructor(props: IGenericEditPageProps) {
-        super();
-        this.state = { instance: props.instance };
-    }
-
-    handleChange = (key: string, event: Event & {target: {value: string}}): void  => {
-        let instance = this.state.instance;
-        instance.properties[key] = event.target.value;
-        this.setState({instance: instance});
+export class GenericEditPage extends React.Component<IGenericEditPageProps, void> {
+    static defaultProps: IGenericEditPageProps = {
+        handleSubmit: (instance: BaseModel): void => {},
+        params: {resource: ''},
+        instance: new DefaultModel({}),
+        isCreatePage: false
     };
 
+    getResource(): string {
+        return this.props.params.resource || this.props.instance.resourceName || '';
+    }
+
+    fetchStoreInstance = (): BaseModel => {
+        let instance = this.props.instance;
+        let instanceKey = this.props.isCreatePage ? `${instance.resourceName}Create` : `${instance.resourceName}Edit`;
+        instance.properties = store.getState().forms[`rhForms`][instanceKey].properties; 
+        return instance;
+    }
+
+    handleSubmit = (): void => {
+        // Not using connect here to avoid rerendering of component on change of instance properties.
+        this.props.handleSubmit(this.fetchStoreInstance());
+    }
+
+    handleDelete = (): void => {
+        if (this.props.handleDelete && this.props.handleDelete instanceof Function) {
+            this.props.handleDelete(this.fetchStoreInstance()); 
+        }
+    }
+
     render(): JSX.Element {
-        let { instance, handleSubmit, handleDelete } = this.props;
-        if (!handleSubmit) {
-            handleSubmit = (...args: any[]) => { return; };
+        let {instance} = this.props;
+        if (isEmpty(instance) || isEmpty(instance.properties)) {
+            return (
+                <div></div>
+            );
         }
-        let resource: string = this.props.resource;
-        if (!resource) {
-            resource = instance ? instance.resourceName : '';
-        }
-        this.state.instance = instance;
-        let instanceProperties = (instance && instance.properties) ? instance.properties : {};
-        let instanceKeys = Object.keys(instanceProperties);
         return (
-            <form className="data-edit-form" onSubmit={handleSubmit.bind(this, this.state.instance)}>
+            <Form
+                    className="data-edit-form"
+                    onSubmit={this.handleSubmit}
+                    model={getModelString(instance.resourceName)}
+            >
                 <Grid>
-                    {instanceKeys.map(key => {
-                        return (
-                            <Row key={instanceKeys.indexOf(key)}>
-                                <FormGroup>
-                                    <Col sm={3}>
-                                        <ControlLabel>{key}</ControlLabel>
-                                    </Col>
-                                    <Col sm={4}>
-                                        <FormControl
-                                            type="text"
-                                            value={this.state.instance.properties[key]}
-                                            onChange={this.handleChange.bind(this, key)}
-                                        />
-                                    </Col>
-                                </FormGroup>
-                            </Row>
-                        );
-                    })}
+                    {generateForm(instance, this.props.isCreatePage)}
                     <FormGroup>
                         <Col sm={4} smOffset={3}>
                             <Button bsStyle="primary" type="submit">
-                                {(() => {return this.props.handleDelete ? 'Update' : 'Create';})()}
+                                {this.props.isCreatePage ? 'Create' : 'Update'}
                             </Button>
-                            {(() => {
-                                if (handleDelete) {
-                                    return (
-                                    <Button bsStyle="danger" onClick={handleDelete.bind(this, this.state.instance)}>
-                                        Delete
-                                    </Button>
+                                {(() => {
+                                    if (!this.props.isCreatePage) {
+                                        return (
+                                           <Button bsStyle="danger" onClick={this.handleDelete}>
+                                                Delete
+                                            </Button>
                                         );
-                                    } else {
-                                    return;
                                     }
                                 })()}
-                            <Link className="btn btn-default" to={`${resource}/list`}>Cancel</Link>
+                            <Link className="btn btn-default" to={`${this.getResource()}/list`}>Cancel</Link>
                         </Col>
                     </FormGroup>
                 </Grid>
-            </form>
+            </Form>
         );
     }
 }

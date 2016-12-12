@@ -5,17 +5,16 @@ import * as React from 'react';
 import {GenericListPage} from '../src/components/CRUD/GenericListPage';
 import {GenericShowPage} from '../src/components/CRUD/GenericShowPage';
 import {GenericEditPage} from '../src/components/CRUD/GenericEditPage';
+import {getEnvironment} from '../src/utils/appService';
 const unroll: any = require<any>('unroll');
 
 unroll.use(it);
 
-class TestComponent extends React.Component<void, void> {}
 class TestListPage extends React.Component<void, void> {}
 class TestEditPage extends React.Component<void, void> {}
 class TestShowPage extends React.Component<void, void> {}
 class TestCreatePage extends React.Component<void, void> {}
 let pages = {
-    TestComponent,
     TestListPage,
     TestEditPage,
     TestShowPage,
@@ -28,22 +27,13 @@ let pages = {
 
 describe('Test Component Service', () => {
 
-    it('registers the component in the React DI resolver object', () => {
-        ComponentService.register(TestComponent);
-
-        expect(resolver.has('testcomponent')).toBe(true);
-        expect(resolver.get('testcomponent')).toEqual(TestComponent);
-    });
-
-
     describe('Component Service retrieval functions', () => {
 
         beforeEach(() => {
-            ComponentService.register(TestComponent);
-            ComponentService.register(TestListPage);
-            ComponentService.register(TestEditPage);
-            ComponentService.register(TestShowPage);
-            ComponentService.register(TestCreatePage);
+            ComponentService.register(TestListPage, 'list');
+            ComponentService.register(TestEditPage, 'edit');
+            ComponentService.register(TestShowPage, 'show');
+            ComponentService.register(TestCreatePage, 'create');
         });
 
         it('checks if the specified component has been registered', () => {
@@ -79,6 +69,17 @@ describe('Test Component Service', () => {
             ['Edit'],
             ['Show']
         ]);
+
+        it('logs a warning in the development Environment if component is not found', () => {
+            let oldEnv: string = getEnvironment();
+            process.env.NODE_ENV = 'development';
+            console.warn = jest.fn<typeof console.warn>();
+            ComponentService.getListPage('abc');
+            expect(console.warn).toBeCalledWith(`Cannot find Component ` +
+                `AbcListpage, Make sure you have registered it.` +
+                ` Using GenericListpage instead.`);
+            process.env.NODE_ENV = oldEnv;
+        });
 
     });
 });

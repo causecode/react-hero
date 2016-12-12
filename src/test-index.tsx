@@ -1,4 +1,4 @@
-import {store} from './store/store';
+import {store} from './store';
 import {NewPage} from './Demo/testImplementations';
 import {Router, Route, hashHistory} from 'react-router';
 import * as React from 'react';

@@ -1,11 +1,12 @@
-import { Store, compose, createStore, applyMiddleware } from 'redux';
-import { fromJS } from 'immutable';
+import {Store, compose, createStore, applyMiddleware} from 'redux';
 import {rootReducer} from './../reducers/rootReducer';
 import {promiseMiddleware} from '../middleware/promiseMiddleware';
 import logger from './logger';
 import {getEnvironment} from '../utils/appService';
 const thunk = require<any>('redux-thunk').default;
-const MockStore = require<any>('redux-mock-store');
+const configureMockStore: Function = require<{default: any}>('redux-mock-store').default;
+
+// Doing this to avoid cyclic imports problem when used through commandline.
 
 // MockStore interface copied from redux-mock-store index.d.ts file since interface is not exported.
 export interface IMockStore extends Store {
@@ -16,10 +17,12 @@ export interface IMockStore extends Store {
     subscribe(): any;
 }
 
-function configureStore(initialState): Store | IMockStore {
+export function configureStore(initialState): Store | IMockStore {
     let store: Store | IMockStore;
-    if ( getEnvironment() === 'test') {
-         store = (MockStore as Function)()(_getMiddleware());
+    // Using process.env.NODE_ENV instead of appService.getEnvironment because appService Import was returning empty.
+    if (process.env.NODE_ENV === 'test') {
+        store = configureMockStore()(initialState)
+        // store = configureMockStore(_getMiddleware())(initialState, rootReducer, _getMiddleware());
     } else {
         store = compose(
             _getMiddleware(),
@@ -36,17 +39,17 @@ function _getMiddleware(): Function {
         thunk,
     ];
 
-    if (getEnvironment() === 'development') {
+    if (process.env.NODE_ENV === 'development') {
         middleware.push(logger);
     }
 
     return applyMiddleware(...middleware);
 }
 
-function _getEnhancers() {
+export function _getEnhancers() {
     let enhancers = [];
 
-    if (window.devToolsExtension) {
+    if (typeof(window) !== 'undefined' && window.devToolsExtension) {
         enhancers = [window.devToolsExtension()];
     }
 
@@ -54,4 +57,3 @@ function _getEnhancers() {
 }
 
 export const store: Store | IMockStore = configureStore({});
-export default configureStore;

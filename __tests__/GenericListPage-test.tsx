@@ -1,13 +1,12 @@
-import {IGenericListPage} from '../src/components/CRUD/GenericListPage';
 jest.unmock('../src/components/CRUD/GenericListPage');
 jest.mock('../src/components-stateful/PagedList');
-import {GenericListPage} from '../src/components/CRUD/GenericListPage';
+
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
 import * as TestUtils from 'react-addons-test-utils';
-import {store} from '../src/store/store';
-import {Provider} from 'react-redux';
+import {IGenericListPageProps} from '../src/components/CRUD/GenericListPage';
+import {GenericListPage} from '../src/components/CRUD/GenericListPage';
 import {PagedList} from '../src/components-stateful/PagedList';
+
 const unroll: any = require<any>('unroll');
 
 unroll.use(it);
@@ -18,8 +17,8 @@ describe('Test Generic List Page', () => {
             testArgs: {page: React.DOMElement, resource: string}) => {
 
         let renderPage = testArgs.page;
-        let page: React.Component<IGenericListPage, void> =
-            TestUtils.renderIntoDocument<React.Component<IGenericListPage, void>>(
+        let page: React.Component<IGenericListPageProps, void> =
+            TestUtils.renderIntoDocument<React.Component<IGenericListPageProps, void>>(
                 renderPage
             );
 

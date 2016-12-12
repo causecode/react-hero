@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {FormGroup, ControlLabel, FormControl} from 'react-bootstrap';
 import '../../../utils/appService';
-import {IFilter} from '../../../interfaces/interfaces';
+import {IFilter} from '../../../interfaces';
 
 export function DateRangeFilter({ label, paramName, fields }: IFilter, {}): JSX.Element {
 

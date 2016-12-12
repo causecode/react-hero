@@ -1,9 +1,9 @@
 var axios = jest.fn(function(config) {
     return new Promise(function(resolve, reject) {
         if (config.url.toLowerCase().indexOf('failure') > -1) {
-            reject({success: false})
+            reject({data: {success: false}})
         } else {
-            resolve({success: true})
+            resolve({data: {success: true}})
         }
     })
 });

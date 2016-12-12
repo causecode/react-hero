@@ -7,7 +7,6 @@ import {Link} from 'react-router';
 import {Wrapper} from './../src/components/Wrapper';
 import * as ReactDOM from 'react-dom';
 import {MissingInstanceListError} from '../src/errors/MissingInstanceListError';
-import {fetchInstanceDataFromApi} from '../src/api/auth/index';
 
 interface ITestData {
     id: string;
@@ -60,7 +59,7 @@ describe('Test Data Grid', () => {
                 <DataGrid
                     instanceList={instanceList}
                     properties={keys}
-                    totalCount={keys.length}
+                    resource={resource}
                 />
             </Wrapper>
         );
