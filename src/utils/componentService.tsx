@@ -2,12 +2,10 @@ import {resolver} from '../resolver';
 import {GenericListPage} from '../components/CRUD/GenericListPage';
 import {GenericEditPage} from '../components/CRUD/GenericEditPage';
 import {GenericShowPage} from '../components/CRUD/GenericShowPage';
-import * as React from 'react';
-import {StatelessComponent, ComponentClass, Component} from 'react';
-import '../utils/appService';
+import {StatelessComponent, ComponentClass} from 'react';
 import {getEnvironment} from './appService';
 
-export type ComponentType = (ComponentClass<any> | StatelessComponent<any>);
+export type ComponentType = (ComponentClass<any> | StatelessComponent<any>) & {resourceName?: string};
 
 module ComponentService {
 
@@ -18,9 +16,17 @@ module ComponentService {
                 ` Using Generic${type.capitalize()} instead.`);
         }
     }
+    export type pageType = 'edit' | 'create' | 'list' | 'show';
 
-    export function register(component: ComponentType & {name?: string} ) {
-        resolver.set(component.name.toLowerCase(), component);
+    export function register(component: ComponentType, type: pageType) {
+        let name = `${component.resourceName}${type}`;
+        resolver.set(name, component);
+    }
+
+    export function registerAll(type: pageType, ...components: ComponentType[]) {
+        components.forEach((component) => {
+            register(component, type);
+        });
     }
 
     export function getComponent(name: string, type: string = ''): ComponentType {
@@ -34,23 +40,23 @@ module ComponentService {
     }
 
     export function hasListPage(name: string): boolean {
-        return hasComponent(name, 'listpage');
+        return hasComponent(name, 'list');
     }
 
     export function hasEditPage(name: string): boolean {
-        return hasComponent(name, 'editpage');
+        return hasComponent(name, 'edit');
     }
 
     export function hasShowPage(name: string): boolean {
-        return hasComponent(name, 'showpage');
+        return hasComponent(name, 'show');
     }
 
     export function hasCreatePage(name: string): boolean {
-        return hasComponent(name, 'createpage');
+        return hasComponent(name, 'create');
     }
 
     export function getListPage(name: string): ComponentType {
-        const type: string = 'listpage';
+        const type: string = 'list';
         if (hasListPage(name)) {
             return getComponent(name, type);
         } else {
@@ -60,7 +66,7 @@ module ComponentService {
     }
 
     export function getEditPage(name: string): ComponentType {
-        const type: string = 'editpage';
+        const type: string = 'edit';
         if (hasEditPage(name)) {
             return getComponent(name, type);
         } else {
@@ -70,7 +76,7 @@ module ComponentService {
     }
 
     export function getShowPage(name: string): ComponentType {
-        const type: string = 'showpage';
+        const type: string = 'show';
         if (hasShowPage(name)) {
             return getComponent(name, type);
         } else {
@@ -80,7 +86,7 @@ module ComponentService {
     }
 
     export function getCreatePage(name: string): ComponentType {
-        const type: string = 'createpage';
+        const type: string = 'create';
         if (hasCreatePage(name)) {
             return getComponent(name, type);
         } else {
@@ -88,6 +94,29 @@ module ComponentService {
             return GenericEditPage;
         }
     }
+
+    export function getFormPage(name: string, isCreatePage: boolean): ComponentType {
+        if (isCreatePage) {
+            return getCreatePage(name)
+        } else {
+            return getEditPage(name);
+        }
+    }
 }
 
 export {ComponentService};
+
+const modules: any = require<any>('../../../../src/components');
+for (let component in modules) {
+    if (modules[component]) {
+        if (modules[component].resourceName) {
+            if (component.indexOf('Edit') > -1) {
+                ComponentService.register(modules[component], 'edit');
+            } else if (component.indexOf('List') > -1) {
+                ComponentService.register(modules[component], 'list');
+            } else if (component.indexOf('Show') > -1) {
+                ComponentService.register(modules[component], 'show');
+            }
+        }
+    }
+}

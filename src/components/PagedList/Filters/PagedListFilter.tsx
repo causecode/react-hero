@@ -1,46 +1,52 @@
 import * as React from 'react';
-import {DynamicForm} from './DynamicForm';
-import { Form, Button, Grid, Row } from 'react-bootstrap';
-import {DropDownFilter} from './DropDownFilter';
-import {store} from '../../../store/store';
-import * as Actions from '../../../actions/data';
-import {spring} from 'react-motion';
-import {IFilter} from '../../../interfaces/interfaces';
-import {IPagedListFiltersProps} from '../../../interfaces/interfaces';
+import {createFilterForm} from './DynamicForm';
+import {Button} from 'react-bootstrap';
+import {store} from '../../../store';
+import {toggleFilters as toggle} from '../../../actions/modelActions';
+import {IFilter, IPagedListFiltersProps} from '../../../interfaces';
+import {isEmpty} from '../../../utils/appService';
 
-export function PagedListFilters ({ children, resource }: IPagedListFiltersProps): JSX.Element {
-    let filterProps: string[] = [];
-    if (!resource) {
-        resource = '';
-    }
-    React.Children.forEach(children, (child: React.ReactElement<IFilter> & {type: {name: string}}) => {
-        let paramName = child.props.paramName;
-        let filterName = child.type.name;
-        if (['RangeFilter', 'DateRangeFilter'].indexOf(filterName) !== -1) {
-            filterProps.push(`${paramName}From`, `${paramName}To`);
-        } else if (child.props.paramName) {
-            filterProps.push(child.props.paramName);
-        }
-    });
-
-    // TODO use connect and mapDispatchToProps for this.
-    let toggleFilters = (): void => {
-        store.dispatch(Actions.toggleFilters());
+let FilterForm: React.ComponentClass<IPagedListFiltersProps>;
+export class PagedListFilters extends React.Component<IPagedListFiltersProps, void> {
+    filterProps: string[] = [];
+    static defaultProps: IPagedListFiltersProps = {
+        resource: ''
     };
 
-    if (children) {
-        return (
-            <div className="paged-list-filters">
-                <Button onClick={toggleFilters}>
-                    <i className="fa fa-filter"/>
-                </Button>
-                <DynamicForm fields={filterProps} resource={resource} filtersOpen={false}>
-                    {children}
-                </DynamicForm>
-            </div>
-        );
-    } else {
-        return <div></div>;
+    constructFilters(): void {
+        let children: React.ReactNode = this.props.children;
+        React.Children.forEach(children, (child: React.ReactElement<IFilter> & {type: {name: string}}) => {
+            let paramName = child.props.paramName;
+            let filterName = child.type.name;
+            if (['RangeFilter', 'DateRangeFilter'].indexOf(filterName) !== -1) {
+                this.filterProps.push(`${paramName}From`, `${paramName}To`);
+            } else if (child.props.paramName) {
+                this.filterProps.push(child.props.paramName);
+            }
+        });
     }
 
+    // TODO use connect and mapDispatchToProps for this.
+    toggleFilters(): void {
+        store.dispatch(toggle());
+    }
+
+    render(): JSX.Element {
+        FilterForm = createFilterForm(this.props.resource);
+        this.constructFilters();
+        let children: React.ReactNode = this.props.children;
+        if (isEmpty(children)) {
+            return <div></div>;
+        }
+        return (
+            <div className="paged-list-filters">
+                <Button onClick={this.toggleFilters}>
+                    <i className="fa fa-filter"/>
+                </Button>
+                <FilterForm fields={this.filterProps} resource={this.props.resource} filtersOpen={false}>
+                    {children}
+                </FilterForm>
+            </div>
+        );
+    }
 }

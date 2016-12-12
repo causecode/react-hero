@@ -1,8 +1,9 @@
 import * as TestUtils from 'react-addons-test-utils';
-import {NavMenuLauncherIcon} from '../src/components/NavMenuLauncherIcon';
-import {initializeTestCase, IInitializerData} from './../src/utils/initializeTestCase';
 import * as React from 'react';
+import {initializeTestCase, IInitializerData} from './../src/utils/initializeTestCase';
 import {INavMenuLauncherIconProps} from '../src/components/NavMenuLauncherIcon';
+import {NavMenuLauncherIcon} from '../src/components/NavMenuLauncherIcon';
+
 const unroll: any = require<any>('unroll');
 
 unroll.use(it);
@@ -26,7 +27,7 @@ describe('Test NavMenuLauncherIcon', () => {
     }, [
         ['position'],
         ['left'],
-        ['right'],
+        ['right']
     ]);
 
     it('renders a NavMenuLauncherIcon without any props', () => {

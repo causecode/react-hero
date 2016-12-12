@@ -1,5 +1,6 @@
 import * as React from 'react';
-import '../utils/appService';
+import '../init';
+import {INSTANTIATION_ERROR} from '../constants';
 export class DeviceTypes {
 
     static DESKTOP: DeviceTypes = new DeviceTypes(0, 'default');
@@ -22,8 +23,7 @@ export class DeviceTypes {
 
     constructor(public id: number, public name: string) {
         if (DeviceTypes.allDeviceTypes && DeviceTypes.allDeviceTypes.length) {
-            throw new Error(`Instantiation Failed: Trying to create a new instance of DeviceTypes. Please use
-                    one of the predefined Device types.`);
+            throw new Error(INSTANTIATION_ERROR);
         }
         this.id = id;
         this.name = name;
@@ -94,7 +94,7 @@ export abstract class ResponsiveView<P, S> extends React.Component<P, S> {
             `specific render function for the device ${currentDeviceType.getName().capitalize()}`);
             renderFunction = this.renderDefault;
         }
-        renderFunction = renderFunction.bind(this);
+        renderFunction = renderFunction ? renderFunction.bind(this) : () => {};
         return (
             <div>
                 {renderFunction()}

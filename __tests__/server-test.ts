@@ -1,8 +1,10 @@
 jest.unmock('../src/api/server/index');
+
 import { HTTP, BASE_URL } from '../src/api/server/index';
 import 'babel-polyfill';
-let axios = require('axios');
+
 const unroll: any = require<any>('unroll');
+let axios = require('axios');
 
 unroll.use(it);
 
@@ -66,7 +68,7 @@ describe('Test server api methods', () => {
             ['title', 'path', 'data', 'headers'],
             ['all parameters', successPath, data, headers],
             ['empty data', successPath, {}, {}],
-            ['empty params', '', {}, {}],
+            ['empty params', '', {}, {}]
         ]);
 
         it('calls postRequest with url', async() => {
@@ -107,7 +109,7 @@ describe('Test server api methods', () => {
         }, [
             ['title', 'path', 'data', 'headers'],
             ['empty data and successPath', successPath, data, headers],
-            ['empty params', '', {}, {}],
+            ['empty params', '', {}, {}]
         ]);
 
         it('calls putRequest with url', async() => {

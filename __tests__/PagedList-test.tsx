@@ -1,20 +1,25 @@
-import {BaseModel} from '../src/models/BaseModel';
 jest.unmock('../src/components-stateful/PagedList');
+jest.unmock('../src/reducers/data');
+jest.unmock('../src/actions/modelActions');
 jest.mock('react-bootstrap');
-import {Pagination} from 'react-bootstrap';
-import {DataGrid} from '../src/components/PagedList/DataGrid';
-import {PagedListImpl} from '../src/components-stateful/PagedList';
+
 import * as React from 'react';
 import * as TestUtils from 'react-addons-test-utils';
-import {Link} from 'react-router';
-import {setPage} from '../src/actions/data';
-jest.mock('../src/store/store');
-import {store} from '../src/store/store';
-import {Provider} from 'react-redux';
+import * as actions from '../src/actions/modelActions';
+import {configureStore, IMockStore, store} from '../src/store';
+import {PagedListImpl, PagedList} from '../src/components-stateful/PagedList';
+import {Store, createStore} from 'redux';
+import {IShallowTestUtils} from '../src/interfaces';
 import {PagedListFilters} from '../src/components/PagedList/Filters/PagedListFilter';
-import {Wrapper} from './../src/components/Wrapper';
-import {IShallowTestUtils} from '../src/interfaces/interfaces';
 import {IPagedListProps} from '../src/components-stateful/PagedList';
+import {dataReducer} from '../src/reducers/data';
+import {Pagination} from 'react-bootstrap';
+import {BaseModel} from '../src/models/BaseModel';
+import {DataGrid} from '../src/components/PagedList/DataGrid';
+import {Provider} from 'react-redux';
+import {Wrapper} from './../src/components/Wrapper';
+import {fromJS} from 'immutable';
+import {Link} from 'react-router';
 
 const ShallowTestUtils: IShallowTestUtils = require<IShallowTestUtils>('react-shallow-testutils');
 
@@ -27,7 +32,7 @@ describe('Test Paged List', () => {
     let totalCount: number = instanceList.length;
     let activePage: number = 1;
     let max: number = 1;
-    let setPage = (pageNumber: number): void => { activePage = pageNumber; };
+    let setPage: Function = (pageNumber: number): void => { activePage = pageNumber; };
 
     beforeEach(() => {
         renderer = TestUtils.createRenderer();
@@ -35,7 +40,7 @@ describe('Test Paged List', () => {
     });
 
     function testPaginationGridAndLink(
-        page: React.Component<IPagedListProps, void>,
+        page: React.ReactElement<void>,
         activePageParam: number,
         items: number,
         instanceListParam: BaseModel[],
@@ -64,15 +69,24 @@ describe('Test Paged List', () => {
                 totalCount={totalCount}
                 activePage={activePage}
                 setPage={setPage}
-                max={max}
-            >
+                max={max}>
                 <div className="test-filter"></div>
             </PagedListImpl>
         );
         let page: React.Component<IPagedListProps, void> =
                 renderer.getRenderOutput<React.Component<IPagedListProps, void>>();
 
-        testPaginationGridAndLink(page, activePage, (totalCount / max), instanceList, properties);
+        ['h2', PagedListFilters, DataGrid, Pagination].forEach((item, index) => {
+            expect(page.props.children[index].type).toBe(item);
+        });
+
+        testPaginationGridAndLink(
+                page as React.ReactElement<void>,
+                activePage,
+                (totalCount / max),
+                instanceList,
+                properties
+        );
 
         let filters = ShallowTestUtils.findAllWithType(page, PagedListFilters);
         expect(filters.length).toBe(1);
@@ -83,14 +97,14 @@ describe('Test Paged List', () => {
 
     it('renders a PagedList with a resource', () => {
         renderer.render(
-            <PagedListImpl
-                resource={resource}
-            />
+            <PagedListImpl resource={resource}/>
         );
 
-        let page: React.Component<IPagedListProps, void> =
-                renderer.getRenderOutput<React.Component<IPagedListProps, void>>();
-
+        let page: React.ReactElement<void> = renderer.getRenderOutput();
+        expect(page.props.children[1].props.resource).toBe(resource);
+        expect(page.props.children[2].props.instanceList).not.toBe(undefined);
+        expect(page.props.children[2].props.properties).not.toBe(undefined);
+        expect(page.props.children[3].props.activePage).toBe(1);
         testPaginationGridAndLink(page, 1, 0, [], []);
 
         let filters = ShallowTestUtils.findAllWithType(page, PagedListFilters);
@@ -100,11 +114,58 @@ describe('Test Paged List', () => {
     } );
 
     it('renders a PagedList without a resource', () => {
-
         expect(() => renderer.render(
             <PagedListImpl/>
         )).toThrow(new Error('No resource name passed.'));
+    });
 
+    it('checks whether correct key is created in the store.', () => {
+        const store: Store = createStore(dataReducer);
+        let pageNumber: number = 12;
+        store.dispatch(actions.setPage(pageNumber, resource));
+        expect(store.getState().has(`${resource}List`)).toBeTruthy();
+        expect(store.getState().get(`${resource}List`).get('activePage')).toBe(pageNumber);
+    });
+
+    it('renders the PagedList with the default values.', () => {
+        renderer.render(
+            <Provider store={configureStore({instances: fromJS({testEditPage: {}})})} >
+                <PagedList/>
+            </Provider>
+        );
+        type pageType = JSX.Element & {type: {WrappedComponent: {defaultProps: Object}}}
+        let page: pageType = renderer.getRenderOutput<pageType>();
+        let defaultProp: IPagedListProps = page.type.WrappedComponent.defaultProps;
+        expect(defaultProp.resource).toBe('');
+        expect(defaultProp.max).toBe(20);
+        expect(defaultProp.totalCount).toBe(0);
+        expect(defaultProp.activePage).toBe(1);
+        expect(defaultProp.setPage).not.toBe(undefined);
+        expect(defaultProp.properties).not.toBe(undefined);
+        expect(defaultProp.instanceList).not.toBe(undefined);
+    });
+
+    it('renders the PagedList with the passed values', () => {
+        let page: React.Component<IPagedListProps, void> =
+                TestUtils.renderIntoDocument<React.Component<IPagedListProps, void>>(
+            <Provider store={configureStore({data: fromJS({testEditPage: {}})})} >
+                <PagedList instanceList={instanceList}
+                        properties={properties}
+                        resource={resource}
+                        totalCount={totalCount}
+                        activePage={activePage}
+                        setPage={setPage}
+                        max={max}/>
+            </Provider>
+        );
+        let passedProps: IPagedListProps = (page.props.children as React.ReactElement<void>).props;
+        expect(passedProps.instanceList).toEqual(instanceList);
+        expect(passedProps.resource).toEqual(resource);
+        expect(passedProps.totalCount).toEqual(totalCount);
+        expect(passedProps.activePage).toEqual(activePage);
+        expect(passedProps.max).toEqual(max);
+        expect(passedProps.setPage).toEqual(setPage);
+        expect(passedProps.properties).toEqual(properties);
     });
 
 });

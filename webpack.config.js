@@ -1,8 +1,22 @@
 var webpack = require('webpack');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
-var isProduction = process.argv.indexOf('--production') != -1;
 var path = require('path');
+var PORT = 8080;
+var HOST = 'localhost'
+var argv = process.argv || [];
+
+if (argv.indexOf('--port') > -1) {
+    PORT = argv[argv.indexOf('--port') + 1]
+}
+
+if (argv.indexOf('--host') > -1) {
+    HOST = argv[argv.indexOf('--host') + 1]
+}
+
+var isProduction = argv.indexOf('--production') != -1;
+var isBuildForCordova = argv.indexOf('--cordova') != -1;
+var isRunningOnServer = argv.find(v => v.includes('webpack-dev-server'))
 
 var plugins = [];
 
@@ -29,16 +43,20 @@ if (isProduction) {
     );
 } else {
     // Adding Development environment specific features.
-    entryPoints.push(
-        'webpack-dev-server/client?http://localhost:8080',
-        'webpack/hot/only-dev-server'  // Used to enable hot reloading in webpack.
-    );
+    if (isRunningOnServer) {
+        entryPoints.push(
+            'webpack-dev-server/client?http://' + HOST + ':' + PORT,
+            'webpack/hot/only-dev-server'  // Used to enable hot reloading in webpack.
+        );
+    }
 
-    new webpack.DefinePlugin({
-        'process.env': {
-            'NODE_ENV': JSON.stringify('development')
-        }
-    })
+    plugins.push(
+        new webpack.DefinePlugin({
+            'process.env': {
+                'NODE_ENV': JSON.stringify('development')
+            }
+        })
+    );
 }
 
 plugins.push(
@@ -52,8 +70,8 @@ plugins.push(
 var config = {
     entry: entryPoints,
     output: {
-        path:'./dist',
-        filename: isProduction ? 'bundle.[hash].min.js' : 'bundle.js'
+        path: path.join(__dirname, 'dist'),
+        filename: isProduction ? 'bundle.[hash].min.js' : 'bundle.js',
     },
     devtool: 'source-map',
     resolve: {
@@ -69,11 +87,24 @@ var config = {
         loaders: [
             {test: /\.tsx?$/, exclude: /node_modules/, loaders: ['react-hot', 'ts-loader']},
             {test: /\.css$/, loader: ExtractTextPlugin.extract('style-loader', 'css-loader')},
-            {test: /.(png|woff(2)?|eot|ttf|svg)(\?[a-z0-9=\.]+)?$/, loader: 'url-loader?limit=100000'},
+            {test: /.(png|woff(2)?|eot|ttf|svg)(\?[a-z0-9=\.]+)?$/, loader: 'url-loader?limit=1024&name=fonts/[name].[ext]'},
+            {test: /\.(jpg|jpeg|gif|png)$/, loader: 'url-loader?limit=10&mimetype=image/(jpg|jpeg|gif|png)&name=images/[name].[ext]'},
             {test: /\.json$/, loader: 'json-loader' }
-        ]
+        ],
+        noParse: /node_modules\/json-schema\/lib\/validate\.js/
     },
-    plugins: plugins
+    node: {
+        fs: 'empty',
+        net: 'empty',
+        tls: 'empty'
+    },
+    plugins: plugins,
 };
+
+if (isRunningOnServer) {
+    config.devServer = {
+        contentBase: 'dist'
+    }
+}
 
 module.exports = config;

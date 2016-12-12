@@ -1,8 +1,8 @@
 import * as React from 'react';
 import {Table} from 'react-bootstrap';
 import {Link} from 'react-router';
-import {MissingInstanceListError} from '../../errors/MissingInstanceListError';
 import {BaseModel} from '../../models/BaseModel';
+import {getInnerData} from '../../utils/appService';
 
 export interface IDataGridProps extends React.Props<{}> {
     instanceList: BaseModel[];
@@ -11,12 +11,13 @@ export interface IDataGridProps extends React.Props<{}> {
 }
 
 export function DataGrid( { instanceList, properties, resource }: IDataGridProps): JSX.Element {
-    if (!instanceList) {
-        throw new MissingInstanceListError();
+    if (!instanceList || !instanceList.length) {
+        return <div></div>;
     }
     resource = instanceList[0] ? instanceList[0].resourceName : '';
-    if (!properties) {
-        properties = Object.keys(instanceList[0].properties);
+    if (!properties.length) {
+        // TODO Better names for the properties array which is supposed to be send by the server.
+        properties = instanceList[0].columnNames || Object.keys(instanceList[0].properties);
     }
     return (
         <div className="data-grid">
@@ -25,16 +26,34 @@ export function DataGrid( { instanceList, properties, resource }: IDataGridProps
                 <thead>
                     <tr className="data-grid-header">
                         <th>#</th>
-                        {properties.map(function(property) {
-                            return ( <th key = {properties.indexOf(property)}>{property}</th> );
+                        {properties.map(function(property: string, index: number) {
+                            return ( <th key={index}>{property.capitalize()}</th> );
                         })}
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {instanceList.map((instance) => {
+                    {instanceList.map((instance, index) => {
                         let instanceProperties = instance.properties;
                         return (
-                        <tr key={instanceProperties.id} className="data-grid-row">
+                        <tr key={index} className="data-grid-row">
+                            <td>{index}</td>
+                            {properties.map(function(property: string, index: number) {
+                                return ( 
+                                    <td key={`property-${index}`}>
+                                        {(() => {
+                                            if (property.indexOf('.') > 0) {
+                                                return getInnerData(instanceProperties, property);
+                                            } else {
+                                                if (!instanceProperties[property]) {
+                                                    return instanceProperties[property];    
+                                                }
+                                                return instanceProperties[property].toString();
+                                            }
+                                        })()}
+                                    </td> 
+                                );
+                            })}
                             <td>
                                 <Link to={`/${resource}/edit/${instanceProperties.id}`}>
                                     <i className="fa fa-pencil" />
@@ -43,9 +62,6 @@ export function DataGrid( { instanceList, properties, resource }: IDataGridProps
                                     <i className="fa fa-location-arrow" />
                                 </Link>
                             </td>
-                            {properties.map(function(property) {
-                                return ( <td key={properties.indexOf(property)}>{instanceProperties[property]}</td> );
-                            })}
                         </tr>
                             );
                     })}
