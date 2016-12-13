@@ -18,10 +18,10 @@
     "linkCLI": "npm run buildCLI && npm link"
   },
   "bin": {
-    "RH-generate-edit": "public/cli/generateEditPage.js",
     "RH-generate-create": "public/cli/generateCreatePage.js",
-    "RH-generate-show": "public/cli/getEditPage.js",
-    "RH-generate-list": "public/cli/getListPage.js",
+    "RH-generate-edit": "public/cli/generateEditPage.js",
+    "RH-generate-show": "public/cli/generateShowPage.js",
+    "RH-generate-list": "public/cli/generateListPage.js",
     "RH-generate-all": "public/cli/generateAll.js"
   },
   "repository": {
@@ -82,7 +82,7 @@
     "ts-loader": "^1.2.2",
     "tslint": "^3.11.0",
     "tslint-loader": "^2.1.4",
-    "typescript": "^2.1.1",
+    "typescript": "2.1.1",
     "typings": "^1.0.4",
     "underscore": "^1.8.3",
     "unroll": "git+ssh://git@bitbucket.org/causecode/unroll.git#remove-title-dependency",

@@ -80,6 +80,42 @@ export function getModelString(...args: any[]): string {
     return `rhForms.${args.join('.')}`;
 }
 
+/**
+ * Returns the themed component. If the theme name or the theme directory is not found, 
+ * the default component i.e. the component in the default directory is returned.
+ * @function
+ * @param {string} componentPath - The path of the component from your theme directpry.
+ * @param {string} componentName - The component name to be rendered. This is needed because require returns an Object.
+ * To access the component in the Object, component name is required.
+ */
+export function getThemedComponent(componentPath: string, componentName: string): React.ComponentClass<any> {
+    let theme: string = store.getState().theme;
+
+    if (typeof theme !== 'string') {
+        return fetchComponent(componentPath, componentName);
+    }
+
+    try {
+        return fetchComponent(componentPath, componentName, theme);
+    } catch (error) {
+        warn(`${error} Rendering default component`);
+        return fetchComponent(componentPath, componentName);
+    }
+}
+
+function fetchComponent(componentPath: string, componentName: string, theme?: string): React.ComponentClass<any> {
+    /**
+     * TODO use the path of the app root directory instead of ../../../../src.
+     */
+    return require(`../../../../src/${theme || 'default'}/${componentPath}`)[`${componentName}`];
+}
+
+export function warn(message: string): void {
+    if (getEnvironment() === 'development') {
+        console.warn(message);
+    }
+}
+
 export function initializeFormWithInstance<T extends BaseModel>(instance: T, isCreate: boolean = false) {
     if (isEmpty(instance) || isEmpty(instance.properties)) {
         return;

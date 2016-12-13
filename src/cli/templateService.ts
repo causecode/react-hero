@@ -6,6 +6,7 @@ import {commandLine} from './commandLine';
 import {getModelString, isEmpty} from '../utils/appService';
 import {ModelPropTypes} from '../models/ModelPropTypes';
 import {BaseModel} from '../models/BaseModel';
+// import {projectRoot, typescriptOut} from './projectConfig';
 import {INVALID_COMMAND_ERROR} from '../constants';
 let mkdirp: any = require<any>('mkdirp');
 import './cliInit';
@@ -41,7 +42,7 @@ export function parseOptions(...options: string[]) {
     }
 }
 
-export function getListPage(ModelClass: typeof BaseModel) {
+export function generateListPage(ModelClass: typeof BaseModel) {
     let {resourceName} = ModelClass;
     let {modelName} = commandLine;
     let listTemplate = _.template(require<string>('../../templates/ListTemplate.ejs'));
@@ -52,7 +53,7 @@ export function getListPage(ModelClass: typeof BaseModel) {
     });
 }
 
-function getSubFormPage(propertyName, subPropTypes, model, resourceName) {
+function generateSubFormPage(propertyName, subPropTypes, model, resourceName) {
     let formControls = {};
     let {modelName} = commandLine;
     let inputTemplateString: string = `<FormInput 
@@ -124,7 +125,7 @@ export function generateFormPage(ModelClass: typeof BaseModel, pageType: 'edit' 
             let model: string = getModelString(formModelString, 'properties', prop) 
 
             if (currentPropType.type === 'object') {
-                formControls[prop] = getSubFormPage(
+                formControls[prop] = generateSubFormPage(
                         prop, 
                         currentPropType.propTypes, 
                         model,
@@ -159,7 +160,7 @@ export function generateFormPage(ModelClass: typeof BaseModel, pageType: 'edit' 
     });
 }
 
-function getNestedObjectView(propertyName: string, propTypes: any, resourceName: string): string {
+function generateSubShowPage(propertyName: string, propTypes: any, resourceName: string): string {
     if (appService.isEmpty(propTypes)) {
         throw new Error(`Could not find propTypes while generating show Page for resource ${resourceName}`);
     }
@@ -182,7 +183,7 @@ function getNestedObjectView(propertyName: string, propTypes: any, resourceName:
     });
 }
 
-export function getShowPage(ModelClass: typeof BaseModel): string {
+export function generateShowPage(ModelClass: typeof BaseModel): string {
     let {propTypes, resourceName} = ModelClass;
     if (appService.isEmpty(propTypes)) {
         throw new Error(`Could not find propTypes while generating show Page for resource ${resourceName}`);
@@ -201,7 +202,7 @@ export function getShowPage(ModelClass: typeof BaseModel): string {
         }
         let currentPropType = propTypes[prop];
         if (currentPropType.type === ModelPropTypes.objectInputType) {
-            tableRowMap[prop] = getNestedObjectView(prop, currentPropType.propTypes, resourceName);
+            tableRowMap[prop] = generateSubShowPage(prop, currentPropType.propTypes, resourceName);
             return;
         }
 

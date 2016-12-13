@@ -32,7 +32,7 @@ export function generateEditPage(pageType: 'edit' | 'create') {
     /* tslint:enable */
 }
 
-export function getListPage() {
+export function generateListPage() {
 
     TemplateService.parseOptions('modelName', 'modelPath');
 
@@ -50,7 +50,7 @@ export function getListPage() {
 
     TemplateService.writeFile(
             path.join(__dirname, `${projectRoot}/src/components/${resourceName}/${resourceName.capitalize()}List.tsx`), 
-            TemplateService.getListPage(ModelClass), () => {}
+            TemplateService.generateListPage(ModelClass), () => {}
     );
 
     /* tslint:disable */
@@ -58,7 +58,7 @@ export function getListPage() {
     /* tslint:enable */
 }
 
-export function getShowPage() {
+export function generateShowPage() {
 
     TemplateService.parseOptions('modelPath', 'modelName');
     
@@ -75,7 +75,7 @@ export function getShowPage() {
 
     TemplateService.writeFile(
             path.join(__dirname, `${projectRoot}/src/components/${resourceName}/${resourceName.capitalize()}Show.tsx`), 
-            TemplateService.getShowPage(ModelClass), () => {}
+            TemplateService.generateShowPage(ModelClass), () => {}
     );
 
     /* tslint:disable */
@@ -86,6 +86,6 @@ export function getShowPage() {
 export function generateAll() {
     generateEditPage('edit');
     generateEditPage('create');
-    getShowPage();
-    getListPage();
+    generateShowPage();
+    generateListPage();
 }
