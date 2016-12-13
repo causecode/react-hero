@@ -3,7 +3,7 @@ import {GenericListPage} from '../components/CRUD/GenericListPage';
 import {GenericEditPage} from '../components/CRUD/GenericEditPage';
 import {GenericShowPage} from '../components/CRUD/GenericShowPage';
 import {StatelessComponent, ComponentClass} from 'react';
-import {getEnvironment} from './appService';
+import {getEnvironment, warn} from './appService';
 
 export type ComponentType = (ComponentClass<any> | StatelessComponent<any>) & {resourceName?: string};
 
@@ -106,17 +106,21 @@ module ComponentService {
 
 export {ComponentService};
 
-const modules: any = require<any>('../../../../src/components');
-for (let component in modules) {
-    if (modules[component]) {
-        if (modules[component].resourceName) {
-            if (component.indexOf('Edit') > -1) {
-                ComponentService.register(modules[component], 'edit');
-            } else if (component.indexOf('List') > -1) {
-                ComponentService.register(modules[component], 'list');
-            } else if (component.indexOf('Show') > -1) {
-                ComponentService.register(modules[component], 'show');
+try {
+    const modules: any = require<any>('../../../../src/components');
+    for (let component in modules) {
+        if (modules[component]) {
+            if (modules[component].resourceName) {
+                if (component.indexOf('Edit') > -1) {
+                    ComponentService.register(modules[component], 'edit');
+                } else if (component.indexOf('List') > -1) {
+                    ComponentService.register(modules[component], 'list');
+                } else if (component.indexOf('Show') > -1) {
+                    ComponentService.register(modules[component], 'show');
+                }
             }
         }
     }
+} catch (error) {
+    warn('Exported files not found in /src/components.');
 }

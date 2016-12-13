@@ -1,7 +1,7 @@
 import {DefaultModel} from './../models/BaseModel';
 import {resolver} from '../resolver';
 import {BaseModel} from '../models/BaseModel';
-import {getEnvironment} from './appService';
+import {getEnvironment, warn} from './appService';
 
 module ModelService {
 
@@ -40,13 +40,17 @@ module ModelService {
 
 export {ModelService};
 
-const modules: any = require<any>('../../../../src/models');
-for (let component in modules) {
-    if (modules[component]) {
-        if (modules[component].resourceName) {
-            if (component.indexOf('Model') > -1) {
-                ModelService.register(modules[component]);
+try {
+    const modules: any = require<any>('../../../../src/models');
+    for (let component in modules) {
+        if (modules[component]) {
+            if (modules[component].resourceName) {
+                if (component.indexOf('Model') > -1) {
+                    ModelService.register(modules[component]);
+                }
             }
         }
     }
+} catch (error) {
+    warn('Exported files not found in /src/models.');
 }
