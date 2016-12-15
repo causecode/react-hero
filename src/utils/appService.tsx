@@ -98,7 +98,7 @@ export function getThemedComponent(componentPath: string, componentName: string)
     try {
         return fetchComponent(componentPath, componentName, theme);
     } catch (error) {
-        warn(`${error} Rendering default component`);
+        showWarn(`${error} Rendering default component`);
         return fetchComponent(componentPath, componentName);
     }
 }
@@ -110,7 +110,7 @@ function fetchComponent(componentPath: string, componentName: string, theme?: st
     return require(`../../../../src/${theme || 'default'}/${componentPath}`)[`${componentName}`];
 }
 
-export function warn(message: string): void {
+export function showWarn(message: string): void {
     if (getEnvironment() === 'development') {
         console.warn(message);
     }

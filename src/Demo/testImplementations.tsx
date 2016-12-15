@@ -18,7 +18,7 @@ import {ModelService} from '../utils/modelService';
 import {BlogModel, UserModel} from './testModel';
 require<void>('../init');
 
-ModelService.registerAll(UserModel, BlogModel);
+// ModelService.registerAll(UserModel, BlogModel);
 
 const headerFooterLayoutStyles = {
         header: {
@@ -124,7 +124,7 @@ class BlogListPage extends React.Component<{resource: string}, any> {
     }
 }
 
-ComponentService.registerAll('list', BlogListPage);
+// ComponentService.registerAll('list', BlogListPage);
 
 // This component is for testing.
 class UserEditPage extends React.Component<any, any> {

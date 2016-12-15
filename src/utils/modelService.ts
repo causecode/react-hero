@@ -1,7 +1,7 @@
 import {DefaultModel} from './../models/BaseModel';
 import {resolver} from '../resolver';
 import {BaseModel} from '../models/BaseModel';
-import {getEnvironment, warn} from './appService';
+import {getEnvironment, showWarn} from './appService';
 
 module ModelService {
 
@@ -15,10 +15,21 @@ module ModelService {
         resolver.set(model.resourceName.toLowerCase() + 'model', model);
     }
 
-    export function registerAll(...models: typeof BaseModel[]): void {
-        models.forEach((model) => {
-            register(model);
-        });
+    export function registerAll(): void {
+         try {
+            const modules: any = require<any>('../../../../src/models');
+            for (let component in modules) {
+                if (modules[component]) {
+                    if (modules[component].resourceName) {
+                        if (component.indexOf('Model') > -1) {
+                            register(modules[component]);
+                        }
+                    }
+                }
+            }
+        } catch (error) {
+            showWarn('Exported files not found in /src/models.');
+        }
     }
 
     export function getModel(name: string): typeof BaseModel {
@@ -40,17 +51,17 @@ module ModelService {
 
 export {ModelService};
 
-try {
-    const modules: any = require<any>('../../../../src/models');
-    for (let component in modules) {
-        if (modules[component]) {
-            if (modules[component].resourceName) {
-                if (component.indexOf('Model') > -1) {
-                    ModelService.register(modules[component]);
-                }
-            }
-        }
-    }
-} catch (error) {
-    warn('Exported files not found in /src/models.');
-}
+// try {
+//     const modules: any = require<any>('../../../../src/models');
+//     for (let component in modules) {
+//         if (modules[component]) {
+//             if (modules[component].resourceName) {
+//                 if (component.indexOf('Model') > -1) {
+//                     ModelService.register(modules[component]);
+//                 }
+//             }
+//         }
+//     }
+// } catch (error) {
+//     warn('Exported files not found in /src/models.');
+// }
