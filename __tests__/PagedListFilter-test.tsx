@@ -9,7 +9,7 @@ import {DateRangeFilter} from '../src/components/PagedList/Filters/DateRangeFilt
 import {DropDownFilter} from '../src/components/PagedList/Filters/DropDownFilter';
 import {QueryFilter} from '../src/components/PagedList/Filters/QueryFilter';
 import {RangeFilter} from '../src/components/PagedList/Filters/RangeFilter';
-import {FilterForm} from '../src/components/PagedList/Filters/DynamicForm';
+import {InnerFilterForm} from '../src/components/PagedList/Filters/DynamicForm';
 import {Button} from 'react-bootstrap';
 
 const ShallowTestUtils: any = require<any>('react-shallow-testutils');

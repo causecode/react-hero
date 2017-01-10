@@ -59,7 +59,7 @@ describe('Test generateFormTemplate method of TemplateService', () => {
                 enumInstance: '',
                 key: `form-control-${testResourceName}-${index}`,
                 propertyName: prop,
-                model: `RHForms.${testResourceName}.properties.${prop}`
+                model: `rhForms.${testResourceName}.properties.${prop}`
             });
             return testPage;
         });
@@ -99,7 +99,7 @@ describe('Test generateFormTemplate method of TemplateService', () => {
                         enumInstance,
                         key: `form-control-sub-${testResourceName}-${subIndex}`, 
                         propertyName: subProp,
-                        model: `RHForms.${testResourceName}.properties.${prop}.${subProp}`
+                        model: `rhForms.${testResourceName}.properties.${prop}.${subProp}`
                     });
                 });
 
@@ -111,7 +111,7 @@ describe('Test generateFormTemplate method of TemplateService', () => {
                 enumInstance,
                 key: `form-control-${testResourceName}-${index}`,
                 propertyName: prop,
-                model: `RHForms.${testResourceName}.properties.${prop}`
+                model: `rhForms.${testResourceName}.properties.${prop}`
             });
             return testPage;
         });

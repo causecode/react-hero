@@ -6,7 +6,7 @@ import {toggleFilters as toggle} from '../../../actions/modelActions';
 import {IFilter, IPagedListFiltersProps} from '../../../interfaces';
 import {isEmpty} from '../../../utils/appService';
 
-let FilterForm: React.ComponentClass<IPagedListFiltersProps>;
+let InnerFilterForm: React.ComponentClass<IPagedListFiltersProps>;
 export class PagedListFilters extends React.Component<IPagedListFiltersProps, void> {
     filterProps: string[] = [];
     static defaultProps: IPagedListFiltersProps = {
@@ -32,7 +32,7 @@ export class PagedListFilters extends React.Component<IPagedListFiltersProps, vo
     }
 
     render(): JSX.Element {
-        FilterForm = createFilterForm(this.props.resource);
+        InnerFilterForm = createFilterForm(this.props.resource);
         this.constructFilters();
         let children: React.ReactNode = this.props.children;
         if (isEmpty(children)) {
@@ -43,9 +43,9 @@ export class PagedListFilters extends React.Component<IPagedListFiltersProps, vo
                 <Button onClick={this.toggleFilters}>
                     <i className="fa fa-filter"/>
                 </Button>
-                <FilterForm fields={this.filterProps} resource={this.props.resource} filtersOpen={false}>
+                <InnerFilterForm fields={this.filterProps} resource={this.props.resource} filtersOpen={false}>
                     {children}
-                </FilterForm>
+                </InnerFilterForm>
             </div>
         );
     }

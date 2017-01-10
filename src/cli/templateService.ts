@@ -42,7 +42,7 @@ export function parseOptions(...options: string[]) {
     }
 }
 
-export function generateListPage(ModelClass: typeof BaseModel) {
+export function getListPage(ModelClass: typeof BaseModel) {
     let {resourceName} = ModelClass;
     let {modelName} = commandLine;
     let listTemplate = _.template(require<string>('../../templates/ListTemplate.ejs'));
@@ -53,7 +53,7 @@ export function generateListPage(ModelClass: typeof BaseModel) {
     });
 }
 
-function generateSubFormPage(propertyName, subPropTypes, model, resourceName) {
+function getSubFormPage(propertyName, subPropTypes, model, resourceName) {
     let formControls = {};
     let {modelName} = commandLine;
     let inputTemplateString: string = `<FormInput 
@@ -122,10 +122,10 @@ export function generateFormPage(ModelClass: typeof BaseModel, pageType: 'edit' 
 
             let currentPropType = propTypes[prop];
 
-            let model: string = getModelString(formModelString, 'properties', prop) 
+            let model: string = getModelString(formModelString, 'properties', prop);
 
             if (currentPropType.type === 'object') {
-                formControls[prop] = generateSubFormPage(
+                formControls[prop] = getSubFormPage(
                         prop, 
                         currentPropType.propTypes, 
                         model,
@@ -160,7 +160,7 @@ export function generateFormPage(ModelClass: typeof BaseModel, pageType: 'edit' 
     });
 }
 
-function generateSubShowPage(propertyName: string, propTypes: any, resourceName: string): string {
+function getNestedObjectView(propertyName: string, propTypes: any, resourceName: string): string {
     if (appService.isEmpty(propTypes)) {
         throw new Error(`Could not find propTypes while generating show Page for resource ${resourceName}`);
     }
@@ -183,7 +183,7 @@ function generateSubShowPage(propertyName: string, propTypes: any, resourceName:
     });
 }
 
-export function generateShowPage(ModelClass: typeof BaseModel): string {
+export function getShowPage(ModelClass: typeof BaseModel): string {
     let {propTypes, resourceName} = ModelClass;
     if (appService.isEmpty(propTypes)) {
         throw new Error(`Could not find propTypes while generating show Page for resource ${resourceName}`);
@@ -202,7 +202,7 @@ export function generateShowPage(ModelClass: typeof BaseModel): string {
         }
         let currentPropType = propTypes[prop];
         if (currentPropType.type === ModelPropTypes.objectInputType) {
-            tableRowMap[prop] = generateSubShowPage(prop, currentPropType.propTypes, resourceName);
+            tableRowMap[prop] = getNestedObjectView(prop, currentPropType.propTypes, resourceName);
             return;
         }
 
