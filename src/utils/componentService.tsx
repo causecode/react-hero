@@ -26,6 +26,7 @@ module ComponentService {
     export function registerAll() {
         try {
             const modules: any = require<any>('../../../../src/components');
+            // const modules: any = require<any>('../Demo/components');
             for (let component in modules) {
                 if (modules[component]) {
                     if (modules[component].resourceName) {
@@ -35,6 +36,8 @@ module ComponentService {
                             ComponentService.register(modules[component], 'list');
                         } else if (component.indexOf('Show') > -1) {
                             ComponentService.register(modules[component], 'show');
+                        } else if (component.indexOf('Create') > -1) {
+                            ComponentService.register(modules[component], 'create');
                         }
                     }
                 }
@@ -121,21 +124,3 @@ module ComponentService {
 
 export {ComponentService};
 
-// try {
-//     const modules: any = require<any>('../../../../src/components');
-//     for (let component in modules) {
-//         if (modules[component]) {
-//             if (modules[component].resourceName) {
-//                 if (component.indexOf('Edit') > -1) {
-//                     ComponentService.register(modules[component], 'edit');
-//                 } else if (component.indexOf('List') > -1) {
-//                     ComponentService.register(modules[component], 'list');
-//                 } else if (component.indexOf('Show') > -1) {
-//                     ComponentService.register(modules[component], 'show');
-//                 }
-//             }
-//         }
-//     }
-// } catch (error) {
-//     warn('Exported files not found in /src/components.');
-// }

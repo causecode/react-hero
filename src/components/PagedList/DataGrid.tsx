@@ -38,9 +38,9 @@ export function DataGrid( { instanceList, properties, resource }: IDataGridProps
                         return (
                         <tr key={index} className="data-grid-row">
                             <td>{index}</td>
-                            {properties.map(function(property: string, index: number) {
+                            {properties.map(function(property: string, propertyIndex: number) {
                                 return ( 
-                                    <td key={`property-${index}`}>
+                                    <td key={`property-${propertyIndex}`}>
                                         {(() => {
                                             if (property.indexOf('.') > 0) {
                                                 return getInnerData(instanceProperties, property);

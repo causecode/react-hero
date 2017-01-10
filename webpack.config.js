@@ -45,7 +45,6 @@ if (isProduction) {
     // Adding Development environment specific features.
     if (isRunningOnServer) {
         entryPoints.push(
-            'webpack-dev-server/client?http://' + HOST + ':' + PORT,
             'webpack/hot/only-dev-server'  // Used to enable hot reloading in webpack.
         );
     }
@@ -73,6 +72,9 @@ var config = {
         path: path.join(__dirname, 'dist'),
         filename: isProduction ? 'bundle.[hash].min.js' : 'bundle.js',
     },
+    devServer: {
+        historyApiFallback: true
+    },
     devtool: 'source-map',
     resolve: {
         root: [
@@ -89,7 +91,8 @@ var config = {
             {test: /\.css$/, loader: ExtractTextPlugin.extract('style-loader', 'css-loader')},
             {test: /.(png|woff(2)?|eot|ttf|svg)(\?[a-z0-9=\.]+)?$/, loader: 'url-loader?limit=1024&name=fonts/[name].[ext]'},
             {test: /\.(jpg|jpeg|gif|png)$/, loader: 'url-loader?limit=10&mimetype=image/(jpg|jpeg|gif|png)&name=images/[name].[ext]'},
-            {test: /\.json$/, loader: 'json-loader' }
+            {test: /\.json$/, loader: 'json-loader' },
+            {test: /\.ejs$/, loader: 'ejs-loader' }
         ],
         noParse: /node_modules\/json-schema\/lib\/validate\.js/
     },

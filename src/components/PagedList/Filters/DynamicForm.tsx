@@ -67,7 +67,10 @@ function mapStateToProps(state): {filtersOpen: boolean} {
 
 export function createFilterForm(resource): typeof InnerFilterForm {
     return ReduxForm.reduxForm(
-        {form: `${resource}Filters`},
+        {
+            form: `${resource}Filters`,
+            destroyOnUnmount: false
+        },
         mapStateToProps
     )(InnerFilterForm);
 }

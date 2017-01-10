@@ -18,6 +18,7 @@ module ModelService {
     export function registerAll(): void {
          try {
             const modules: any = require<any>('../../../../src/models');
+            // const modules: any = require<any>('../Demo/models');
             for (let component in modules) {
                 if (modules[component]) {
                     if (modules[component].resourceName) {
@@ -50,18 +51,3 @@ module ModelService {
 }
 
 export {ModelService};
-
-// try {
-//     const modules: any = require<any>('../../../../src/models');
-//     for (let component in modules) {
-//         if (modules[component]) {
-//             if (modules[component].resourceName) {
-//                 if (component.indexOf('Model') > -1) {
-//                     ModelService.register(modules[component]);
-//                 }
-//             }
-//         }
-//     }
-// } catch (error) {
-//     warn('Exported files not found in /src/models.');
-// }

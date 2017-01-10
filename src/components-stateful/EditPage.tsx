@@ -29,7 +29,7 @@ export class EditPageImpl extends React.Component<EditPageProps, void> {
     };
 
     isCreatePage(): boolean {
-        return isCreatePage(this.props.location.pathname)
+        return isCreatePage(this.props.location.pathname);
     }
 
     fetchInstanceFromServer = (): void =>  {

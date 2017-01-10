@@ -1,24 +1,14 @@
 import * as React from 'react';
+import {Title, Description, Content, ButtonList, ButtonListItem} from '../components/Widgets/Widgets';
 import {HeaderView, FooterView, ContentView, NavigationMenu} from './../components/HeaderFooterLayout';
+import {Router, Route, Link} from 'react-router';
 import {HeaderFooterLayout} from './../components/HeaderFooterLayout';
 import {ResponsiveView} from './../components/ResponsiveView';
-import {Title, Description, Content, ButtonList, ButtonListItem} from '../components/Widgets/Widgets';
-import {Router, Route, Link} from 'react-router';
 import {hashHistory} from 'react-router';
-import {PagedList} from '../components-stateful/PagedList';
 import {ListPage} from '../components-stateful/ListPage';
-import {DropDownFilter} from '../components/PagedList/Filters/DropDownFilter';
-import {DateRangeFilter} from '../components/PagedList/Filters/DateRangeFilter';
-import {RangeFilter} from '../components/PagedList/Filters/RangeFilter';
-import {QueryFilter} from '../components/PagedList/Filters/QueryFilter';
 import {ShowPage} from './../components-stateful/ShowPage';
 import {EditPage} from './../components-stateful/EditPage';
-import {ComponentService} from '../utils/componentService';
-import {ModelService} from '../utils/modelService';
-import {BlogModel, UserModel} from './testModel';
 require<void>('../init');
-
-// ModelService.registerAll(UserModel, BlogModel);
 
 const headerFooterLayoutStyles = {
         header: {
@@ -39,11 +29,8 @@ const headerFooterLayoutStyles = {
             color: '#777'
         }
 };
-export class NewPage extends React.Component<any, any> {
 
-    constructor() {
-        super();
-    }
+export class NewPage extends React.Component<void, void> {
 
     render() {
         return (
@@ -52,11 +39,11 @@ export class NewPage extends React.Component<any, any> {
                 <Content>
                     <Title>New App</Title>
                     <ButtonList highlightOnHover={true}>
-                            <ButtonListItem><Link to="/">Home</Link> </ButtonListItem>
-                            <ButtonListItem><Link to="/page2">Button 2</Link></ButtonListItem>
-                            <ButtonListItem><Link to="/resp">Responsive View Page</Link></ButtonListItem>
-                            <ButtonListItem><Link to="/blog/list">Blog List</Link></ButtonListItem>
-                            <ButtonListItem><Link to="/user/list">User List</Link></ButtonListItem>
+                        <ButtonListItem><Link to="/">Home</Link> </ButtonListItem>
+                        <ButtonListItem><Link to="/page2">Button 2</Link></ButtonListItem>
+                        <ButtonListItem><Link to="/resp">Responsive View Page</Link></ButtonListItem>
+                        <ButtonListItem><Link to="/blog/list">Blog List</Link></ButtonListItem>
+                        <ButtonListItem><Link to="/user/list">User List</Link></ButtonListItem>
                     </ButtonList>
                 </Content>
             </HeaderView>
@@ -88,86 +75,11 @@ export class NewPage extends React.Component<any, any> {
     }
 }
 
-class BlogListPage extends React.Component<{resource: string}, any> {
-    static resourceName: string = 'blog';
-    render() {
-        return (
-            <div>
-                <h1>This is a list page</h1>
-                <PagedList resource={this.props.resource} max={2}>
-                    <DropDownFilter
-                        label="status"
-                        paramName="status"
-                        possibleValues={['enable', 'disable', 'inactive']}
-                    />
-                    <RangeFilter
-                        label="Bill Amount"
-                        paramName="billAmount"
-                    />
-                    <DateRangeFilter
-                        label="Date Created"
-                        paramName="dateCreated"
-                    />
-                    <DropDownFilter
-                        label="types"
-                        paramName="types"
-                        possibleValues={['Zoo', 'Jungle', 'Forest']}
-                    />
-                    <QueryFilter
-                        label="Search"
-                        paramName="query"
-                        placeholder={['First Name', 'Last Name', 'Email']}
-                    />
-                </PagedList>
-            </div>
-        );
-    }
-}
-
-// ComponentService.registerAll('list', BlogListPage);
-
 // This component is for testing.
 class UserEditPage extends React.Component<any, any> {
     render() {
         return (
             <h1>Test</h1>
-        );
-    }
-}
-
-// This list page is for testing
-class UserListPage extends React.Component<{params?: any}, any> {
-    static resourceName: string = 'user';
-    render() {
-        return (
-            <div>
-                <h1 style={{background : 'red'}}>This is MY user list page</h1>
-                <PagedList resource={this.props.params.resource} max={10}>
-                    <DropDownFilter
-                        label = "status"
-                        paramName = "status"
-                        possibleValues = {['enable', 'disable', 'inactive']}
-                    />
-                    <RangeFilter
-                        label = "Bill Amount"
-                        paramName = "billAmount"
-                    />
-                    <DateRangeFilter
-                        label = "Date Created"
-                        paramName = "dateCreated"
-                    />
-                    <DropDownFilter
-                        label = "types"
-                        paramName = "types"
-                        possibleValues = {['Zoo', 'Jungle', 'Forest']}
-                    />
-                    <QueryFilter
-                        label = "Search"
-                        paramName = "query"
-                        placeholder = {['First Name', 'Last Name', 'Email']}
-                    />
-                </PagedList>
-            </div>
         );
     }
 }

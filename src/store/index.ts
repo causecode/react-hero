@@ -21,7 +21,7 @@ export function configureStore(initialState): Store | IMockStore {
     let store: Store | IMockStore;
     // Using process.env.NODE_ENV instead of appService.getEnvironment because appService Import was returning empty.
     if (process.env.NODE_ENV === 'test') {
-        store = configureMockStore()(initialState)
+        store = configureMockStore()(initialState);
         // store = configureMockStore(_getMiddleware())(initialState, rootReducer, _getMiddleware());
     } else {
         store = compose(
