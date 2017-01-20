@@ -10,7 +10,8 @@ let InnerFilterForm: React.ComponentClass<IPagedListFiltersProps>;
 export class PagedListFilters extends React.Component<IPagedListFiltersProps, void> {
     filterProps: string[] = [];
     static defaultProps: IPagedListFiltersProps = {
-        resource: ''
+        resource: '',
+        filters: {}
     };
 
     constructFilters(): void {
@@ -43,7 +44,11 @@ export class PagedListFilters extends React.Component<IPagedListFiltersProps, vo
                 <Button onClick={this.toggleFilters}>
                     <i className="fa fa-filter"/>
                 </Button>
-                <InnerFilterForm fields={this.filterProps} resource={this.props.resource} filtersOpen={false}>
+                <InnerFilterForm
+                        filters={this.props.filters}
+                        fields={this.filterProps} 
+                        resource={this.props.resource} 
+                        filtersOpen={false}>
                     {children}
                 </InnerFilterForm>
             </div>
