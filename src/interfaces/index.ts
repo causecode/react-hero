@@ -56,6 +56,7 @@ export interface IPagedListFiltersProps extends Props<{}> {
     fields?: string[];
     resource?: string;
     filtersOpen?: boolean;
+    filters?: any;
 }
 
 export interface IFromJS {

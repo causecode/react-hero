@@ -38,7 +38,7 @@ function dataReducer(state = INITIAL_STATE, action ) {
                 let payloadData = action.payload;
                 for (let key in payloadData) {
                     if (payloadData.hasOwnProperty(key)) {
-                        if (payloadData[key].constructor === Object) {
+                        if (payloadData[key] && payloadData[key].constructor === Object) {
                             (<any>Object).assign(instance, payloadData[key]);
                         } else {
                             instance[key] = payloadData[key];

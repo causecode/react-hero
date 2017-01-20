@@ -48,13 +48,17 @@ module ComponentService {
     }
 
     export function getComponent(name: string, type: string = ''): ComponentType {
-        name = (type.length && (name.indexOf(type) === -1)) ? `${name}${type}`.toLowerCase() : name.toLowerCase();
-        return resolver.get(name);
+        if (type && type.length) {
+            return resolver.get(`${name}${type}`.toLowerCase());
+        }
+        return resolver.get(name.toLowerCase());
     }
 
     export function hasComponent(name: string, type: string = ''): boolean {
-        name = (type.length && (name.indexOf(type) === -1)) ? `${name}${type}`.toLowerCase() : name.toLowerCase();
-        return resolver.has(name);
+        if (type && type.length) {
+            return resolver.has(`${name}${type}`.toLowerCase());
+        }
+        return resolver.has(name.toLowerCase());
     }
 
     export function hasListPage(name: string): boolean {

@@ -46,8 +46,7 @@ export function parseWidgetDate(date: number | string | Date): string {
     let timestamp: number = date as number;
     if (date instanceof Date) {
         timestamp = date.getTime();
-    }
-    if (typeof date === 'string') {
+    } else if (typeof date === 'string') {
         timestamp = parseInt(date, 10); 
     }
     return moment(timestamp).format('YYYY-MM-DD');
@@ -107,6 +106,7 @@ function fetchComponent(componentPath: string, componentName: string, theme?: st
     /**
      * TODO use the path of the app root directory instead of ../../../../src.
      */
+    // return require(`../../src/${theme || 'default'}/${componentPath}`)[`${componentName}`];
     return require(`../../../../src/${theme || 'default'}/${componentPath}`)[`${componentName}`];
 }
 
