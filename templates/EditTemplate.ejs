@@ -6,8 +6,16 @@ import {FormInput, IInstancePageProps, initializeFormWithInstance} from 'react-h
 import {store} from '../../../store';
 
 export interface I<%= componentName%>PageProps extends IInstancePageProps {
-    handleSubmit: (instance: <%= modelName%>Model) => void;
-    handleDelete: (instance: <%= modelName%>Model) => void;
+    handleSubmit: (
+        instance: <%= modelName%>Model, 
+        successCallBack?: ( (any) => {} ), 
+        failureCallBack?: ( (any) => {} )
+    ) => void;
+    handleDelete: (
+        instance: <%= modelName%>Model,
+        successCallBack?: ( (any) => {} ), 
+        failureCallBack?: ( (any) => {} )
+    ) => void;
     instance: <%= modelName%>Model;
     isCreatePage: boolean;
 }
