@@ -12,23 +12,17 @@ export function setCheckboxUnchecked (id: number) {
     };
 }
 
-export function selectAllRecordsOnPage (id: number, checked: boolean) {
+export function selectAllRecordsOnPage (checked: boolean) {
     return {
         type: 'SELECT_ALL_RECORDS_ON_PAGE',
-        payload: {
-            id: id,
-            checked: checked
-        }
+        payload: checked
     };
 }
 
-export function selectAllRecords (id: number, checked: boolean) {
+export function selectAllRecords (checked: boolean) {
     return {
         type: 'SELECT_ALL_RECORDS',
-        payload: {
-            id: id,
-            checked: checked
-        }
+        payload: checked
     };
 }
 

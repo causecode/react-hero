@@ -1,12 +1,12 @@
 import * as React from 'react';
 import {Table, Tooltip, OverlayTrigger} from 'react-bootstrap';
 import {Link} from 'react-router';
-import {store} from '../../store';
-import {MapStateToProps, connect} from 'react-redux';
+import {MapStateToProps, MapDispatchToPropsFunction, connect} from 'react-redux';
 import {IState} from './BulkUserActions';
 import {BaseModel} from '../../models/BaseModel';
 import {getInnerData} from '../../utils/appService';
-import {selectAllRecords, 
+import {
+    selectAllRecords, 
     selectAllRecordsOnPage, 
     setCheckboxChecked, 
     setCheckboxUnchecked
@@ -19,7 +19,14 @@ export interface IDataGridStateProps {
     selectAll?: boolean; 
 };
 
-export interface IDataGridProps extends IDataGridStateProps {
+export interface IDataGridDispatchProps {
+    selectAllRecords?: (isChecked: boolean) => void;
+    selectAllRecordsOnPage?: (isChecked: boolean) => void;
+    setChecked?: (id: number) => void;
+    setUnchecked?: (id: number) => void;
+}
+
+export interface IDataGridProps extends IDataGridStateProps, IDataGridDispatchProps {
     instanceList: BaseModel[];
     properties: string[];
     totalCount?: number;
@@ -38,23 +45,23 @@ export class DataGridImpl extends React.Component<IDataGridProps, void> {
             if (event.target.checked) {
                 this.toggleAllCheckboxes(event.target.checked);
             } else {
-                store.dispatch(selectAllRecords(-2, false));
+                this.props.selectAllRecords(false);
                 this.toggleAllCheckboxes(event.target.checked);
             }
-            store.dispatch(selectAllRecordsOnPage(id, event.target.checked));
+            this.props.selectAllRecordsOnPage(event.target.checked);
             return;
         }  
         // For selectAll id will be -2
         if (id === -2) {
-            store.dispatch(selectAllRecords(id, event.target.checked));
+            this.props.selectAllRecords(event.target.checked);
             return;
         }
         if (event.target.checked) {
-            store.dispatch(setCheckboxChecked(id));
+            this.props.setChecked(id);
         } else {
-            store.dispatch(setCheckboxUnchecked(id));
-            store.dispatch(selectAllRecordsOnPage(-1, false));
-            store.dispatch(selectAllRecords(-2, false));
+            this.props.setUnchecked(id);
+            this.props.selectAllRecordsOnPage(false);
+            this.props.selectAllRecords(false);
         }
     }
 
@@ -63,12 +70,12 @@ export class DataGridImpl extends React.Component<IDataGridProps, void> {
         if (isChecked) {
             for (let i: number = 0; i < instances.length; i++) {
                 if (this.props.selectedIds.indexOf(instances[i].properties.id) === -1) {
-                    store.dispatch(setCheckboxChecked(instances[i].properties.id));
+                    this.props.setChecked(instances[i].properties.id);
                 }
             }
         } else {
             for (let i: number = 0; i < instances.length; i++) {
-                store.dispatch(setCheckboxUnchecked(instances[i].properties.id));
+                this.props.setUnchecked(instances[i].properties.id);
             }
         }
     }
@@ -124,7 +131,7 @@ export class DataGridImpl extends React.Component<IDataGridProps, void> {
                             </th>
                             <th>#</th>
                             {this.properties.map(function(property: string, index: number) {
-                                return (<th key={index}>{property.capitalize()}</th>);
+                               return (<th key={index}>{property.capitalize()}</th>);
                             })}
                             <th>Actions</th>
                         </tr>
@@ -201,7 +208,25 @@ let mapStateToProps: MapStateToProps<IDataGridStateProps, IDataGridProps> = (sta
     };
 };
 
-let DataGrid: React.ComponentClass<IDataGridProps> = connect(mapStateToProps)(DataGridImpl);
+let mapDispatchToProps: MapDispatchToPropsFunction<IDataGridDispatchProps, IDataGridProps> = 
+        (dispatch): IDataGridDispatchProps => {
+    return {
+        selectAllRecords: (isChecked: boolean) => {
+            dispatch(selectAllRecords(isChecked));
+        },
+        selectAllRecordsOnPage: (isChecked: boolean) => {
+            dispatch(selectAllRecordsOnPage(isChecked));
+        },
+        setChecked: (id: number) => {
+            dispatch(setCheckboxChecked(id));
+        },
+        setUnchecked: (id: number) => {
+            dispatch(setCheckboxUnchecked(id));
+        }
+    };
+};
+
+let DataGrid: React.ComponentClass<IDataGridProps> = connect(mapStateToProps, mapDispatchToProps)(DataGridImpl);
 
 export {DataGrid};
 

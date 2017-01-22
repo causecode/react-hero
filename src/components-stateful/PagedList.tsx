@@ -7,18 +7,18 @@ import {Link} from 'react-router';
 import {connect} from 'react-redux';
 import {BaseModel} from '../models/BaseModel';
 import {ModelService} from '../utils/modelService';
-import '../utils/appService';
 import {UserActions} from '../components/PagedList/BulkUserActions';
-import {store} from '../store/index';
 import {resetCheckboxState} from '../actions/userActions';
 import {resetSelectedRecords} from '../utils/checkboxUtils';
-import {IPagedListFiltersProps} from '../interfaces/index';
+import {IPagedListFiltersProps, IBulkUserActionType} from '../interfaces/index';
 import {createFilterForm} from '../components/PagedList/Filters/DynamicForm';
 import {QueryFilter} from '../components/PagedList/Filters/QueryFilter';
+import '../utils/appService';
 const objectAssign = require<any>('object-assign');
 
 export interface IPagedListDispatchProps {
     setPage?: (pageNumber: number, resource: string) => void;
+    resetCheckboxState?: () => void;
 }
 
 export interface IPagedListStateProps {
@@ -33,10 +33,7 @@ export interface IPagedListProps extends IPagedListStateProps, IPagedListDispatc
     resource: string;
     filters?: any;
     handleRecordDelete?: Function;
-    userActionsMap?: [{
-        label: string,
-        action: Function
-    }];
+    userActionsMap?: IBulkUserActionType[];
 }
 
 let OuterQueryFilter: React.ComponentClass<IPagedListFiltersProps>;
@@ -68,7 +65,7 @@ export class PagedListImpl extends React.Component<IPagedListProps, void> {
     };
 
     componentWillMount(): void {
-        const { resource } = this.props;
+        const {resource} = this.props;
         this.fetchInstanceList(resource);
     };
 
@@ -82,7 +79,7 @@ export class PagedListImpl extends React.Component<IPagedListProps, void> {
      */
     handlePagination: any = (pageNumber: number, e: React.SyntheticEvent): void => {
         if (pageNumber !== this.props.activePage) {
-            store.dispatch(resetCheckboxState());
+            this.props.resetCheckboxState();
         }
         this.fetchInstanceList(this.props.resource, {offset: (pageNumber - 1) * this.props.max});
         this.props.setPage(pageNumber, this.props.resource);
@@ -159,6 +156,9 @@ function mapDispatchToProps(dispatch): IPagedListDispatchProps {
     return {
         setPage: (pageNumber, resource) => {
             dispatch(setPage(pageNumber, resource));
+        },
+        resetCheckboxState: () => {
+            dispatch(resetCheckboxState());
         }
     };
 }

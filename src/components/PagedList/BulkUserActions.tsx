@@ -3,6 +3,7 @@ import {Button} from 'react-bootstrap';
 import {store} from '../../store';
 import {MapStateToProps, connect} from 'react-redux';
 import {saveUserAction, saveUserActionData} from '../../actions/userActions';
+import {IBulkUserActionType} from '../../interfaces/index';
 
 export interface IUserActionStateProps {
     action?: string;
@@ -14,10 +15,7 @@ export interface IUserActionStateProps {
 
 export interface IUserActionProps extends IUserActionStateProps {
     isDisabled: boolean;
-    userActionsMap?: {
-        label: string,
-        action: Function
-    }[];
+    userActionsMap?: IBulkUserActionType[];
     style?: React.CSSProperties;
 }
 
@@ -32,7 +30,7 @@ export class UserActionsImpl extends React.Component<IUserActionProps, void> {
     
     componentWillMount = (): void => {
         if (this.props.userActionsMap && this.props.userActionsMap.length > 0) {
-            let actionMap: {label: string, action: Function}[] = this.props.userActionsMap;
+            let actionMap: IBulkUserActionType[] = this.props.userActionsMap;
             for (let i: number = 0; i < actionMap.length ; i++) {
                 if (this.listItems.indexOf(actionMap[i].label) === -1) {
                     this.listItems.push(actionMap[i].label);
@@ -60,7 +58,7 @@ export class UserActionsImpl extends React.Component<IUserActionProps, void> {
     }
 
     performAction = (): void => {
-        let map: {label: string, action: Function}[] = this.props.userActionsMap;        
+        let map: IBulkUserActionType[] = this.props.userActionsMap;        
         for (let i: number = 0; i < map.length ; i++) {
             if (map[i].label === this.props.action) {
                 this.saveUserActionData();

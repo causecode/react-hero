@@ -69,3 +69,19 @@ export interface IImmutable {
     toJS: () => Object;
     getIn: (keys : string[], defaultVaue : Object) => Object | IImmutable;
 }
+
+export interface IUserActionReducer {
+    action: string;
+    records: number;
+}
+
+export interface ICheckboxReducer {
+    selectedIds: number[];
+    selectAll: boolean;
+    selectAllOnPage: boolean;
+}
+
+export interface IBulkUserActionType {
+    label: string;
+    action: Function;
+}

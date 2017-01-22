@@ -1,6 +1,7 @@
+import {IUserActionReducer} from '../interfaces/index';
 const objectAssign = require<any>('object-assign');
 const USER_ACTION: string = '--User Action--';
-let INITIAL_STATE = {action: USER_ACTION, records: 0};
+let INITIAL_STATE: IUserActionReducer = {action: USER_ACTION, records: 0};
 
 export function userActionReducer (state = INITIAL_STATE, action) {
     switch (action.type) {
