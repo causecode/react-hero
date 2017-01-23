@@ -69,7 +69,7 @@ export class DataGridImpl extends React.Component<IDataGridProps, void> {
         let instances: BaseModel[] = this.props.instanceList;
         if (isChecked) {
             for (let i: number = 0; i < instances.length; i++) {
-                if (this.props.selectedIds.indexOf(instances[i].properties.id) === -1) {
+                if (this.props.selectedIds && this.props.selectedIds.indexOf(instances[i].properties.id) === -1) {
                     this.props.setChecked(instances[i].properties.id);
                 }
             }
@@ -143,7 +143,8 @@ export class DataGridImpl extends React.Component<IDataGridProps, void> {
                                 <tr key={index} className="data-grid-row">
                                     <td><input 
                                                 type="checkbox" 
-                                                checked={this.props.selectedIds.indexOf(instanceProperties.id) !== -1} 
+                                                checked={this.props.selectedIds && 
+                                                        this.props.selectedIds.indexOf(instanceProperties.id) !== -1} 
                                                 onChange={this.handleChange.bind(this, instanceProperties.id)}/>
                                     </td>
                                     <td>{index}</td>
