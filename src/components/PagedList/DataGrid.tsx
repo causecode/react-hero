@@ -13,7 +13,6 @@ import {
 } from '../../actions/userActions';
 
 export interface IDataGridStateProps {
-    selectedIdsLength?: number;
     selectedIds?: number[];
     selectAllOnPage?: boolean;
     selectAll?: boolean; 
@@ -125,7 +124,7 @@ export class DataGridImpl extends React.Component<IDataGridProps, void> {
                             <th><input 
                                         type="checkbox"
                                         checked={this.props.selectAllOnPage && 
-                                                this.props.selectedIdsLength === this.props.instanceList.length} 
+                                                this.props.selectedIds.length === this.props.instanceList.length} 
                                         onChange={this.handleChange.bind(this, -1)}
                                 />
                             </th>
@@ -203,7 +202,6 @@ export class DataGridImpl extends React.Component<IDataGridProps, void> {
 let mapStateToProps: MapStateToProps<IDataGridStateProps, IDataGridProps> = (state: IState): IDataGridStateProps => {
     return {
         selectedIds: state.checkbox.selectedIds,
-        selectedIdsLength: state.checkbox.selectedIds.length,
         selectAllOnPage: state.checkbox.selectAllOnPage,
         selectAll: state.checkbox.selectAll
     };
