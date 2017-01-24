@@ -9,7 +9,6 @@ import {BaseModel} from '../models/BaseModel';
 import {ModelService} from '../utils/modelService';
 import {UserActions} from '../components/PagedList/BulkUserActions';
 import {resetCheckboxState} from '../actions/userActions';
-import {resetSelectedRecords} from '../utils/checkboxUtils';
 import {IPagedListFiltersProps, IBulkUserActionType} from '../interfaces/index';
 import {createFilterForm} from '../components/PagedList/Filters/DynamicForm';
 import {QueryFilter} from '../components/PagedList/Filters/QueryFilter';
@@ -70,7 +69,7 @@ export class PagedListImpl extends React.Component<IPagedListProps, void> {
     };
 
     componentWillUnmount(): void {
-        resetSelectedRecords();
+        this.props.resetCheckboxState();
     }
 
     /*
@@ -83,7 +82,7 @@ export class PagedListImpl extends React.Component<IPagedListProps, void> {
         }
         this.fetchInstanceList(this.props.resource, {offset: (pageNumber - 1) * this.props.max});
         this.props.setPage(pageNumber, this.props.resource);
-        resetSelectedRecords();
+        this.props.resetCheckboxState();
         window.scrollTo(0, 0);
     };
 
