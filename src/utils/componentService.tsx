@@ -49,16 +49,16 @@ module ComponentService {
 
     export function getComponent(name: string, type: string = ''): ComponentType {
         if (type && type.length) {
-            return resolver.get(`${name}${type}`.toLowerCase());
+            return resolver.get(`${name}${type}`);
         }
-        return resolver.get(name.toLowerCase());
+        return resolver.get(name);
     }
 
     export function hasComponent(name: string, type: string = ''): boolean {
         if (type && type.length) {
-            return resolver.has(`${name}${type}`.toLowerCase());
+            return resolver.has(`${name}${type}`);
         }
-        return resolver.has(name.toLowerCase());
+        return resolver.has(name);
     }
 
     export function hasListPage(name: string): boolean {
@@ -119,7 +119,7 @@ module ComponentService {
 
     export function getFormPage(name: string, isCreatePage: boolean): ComponentType {
         if (isCreatePage) {
-            return getCreatePage(name)
+            return getCreatePage(name);
         } else {
             return getEditPage(name);
         }
