@@ -167,7 +167,8 @@ class DateTimeComponent extends React.Component<IInputProps, void> {
     render() {
         return(
            <ReactDatetime 
-                defaultValue={moment(this.props.propertyValue).format('MM-DD-YYYY HH:mm')}
+                defaultValue={this.props.propertyValue ? 
+                        moment(this.props.propertyValue).format('MM-DD-YYYY HH:mm') : ''}
                 strictParsing={true}
                 utc={true}
                 onChange={this.handleChange}
