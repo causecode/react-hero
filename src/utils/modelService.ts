@@ -18,14 +18,10 @@ module ModelService {
     export function registerAll(): void {
          try {
             const modules: any = require<any>('../../../../src/models');
-            // const modules: any = require<any>('../Demo/models');
+            // const modules: any = require<any>('../demo/models');
             for (let component in modules) {
-                if (modules[component]) {
-                    if (modules[component].resourceName) {
-                        if (component.indexOf('Model') > -1) {
-                            register(modules[component]);
-                        }
-                    }
+                if (modules[component] && modules[component].resourceName && component.indexOf('Model') > -1) {
+                    register(modules[component]);
                 }
             }
         } catch (error) {
