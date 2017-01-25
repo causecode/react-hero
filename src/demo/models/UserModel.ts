@@ -29,6 +29,5 @@ export class UserModel extends BaseModel {
 
     constructor(properties: any) {
         super(properties);
-        this.properties = properties;
     }
 }

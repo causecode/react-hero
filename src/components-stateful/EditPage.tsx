@@ -75,13 +75,13 @@ export class EditPageImpl extends React.Component<EditPageProps, void> {
     }
 
     render(): JSX.Element {
-        let instance = this.props.instance;
+        let instance: BaseModel = this.props.instance;
         if (!isEmpty(instance) && !isEmpty(instance.properties) && instance.resourceName) {
             /*
              * React-redux-form does not save class instances in the store. Hence Recreating the instance
              * here in case the instance was coming from the React-redux-form store.
              */
-            let ModelClass = ModelService.getModel(instance.resourceName); 
+            let ModelClass: typeof BaseModel = ModelService.getModel(instance.resourceName); 
             instance = new ModelClass(instance.properties);
         }
         if (!(instance instanceof BaseModel)) {
@@ -106,14 +106,14 @@ function mapStateToProps(state, ownProps): Object {
     let instance: BaseModel;
     if (!isCreate) {
         instance = ModelClass.get<BaseModel>(
-                        ownProps.params.resourceID, 
-                        true, 
-                        {}, 
-                        () => {}, 
-                        () => {},
-                        state,
-                        '' as 'edit' | 'create' 
-                    );
+                ownProps.params.resourceID, 
+                true, 
+                {}, 
+                () => {}, 
+                () => {},
+                state,
+                '' as 'edit' | 'create' 
+            );
     } else {
         instance = new ModelClass({});
     }

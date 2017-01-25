@@ -73,13 +73,15 @@ describe('Test PagedList Filters', () => {
 
         expect(ShallowTestUtils.findWithClass(filter, 'paged-list-filters')).toBeTruthy();
         expect(ShallowTestUtils.findWithType(filter, Button)).toBeTruthy();
-        let fields: string[] = ['status',
-                                'billAmountFrom',
-                                'billAmountTo',
-                                'dateCreatedFrom',
-                                'dateCreatedTo',
-                                'types',
-                                'query'];
+        let fields: string[] = [
+                'status',
+                'billAmountFrom',
+                'billAmountTo',
+                'dateCreatedFrom',
+                'dateCreatedTo',
+                'types',
+                'query'
+            ];
         expect(filter.props.children[1].props.fields).toEqual(fields);
     });
 

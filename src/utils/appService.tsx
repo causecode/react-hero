@@ -23,13 +23,8 @@ declare module process {
 export function objectEquals<T>(obj1: Object | Array<T>, obj2: Object | Array<T>) {
     // Adding try catch here to avoid 'Converting circular structure to JSON' error.
     try {
-        if ((obj1 instanceof Object && obj2 instanceof Object) || 
-                (obj1 instanceof Array && obj2 instanceof Array)
-        ) {
-            return (
-                JSON.stringify(obj1) ===
-                JSON.stringify(obj2)
-            );
+        if ((obj1 instanceof Object && obj2 instanceof Object) || (obj1 instanceof Array && obj2 instanceof Array)) {
+            return JSON.stringify(obj1) === JSON.stringify(obj2);
         }
     } catch (e) {
         return obj1 === obj2;
@@ -180,10 +175,10 @@ export function generateForm<T extends BaseModel>(
     return (
         <div>
             {Object.keys(propTypes).map((prop: string, index: number) => {
-                let keyPath = model ? model + '.' + prop : prop; 
-                let propertyValue = getIn(instance.properties, keyPath);
+                let keyPath: string = model ? model + '.' + prop : prop; 
+                let propertyValue: any = getIn(instance.properties, keyPath);
                 let type: string = instance.propTypes[prop].type;
-                let formModelString = isCreatePage ? `${instance.resourceName}Create` : `${instance.resourceName}Edit`;
+                let formModelString: string = isCreatePage ? `${instance.resourceName}Create` : `${instance.resourceName}Edit`;
                 let modelString: string = getModelString(formModelString, 'properties', keyPath);
                 if (type === ModelPropTypes.objectInputType) {
                     return generateSubForm(

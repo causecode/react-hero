@@ -3,8 +3,8 @@ let packageJson: any = require('../../../package.json');
 let localConfigJson: any = require('../../../localConfig.json');
 
 // Doing this to avoid cyclic imports problem when used through commandline.
-let isEmpty = appService.isEmpty || ((...args: any[]) => {});
-let getEnvironment = appService.getEnvironment || (() => '');
+let isEmpty: (...args: any[]) => void | boolean = appService.isEmpty || ((...args: any[]) => {});
+let getEnvironment: () => string = appService.getEnvironment || (() => '');
 localConfigJson = isEmpty(localConfigJson) ? packageJson : localConfigJson;
 
 let config: {
@@ -14,6 +14,6 @@ let config: {
     };
 } = (getEnvironment() === 'production') ? packageJson : localConfigJson;
 
-let reactHeroConfig = config.reactHero;
+let reactHeroConfig: {serverUrl: string, APIUrl: string} = config.reactHero;
 
 export {reactHeroConfig as config};

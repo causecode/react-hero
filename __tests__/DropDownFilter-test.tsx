@@ -1,10 +1,10 @@
 jest.unmock('../src/components/PagedList/Filters/DropDownFilter');
 import * as React from 'react';
 import * as TestUtils from 'react-addons-test-utils';
-import {Wrapper} from '../src/components/Wrapper';
 import * as ReactDOM from 'react-dom';
 import {FormGroup, ControlLabel, FormControl} from 'react-bootstrap';
 import {DropDownFilter, IDropDownFilter} from '../src/components/PagedList/Filters/DropDownFilter';
+import {Wrapper} from '../src/components/Wrapper';
 import {IFilter} from '../src/interfaces';
 import '../src/utils/appService';
 const unroll: any = require<any>('unroll');
@@ -12,7 +12,7 @@ require<any>('../src/init');
 
 unroll.use(it);
 
-describe('DropDownFilter', () => {
+describe('Test cases for DropdownFilter', () => {
     let paramName: string = 'test';
     let labelData: string = 'testLabel';
     let fieldValues: {name: string}[] = [

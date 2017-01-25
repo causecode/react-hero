@@ -7,6 +7,7 @@ import {QueryFilter} from '../../components/PagedList/Filters/QueryFilter';
 
 export class UserListPage extends React.Component<{resource: any}, any> {
     static resourceName: string = 'user';
+    
     render() {
         return (
             <div>

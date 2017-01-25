@@ -1,11 +1,11 @@
-import {IInstanceAction} from '../src/actions/modelActions';
 jest.unmock('../src/models/BaseModel');
+import * as axios from 'axios';
 import {DefaultModel, getData} from '../src/models/BaseModel';
+import {FETCH_INSTANCE_DATA} from '../src/constants';
+import {IInstanceAction} from '../src/actions/modelActions';
+import {IMockStore} from '../src/store/index';
 import {HTTP} from '../src/api/server/index';
 import 'babel-polyfill';
-import * as axios from 'axios';
-import {IMockStore} from '../src/store/index';
-import {FETCH_INSTANCE_DATA} from '../src/constants';
 const unroll: any = require<any>('unroll');
 const store = require<any>('../src/store').store as IMockStore; 
 

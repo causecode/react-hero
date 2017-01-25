@@ -16,8 +16,8 @@ export class PagedListFilters extends React.Component<IPagedListFiltersProps, vo
     constructFilters(): void {
         let children: React.ReactNode = this.props.children;
         React.Children.forEach(children, (child: React.ReactElement<IFilter> & {type: {name: string}}) => {
-            let paramName = child.props.paramName;
-            let filterName = child.type.name;
+            let paramName: string = child.props.paramName;
+            let filterName: string = child.type.name;
             if (['RangeFilter', 'DateRangeFilter'].indexOf(filterName) !== -1) {
                 this.filterProps.push(`${paramName}From`, `${paramName}To`);
             } else if (child.props.paramName) {

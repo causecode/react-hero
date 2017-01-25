@@ -6,7 +6,6 @@ import {commandLine} from './commandLine';
 import {getModelString, isEmpty} from '../utils/appService';
 import {ModelPropTypes} from '../models/ModelPropTypes';
 import {BaseModel} from '../models/BaseModel';
-// import {projectRoot, typescriptOut} from './projectConfig';
 import {INVALID_COMMAND_ERROR} from '../constants';
 let mkdirp: any = require<any>('mkdirp');
 import './cliInit';
@@ -45,7 +44,8 @@ export function parseOptions(...options: string[]) {
 export function getListPage(ModelClass: typeof BaseModel) {
     let {resourceName} = ModelClass;
     let {modelName} = commandLine;
-    let listTemplate = _.template(require<string>('../../templates/ListTemplate.ejs'));
+    // TODO figure out the type and remove `any`
+    let listTemplate: any = _.template(require<string>('../../templates/ListTemplate.ejs'));
 
     return listTemplate({
         modelName,
@@ -54,7 +54,8 @@ export function getListPage(ModelClass: typeof BaseModel) {
 }
 
 function getSubFormPage(propertyName, subPropTypes, model, resourceName) {
-    let formControls = {};
+    // type `any` is used because it's a generic object.
+    let formControls: any = {};
     let {modelName} = commandLine;
     let inputTemplateString: string = `<FormInput 
                                 type="<%= type%>" ` + 
@@ -95,7 +96,7 @@ export function generateFormPage(ModelClass: typeof BaseModel, pageType: 'edit' 
     let {modelName} = commandLine;
     
     let formControls: {[key: string]: string} = {};
-    let inputTemplateString = `<FormInput 
+    let inputTemplateString: string = `<FormInput 
                         type="<%= type%>" ` + 
                         `<% if (enumInstance) { %>` + ` 
                         enum={<%= enumInstance%>}<% } %>` + `
@@ -103,7 +104,8 @@ export function generateFormPage(ModelClass: typeof BaseModel, pageType: 'edit' 
                         model="<%= model%>"    
                 />`;
 
-    let inputTemplate = _.template(inputTemplateString);
+    // TODO figure out the type and remove `any`
+    let inputTemplate: any = _.template(inputTemplateString);
     let formModelString: string = resourceName;
     let componentName: string = modelName;
     if (pageType === 'edit') {
@@ -164,11 +166,12 @@ function getNestedObjectView(propertyName: string, propTypes: any, resourceName:
     if (appService.isEmpty(propTypes)) {
         throw new Error(`Could not find propTypes while generating show Page for resource ${resourceName}`);
     }
-    let subShowTemplate = _.template(require<string>('../../templates/SubShowTemplate.ejs'));
-    let tableRowTemplate = _.template(`<tr>
-                                        <td><strong><%= subPropertyName%></strong></td>
-                                        <td>{<%= subPropertyValue%>}</td>
-                                    </tr>`); 
+    // TODO figure out the type and remove `any`
+    let subShowTemplate: any = _.template(require<string>('../../templates/SubShowTemplate.ejs'));
+    let tableRowTemplate: any = _.template(`<tr>
+            <td><strong><%= subPropertyName%></strong></td>
+            <td>{<%= subPropertyValue%>}</td>
+            </tr>`); 
     let tableRowMap = {};   
     Object.keys(propTypes).forEach((prop: string, index: number) => {
         tableRowMap[prop] = tableRowTemplate({
@@ -188,14 +191,16 @@ export function getShowPage(ModelClass: typeof BaseModel): string {
     if (appService.isEmpty(propTypes)) {
         throw new Error(`Could not find propTypes while generating show Page for resource ${resourceName}`);
     }
-    let showTemplate = _.template(require<string>('../../templates/ShowTemplate.ejs'));
+    // TODO figure out the type and remove `any`
+    let showTemplate: any = _.template(require<string>('../../templates/ShowTemplate.ejs'));
 
-    let tableRowTemplate = _.template(`<tr>
-                        <td><strong><%= propertyName%></strong></td>
-                        <td>{<%= propertyValue%>}</td>
-                    </tr>`); 
+    let tableRowTemplate: any = _.template(`<tr>
+            <td><strong><%= propertyName%></strong></td>
+            <td>{<%= propertyValue%>}</td>
+            </tr>`); 
 
-    let tableRowMap = {};   
+    // type `any` is used because it's a generic object.
+    let tableRowMap: any = {};   
     Object.keys(propTypes).forEach((prop: string, index: number) => {
         if (!propTypes.hasOwnProperty(prop)) {
             return;

@@ -75,7 +75,7 @@ describe('Test ShowPage', () => {
         let page: React.ReactElement<IInstanceContainerProps> = renderer.getRenderOutput();
         expect(page).toBeTruthy();
 
-        let renderedPage = ShallowTestUtils.findWithType(page, TestShowPage);
+        let renderedPage: React.ComponentClass<void> = ShallowTestUtils.findWithType(page, TestShowPage);
         expect(renderedPage).toBeTruthy();
         expect(renderedPage.props.instance).toEqual(new TestModel({}));
         expect(renderedPage.props.resource).toEqual(resource);

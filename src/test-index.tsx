@@ -3,7 +3,7 @@ import {Router, Route, hashHistory} from 'react-router';
 import {ComponentService} from './utils/componentService';
 import {ModelService} from './utils/modelService';
 import {Provider} from 'react-redux';
-import {NewPage} from './Demo/testImplementations';
+import {NewPage} from './demo/testImplementations';
 import {render} from 'react-dom';
 import {store} from './store';
 

@@ -1,5 +1,5 @@
-import {PagedList} from '../../components-stateful/PagedList';
 import * as React from 'react';
+import {PagedList} from '../../components-stateful/PagedList';
 
 export interface IGenericListPageProps {
     resource: string;

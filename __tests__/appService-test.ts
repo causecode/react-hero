@@ -19,6 +19,12 @@ const unroll = require<any>('unroll');
 
 unroll.use(it);
 
+export interface IActions {
+    type?: string;
+    model?: string;
+    value?: BaseModel;
+}
+
 describe('Test for AppService', () => {
 
     it('returns the environment', () => {
@@ -33,16 +39,16 @@ describe('Test for AppService', () => {
     unroll('tests the isEmpty function when the object is #object', (done, testArgs) => {
         let obj: Object;
         try {
-             obj = JSON.parse(testArgs.object);
+             obj = JSON.parse(testArgs.params);
         } catch (e) {
-            obj = testArgs.object;
+            obj = testArgs.params;
         }
 
-        let isObjectEmpty = isEmpty(obj);
-        expect(isObjectEmpty).toEqual(testArgs.isObjectEmpty);
+        let isObjectEmpty: boolean = isEmpty(obj);
+        expect(isObjectEmpty).toEqual(testArgs.result);
         done();
     }, [
-        ['object', 'isObjectEmpty'],
+        ['params', 'result'],
         [JSON.stringify({id: 1}), false],
         ['abc', false],
         [1, true],
@@ -117,16 +123,16 @@ describe('Test for AppService', () => {
         }
 
         unroll('initializes the redux form model with an instance with properties #properties', (done, testArgs) => {
-            let properties = JSON.parse(testArgs.properties);
+            let properties: {id?: number} = JSON.parse(testArgs.properties);
             let testInstance: TestModel = new TestModel(properties);
             initializeFormWithInstance<TestModel>(testInstance, testArgs.isCreatePage);
-            let actions = (store as IMockStore).getActions();
+            let actions: IActions[] = (store as IMockStore).getActions();
             (store as IMockStore).clearActions();
             expect(actions.length).toEqual(testArgs.numberOfActions);
             if (!actions.length) {
                 return;
             }
-            let action = actions[0];
+            let action: IActions = actions[0];
             expect(action.type).toEqual('rrf/change');
             expect(action.model).toEqual(`rhForms.${TestModel.resourceName}${testArgs.formModelSuffix}`);
             expect(action.value).toEqual(testInstance);
@@ -141,7 +147,7 @@ describe('Test for AppService', () => {
 
         it('does not initialize the form models with an instance if the instance ' + 
                 'is an invalid BaseModel instance', () => {
-            let instance = new TestModel({});
+            let instance: TestModel = new TestModel({});
             instance.properties = {};
 
             initializeFormWithInstance(instance, true);

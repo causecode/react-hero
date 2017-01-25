@@ -32,7 +32,7 @@ const headerFooterLayoutStyles = {
 
 export class NewPage extends React.Component<void, void> {
 
-    render() {
+    render(): JSX.Element {
         return (
             <HeaderFooterLayout menuPosition="left" style={headerFooterLayoutStyles}>
             <HeaderView>

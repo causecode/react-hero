@@ -8,7 +8,7 @@ import {ModelService} from '../utils/modelService';
 import {saveAllInstances, unsetList} from '../actions/modelActions';
 import {findInstanceByID} from '../utils/storeService';
 import {NO_PROP_TYPES, NO_DEFAULT_PROPS} from '../constants';
-import {Dictionary} from '../interfaces';
+import {Dictionary, IFromJS} from '../interfaces';
 import {fromJS} from 'immutable';
 const objectAssign: any = require <any> ('object-assign');
 const getValues: (state : any) => any = require <{
@@ -240,10 +240,10 @@ export class BaseModel {
             return listInstance;
         }
         
-        let formInstances = state.forms.rhForms || {};
+        let formInstances: IFromJS | any = state.forms.rhForms || {};
         formInstances = formInstances.toJS ? formInstances.toJS() : formInstances;
-        let instanceKey = operation === 'edit' ? `${resourceName}Edit` : `${resourceName}Create`;
-        let formInstance = formInstances[instanceKey];
+        let instanceKey: string = operation === 'edit' ? `${resourceName}Edit` : `${resourceName}Create`;
+        let formInstance: any = formInstances[instanceKey];
 
         return formInstance || listInstance;
     }

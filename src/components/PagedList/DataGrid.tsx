@@ -27,7 +27,7 @@ export function DataGrid( { instanceList, properties, resource }: IDataGridProps
                     <tr className="data-grid-header">
                         <th>#</th>
                         {properties.map(function(property: string, index: number) {
-                            return ( <th key={index}>{property.capitalize()}</th> );
+                            return (<th key={index}>{property.capitalize()}</th>);
                         })}
                         <th>Actions</th>
                     </tr>

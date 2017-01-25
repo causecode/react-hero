@@ -9,9 +9,9 @@ import {createStore, Store} from 'redux';
 import {IShallowTestUtils} from '../src/interfaces';
 import {IInitializerData} from '../src/utils/initializeTestCase';
 import {DateRangeFilter} from '../src/components/PagedList/Filters/DateRangeFilter';
-import {DropDownFilter} from '../src/components/PagedList/Filters/DropDownFilter';
+import {DropDownFilter, IDropDownFilter} from '../src/components/PagedList/Filters/DropDownFilter';
 import {RangeFilter} from '../src/components/PagedList/Filters/RangeFilter';
-import {QueryFilter} from '../src/components/PagedList/Filters/QueryFilter';
+import {QueryFilter, IQueryFilter} from '../src/components/PagedList/Filters/QueryFilter';
 import {createFilterForm} from '../src/components/PagedList/Filters/DynamicForm';
 import {rootReducer} from '../src/reducers/rootReducer';
 import {findDOMNode} from 'react-dom';
@@ -69,7 +69,7 @@ describe('render a simple InnerFilterForm', () => {
     ];
     let reduxFormFields;
     let fields: string[] = [];
-    let { renderer , resource }: IInitializerData = initializeTestCase();
+    let {renderer , resource}: IInitializerData = initializeTestCase();
 
     for (let child: any of children) {
         let param = child.props.paramName;
@@ -94,9 +94,9 @@ describe('render a simple InnerFilterForm', () => {
         renderer.render(
             <InnerFilterForm />
         );
-        let form = renderer.getRenderOutput();
+        let form: TestUtils.ShallowRenderer = renderer.getRenderOutput();
 
-        let innerForm = ShallowTestUtils.findWithType(form, 'form');
+        let innerForm: React.ComponentClass<IPagedListFiltersProps> = ShallowTestUtils.findWithType(form, 'form');
         expect(innerForm).toBeTruthy();
         expect(ShallowTestUtils.findWithType(innerForm, Button)).toBeTruthy();
     });
@@ -121,22 +121,22 @@ describe('render a simple InnerFilterForm', () => {
             </InnerFilterForm>
         );
 
-        let form = renderer.getRenderOutput();
+        let form: TestUtils.ShallowRenderer = renderer.getRenderOutput();
 
-        let dropdown = ShallowTestUtils.findWithType(form, DropDownFilter);
+        let dropdown: React.ComponentClass<IDropDownFilter> = ShallowTestUtils.findWithType(form, DropDownFilter);
         expect(dropdown).toBeTruthy();
         expect(dropdown.props.fields).toBeFalsy();
         expect(dropdown.props.label).toEqual('status');
         expect(dropdown.props.paramName).toEqual('status');
         expect(dropdown.props.possibleValues).toEqual(['enable', 'disable', 'inactive']);
 
-        let range = ShallowTestUtils.findWithType(form, RangeFilter);
+        let range: React.ReactElement<IFilter> = ShallowTestUtils.findWithType(form, RangeFilter);
         expect(range).toBeTruthy();
         expect(range.props.fields).toBeFalsy();
         expect(range.props.label).toEqual('Bill Amount');
         expect(range.props.paramName).toEqual('billAmount');
 
-        let query = ShallowTestUtils.findWithType(form, QueryFilter);
+        let query: React.ReactElement<IQueryFilter> = ShallowTestUtils.findWithType(form, QueryFilter);
         expect(query).toBeTruthy();
         expect(query.props.fields).toBeTruthy();
         expect(query.props.fields[0]).toEqual({name: 'query'});

@@ -20,7 +20,7 @@ export class ShowPageImpl extends React.Component<IInstanceContainerProps, void>
     }
 
     componentWillMount(): void {
-        const { resource, resourceID } = this.props.params;
+        const {resource, resourceID} = this.props.params;
         this.fetchInstanceData(resource, resourceID);
     }
 
@@ -30,7 +30,7 @@ export class ShowPageImpl extends React.Component<IInstanceContainerProps, void>
                 <ErrorPage message={PAGE_NOT_FOUND} />
             );
         }
-        const resource = this.props.params.resource;
+        const resource: string = this.props.params.resource;
         const childProps = {instance: this.props.instance, resource: resource};
         let Page: React.ComponentClass<void> = ComponentService.getShowPage(resource) as React.ComponentClass<void>;
         return (

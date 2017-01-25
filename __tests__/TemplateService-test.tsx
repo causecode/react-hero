@@ -74,7 +74,7 @@ describe('Test generateFormTemplate method of TemplateService', () => {
     it('should call the template function with the appropriate form controls and input widget types', () => {
         class TestModel extends BaseModel {
             static defaultProps = {};
-            static resourceName = testResourceName;
+            static resourceName: string = testResourceName;
             static propTypes = {
                 id: ModelPropTypes.NUMBER(),
                 guests: ModelPropTypes.ARRAY(),
@@ -90,9 +90,9 @@ describe('Test generateFormTemplate method of TemplateService', () => {
         let propTypes = TestModel.propTypes;
         let formControls = Object.keys(TestModel.propTypes).map((prop: string, index: number) => {
             if (propTypes[prop].type === ModelPropTypes.objectInputType) {
-                let subPropTypes = propTypes[prop].propTypes;
+                let subPropTypes: number = propTypes[prop].propTypes;
                 Object.keys(subPropTypes).forEach((subProp: string, subIndex: number) => {
-                    let enumInstance = subPropTypes[subProp].enum ? 
+                    let enumInstance: string = subPropTypes[subProp].enum ? 
                             `${testModelName.capitalize()}Model.propTypes[\`${prop}\`][\`${subProp}\`].enum` : '';
                     expect(testTemplateFunction).toBeCalledWith({
                         type: subPropTypes[subProp],
@@ -104,7 +104,7 @@ describe('Test generateFormTemplate method of TemplateService', () => {
                 });
 
             }
-            let enumInstance = propTypes[prop].enum ? 
+            let enumInstance: string = propTypes[prop].enum ? 
                     `${testModelName.capitalize()}Model.propTypes[\`${prop}\`].enum` : '';
             expect(testTemplateFunction).toBeCalledWith({
                 type: propTypes[prop],
@@ -125,9 +125,9 @@ describe('Test generateFormTemplate method of TemplateService', () => {
     });
 
     class TestModelInvaidPropTypes extends BaseModel {
-        static defaultProps = 'qwe';
-        static propTypes = '123';
-        static resourceName = 'test';
+        static defaultProps: string = 'qwe';
+        static propTypes: string = '123';
+        static resourceName: string = 'test';
         constructor(props) {
             super(props);
         }
@@ -137,7 +137,7 @@ describe('Test generateFormTemplate method of TemplateService', () => {
     unroll('should call the template function without any formcontrols when #title', 
             (done, testArgs) => {
 
-        let resultantPage = TemplateService.generateFormTemplate(testArgs.modelClass);
+        let resultantPage: React.ReactElement<void> = TemplateService.generateFormTemplate(testArgs.modelClass);
 
         expect(resultantPage).toEqual(testPage);
         expect(testTemplateFunction).toBeCalledWith({
@@ -240,9 +240,9 @@ describe('Test generateShowTemplate method of TemplateService', () => {
     });
 
     class TestModelInvaidPropTypes extends BaseModel {
-        static defaultProps = 'qwe';
-        static propTypes = '123';
-        static resourceName = 'test';
+        static defaultProps: string = 'qwe';
+        static propTypes: string = '123';
+        static resourceName: string = 'test';
         constructor(props) {
             super(props);
         }

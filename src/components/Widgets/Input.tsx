@@ -122,7 +122,7 @@ class ListInputTemplate extends React.Component<any, any> {
     }
     
     render() {
-        let list = this.props.propertyValue || ['Nothing to show.'];
+        let list: string[] = this.props.propertyValue || ['Nothing to show.'];
         return (
             <div>
                 <Row>
