@@ -1,0 +1,33 @@
+import * as React from 'react';
+import {PagedList} from 'react-hero';
+
+export class <%= modelName%>ListPage extends React.Component<{}, void> {
+    static resourceName: string = `<%= resourceName%>`;
+
+    render(): JSX.Element {
+        return (
+            <div>
+                <PagedList resource={this.constructor[`resourceName`]} max={20}>
+                    {/*<DropDownFilter
+                        label="mention label here"
+                        paramName="mention parameter to apply filter on"
+                        possibleValues={[mention possible values here]}
+                    />
+                    <RangeFilter
+                        label="mention label here"
+                        paramName="mention parameter to apply filter on"
+                    />
+                    <DateRangeFilter
+                        label="mention label here"
+                        paramName="mention parameter to apply filter on"
+                    />
+                    <QueryFilter
+                        label="mention label here"
+                        paramName="mention parameter to apply filter on"
+                        placeholder={[mention parameters which are queryable]}
+                    />*/}
+                </PagedList>
+            </div>
+        );
+    }
+}

@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap';
+import {FormGroup, FormControl, ControlLabel} from 'react-bootstrap';
 import '../../../utils/appService';
-import {IFilter} from '../../../interfaces/interfaces';
+import {IFilter} from '../../../interfaces';
 
 export function RangeFilter({ label, paramName, fields }: IFilter, {}): JSX.Element {
 

@@ -1,27 +1,33 @@
 import * as React from 'react';
-import { Table, Pagination } from 'react-bootstrap';
+import {Pagination} from 'react-bootstrap';
 import {PagedListFilters} from '../components/PagedList/Filters/PagedListFilter';
 import {DataGrid} from '../components/PagedList/DataGrid';
-import {setPage} from '../actions/data';
+import {setPage} from '../actions/modelActions';
 import {Link} from 'react-router';
 import {connect} from 'react-redux';
 import {BaseModel} from '../models/BaseModel';
 import {ModelService} from '../utils/modelService';
 import '../utils/appService';
 
-export interface IPagedListProps extends React.Props<{}> {
+export interface IPagedListDispatchProps {
+    setPage?: (pageNumber: number, resource: string) => void;
+}
+
+export interface IPagedListStateProps {
     properties?: string[];
     instanceList?: BaseModel[];
-    max: number;
     totalCount?: number;
-    setPage?: (pageNumber: number) => void;
     activePage?: number;
+}
+
+export interface IPagedListProps extends IPagedListStateProps, IPagedListDispatchProps {
+    max: number;
     resource: string;
 }
 
-export class PagedListImpl extends React.Component<IPagedListProps, {}> {
+export class PagedListImpl extends React.Component<IPagedListProps, void> {
 
-    fetchInstanceList(resource, filters: {max?: number, offset?: number} = {}) {
+    fetchInstanceList(resource, filters: {max?: number, offset?: number} = {}): void {
         if (this.props.max > 0) {
             filters.max = this.props.max;
         }
@@ -50,9 +56,13 @@ export class PagedListImpl extends React.Component<IPagedListProps, {}> {
         this.fetchInstanceList(resource);
     };
 
-    handlePagination = (pageNumber: number): void => {
+    /*
+     * Using any here because the type defined by react-bootstrap i.e. SelectCallback was not assignable here.
+     * TODO Remove any in handlePagination.
+     */
+    handlePagination: any = (pageNumber: number, e: React.SyntheticEvent): void => {
         this.fetchInstanceList(this.props.resource, {offset: (pageNumber - 1) * this.props.max});
-        this.props.setPage(pageNumber);
+        this.props.setPage(pageNumber, this.props.resource);
     };
 
     render(): JSX.Element {
@@ -65,13 +75,13 @@ export class PagedListImpl extends React.Component<IPagedListProps, {}> {
                     <Link to={`${this.props.resource}/create`} ><i className="fa fa-plus" /></Link>
                 </h2>
                 <PagedListFilters resource={this.props.resource}>
-                        {this.props.children}
-                    </PagedListFilters>
-                    <DataGrid
+                    {this.props.children}
+                </PagedListFilters>
+                <DataGrid
                         instanceList={ this.props.instanceList }
                         properties={ this.props.properties }
-                    />
-                    <Pagination
+                />
+                <Pagination
                         prev
                         next
                         first
@@ -81,32 +91,29 @@ export class PagedListImpl extends React.Component<IPagedListProps, {}> {
                         maxButtons={5}
                         items={items}
                         activePage={activePage}
-                        onSelect={this.handlePagination} />
+                        onSelect={this.handlePagination} 
+                />
             </div>
         );
     };
 }
 
-function mapStateToProps(state): {
-    properties: string[];
-    instanceList: BaseModel[];
-    totalCount: number;
-    activePage: number
-} {
+function mapStateToProps(state, ownProps): IPagedListStateProps {
+    let resourceData: IPagedListStateProps & {toJS?: () => IPagedListStateProps} =
+            state.data.get(`${ownProps.resource}List`, {});
+    resourceData = resourceData.toJS ? resourceData.toJS() : resourceData;
     return {
-        properties: state.data.get('properties', []) as string[],
-        instanceList: state.data.get('instanceList', []).toJS(),
-        totalCount:  state.data.get('totalCount', 0),
-        activePage: state.data.get('activePage', 1)
+        properties: resourceData.properties,
+        instanceList: resourceData.instanceList,
+        totalCount:  resourceData.totalCount,
+        activePage: resourceData.activePage
     };
 }
 
-function mapDispatchToProps(dispatch): {
-    setPage: (pageNumber: number) => void;
-} {
+function mapDispatchToProps(dispatch): IPagedListDispatchProps {
     return {
-        setPage: (pageNumber) => {
-            dispatch(setPage(pageNumber));
+        setPage: (pageNumber, resource) => {
+            dispatch(setPage(pageNumber, resource));
         }
     };
 }

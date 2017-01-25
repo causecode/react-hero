@@ -1,20 +1,30 @@
 declare interface String {
     capitalize(): string;
+    decapitalize(): string;
 }
 
 declare interface Function {
     name: string;
 }
 
-declare interface IRequire {
+declare interface NodeRequire {
     <T>(path: string): T;
     (paths: string[], callback: (...modules: any[]) => void): void;
     ensure: (paths: string[], callback: (require: <T>(path: string) => T) => void) => void;
-
-    requireActual?: IRequire;
 }
 
-declare var require: IRequire;
+declare var require: NodeRequire;
+
+declare interface Object {
+    isEmpty: () => boolean;
+    each: (callback: Function) => void;
+    equals: (obj: any) => boolean;    
+}
+
+declare interface Array<T> {
+    each: (callback: Function) => void;
+    equals: (obj: T[]) => boolean;
+}
 
 declare interface Window {
     devToolsExtension: any;

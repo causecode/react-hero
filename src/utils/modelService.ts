@@ -1,6 +1,7 @@
+import {DefaultModel} from './../models/BaseModel';
 import {resolver} from '../resolver';
 import {BaseModel} from '../models/BaseModel';
-import {getEnvironment} from './appService';
+import {getEnvironment, showWarn} from './appService';
 
 module ModelService {
 
@@ -11,7 +12,21 @@ module ModelService {
     }
 
     export function register(model: typeof BaseModel): void {
-        resolver.set(model.name.toLowerCase(), model);
+        resolver.set(model.resourceName.toLowerCase() + 'model', model);
+    }
+
+    export function registerAll(): void {
+         try {
+            const modules: any = require<any>('../../../../src/models');
+            // const modules: any = require<any>('../demo/models');
+            for (let component in modules) {
+                if (modules[component] && modules[component].resourceName && component.indexOf('Model') > -1) {
+                    register(modules[component]);
+                }
+            }
+        } catch (error) {
+            showWarn('Exported files not found in /src/models.');
+        }
     }
 
     export function getModel(name: string): typeof BaseModel {
@@ -21,7 +36,7 @@ module ModelService {
             return resolver.get(name);
         } else {
             warn(name);
-            return BaseModel;
+            return DefaultModel;
         }
     }
 
@@ -29,7 +44,6 @@ module ModelService {
         name = name.toLowerCase();
         return (name.indexOf('model') === -1) ? resolver.has(`${name}model`) : resolver.has(name);
     }
-
 }
 
 export {ModelService};

@@ -1,10 +1,8 @@
-import {ResponsiveView, IResponsiveView} from './ResponsiveView';
 import * as React from 'react';
 import {NavMenuLauncherIcon} from './NavMenuLauncherIcon';
-import * as Bootstrap from 'react-bootstrap';
 import {Motion, spring} from 'react-motion';
-import {toggleNav} from '../actions/actions';
-import {MapStateToProps} from 'react-redux';
+import {toggleNav} from '../actions/modelActions';
+const objectAssign: any = require<any>('object-assign');
 
 // Importing connect this way because of bug in react-redux type definition
 // TODO Revisit https://github.com/DefinitelyTyped/DefinitelyTyped/issues/8866
@@ -15,7 +13,13 @@ require<any>('../../styles/index.css');
 require<any>('bootstrap/dist/css/bootstrap.min.css');
 require<any>('font-awesome/css/font-awesome.min.css');
 
+const headerType: string = 'Header';
+const contentType: string = 'Content';
+const footerType: string = 'Footer';
+const navigationMenuType = 'NavigationMenu';
+
 export class HeaderView extends React.Component<{}, {}> {
+    static componentType: string = headerType;
     // TODO Add Header specific behaviour.
     render(): JSX.Element {
         return <div>{this.props.children}</div>;
@@ -23,6 +27,7 @@ export class HeaderView extends React.Component<{}, {}> {
 }
 
 export class FooterView extends React.Component<{}, {}> {
+    static componentType: string = footerType;
     // TODO Add Footer specific behaviour.
     render(): JSX.Element {
         return <div>{this.props.children}</div>;
@@ -31,6 +36,7 @@ export class FooterView extends React.Component<{}, {}> {
 
 export class ContentView extends React.Component<{}, {}> {
     // TODO Add Content specific behaviour.
+    static componentType: string = contentType;
     render(): JSX.Element {
         return <div>{this.props.children}</div>;
     }
@@ -38,6 +44,7 @@ export class ContentView extends React.Component<{}, {}> {
 
 export class NavigationMenu extends React.Component<{}, {}> {
     // TODO Add NavigationMenu specific behaviour.
+    static componentType: string = navigationMenuType;
     render(): JSX.Element {
         return <div>{this.props.children}</div>;
     }
@@ -48,6 +55,13 @@ export interface IHeaderFooterLayoutProps {
     children?: any;
     open?: boolean;
     toggleNav?: () => void;
+    style?: {
+        header: React.CSSProperties,
+        nav: React.CSSProperties,
+        content: React.CSSProperties,
+        footer: React.CSSProperties,
+        navIcon: React.CSSProperties
+    };
 }
 
 const mapStateToProps = (state): {open: boolean}  => {
@@ -68,20 +82,33 @@ export class HeaderFooterLayoutImpl extends React.Component<IHeaderFooterLayoutP
     footer: JSX.Element;
     content: JSX.Element;
     nav: JSX.Element;
+
+    static defaultProps: IHeaderFooterLayoutProps = {
+        menuPosition: 'left',
+        style: {
+            header: {},
+            nav: {},
+            content: {},
+            footer: {},
+            navIcon: {}
+        }
+    };
+
     private isNavBarPresent: boolean = false;
 
-    parseChild = (child): void => {
-        switch (child.type.name) {
-            case 'HeaderView':
+    // type `any` is intentional because child can be anything.
+    parseChild = (child: any): void => {
+        switch (child.type.componentType) {
+            case headerType:
                 this.header = child;
                 break;
-            case 'ContentView':
+            case contentType:
                 this.content = child;
                 break;
-            case 'FooterView':
+            case footerType:
                 this.footer = child;
                 break;
-            case 'NavigationMenu':
+            case navigationMenuType:
                 this.setNav(child);
                 break;
         }
@@ -126,10 +153,10 @@ export class HeaderFooterLayoutImpl extends React.Component<IHeaderFooterLayoutP
     }
 
     render(): JSX.Element {
-        const { toggleNav, menuPosition } = this.props;
-        let navMenuClasses = `nav-menu ${menuPosition}`;
-        let menuClosePosition = (menuPosition === 'left') ? -100 : 100;
-        let closeButtonClasses = 'fa fa-times highlight-on-hover ';
+        const {toggleNav, menuPosition, style} = this.props;
+        let navMenuClasses: string = `nav-menu ${menuPosition}`;
+        let menuClosePosition: number = (menuPosition === 'left') ? -100 : 100;
+        let closeButtonClasses: string = 'fa fa-times highlight-on-hover ';
         closeButtonClasses += (menuPosition === 'left') ? 'right' : 'left';
 
         const getNavMenu = () => {
@@ -137,8 +164,11 @@ export class HeaderFooterLayoutImpl extends React.Component<IHeaderFooterLayoutP
                 return (
                     <Motion style={{x: spring(this.props.open ? 0 : menuClosePosition )}}>
                         {({x}) =>
-                        <div className={navMenuClasses} style={{ WebkitTransform: `translate3d(${x}%, 0, 0)`,
-                                    transform: `translate3d(${x}%, 0, 0)`,}}>
+                        <div
+                                className={navMenuClasses}
+                                style={objectAssign({}, {WebkitTransform: `translate3d(${x}%, 0, 0)`,
+                                        transform: `translate3d(${x}%, 0, 0)`}, style.nav || {})}
+                        >
                             <i className={closeButtonClasses} onClick={toggleNav}/>
                             {this.nav}
                         </div>
@@ -153,19 +183,23 @@ export class HeaderFooterLayoutImpl extends React.Component<IHeaderFooterLayoutP
         return (
             <div>
                 {getNavMenu()}
-                <div className="header">
+                <div className="header" style={style.header}>
                     {(() => {
                         if (this.isNavBarPresent) {
-                            return ( <NavMenuLauncherIcon position={`${this.props.menuPosition}`}
-                                    onClick={toggleNav}/>);
-                            }
-                        })()}
+                            return (
+                                <NavMenuLauncherIcon
+                                        style={style.navIcon}
+                                        position={`${this.props.menuPosition}`}
+                                        onClick={toggleNav}/>
+                            );
+                        }
+                    })()}
                     {this.header}
                 </div>
-                <div className="content">
+                <div className="content" style={style.content}>
                     {this.content}
                 </div>
-                <div className="footer">
+                <div className="footer" style={style.footer}>
                     {this.footer}
                 </div>
             </div>

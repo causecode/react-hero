@@ -1,5 +1,5 @@
 import {FieldProp} from 'redux-form';
-import {Component, Props} from 'react';
+import {Props} from 'react';
 import {BaseModel} from '../models/BaseModel';
 
 // Data type for a stub function.
@@ -16,6 +16,9 @@ export interface IShallowTestUtils {
     isDOMComponent: any;
 }
 
+// Type for a generic object
+export type Dictionary<T> = {[key: string]: T}
+
 // Data passed in the Instance Page routes.
 export interface IRouteParams {
     resource: string;
@@ -25,13 +28,18 @@ export interface IRouteParams {
 // Props used by Instance Page Containers.
 export interface IInstanceContainerProps {
     params: IRouteParams;
-    instances: BaseModel[];
+    instance: BaseModel;
 }
 
 // Props used by the Instance Pages.
 export interface IInstancePageProps {
     instance: BaseModel;
     resource?: string;
+}
+
+export interface IImmutable {
+    toJS: () => Object;
+    getIn: (keys : string[], defaultVaue : Object) => Object | IImmutable;
 }
 
 // Basic interface used by all filters.
@@ -48,4 +56,15 @@ export interface IPagedListFiltersProps extends Props<{}> {
     fields?: string[];
     resource?: string;
     filtersOpen?: boolean;
+}
+
+export interface IFromJS {
+    set: Function;
+    get: Function;
+    toJS: Function;
+}
+
+export interface IImmutable {
+    toJS: () => Object;
+    getIn: (keys : string[], defaultVaue : Object) => Object | IImmutable;
 }

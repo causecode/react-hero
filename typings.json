@@ -5,6 +5,8 @@
     "classnames": "registry:dt/classnames#0.0.0+20160316155526",
     "es6-promise": "registry:dt/es6-promise#0.0.0+20160614011821",
     "jest": "registry:dt/jest#0.9.0+20160425141105",
+    "moment": "registry:dt/moment#2.11.1+20161010105546",
+    "node": "registry:dt/node#6.0.0+20161102143327",
     "react": "registry:dt/react#0.14.0+20160621225615",
     "react-addons-test-utils": "registry:dt/react-addons-test-utils#0.14.0+20160427035638",
     "react-bootstrap": "registry:dt/react-bootstrap#0.0.0+20160621215554",
@@ -14,6 +16,9 @@
     "redux": "registry:dt/redux#3.3.1+20160326112656",
     "redux-form": "registry:dt/redux-form#4.0.3+20160614092506",
     "redux-logger": "registry:dt/redux-logger#2.6.0+20160619033847",
+    "underscore": "registry:dt/underscore#1.8.3+20160908111004",
+    "react-fontawesome": "registry:dt/react-fontawesome#1.1.0+20161121205806",
+    "radium": "registry:dt/radium#0.18.1+20160907102602",
     "whatwg-fetch": "registry:dt/whatwg-fetch#0.0.0+20160524142046"
   },
   "dependencies": {

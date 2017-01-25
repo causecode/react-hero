@@ -1,44 +1,50 @@
 import * as React from 'react';
-import {BaseModel} from '../models/BaseModel';
-import {GenericShowPage} from './../components/CRUD/GenericShowPage';
+import {DefaultModel, BaseModel} from '../models/BaseModel';
 import {ComponentService} from '../utils/componentService';
 const connect: any = require<any>('react-redux').connect;
 import {ModelService} from '../utils/modelService';
-import {IInstanceContainerProps} from '../interfaces/interfaces';
-import {ComponentType} from '../utils/componentService';
+import {IInstanceContainerProps} from '../interfaces';
+import {PAGE_NOT_FOUND} from '../constants';
+import {ErrorPage} from '../components/ErrorPage';
+import {store} from '../store';
+import {IFromJS} from '../../public/interfaces/index';
 
-export class ShowPageImpl extends React.Component<IInstanceContainerProps, {}> {
+export class ShowPageImpl extends React.Component<IInstanceContainerProps, void> {
 
     static defaultProps: IInstanceContainerProps = {
-        instances: [],
+        instance: new DefaultModel({}),
         params: {resource: '', resourceID: ''}
     };
 
-    fetchInstanceData(resource: string , resourceID: string) {
-        ModelService.getModel(resource).get(resourceID);
+    fetchInstanceData(resource: string , resourceID: string): void {
+        ModelService.getModel(resource).get(resourceID, false, {}, () => {}, () => {}, store.getState(), 'edit');
     }
 
-    componentWillMount() {
-        const { resource, resourceID } = this.props.params;
+    componentWillMount(): void {
+        const {resource, resourceID} = this.props.params;
         this.fetchInstanceData(resource, resourceID);
     }
 
-    render() {
-        const resource = this.props.params.resource;
-        let Model: typeof BaseModel = ModelService.getModel(resource);
-        const instance: BaseModel = this.props.instances[resource] || new Model({});
-        const childProps = {instance: instance, resource: resource};
-        let Page: React.ComponentClass<{}> = ComponentService.getShowPage(resource) as React.ComponentClass<{}>;
+    render(): JSX.Element {
+        if (!(this.props.instance instanceof BaseModel)) {
+            return (
+                <ErrorPage message={PAGE_NOT_FOUND} />
+            );
+        }
+        const resource: string = this.props.params.resource;
+        const childProps = {instance: this.props.instance, resource: resource};
+        let Page: React.ComponentClass<void> = ComponentService.getShowPage(resource) as React.ComponentClass<void>;
         return (
             <Page {...childProps}/>
         );
     }
 }
 
-function mapStateToProps(state): {instances: BaseModel[]} {
-    let instances: BaseModel[] = state.instances.toJS();
+function mapStateToProps(state: IFromJS, ownProps: IInstanceContainerProps): {instance: BaseModel} {
+    let instance: BaseModel = ModelService.getModel(ownProps.params.resource)
+            .get<BaseModel>(ownProps.params.resourceID, true, {}, () => {}, () => {}, state, 'edit');
     return {
-        instances: instances
+        instance
     };
 }
 

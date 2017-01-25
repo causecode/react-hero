@@ -1,0 +1,62 @@
+import * as React from 'react';
+import {<%= modelName%>Model} from '<%= modelPath%>';
+import {ControlLabel, FormGroup, Col, Button, Grid} from 'react-bootstrap';
+import {Link} from 'react-router';
+import {FormInput, IInstancePageProps, BaseModel} from 'react-hero';
+import {store} from '../../store';
+
+export interface I<%= componentName%>PageProps extends IInstancePageProps {
+    handleSubmit: (instance: <%= modelName%>Model) => void;
+    handleDelete: (instance: <%= modelName%>Model) => void;
+    instance: <%= modelName%>Model;
+    isCreatePage: boolean;
+}
+
+export class <%= componentName%>Page extends React.Component<I<%= componentName%>PageProps, void> { 
+
+    static resourceName: string = '<%= resourceName%>';
+    
+    fetchStoreInstance = (): <%= modelName%>Model => {
+        let instance: BaseModel = this.props.instance;
+        let instanceKey: string = this.props.isCreatePage ? `${instance.resourceName}Create` : `${instance.resourceName}Edit`;
+        instance.properties = store.getState().forms[`rhForms`][instanceKey].properties; 
+        return instance;
+    }
+
+    handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        // Not using connect here to avoid rerendering of component on change of instance properties.
+        this.props.handleSubmit(this.fetchStoreInstance());
+    }
+
+    handleDelete = (e: React.FormEvent) => {
+        if (this.props.handleDelete && this.props.handleDelete instanceof Function) {
+            this.props.handleDelete(this.fetchStoreInstance()); 
+        }
+    }
+
+    render(): JSX.Element {
+        return (
+            <form onSubmit={this.handleSubmit}>
+            <Grid>
+                <% _.keys(formControls).forEach(function (key) { %>
+                <%= formControls[key]%>
+                <% }) %>
+                <FormGroup>
+                    <Col sm={4} smOffset={3}>
+                        <Button style={{margin: '0px 10px'}} bsStyle="primary" type="submit">
+                            Update
+                        </Button>
+                        <Button style={{margin: '0px 10px'}} bsStyle="danger" onClick={this.handleDelete}>
+                            Delete
+                        </Button>
+                        <Link style={{margin: '0px 10px'}} className="btn btn-default" to={'<%= cancelDestination%>'}>
+                            Cancel
+                        </Link>
+                    </Col>
+                </FormGroup>
+                </Grid>
+            </form>
+        );    
+    }
+};
