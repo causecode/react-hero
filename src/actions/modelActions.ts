@@ -59,7 +59,7 @@ export const toggleNav = (): {type: string} => {
     };
 };
 
-export const saveAllInstances = (instanceList: any[], resource: string) => {
+export const saveAllInstances = (instanceList: BaseModel[], resource: string) => {
     return {
         type: SAVE_ALL_INSTANCES,
         resource,

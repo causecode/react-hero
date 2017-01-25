@@ -8,9 +8,7 @@ import {projectRoot, typescriptOut} from './projectConfig';
 export function getEditPage(pageType: 'edit' | 'create') {
     TemplateService.parseOptions('modelPath', 'modelName', 'onCancel');
 
-    let modelModule: any = require<any>(
-            projectRoot + typescriptOut + commandLine.modelPath
-    );
+    let modelModule: any = require<any>(`${projectRoot}${typescriptOut}${commandLine.modelPath}`);
 
     let ModelClass: typeof BaseModel = modelModule[`${commandLine.modelName.capitalize()}Model`];
     
@@ -20,7 +18,7 @@ export function getEditPage(pageType: 'edit' | 'create') {
 
     let {resourceName} = ModelClass;
     let fileName: string = `${resourceName.capitalize()}${pageType === 'create' ? 'Create' : 'Edit'}.tsx`;
-    let filePath = `${projectRoot}/src/components/${resourceName}/${fileName}`;
+    let filePath: string = `${projectRoot}/src/components/${resourceName}/${fileName}`;
 
     TemplateService.writeFile(
             path.join(__dirname, filePath), 
@@ -36,9 +34,7 @@ export function getListPage() {
 
     TemplateService.parseOptions('modelName', 'modelPath');
 
-    let modelModule: any = require<any>(
-        projectRoot + typescriptOut + commandLine.modelPath
-    );
+    let modelModule: any = require<any>(`${projectRoot}${typescriptOut}${commandLine.modelPath}`);
 
     let ModelClass: typeof BaseModel = modelModule[`${commandLine.modelName.capitalize()}Model`];
 
@@ -62,9 +58,7 @@ export function getShowPage() {
 
     TemplateService.parseOptions('modelPath', 'modelName');
     
-    let modelModule: any = require<any>(
-            projectRoot + typescriptOut + commandLine.modelPath
-    );
+    let modelModule: any = require<any>(`${projectRoot}${typescriptOut}${commandLine.modelPath}`);
     let ModelClass: typeof BaseModel = modelModule[`${commandLine.modelName.capitalize()}Model`];
 
     if (!ModelClass) {
@@ -83,7 +77,7 @@ export function getShowPage() {
     /* tslint:enable */
 }
 
-export function generateAll() {
+export function generateAll(): void {
     getEditPage('edit');
     getEditPage('create');
     getShowPage();

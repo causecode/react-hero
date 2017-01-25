@@ -20,7 +20,7 @@ declare module process {
     }
 }
 
-export function objectEquals<T>(obj1: Object | Array<T>, obj2: Object | Array<T>) {
+export function objectEquals<T>(obj1: Object | Array<T>, obj2: Object | Array<T>): boolean {
     // Adding try catch here to avoid 'Converting circular structure to JSON' error.
     try {
         if ((obj1 instanceof Object && obj2 instanceof Object) || (obj1 instanceof Array && obj2 instanceof Array)) {
@@ -111,7 +111,7 @@ export function showWarn(message: string): void {
     }
 }
 
-export function initializeFormWithInstance<T extends BaseModel>(instance: T, isCreate: boolean = false) {
+export function initializeFormWithInstance<T extends BaseModel>(instance: T, isCreate: boolean = false): void {
     if (isEmpty(instance) || isEmpty(instance.properties)) {
         return;
     }
@@ -126,13 +126,13 @@ export function isImmutable(obj: Object | IImmutable): obj is IImmutable {
     return (obj as IImmutable).toJS !== undefined;
 }
 
-export function getIn(object: Object | IImmutable, path: string, defaultValue: Object = '') {
+export function getIn(object: Object | IImmutable, path: string, defaultValue: Object = ''): Object {
     let immutableObject = isImmutable(object) ? object : fromJS(object) ;
     let propertyValue: IImmutable = (immutableObject as IImmutable).getIn(path.split('.'), defaultValue) as IImmutable;
     return propertyValue.toJS ? propertyValue.toJS() : propertyValue;
 }
 
-export function generateSubForm(propertyName: string, propTypes: any, model: string) {
+export function generateSubForm(propertyName: string, propTypes: any, model: string): JSX.Element {
 
     let FormControls =  Object.keys(propTypes).map((prop, index: number) => {
         if (propTypes.hasOwnProperty(prop)) {

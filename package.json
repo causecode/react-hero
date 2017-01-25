@@ -18,7 +18,7 @@
     "linkCLI": "npm run buildCLI && npm link"
   },
   "bin": {
-    "RH-generate-create": "public/cli/generateCreatePage.js",
+    "RH-generate-create": "public/cli/getCreatePage.js",
     "RH-generate-edit": "public/cli/getEditPage.js",
     "RH-generate-show": "public/cli/getShowPage.js",
     "RH-generate-list": "public/cli/getListPage.js",

@@ -2,8 +2,8 @@ import * as React from 'react';
 import {<%= modelName%>Model} from '<%= modelPath%>';
 import {ControlLabel, FormGroup, Col, Button, Grid} from 'react-bootstrap';
 import {Link} from 'react-router';
-import {FormInput, IInstancePageProps, initializeFormWithInstance} from 'react-hero';
-import {store} from '../../../store';
+import {FormInput, IInstancePageProps, BaseModel} from 'react-hero';
+import {store} from '../../store';
 
 export interface I<%= componentName%>PageProps extends IInstancePageProps {
     handleSubmit: (instance: <%= modelName%>Model) => void;

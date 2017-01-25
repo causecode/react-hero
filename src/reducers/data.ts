@@ -18,12 +18,13 @@ import {
 } from '../constants';
 import * as StoreService from '../utils/storeService';
 import {MISSING_ACTION_PAYLOAD} from '../constants';
+import {IFromJS} from '../../public/interfaces/index';
 
 const INITIAL_STATE = fromJS({
     filtersOpen: false,
 });
 
-function dataReducer(state = INITIAL_STATE, action ) {
+function dataReducer(state = INITIAL_STATE, action ): IFromJS {
     let Model: typeof BaseModel;
     switch (action.type) {
 

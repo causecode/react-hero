@@ -18,12 +18,12 @@ module ComponentService {
     }
     export type pageType = 'edit' | 'create' | 'list' | 'show';
 
-    export function register(component: ComponentType, type: pageType) {
+    export function register(component: ComponentType, type: pageType): void {
         let name = `${component.resourceName}${type}`;
         resolver.set(name, component);
     }
 
-    export function registerAll() {
+    export function registerAll(): void {
         try {
             const modules: any = require<any>('../../../../src/components');
             // const modules: any = require<any>('../Demo/components');

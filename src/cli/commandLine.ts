@@ -6,11 +6,11 @@ export interface ICommandLineArguments {
 }
 
 let commandLine: ICommandLineArguments = ((argv: string[]) => {
-    let flags = argv
+    let flags: string[] = argv
             .slice(1, argv.length)
             .filter((value) => value.indexOf('--') > -1);
 
-    let argumentMap = {};
+    let argumentMap: ICommandLineArguments = {};
 
     flags.forEach((flag: string) => {
         if (flag.indexOf('--') > -1) {

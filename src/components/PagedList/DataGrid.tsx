@@ -44,12 +44,13 @@ export function DataGrid( { instanceList, properties, resource }: IDataGridProps
                                         {(() => {
                                             if (property.indexOf('.') > 0) {
                                                 return getInnerData(instanceProperties, property);
-                                            } else {
-                                                if (!instanceProperties[property]) {
-                                                    return instanceProperties[property];    
-                                                }
-                                                return instanceProperties[property].toString();
                                             }
+                                            
+                                            if (!instanceProperties[property]) {
+                                                return instanceProperties[property];    
+                                            }
+
+                                            return instanceProperties[property].toString();
                                         })()}
                                     </td> 
                                 );

@@ -17,7 +17,7 @@ interface IFormTemplateData {
     model: string;
 }
 
-export function writeFile(fpath, contents, cb) {
+export function writeFile(fpath, contents, cb): void {
     mkdirp(path.dirname(fpath), function (err) {
         if (err) { return cb(err); };
 
@@ -25,7 +25,7 @@ export function writeFile(fpath, contents, cb) {
     });
 }
 
-export function parseOptions(...options: string[]) {
+export function parseOptions(...options: string[]): void {
     let missingOptions: string[] = [];
     options.forEach((option : string) => {
         if (option.indexOf('--') === 0) {
@@ -41,7 +41,8 @@ export function parseOptions(...options: string[]) {
     }
 }
 
-export function getListPage(ModelClass: typeof BaseModel) {
+// TODO figure out the type and remove `any`
+export function getListPage(ModelClass: typeof BaseModel): any {
     let {resourceName} = ModelClass;
     let {modelName} = commandLine;
     // TODO figure out the type and remove `any`
@@ -58,20 +59,21 @@ function getSubFormPage(propertyName, subPropTypes, model, resourceName) {
     let formControls: any = {};
     let {modelName} = commandLine;
     let inputTemplateString: string = `<FormInput 
-                                type="<%= type%>" ` + 
-                                `<% if (enumInstance) { %>` + ` 
-                                enum={<%= enumInstance%>}<% } %>` + `
-                                propertyName="<%= propertyName%>"
-                                model="<%= model%>"    
-                        />`;
+            type="<%= type%>" ` + 
+            `<% if (enumInstance) { %>` + ` 
+            enum={<%= enumInstance%>}<% } %>` + `
+            propertyName="<%= propertyName%>"
+            model="<%= model%>"    
+            />`;
 
-    let inputTemplate = _.template(inputTemplateString);
+    // TODO figure out the type and remove `any`
+    let inputTemplate: any = _.template(inputTemplateString);
     Object.keys(subPropTypes).forEach((prop: string, index: number) => {
         if (!subPropTypes.hasOwnProperty(prop)) {
             return;
         }
 
-        let currentPropType = subPropTypes[prop];
+        let currentPropType: any = subPropTypes[prop];
         let enumInstance: string = currentPropType.enum ? 
                 `${modelName.capitalize()}Model.propTypes.${propertyName}.propTypes[\`${prop}\`].enum` : '';
         let templateData: IFormTemplateData = {
@@ -97,12 +99,12 @@ export function generateFormPage(ModelClass: typeof BaseModel, pageType: 'edit' 
     
     let formControls: {[key: string]: string} = {};
     let inputTemplateString: string = `<FormInput 
-                        type="<%= type%>" ` + 
-                        `<% if (enumInstance) { %>` + ` 
-                        enum={<%= enumInstance%>}<% } %>` + `
-                        propertyName="<%= propertyName%>"
-                        model="<%= model%>"    
-                />`;
+            type="<%= type%>" ` + 
+            `<% if (enumInstance) { %>` + ` 
+            enum={<%= enumInstance%>}<% } %>` + `
+            propertyName="<%= propertyName%>"
+            model="<%= model%>"    
+            />`;
 
     // TODO figure out the type and remove `any`
     let inputTemplate: any = _.template(inputTemplateString);
@@ -122,7 +124,7 @@ export function generateFormPage(ModelClass: typeof BaseModel, pageType: 'edit' 
                 return;
             }
 
-            let currentPropType = propTypes[prop];
+            let currentPropType: any = propTypes[prop];
 
             let model: string = getModelString(formModelString, 'properties', prop);
 
@@ -172,7 +174,7 @@ function getNestedObjectView(propertyName: string, propTypes: any, resourceName:
             <td><strong><%= subPropertyName%></strong></td>
             <td>{<%= subPropertyValue%>}</td>
             </tr>`); 
-    let tableRowMap = {};   
+    let tableRowMap: any = {};   
     Object.keys(propTypes).forEach((prop: string, index: number) => {
         tableRowMap[prop] = tableRowTemplate({
             subPropertyName: prop,

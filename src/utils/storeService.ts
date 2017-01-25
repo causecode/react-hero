@@ -31,7 +31,7 @@ export function setInstanceInList<T extends BaseModel>
         throw new Error(INVALID_INSTANCE);
     }
 
-    let instanceList = getInstanceList(state, resource);
+    let instanceList: any = getInstanceList(state, resource);
 
     let {index}: {index: number} = findInstanceInList<T>(instanceList, instance.properties.id);
     if (index < 0 && force) {
@@ -77,7 +77,7 @@ export function setAllInstances<T extends BaseModel>
     validateState(state);
     let updatedState = setInstanceInList(state, resource, instance, force); // Update the instance from <resource>List.
 
-    let editInstance = getEditInstance(updatedState, resource);
+    let editInstance: any = getEditInstance(updatedState, resource);
     if (!isEmpty(editInstance) && editInstance.properties.id === instance.properties.id) {
         // Update Edit Instance if the current and Edit instances are the same.
         updatedState = setEditInstance(state, resource, instance);
@@ -119,7 +119,7 @@ export function findInstanceInList<T>(instanceList: T[], id: string) {
             requiredInstance = instance;
             index = i;
             return false; // stop looping.
-            }
+        }
         return true;
     });
 

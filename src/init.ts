@@ -18,7 +18,7 @@ function objectEach(callback: Function) {
     });
 }
 
-function arrayEach(callback: Function) {
+function arrayEach(callback: Function): void {
     if (!(callback instanceof Function)) {
         return;
     }
@@ -30,7 +30,7 @@ function arrayEach(callback: Function) {
     });
 }
 
-function equals<T>(obj: Object | Array<T>) {
+function equals<T>(obj: Object | Array<T>): boolean {
     // Adding try catch here to avoid 'Converting circular structure to JSON' error.
     try {
         if ((this instanceof Object && obj instanceof Object) || 
