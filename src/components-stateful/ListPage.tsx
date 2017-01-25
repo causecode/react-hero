@@ -15,7 +15,7 @@ export class ListPage extends React.Component<IListPage, void> {
     render(): JSX.Element {
         let resource: string = this.props.params.resource;
         let Page: React.ComponentClass<{resource: string}> = ComponentService
-            .getListPage(resource) as React.ComponentClass<{resource: string}>;
+                .getListPage(resource) as React.ComponentClass<{resource: string}>;
         return (
             <Page resource={resource} />
         );

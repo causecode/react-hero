@@ -1,18 +1,18 @@
 import * as React from 'react';
-import {
-    FormControl,
-    FormGroup,
-    Col,
-    ControlLabel,
-    Row,
-    Button,
-    ListGroup,
-    ListGroupItem,
-    Radio
-} from 'react-bootstrap';
 import {isEmpty, parseWidgetDate} from '../../utils/appService';
 import {store} from '../../store';
 import {connect} from 'react-redux';
+import {
+        FormControl,
+        FormGroup,
+        Col,
+        ControlLabel,
+        Row,
+        Button,
+        ListGroup,
+        ListGroupItem,
+        Radio
+    } from 'react-bootstrap';
 const {actions} = require<any>('react-redux-form');
 
 export interface IInputProps {
@@ -22,8 +22,8 @@ export interface IInputProps {
     propertyName: string;
 }
 
-let GenericInputTemplate = (props) => {
-    let handleChange = (e: React.FormEvent) => {
+let GenericInputTemplate = (props): JSX.Element => {
+    let handleChange: (e: React.FormEvent) => void = (e: React.FormEvent) => {
         props.onChange(e.target[`value`]);
     };
 
@@ -32,9 +32,9 @@ let GenericInputTemplate = (props) => {
     );
 };
 
-let BooleanInputTemplate = (props) => {
+let BooleanInputTemplate = (props): JSX.Element => {
     
-    let handleChange = (e: React.FormEvent) => {
+    let handleChange: (e: React.FormEvent) => void = (e: React.FormEvent) => {
         props.onChange((e.target[`value`] === 'option-true'));
     };
 
@@ -62,9 +62,9 @@ let BooleanInputTemplate = (props) => {
     );
 };
 
-let DropDownInputTemplate = (props) => {
+let DropDownInputTemplate = (props): JSX.Element => {
 
-    let handleChange = (e: React.FormEvent) => {
+    let handleChange: (e: React.FormEvent) => void = (e: React.FormEvent) => {
         props.onChange(e.target[`value`]);
     };
     
@@ -110,18 +110,18 @@ class ListInputTemplate extends React.Component<any, any> {
          this.state = {newListItem: ''};
     }
 
-    handleTextChange = (e: React.FormEvent) => {
+    handleTextChange = (e: React.FormEvent): void => {
         this.setState({newListItem: e.target[`value`]});
     }
 
-    addListItem = (e: React.FormEvent) => {
+    addListItem = (e: React.FormEvent): void => {
         this.setState({newListItem: ''});
         let propertyValue = this.props.propertyValue ? this.props.propertyValue.slice() : [] ;
         propertyValue.push(this.state.newListItem);
         this.props.onChange(propertyValue);
     }
     
-    render() {
+    render(): JSX.Element {
         let list: string[] = this.props.propertyValue || ['Nothing to show.'];
         return (
             <div>
@@ -156,7 +156,7 @@ class ListInputTemplate extends React.Component<any, any> {
 
 class FormInputImpl extends React.Component<IInputProps, {}> {
     
-    handleChange = (newValue: any) => {
+    handleChange = (newValue: any): void => {
         store.dispatch(actions.change(this.props.model, newValue));
     }
 
@@ -170,7 +170,7 @@ class FormInputImpl extends React.Component<IInputProps, {}> {
         }
     }
 
-    render() {
+    render(): JSX.Element {
         let {propertyValue} = this.props;
         if (this.props.type === 'date') {
             propertyValue = propertyValue ? parseWidgetDate(propertyValue) : '';
@@ -203,4 +203,4 @@ let mapStateToProps = (state, ownProps) => {
     };
 };
 
-export let FormInput = connect(mapStateToProps)(FormInputImpl);
+export let FormInput: React.ComponentClass<IInputProps> = connect(mapStateToProps)(FormInputImpl);

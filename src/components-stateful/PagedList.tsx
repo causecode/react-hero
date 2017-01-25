@@ -27,7 +27,7 @@ export interface IPagedListProps extends IPagedListStateProps, IPagedListDispatc
 
 export class PagedListImpl extends React.Component<IPagedListProps, void> {
 
-    fetchInstanceList(resource, filters: {max?: number, offset?: number} = {}) {
+    fetchInstanceList(resource, filters: {max?: number, offset?: number} = {}): void {
         if (this.props.max > 0) {
             filters.max = this.props.max;
         }

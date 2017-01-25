@@ -59,12 +59,12 @@ function getSubFormPage(propertyName, subPropTypes, model, resourceName) {
     let formControls: any = {};
     let {modelName} = commandLine;
     let inputTemplateString: string = `<FormInput 
-            type="<%= type%>" ` + 
-            `<% if (enumInstance) { %>` + ` 
-            enum={<%= enumInstance%>}<% } %>` + `
-            propertyName="<%= propertyName%>"
-            model="<%= model%>"    
-            />`;
+                                            type="<%= type%>" ` + 
+                                            `<% if (enumInstance) { %>` + ` 
+                                            enum={<%= enumInstance%>}<% } %>` + `
+                                            propertyName="<%= propertyName%>"
+                                            model="<%= model%>"    
+                                       />`;
 
     // TODO figure out the type and remove `any`
     let inputTemplate: any = _.template(inputTemplateString);
@@ -99,12 +99,12 @@ export function generateFormPage(ModelClass: typeof BaseModel, pageType: 'edit' 
     
     let formControls: {[key: string]: string} = {};
     let inputTemplateString: string = `<FormInput 
-            type="<%= type%>" ` + 
-            `<% if (enumInstance) { %>` + ` 
-            enum={<%= enumInstance%>}<% } %>` + `
-            propertyName="<%= propertyName%>"
-            model="<%= model%>"    
-            />`;
+                                            type="<%= type%>" ` + 
+                                            `<% if (enumInstance) { %>` + ` 
+                                            enum={<%= enumInstance%>}<% } %>` + `
+                                            propertyName="<%= propertyName%>"
+                                            model="<%= model%>"    
+                                       />`;
 
     // TODO figure out the type and remove `any`
     let inputTemplate: any = _.template(inputTemplateString);
@@ -171,8 +171,8 @@ function getNestedObjectView(propertyName: string, propTypes: any, resourceName:
     // TODO figure out the type and remove `any`
     let subShowTemplate: any = _.template(require<string>('../../templates/SubShowTemplate.ejs'));
     let tableRowTemplate: any = _.template(`<tr>
-            <td><strong><%= subPropertyName%></strong></td>
-            <td>{<%= subPropertyValue%>}</td>
+                <td><strong><%= subPropertyName%></strong></td>
+                <td>{<%= subPropertyValue%>}</td>
             </tr>`); 
     let tableRowMap: any = {};   
     Object.keys(propTypes).forEach((prop: string, index: number) => {

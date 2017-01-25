@@ -29,9 +29,7 @@ export class GenericShowPage extends React.Component<IInstancePageProps, void> {
                 <tbody>
                     {instanceKeys.map((key: string, index: number) => {
                         let currentPropType = instance.propTypes[key]; 
-                        if (
-                                currentPropType.type === ModelPropTypes.objectInputType 
-                        ) {
+                        if (currentPropType.type === ModelPropTypes.objectInputType) {
                             return (
                                 <tr key={index}>
                                     <td><strong>{key}</strong></td>

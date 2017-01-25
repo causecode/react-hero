@@ -12,7 +12,7 @@ export function QueryFilter ({ label, placeholder, fields, paramName }: IQueryFi
     label = label ? label : paramName;
     return (
         <FormGroup className="query-filter">
-            <ControlLabel>{ label.capitalize() }</ControlLabel>
+            <ControlLabel>{label.capitalize()}</ControlLabel>
             <FormControl type="text" placeholder={placeholder.join(', ')} {...fields[0]} />
         </FormGroup>
     );

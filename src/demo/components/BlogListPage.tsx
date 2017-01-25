@@ -8,7 +8,7 @@ import {QueryFilter} from '../../components/PagedList/Filters/QueryFilter';
 export class BlogListPage extends React.Component<{resource: string}, void> {
     static resourceName: string = 'blog';
     
-    render() {
+    render(): JSX.Element {
         return (
             <div>
                 <h1>This is a list page</h1>

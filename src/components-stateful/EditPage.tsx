@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {DefaultModel, BaseModel} from '../models/BaseModel';
-import {ComponentService} from '../utils/componentService';
+import {ComponentService, ComponentType} from '../utils/componentService';
 import {ModelService} from '../utils/modelService';
 import {IInstanceContainerProps} from '../interfaces';
 import {IInjectedProps} from 'react-router';
@@ -8,6 +8,7 @@ import {INSTANCE_NOT_FOUND} from '../constants';
 import {ErrorPage} from '../components/ErrorPage';
 import {IGenericEditPageProps} from '../components/CRUD/GenericEditPage';
 import {connect} from 'react-redux';
+import {IFromJS} from '../../public/interfaces/index';
 import {isEmpty, initializeFormWithInstance, objectEquals} from '../utils/appService';
 import {store} from '../store';
 import '../init';
@@ -66,9 +67,9 @@ export class EditPageImpl extends React.Component<EditPageProps, void> {
         this.props.instance.$delete(true);
     };
 
-    componentWillReceiveProps(nextProps: EditPageProps) {
-        let currentInstance = this.props.instance;
-        let nextInstance = nextProps.instance;
+    componentWillReceiveProps(nextProps: EditPageProps): void {
+        let currentInstance: BaseModel = this.props.instance;
+        let nextInstance: BaseModel = nextProps.instance;
         if (!objectEquals(nextInstance, currentInstance)) {
             initializeFormWithInstance(nextProps.instance, this.isCreatePage());
         }
@@ -92,7 +93,7 @@ export class EditPageImpl extends React.Component<EditPageProps, void> {
         const childProps: IGenericEditPageProps = {location: this.props.location, params: this.props.params,
                 handleSubmit: this.handleSubmit, instance, handleDelete: this.handleDelete, 
                 isCreatePage: this.isCreatePage()};
-        let Page = ComponentService
+        let Page: ComponentType = ComponentService
                 .getFormPage(this.props.params.resource, this.isCreatePage()) ;
         return(
             <Page {...childProps}/>
@@ -100,7 +101,7 @@ export class EditPageImpl extends React.Component<EditPageProps, void> {
     }
 }
 
-function mapStateToProps(state, ownProps): Object {
+function mapStateToProps(state: IFromJS, ownProps: EditPageProps): Object {
     let isCreate: boolean = isCreatePage(ownProps.location.pathname); 
     let ModelClass: typeof BaseModel = ModelService.getModel(ownProps.params.resource);
     let instance: BaseModel;
