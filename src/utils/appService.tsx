@@ -1,11 +1,11 @@
 import * as React from 'react';
+import * as moment from 'moment';
 import {BaseModel} from '../models/BaseModel';
 import {ModelPropTypes} from '../models/ModelPropTypes';
 import {store} from '../store';
 import {ControlLabel, Col, FormGroup} from 'react-bootstrap';
 import {FormInput} from '../components/Widgets';
-import * as moment from 'moment';
-import {IImmutable} from '../interfaces/index';
+import {IImmutable} from '../interfaces';
 import {fromJS} from 'immutable';
 const {actions} = require<any>('react-redux-form');
 
@@ -41,7 +41,7 @@ export function parseWidgetDate(date: number | string | Date): string {
     let timestamp: number = date as number;
     if (date instanceof Date) {
         timestamp = date.getTime();
-    } else if (typeof date === 'string') {
+    }else if (typeof date === 'string') {
         timestamp = parseInt(date, 10); 
     }
     return moment(timestamp).format('YYYY-MM-DD');
@@ -178,7 +178,8 @@ export function generateForm<T extends BaseModel>(
                 let keyPath: string = model ? model + '.' + prop : prop; 
                 let propertyValue: any = getIn(instance.properties, keyPath);
                 let type: string = instance.propTypes[prop].type;
-                let formModelString: string = isCreatePage ? `${instance.resourceName}Create` : `${instance.resourceName}Edit`;
+                let formModelString: string = isCreatePage ? `${instance.resourceName}Create` : 
+                        `${instance.resourceName}Edit`;
                 let modelString: string = getModelString(formModelString, 'properties', keyPath);
                 if (type === ModelPropTypes.objectInputType) {
                     return generateSubForm(
@@ -192,7 +193,8 @@ export function generateForm<T extends BaseModel>(
                         type={instance.propTypes[prop].type}
                         enum={instance.propTypes[prop].enum}
                         key={`form-control-${instance.resourceName}-${index}`}
-                        propertyName={prop} 
+                        propertyName={prop}
+                        propertyValue={propertyValue} 
                         model={modelString}
                     />
                 );

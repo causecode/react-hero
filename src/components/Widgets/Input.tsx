@@ -19,7 +19,8 @@ const ReactDatetime = require<any>('react-datetime');
 
 export interface IInputProps {
     model: string;
-    propertyValue: any;
+    propertyValue?: any;
+    enum?: any;
     type: string;
     propertyName: string;
 }
