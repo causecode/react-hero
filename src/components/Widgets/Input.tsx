@@ -1,19 +1,21 @@
 import * as React from 'react';
+import * as moment from 'moment';
+import {
+    FormControl,
+    FormGroup,
+    Col,
+    ControlLabel,
+    Row,
+    Button,
+    ListGroup,
+    ListGroupItem,
+    Radio
+} from 'react-bootstrap';
 import {isEmpty, parseWidgetDate} from '../../utils/appService';
 import {store} from '../../store';
 import {connect} from 'react-redux';
-import {
-        FormControl,
-        FormGroup,
-        Col,
-        ControlLabel,
-        Row,
-        Button,
-        ListGroup,
-        ListGroupItem,
-        Radio
-    } from 'react-bootstrap';
 const {actions} = require<any>('react-redux-form');
+const ReactDatetime = require<any>('react-datetime');
 
 export interface IInputProps {
     model: string;
@@ -28,7 +30,7 @@ let GenericInputTemplate = (props): JSX.Element => {
     };
 
     return (
-        <input type={props.type} className="form-control" value={props.value} onChange={handleChange}/>
+        <input type={props.type} className="form-control" value={props.propertyValue} onChange={handleChange}/>
     );
 };
 
@@ -74,29 +76,27 @@ let DropDownInputTemplate = (props): JSX.Element => {
             className="form-control"
             onChange={handleChange}>
             <option
-                disabled
                 value=""
                 style={{
                 color: 'grey',
                 pointerEvents: 'none'
-            }}>Select one..</option>
+            }}>Select One</option>
             {(() => {
                 let enumInstance = props.enum;
                 if (isEmpty(enumInstance)) {
                     return;
                 }
-                return Object
-                    .keys(enumInstance)
-                    .map((enumproperty : string, index : number) => {
-                        if (enumInstance.hasOwnProperty(enumproperty) && !isNaN(parseInt(enumproperty, 10))) {
-                            
-                            return (
-                                <option key={`${enumInstance[enumproperty]}-${index}`} value={enumproperty}>
-                                    {enumInstance[enumproperty]}
-                                </option>
-                            );
-                        }
-                    });
+                let optionElements: JSX.Element[] = [];
+                enumInstance.forEach((element, index) => {
+                    optionElements.push(
+                        <option
+                            key={index}
+                            value={element.value}>
+                            {element.label}
+                        </option>
+                    );
+                });
+                return optionElements;
             })()}
         </select>
     );
@@ -154,6 +154,30 @@ class ListInputTemplate extends React.Component<any, any> {
     }
 }
 
+// TODO: Make it generic component by allowing it to accept all props of react-datetime
+// TODO: Add value field to pre populdate it with a value.
+class DateTimeComponent extends React.Component<IInputProps, void> {
+    
+    handleChange = (newValue: any): void => {
+        if (newValue && newValue._d) {
+            store.dispatch(actions.change(this.props.model, newValue._d.toISOString()));
+        }
+    }
+
+    render(): JSX.Element {
+        return(
+           <ReactDatetime 
+                defaultValue={this.props.propertyValue ? 
+                        moment(this.props.propertyValue).format('MM-DD-YYYY HH:mm') : ''}
+                strictParsing={true}
+                utc={true}
+                onChange={this.handleChange}
+           />
+        );
+    }
+
+}
+
 class FormInputImpl extends React.Component<IInputProps, {}> {
     
     handleChange = (newValue: any): void => {
@@ -166,6 +190,7 @@ class FormInputImpl extends React.Component<IInputProps, {}> {
             case 'boolean': return BooleanInputTemplate;
             case 'select': return DropDownInputTemplate;
             case 'list': return ListInputTemplate;
+            case 'datetime': return DateTimeComponent;
             default: return GenericInputTemplate;
         }
     }

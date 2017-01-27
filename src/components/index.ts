@@ -4,6 +4,7 @@ export * from './NavMenuLauncherIcon';
 export * from './ResponsiveView';
 export * from './Widgets';
 export * from './PagedList/DataGrid';
+export * from './PagedList/BulkUserActions';
 export * from './PagedList/Filters/DateRangeFilter';
 export * from './PagedList/Filters/DropDownFilter';
 export * from './PagedList/Filters/DynamicForm';

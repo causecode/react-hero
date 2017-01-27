@@ -55,16 +55,18 @@ export class EditPageImpl extends React.Component<EditPageProps, void> {
         initializeFormWithInstance(this.props.instance, this.isCreatePage());
     }
 
-    handleSubmit = (instance: BaseModel): void => {
+    handleSubmit = (instance: BaseModel, successCallBack?: (any) => {}, 
+            failureCallBack?: (any) => {}): void => {
         if (this.isCreatePage()) {
-            instance.$save(true);
+            instance.$save(true, {}, successCallBack, failureCallBack);
         } else {
-            instance.$update(true);
+            instance.$update(true, {}, successCallBack, failureCallBack);
         }
     }
 
-    handleDelete = (): void => {
-        this.props.instance.$delete(true);
+    handleDelete = (instance: BaseModel, successCallBack?: (any) => {}, 
+            failureCallBack?: (any) => {}): void => {
+        instance.$delete(true, {}, successCallBack, failureCallBack);
     };
 
     componentWillReceiveProps(nextProps: EditPageProps): void {
