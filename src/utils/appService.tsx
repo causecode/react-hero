@@ -142,11 +142,11 @@ export function generateSubForm(propertyName: string, propTypes: any, model: str
             }
             return (
                 <FormInput
-                    type={propTypes[prop].type}
-                    enum={propTypes[prop].enum}
-                    key={`form-control-sub-${propertyName}-${index}`}
-                    propertyName={prop} 
-                    model={model + '.' + prop}
+                        type={propTypes[prop].type}
+                        enum={propTypes[prop].enum}
+                        key={`form-control-sub-${propertyName}-${index}`}
+                        propertyName={prop} 
+                        model={model + '.' + prop}
                 />
             );
         }
@@ -190,12 +190,12 @@ export function generateForm<T extends BaseModel>(
                 }
                 return (
                     <FormInput
-                        type={instance.propTypes[prop].type}
-                        enum={instance.propTypes[prop].enum}
-                        key={`form-control-${instance.resourceName}-${index}`}
-                        propertyName={prop}
-                        propertyValue={propertyValue} 
-                        model={modelString}
+                            type={instance.propTypes[prop].type}
+                            enum={instance.propTypes[prop].enum}
+                            key={`form-control-${instance.resourceName}-${index}`}
+                            propertyName={prop}
+                            propertyValue={propertyValue} 
+                            model={modelString}
                     />
                 );
             })}

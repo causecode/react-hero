@@ -229,4 +229,4 @@ let mapStateToProps = (state, ownProps) => {
     };
 };
 
-export let FormInput: React.ComponentClass<IInputProps> = connect(mapStateToProps)(FormInputImpl);
+export let FormInput: React.ComponentClass<IInputProps> = connect<{}, {}, IInputProps>(mapStateToProps)(FormInputImpl);
