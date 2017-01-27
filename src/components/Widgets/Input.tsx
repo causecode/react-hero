@@ -158,13 +158,13 @@ class ListInputTemplate extends React.Component<any, any> {
 // TODO: Add value field to pre populdate it with a value.
 class DateTimeComponent extends React.Component<IInputProps, void> {
     
-    handleChange = (newValue: any) => {
+    handleChange = (newValue: any): void => {
         if (newValue && newValue._d) {
             store.dispatch(actions.change(this.props.model, newValue._d.toISOString()));
         }
     }
 
-    render() {
+    render(): JSX.Element {
         return(
            <ReactDatetime 
                 defaultValue={this.props.propertyValue ? 

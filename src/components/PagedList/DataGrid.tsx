@@ -78,6 +78,42 @@ export class DataGridImpl extends React.Component<IDataGridProps, void> {
             }
         }
     }
+    
+    getInnerHtml = (property: string, instance: BaseModel, instanceProperties: string[]): JSX.Element | string => {
+        if (property.indexOf('.') > 0) {
+            let method: Function = instance['getHTML' + property.capitalize().substring(0, property.indexOf('.'))];
+            if (method) {
+                return method(instanceProperties);
+            }
+            return getInnerData(instanceProperties, property);
+        } else {
+            if (instance['getHTML' + property.capitalize()]) {
+                return instance['getHTML' + property.capitalize()](instanceProperties);
+            }
+            if (!instanceProperties[property]) {
+                return instanceProperties[property];    
+            }
+            return instanceProperties[property].toString();
+        }
+    }
+
+    renderSelectAllRecordsCheckbox = (): JSX.Element => {
+        return (
+            <tr>
+                <th>
+                    <input 
+                            type="checkbox" 
+                            onChange={this.handleChange.bind(this, -2)}
+                            checked={this.props.selectAll}            
+                    />
+                </th>
+                <td colSpan={this.properties.length + 2}>
+                    All <strong>{this.props.instanceList.length}</strong> records visible on this page are selected. 
+                    Click to select all <strong>{this.props.totalCount}</strong> records.
+                </td>
+            </tr>
+        );    
+    }
 
     render(): JSX.Element {
         if (!this.props.instanceList || !this.props.instanceList.length) {
@@ -98,28 +134,12 @@ export class DataGridImpl extends React.Component<IDataGridProps, void> {
             <Tooltip id="tooltip"><strong>Remove from List</strong></Tooltip>
         );
 
-        const selectAllRecordsCheckbox = (
-            <tr>
-                <th>
-                    <input 
-                            type="checkbox" 
-                            onChange={this.handleChange.bind(this, -2)}
-                            checked={this.props.selectAll}            
-                    />
-                </th>
-                <td colSpan={this.properties.length + 2}>
-                    All <strong>{this.props.instanceList.length}</strong> records visible on this page are selected. 
-                    Click to select all <strong>{this.props.totalCount}</strong> records.
-                </td>
-            </tr>
-        );
-
         return (
             <div className="data-grid">
                 <br/><br/>
                 <Table responsive striped bordered hover>
                     <thead>
-                        {this.props.selectAllOnPage ? selectAllRecordsCheckbox : null}
+                        {this.props.selectAllOnPage ? this.renderSelectAllRecordsCheckbox() : null}
                         <tr className="data-grid-header">
                             <th><input 
                                         type="checkbox"
@@ -129,8 +149,8 @@ export class DataGridImpl extends React.Component<IDataGridProps, void> {
                                 />
                             </th>
                             <th>#</th>
-                            {this.properties.map(function(property: string, index: number) {
-                               return (<th key={index}>{property.capitalize()}</th>);
+                            {this.properties.map((property: string, index: number) => {
+                                return (<th key={index}>{property.capitalize()}</th>);
                             })}
                             <th>Actions</th>
                         </tr>
@@ -147,28 +167,10 @@ export class DataGridImpl extends React.Component<IDataGridProps, void> {
                                                 onChange={this.handleChange.bind(this, instanceProperties.id)}/>
                                     </td>
                                     <td>{index}</td>
-                                    {this.properties.map(function(property: string, index: number) {
+                                    {this.properties.map((property: string, key: number) => {
                                         return (
-                                            <td key={`property-${index}`}>
-                                                {(() => {
-                                                    if (property.indexOf('.') > 0) {
-                                                        let method: any = instance['getHTML' + 
-                                                            property.capitalize().substring(0, property.indexOf('.'))];
-                                                        if (method) {
-                                                            return method(instanceProperties);
-                                                        }
-                                                        return getInnerData(instanceProperties, property);
-                                                    } else {
-                                                        if (instance['getHTML' + property.capitalize()]) {
-                                                            return instance['getHTML' + 
-                                                                    property.capitalize()](instanceProperties);
-                                                        }
-                                                        if (!instanceProperties[property]) {
-                                                            return instanceProperties[property];    
-                                                        }
-                                                        return instanceProperties[property].toString();
-                                                    }
-                                                })()}
+                                            <td key={`property-${key}`}>
+                                                {this.getInnerHtml(property, instance, instanceProperties)}
                                             </td> 
                                         );
                                     })}

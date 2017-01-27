@@ -86,7 +86,7 @@ export class PagedListImpl extends React.Component<IPagedListProps, void> {
         window.scrollTo(0, 0);
     };
 
-    getUserActionsComponent = (): JSX.Element => {
+    renderUserActionsComponent = (): JSX.Element => {
         if (this.props.userActionsMap && this.props.userActionsMap.length > 0) {
             return(
                 <UserActions isDisabled={true} userActionsMap={this.props.userActionsMap}/>
@@ -115,7 +115,7 @@ export class PagedListImpl extends React.Component<IPagedListProps, void> {
                 <PagedListFilters resource={this.props.resource} filters={this.props.filters}>
                     {this.props.children}
                 </PagedListFilters>
-                {this.getUserActionsComponent()}
+                {this.renderUserActionsComponent()}
                 <DataGrid
                         instanceList={this.props.instanceList}
                         properties={this.props.properties}

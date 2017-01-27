@@ -8,13 +8,13 @@ import {store} from '../../../store';
 export interface I<%= componentName%>PageProps extends IInstancePageProps {
     handleSubmit: (
         instance: <%= modelName%>Model, 
-        successCallBack?: ( (any) => {} ), 
-        failureCallBack?: ( (any) => {} )
+        successCallBack?: ((any) => {}), 
+        failureCallBack?: ((any) => {})
     ) => void;
     handleDelete: (
         instance: <%= modelName%>Model,
-        successCallBack?: ( (any) => {} ), 
-        failureCallBack?: ( (any) => {} )
+        successCallBack?: ((any) => {}), 
+        failureCallBack?: ((any) => {})
     ) => void;
     instance: <%= modelName%>Model;
     isCreatePage: boolean;
@@ -25,8 +25,8 @@ export class <%= componentName%>Page extends React.Component<I<%= componentName%
     static resourceName: string = '<%= resourceName%>';
     
     fetchStoreInstance = (): <%= modelName%>Model => {
-        let instance = this.props.instance;
-        let instanceKey = this.props.isCreatePage ? `${instance.resourceName}Create` : `${instance.resourceName}Edit`;
+        let instance: <%= modelName%>Model = this.props.instance;
+        let instanceKey: string = this.props.isCreatePage ? `${instance.resourceName}Create` : `${instance.resourceName}Edit`;
         instance.properties = store.getState().forms[`rhForms`][instanceKey].properties; 
         return instance;
     }

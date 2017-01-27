@@ -1,6 +1,6 @@
 {
   "name": "react-hero",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "",
   "private": true,
   "main": "public/index.js",
@@ -71,7 +71,7 @@
     "radium": "0.18.1",
     "react": "15.1.0",
     "react-bootstrap": "0.29.5",
-    "react-datetime": "^2.8.3",
+    "react-datetime": "2.8.3",
     "react-di": "0.3.1",
     "react-dom": "15.2.0",
     "react-hot-loader": "1.3.0",

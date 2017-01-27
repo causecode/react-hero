@@ -85,3 +85,22 @@ export interface IBulkUserActionType {
     label: string;
     action: Function;
 }
+
+export interface ICheckboxReducerAction {
+    type: string;
+    payload: number|boolean;
+}
+
+export interface IBulkUserActions {
+    type: string;
+    payload: number|string;
+}
+
+export interface IGenericAction {
+    type: string;
+}
+
+export interface IUserAction {
+    type: string;
+    payload: number|boolean|string;
+}

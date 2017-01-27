@@ -31,41 +31,42 @@ export class UserActionsImpl extends React.Component<IUserActionProps, void> {
     componentWillMount = (): void => {
         if (this.props.userActionsMap && this.props.userActionsMap.length > 0) {
             let actionMap: IBulkUserActionType[] = this.props.userActionsMap;
-            for (let i: number = 0; i < actionMap.length ; i++) {
-                if (this.listItems.indexOf(actionMap[i].label) === -1) {
-                    this.listItems.push(actionMap[i].label);
+            actionMap.forEach((action: IBulkUserActionType) => {
+                if (this.listItems.indexOf(action.label) === -1) {
+                    this.listItems.push(action.label);
                 }
-            }
+            });
         }
     }
 
     getDropDownItems = (): JSX.Element[] => {
         let list: JSX.Element[] = [];
-        for (let i: number = 0; i < this.listItems.length; i++) {
+        this.listItems.forEach((item: string, index: number) => {
             list.push(
-                <option 
-                        value={this.listItems[i]}
-                        key={i.toString(10)}>
-                    {this.listItems[i]}
-                </option>);
-        }
+                <option value={item} key={index}>
+                    {item}
+                </option>
+            );
+        });
         return list;
     }
 
-    // TODO type for event
-    saveAction = (event): void => {
-        store.dispatch(saveUserAction(event.target.value));
+    saveAction = (event: React.FormEvent): void => {
+        store.dispatch(saveUserAction(event.target[`value`]));
     }
 
     performAction = (): void => {
-        let map: IBulkUserActionType[] = this.props.userActionsMap;        
-        for (let i: number = 0; i < map.length ; i++) {
-            if (map[i].label === this.props.action) {
+        let map: IBulkUserActionType[] = this.props.userActionsMap;
+        // Using every as we cannot break from forEach loop.
+        // http://stackoverflow.com/questions/6260756/how-to-stop-javascript-foreach  
+        map.every((item: IBulkUserActionType): boolean => {
+            if (item.label === this.props.action) {
                 this.saveUserActionData();
-                map[i].action();
-                break;       
+                item.action();
+                return false;
             }
-        }
+            return true;
+        });  
     }
 
     saveUserActionData = (): void => {

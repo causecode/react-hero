@@ -5,11 +5,11 @@ let INITIAL_STATE: ICheckboxReducer = {selectedIds: [], selectAll: false, select
 
 export function checkboxReducer(state = INITIAL_STATE, action) {
     switch (action.type) {        
-        case 'SAVE_CHECKBOX_ID':
+        case 'CHECK_CHECKBOX':
             let list: number[] = state.selectedIds;
             return objectAssign({}, state, {selectedIds: [...list, action.payload]});
 
-        case 'CLEAR_CHECKBOX_ID':
+        case 'UNCHECK_CHECKBOX':
             let checkedList: number[] = state.selectedIds;
             let index: number = checkedList.indexOf(action.payload);
             if (index !== -1) {
@@ -25,7 +25,7 @@ export function checkboxReducer(state = INITIAL_STATE, action) {
         case 'SELECT_ALL_RECORDS': 
             return objectAssign({}, state, {selectAll: action.payload});
 
-        case 'RESET_CHECKBOX_STATE': 
+        case 'RESET_CHECKBOXES': 
             return INITIAL_STATE;
             
         default:
