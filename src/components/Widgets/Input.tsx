@@ -156,7 +156,6 @@ class ListInputTemplate extends React.Component<any, any> {
 }
 
 // TODO: Make it generic component by allowing it to accept all props of react-datetime
-// TODO: Add value field to pre populdate it with a value.
 class DateTimeComponent extends React.Component<IInputProps, void> {
     
     handleChange = (newValue: any): void => {
