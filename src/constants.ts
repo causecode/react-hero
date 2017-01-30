@@ -45,3 +45,8 @@ export const MODEL_RESOURCE_ERROR: string = 'Model cannot be initialized without
 export const MISSING_ID_IN_METHOD = (methodName: string) => { 
     return `Cannot perform ${methodName} when the instance does not have an id.`; 
 };
+
+export const CHECK_CHECKBOX = 'CHECK_CHECKBOX';
+export const UNCHECK_CHECKBOX = 'UNCHECK_CHECKBOX';
+export const SELECT_ALL_RECORDS_ON_PAGE = 'SELECT_ALL_RECORDS_ON_PAGE';
+export const SELECT_ALL_RECORDS = 'SELECT_ALL_RECORDS';

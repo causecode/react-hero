@@ -31,6 +31,7 @@ describe('Tests for DataGrid', () => {
             super(props);
         }
     }
+    
     let testInstance: TestModel = new TestModel({id: 100, name: 'Mr. Robot'});
     let instanceList: TestModel[] = [testInstance];
     let totalCount: number = 1;

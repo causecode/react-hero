@@ -1,41 +1,8 @@
-import {IGenericAction, IUserAction} from '../interfaces/index';
-export function setCheckboxChecked (id: number): IUserAction {
-    return {
-        type: 'CHECK_CHECKBOX',
-        payload: id
-    };
-}
-
-export function setCheckboxUnchecked (id: number): IUserAction {
-    return {
-        type: 'UNCHECK_CHECKBOX',
-        payload: id
-    };
-}
-
-export function selectAllRecordsOnPage (checked: boolean): IUserAction {
-    return {
-        type: 'SELECT_ALL_RECORDS_ON_PAGE',
-        payload: checked
-    };
-}
-
-export function selectAllRecords (checked: boolean): IUserAction {
-    return {
-        type: 'SELECT_ALL_RECORDS',
-        payload: checked
-    };
-}
+import {IGenericAction, IUserAction} from '../interfaces';
 
 export function resetUserAction (): IGenericAction {
     return {
         type: 'RESET_USER_ACTION'
-    };
-}
-
-export function resetCheckboxState (): IGenericAction {
-    return {
-        type: 'RESET_CHECKBOXES'
     };
 }
 

@@ -12,20 +12,11 @@ describe('Tests for userActions.', () => {
         done();
     }, [
         ['action', 'type', 'payload'],
-        ['setCheckboxChecked', 'CHECK_CHECKBOX', 1],
-        ['setCheckboxUnchecked', 'UNCHECK_CHECKBOX', 1],
         ['saveUserAction', 'SAVE_USER_ACTION', 'Export Report'],
-        ['saveUserActionData', 'SAVE_USER_ACTION_DATA', 20],
-        ['selectAllRecordsOnPage', 'SELECT_ALL_RECORDS_ON_PAGE', true],
-        ['selectAllRecords', 'SELECT_ALL_RECORDS', false]
+        ['saveUserActionData', 'SAVE_USER_ACTION_DATA', 20]
     ]);
 
-    unroll('should create #action action', (done, args) => {
-        expect(actions[args.action]()).toEqual({type: args.type});
-        done();
-    }, [
-        ['action', 'type'],
-        ['resetUserAction', 'RESET_USER_ACTION'],
-        ['resetCheckboxState', 'RESET_CHECKBOXES']
-    ]);
+    it('should create resetUserAction action', () => {
+        expect(actions.resetUserAction()).toEqual({type: 'RESET_USER_ACTION'});
+    });
 });

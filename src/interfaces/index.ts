@@ -70,7 +70,7 @@ export interface IImmutable {
     getIn: (keys : string[], defaultVaue : Object) => Object | IImmutable;
 }
 
-export interface IUserActionReducer {
+export interface IUserReducer {
     action: string;
     records: number;
 }

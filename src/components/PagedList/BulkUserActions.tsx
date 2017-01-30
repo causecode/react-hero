@@ -3,7 +3,7 @@ import {Button} from 'react-bootstrap';
 import {store} from '../../store';
 import {MapStateToProps, connect} from 'react-redux';
 import {saveUserAction, saveUserActionData} from '../../actions/userActions';
-import {IBulkUserActionType} from '../../interfaces/index';
+import {IBulkUserActionType} from '../../interfaces';
 
 export interface IUserActionStateProps {
     action?: string;
@@ -39,7 +39,7 @@ export class UserActionsImpl extends React.Component<IUserActionProps, void> {
         }
     }
 
-    getDropDownItems = (): JSX.Element[] => {
+    renderDropDownItems = (): JSX.Element[] => {
         let list: JSX.Element[] = [];
         this.listItems.forEach((item: string, index: number) => {
             list.push(
@@ -56,10 +56,10 @@ export class UserActionsImpl extends React.Component<IUserActionProps, void> {
     }
 
     performAction = (): void => {
-        let map: IBulkUserActionType[] = this.props.userActionsMap;
+        const {userActionsMap} = this.props;
         // Using every as we cannot break from forEach loop.
         // http://stackoverflow.com/questions/6260756/how-to-stop-javascript-foreach  
-        map.every((item: IBulkUserActionType): boolean => {
+        userActionsMap.every((item: IBulkUserActionType): boolean => {
             if (item.label === this.props.action) {
                 this.saveUserActionData();
                 item.action();
@@ -77,14 +77,14 @@ export class UserActionsImpl extends React.Component<IUserActionProps, void> {
 
     render(): JSX.Element {
         return (
-            <div style={this.props.style ? this.props.style : rightStyle}>
+            <div style={this.props.style || rightStyle}>
                 <select
                         value={this.props.action}
                         onChange={this.saveAction}
                         disabled={this.props.selectedIds.length === 0}
                         style={this.props.selectedIds.length === 0 ? disabledStyle : dropDownStyle}
                  >
-                    {this.getDropDownItems()}
+                    {this.renderDropDownItems()}
                 </select>
                 <Button 
                         disabled={this.props.action === this.listItems[0] || this.props.selectedIds.length === 0}
@@ -125,10 +125,9 @@ const dropDownStyle: React.CSSProperties = {
     fontFamily: 'Lato, arial, sans-serif',
     maxWidth: '150px',
     minHeight: '35px',
-    background: 'rgb(255, 255, 255) none repeat scroll 0% 0% / auto padding-box border-box',
     padding: '5px 10px',
     transition: 'border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s',
-    margin: '0px 5px'
+    margin: '0px 5px' 
 };
 const disabledStyle: React.CSSProperties = {
     textAlign: 'center',

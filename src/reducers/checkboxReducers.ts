@@ -1,4 +1,4 @@
-import {ICheckboxReducer} from '../interfaces/index';
+import {ICheckboxReducer} from '../interfaces';
 const objectAssign = require<any>('object-assign');
 
 let INITIAL_STATE: ICheckboxReducer = {selectedIds: [], selectAll: false, selectAllOnPage: false};

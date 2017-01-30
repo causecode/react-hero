@@ -1,16 +1,15 @@
 import * as React from 'react';
+import * as Radium from 'radium';
 import {Table, Tooltip, OverlayTrigger} from 'react-bootstrap';
 import {Link} from 'react-router';
 import {MapStateToProps, MapDispatchToPropsFunction, connect} from 'react-redux';
 import {IState} from './BulkUserActions';
 import {BaseModel} from '../../models/BaseModel';
 import {getInnerData} from '../../utils/appService';
-import {
-    selectAllRecords, 
-    selectAllRecordsOnPage, 
-    setCheckboxChecked, 
-    setCheckboxUnchecked
-} from '../../actions/userActions';
+import {SELECT_ALL_RECORDS, SELECT_ALL_RECORDS_ON_PAGE, CHECK_CHECKBOX, UNCHECK_CHECKBOX} from '../../constants';
+import {selectAllRecords, toggleCheckbox} from '../../actions/checkboxActions';
+import FontAwesome = require('react-fontawesome');
+const RadiumFontAwesome: React.ComponentClass<any> = Radium(FontAwesome);
 
 export interface IDataGridStateProps {
     selectedIds?: number[];
@@ -38,24 +37,24 @@ export class DataGridImpl extends React.Component<IDataGridProps, void> {
     private properties: string[];
 
     // TODO More specific type for event.
-    handleChange = (id: number, event: any): void => {
+    handleChange = (id: number, event: React.FormEvent): void => {
         // For selectAllOnPage id will be -1
         if (id === -1) {
-            if (event.target.checked) {
-                this.toggleAllCheckboxes(event.target.checked);
+            if (event.target[`checked`]) {
+                this.toggleAllCheckboxes(event.target[`checked`]);
             } else {
                 this.props.selectAllRecords(false);
-                this.toggleAllCheckboxes(event.target.checked);
+                this.toggleAllCheckboxes(event.target[`checked`]);
             }
-            this.props.selectAllRecordsOnPage(event.target.checked);
+            this.props.selectAllRecordsOnPage(event.target[`checked`]);
             return;
         }  
         // For selectAll id will be -2
         if (id === -2) {
-            this.props.selectAllRecords(event.target.checked);
+            this.props.selectAllRecords(event.target[`checked`]);
             return;
         }
-        if (event.target.checked) {
+        if (event.target[`checked`]) {
             this.props.setChecked(id);
         } else {
             this.props.setUnchecked(id);
@@ -176,10 +175,10 @@ export class DataGridImpl extends React.Component<IDataGridProps, void> {
                                     })}
                                     <td>
                                         <Link to={`/${this.resource}/edit/${instanceProperties.id}`}>
-                                            <i className="fa fa-pencil" />
+                                            <RadiumFontAwesome name="pencil" />
                                         </Link>
                                         <Link to={`/${this.resource}/show/${instanceProperties.id}`}>
-                                            <i className="fa fa-location-arrow" />
+                                            <RadiumFontAwesome name="location-arrow" />
                                         </Link>
                                         <OverlayTrigger placement="top" overlay={tooltip}>
                                             <a 
@@ -187,7 +186,7 @@ export class DataGridImpl extends React.Component<IDataGridProps, void> {
                                                             this.props.handleRecordDelete.bind(this, 
                                                             instanceProperties.id)} 
                                                     style={trashIconStyle}>
-                                                        <i className="fa fa-trash-o" />
+                                                        <RadiumFontAwesome name="trash-o" />
                                             </a>
                                         </OverlayTrigger>
                                     </td>
@@ -213,16 +212,16 @@ let mapDispatchToProps: MapDispatchToPropsFunction<IDataGridDispatchProps, IData
         (dispatch): IDataGridDispatchProps => {
     return {
         selectAllRecords: (isChecked: boolean) => {
-            dispatch(selectAllRecords(isChecked));
+            dispatch(selectAllRecords(SELECT_ALL_RECORDS, isChecked));
         },
         selectAllRecordsOnPage: (isChecked: boolean) => {
-            dispatch(selectAllRecordsOnPage(isChecked));
+            dispatch(selectAllRecords(SELECT_ALL_RECORDS_ON_PAGE, isChecked));
         },
         setChecked: (id: number) => {
-            dispatch(setCheckboxChecked(id));
+            dispatch(toggleCheckbox(CHECK_CHECKBOX, id));
         },
         setUnchecked: (id: number) => {
-            dispatch(setCheckboxUnchecked(id));
+            dispatch(toggleCheckbox(UNCHECK_CHECKBOX, id));
         }
     };
 };

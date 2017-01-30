@@ -4,8 +4,8 @@ import * as React from 'react';
 import {ReactWrapper, mount} from 'enzyme';
 import {Provider} from 'react-redux';
 import {store} from '../src/store';
-import {ICheckboxReducer, IBulkUserActionType} from '../src/interfaces/index';
-import {configureStore} from '../src/store/index';
+import {ICheckboxReducer, IBulkUserActionType} from '../src/interfaces';
+import {configureStore} from '../src/store';
 import {UserActions, IUserActionProps} from '../src/components/PagedList/BulkUserActions';
 const unroll: any = require<any>('unroll');
 
@@ -27,10 +27,7 @@ describe('Tests for BulkUserActions', () => {
             checkbox: checkboxReducer,
             userAction: bulkUserActionReducer
          })}>
-            <UserActions 
-                    isDisabled={false}
-                    userActionsMap={userActionsMap}
-            />
+            <UserActions isDisabled={false} userActionsMap={userActionsMap} />
         </Provider>
     );
 

@@ -3,7 +3,11 @@ jest.unmock('../src/reducers/checkboxReducers');
 import {checkboxReducer} from '../src/reducers/checkboxReducers';
 import {ICheckboxReducer, ICheckboxReducerAction} from '../src/interfaces';
 
-describe('Test cases for userActionReducer', () => {
+const unroll: any = require<any>('unroll');
+
+unroll.use(it);
+
+describe('Test cases for checkboxReducer', () => {
     
     let INITIAL_STATE: ICheckboxReducer = {selectedIds: [], selectAll: false, selectAllOnPage: false};
 
@@ -29,19 +33,18 @@ describe('Test cases for userActionReducer', () => {
         expect(result).toEqual({selectedIds: [1], selectAll: false, selectAllOnPage: false});
     });
 
-    it('should select all records on page', () => {
-        let result: ICheckboxReducer = checkboxReducer(INITIAL_STATE, getAction('SELECT_ALL_RECORDS_ON_PAGE', true));
-        expect(result).toEqual({selectedIds: [], selectAll: false, selectAllOnPage: true});
-    });
-
-    it('should select all records', () => {
-        let result: ICheckboxReducer = checkboxReducer(INITIAL_STATE, 
-                getAction('SELECT_ALL_RECORDS', true));
-        expect(result).toEqual({selectedIds: [], selectAll: true, selectAllOnPage: false});
-    });
-
-     it('should uncheck all checkboxes', () => {
-         let interMediateState: ICheckboxReducer = {selectedIds: [1, 2, 3], selectAllOnPage: false, selectAll: false};
+    it('should uncheck all checkboxes', () => {
+        let interMediateState: ICheckboxReducer = {selectedIds: [1, 2, 3], selectAllOnPage: false, selectAll: false};
         expect(checkboxReducer(interMediateState, {type: 'RESET_CHECKBOXES'})).toEqual(INITIAL_STATE);
     });
+
+    unroll('should retun the expected nextState after dispatching #action', (done, args) => {
+        let result: ICheckboxReducer = checkboxReducer(INITIAL_STATE, getAction(args.action, true));
+        expect(result).toEqual(args.nextState);
+        done();
+    }, [
+        ['action', 'nextState'],
+        ['SELECT_ALL_RECORDS_ON_PAGE', {selectedIds: [], selectAll: false, selectAllOnPage: true}],
+        ['SELECT_ALL_RECORDS', {selectedIds: [], selectAll: true, selectAllOnPage: false}]
+    ]);
 });

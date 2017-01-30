@@ -8,8 +8,8 @@ import {connect} from 'react-redux';
 import {BaseModel} from '../models/BaseModel';
 import {ModelService} from '../utils/modelService';
 import {UserActions} from '../components/PagedList/BulkUserActions';
-import {resetCheckboxState} from '../actions/userActions';
-import {IPagedListFiltersProps, IBulkUserActionType} from '../interfaces/index';
+import {resetCheckboxState} from '../actions/checkboxActions';
+import {IPagedListFiltersProps, IBulkUserActionType} from '../interfaces';
 import {createFilterForm} from '../components/PagedList/Filters/DynamicForm';
 import {QueryFilter} from '../components/PagedList/Filters/QueryFilter';
 import '../utils/appService';
@@ -86,13 +86,12 @@ export class PagedListImpl extends React.Component<IPagedListProps, void> {
         window.scrollTo(0, 0);
     };
 
-    renderUserActionsComponent = (): JSX.Element => {
+    renderUserActions = (): JSX.Element => {
         if (this.props.userActionsMap && this.props.userActionsMap.length > 0) {
             return(
                 <UserActions isDisabled={true} userActionsMap={this.props.userActionsMap}/>
             );
         }
-        return <span></span>;
     }
 
     render(): JSX.Element {
@@ -115,7 +114,8 @@ export class PagedListImpl extends React.Component<IPagedListProps, void> {
                 <PagedListFilters resource={this.props.resource} filters={this.props.filters}>
                     {this.props.children}
                 </PagedListFilters>
-                {this.renderUserActionsComponent()}
+                {this.props.userActionsMap && this.props.userActionsMap.length ? 
+                        this.renderUserActions() : null}
                 <DataGrid
                         instanceList={this.props.instanceList}
                         properties={this.props.properties}
