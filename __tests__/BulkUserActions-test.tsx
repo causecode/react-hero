@@ -58,7 +58,7 @@ describe('Tests for BulkUserActions', () => {
         expect(store.dispatch).toBeCalledWith({'type': 'SAVE_USER_ACTION', 'payload': 'saveUser'});
     });
  
-    it('should call performAction when clicked on Go button', () => {
+    it('should call performAction when the Go button is clicked', () => {
         bulkUserActionsComponent.find('Button').simulate('click');
         expect(store.dispatch).toBeCalledWith({'type': 'SAVE_USER_ACTION_DATA', 'payload': 1});
         expect(saveUser).toBeCalled();
