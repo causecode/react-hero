@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as Radium from 'radium';
 import {Button} from 'react-bootstrap';
 import {store} from '../../store';
 import {MapStateToProps, connect} from 'react-redux';
@@ -24,6 +25,7 @@ export interface IState {
     checkbox: {selectedIds: number[], selectAll: boolean, selectAllOnPage: boolean};
 }
 
+@Radium
 export class UserActionsImpl extends React.Component<IUserActionProps, void> {
     
     private listItems: string[] = ['--User Action--'];
@@ -82,7 +84,7 @@ export class UserActionsImpl extends React.Component<IUserActionProps, void> {
                         value={this.props.action}
                         onChange={this.saveAction}
                         disabled={this.props.selectedIds.length === 0}
-                        style={this.props.selectedIds.length === 0 ? disabledStyle : dropDownStyle}
+                        style={this.props.selectedIds.length === 0 ? [disabledStyle, dropDownStyle] : dropDownStyle}
                  >
                     {this.renderDropDownItems()}
                 </select>
@@ -130,17 +132,6 @@ const dropDownStyle: React.CSSProperties = {
     margin: '0px 5px' 
 };
 const disabledStyle: React.CSSProperties = {
-    textAlign: 'center',
-    border: '1px solid #d9d9d9',
-    borderRadius: '3px',
-    display: 'inline-block',
-    fontSize: '12px',
-    fontFamily: 'Lato, arial, sans-serif',
-    maxWidth: '150px',
-    minHeight: '35px',
-    padding: '5px 10px',
-    transition: 'border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s',
-    margin: '0px 5px',
     background: '#eee none repeat scroll 0% 0% / auto padding-box border-box',
     cursor: 'not-allowed'
 };
