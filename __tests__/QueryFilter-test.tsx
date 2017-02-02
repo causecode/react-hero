@@ -8,6 +8,7 @@ import {QueryFilter, IQueryFilter} from '../src/components/PagedList/Filters/Que
 import {Wrapper} from '../src/components/Wrapper';
 import {IFilter} from '../src/interfaces';
 import '../src/utils/appService';
+import '../src/init';
 
 const unroll: any = require<any>('unroll');
 
@@ -39,7 +40,8 @@ describe( 'Test Cases for Query Filter', () => {
         expect(component.props.name).toEqual(`${paramNameData}From`);
         for (let i in placeholderData) {
             if (placeholderData.hasOwnProperty(i)) {
-                expect(component.props.placeholder[i]).toEqual(placeholderData[i]);
+                let placeholderArray: string[] = component.props.placeholder.split(',');
+                expect(placeholderArray[i].trim()).toEqual(placeholderData[i]);
             }
         }
     });

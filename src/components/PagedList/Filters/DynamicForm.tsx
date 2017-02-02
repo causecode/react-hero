@@ -9,11 +9,12 @@ export class InnerFilterForm extends React.Component<IPagedListFiltersProps, voi
 
     static defaultProps: IPagedListFiltersProps = {
         filtersOpen: false,
-        fields: []
+        fields: [],
+        filters: {}
     };
 
     sendFilters(resource: string): void {
-        ModelService.getModel(resource).list();
+        ModelService.getModel(resource).list(this.props.filters || {});
     }
 
     handleSubmit = (e): void => {
@@ -67,7 +68,10 @@ function mapStateToProps(state): {filtersOpen: boolean} {
 
 export function createFilterForm(resource): typeof InnerFilterForm {
     return ReduxForm.reduxForm(
-        {form: `${resource}Filters`},
+        {
+            form: `${resource}Filters`,
+            destroyOnUnmount: false
+        },
         mapStateToProps
     )(InnerFilterForm);
 }

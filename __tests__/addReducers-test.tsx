@@ -19,7 +19,7 @@ describe('Test AddReducers', () => {
         addReducers({userReducer: testReducer});
 
         expect(combineForms).toBeCalledWith({
-            RHForms: {}
+            rhForms: {}
         });
         expect(combineReducers).toBeCalledWith({
             userReducer: testReducer,

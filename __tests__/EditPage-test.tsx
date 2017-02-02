@@ -32,19 +32,13 @@ function generalEditPageTests(renderedPage, instance: BaseModel, resource: strin
     expect(renderedPage).toBeTruthy();
     expect(renderedPage.props.instance).toEqual(instance);
     expect(renderedPage.props.params.resource).toEqual(resource);
-    /*
-     * Commenting these out so that later when a work around for checking function equality is found
-     * these test cases can also be executed.
-     */
-    // expect(renderedPage.props.handleSubmit.toString()).toEqual(handleSubmit.toString());
-    // expect(renderedPage.props.handleDelete.toString()).toEqual(handleDelete.toString());
 }
 
 describe('Test EditPage', () => {
 
     let path: string = 'edit';
     let resourceID: string = '1';
-    let { resource, instances }: IInitializerData = initializeTestCase();
+    let {resource, instances}: IInitializerData = initializeTestCase();
     let renderer: React.ShallowRenderer;
     let createPath: string = 'create/page';
     let editPath: string = 'edit/page';
@@ -80,14 +74,15 @@ describe('Test EditPage', () => {
         expect(page.props.params.resource).toBe('');
         expect(page.props.params.resourceID).toBe('');
         expect(page.props.instance).toEqual(new DefaultModel({}));
-        let renderedPage = ShallowTestUtils.findWithType(page, GenericEditPage);
+        let renderedPage: React.ComponentClass<IGenericEditPageProps> = 
+                ShallowTestUtils.findWithType(page, GenericEditPage);
         generalEditPageTests(renderedPage, new DefaultModel({}), '');
         expect(BaseModel.get).not.toBeCalled();
     });
 
     it('renders an EditPage with user implemented EditPage and Model registered', () => {
         class AbcEditPage extends React.Component<void, void> {
-            static resourceName = 'abc';
+            static resourceName: string = 'abc';
             render() {
                 return(
                     <div></div>
@@ -95,7 +90,7 @@ describe('Test EditPage', () => {
             }
         }
         class AbcModel extends BaseModel {
-            static resourceName = 'abc';
+            static resourceName: string = 'abc';
             static propTypes = {
                 id: ModelPropTypes.NUMBER()
             };
@@ -146,7 +141,7 @@ describe('Test EditPage', () => {
 
     describe('Test EditPage with the store', () => {
         class TestModel extends BaseModel {
-            static resourceName = 'test';
+            static resourceName: string = 'test';
             static propTypes = {
                 id: ModelPropTypes.NUMBER()
             };

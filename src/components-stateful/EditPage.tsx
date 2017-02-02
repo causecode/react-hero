@@ -1,8 +1,8 @@
 import * as React from 'react';
 import {DefaultModel, BaseModel} from '../models/BaseModel';
-import {ComponentService} from '../utils/componentService';
+import {ComponentService, ComponentType} from '../utils/componentService';
 import {ModelService} from '../utils/modelService';
-import {IInstanceContainerProps} from '../interfaces';
+import {IInstanceContainerProps, IFromJS} from '../interfaces';
 import {IInjectedProps} from 'react-router';
 import {INSTANCE_NOT_FOUND} from '../constants';
 import {ErrorPage} from '../components/ErrorPage';
@@ -29,7 +29,7 @@ export class EditPageImpl extends React.Component<EditPageProps, void> {
     };
 
     isCreatePage(): boolean {
-        return isCreatePage(this.props.location.pathname)
+        return isCreatePage(this.props.location.pathname);
     }
 
     fetchInstanceFromServer = (): void =>  {
@@ -54,34 +54,36 @@ export class EditPageImpl extends React.Component<EditPageProps, void> {
         initializeFormWithInstance(this.props.instance, this.isCreatePage());
     }
 
-    handleSubmit = (instance: BaseModel): void => {
+    handleSubmit = (instance: BaseModel, successCallBack?: (any) => {}, 
+            failureCallBack?: (any) => {}): void => {
         if (this.isCreatePage()) {
-            instance.$save(true);
+            instance.$save(true, {}, successCallBack, failureCallBack);
         } else {
-            instance.$update(true);
+            instance.$update(true, {}, successCallBack, failureCallBack);
         }
     }
 
-    handleDelete = (): void => {
-        this.props.instance.$delete(true);
+    handleDelete = (instance: BaseModel, successCallBack?: (any) => {}, 
+            failureCallBack?: (any) => {}): void => {
+        instance.$delete(true, {}, successCallBack, failureCallBack);
     };
 
-    componentWillReceiveProps(nextProps: EditPageProps) {
-        let currentInstance = this.props.instance;
-        let nextInstance = nextProps.instance;
+    componentWillReceiveProps(nextProps: EditPageProps): void {
+        let currentInstance: BaseModel = this.props.instance;
+        let nextInstance: BaseModel = nextProps.instance;
         if (!objectEquals(nextInstance, currentInstance)) {
             initializeFormWithInstance(nextProps.instance, this.isCreatePage());
         }
     }
 
     render(): JSX.Element {
-        let instance = this.props.instance;
+        let instance: BaseModel = this.props.instance;
         if (!isEmpty(instance) && !isEmpty(instance.properties) && instance.resourceName) {
             /*
              * React-redux-form does not save class instances in the store. Hence Recreating the instance
              * here in case the instance was coming from the React-redux-form store.
              */
-            let ModelClass = ModelService.getModel(instance.resourceName); 
+            let ModelClass: typeof BaseModel = ModelService.getModel(instance.resourceName); 
             instance = new ModelClass(instance.properties);
         }
         if (!(instance instanceof BaseModel)) {
@@ -92,7 +94,7 @@ export class EditPageImpl extends React.Component<EditPageProps, void> {
         const childProps: IGenericEditPageProps = {location: this.props.location, params: this.props.params,
                 handleSubmit: this.handleSubmit, instance, handleDelete: this.handleDelete, 
                 isCreatePage: this.isCreatePage()};
-        let Page = ComponentService
+        let Page: ComponentType = ComponentService
                 .getFormPage(this.props.params.resource, this.isCreatePage()) ;
         return(
             <Page {...childProps}/>
@@ -100,20 +102,20 @@ export class EditPageImpl extends React.Component<EditPageProps, void> {
     }
 }
 
-function mapStateToProps(state, ownProps): Object {
+function mapStateToProps(state: IFromJS, ownProps: EditPageProps): Object {
     let isCreate: boolean = isCreatePage(ownProps.location.pathname); 
     let ModelClass: typeof BaseModel = ModelService.getModel(ownProps.params.resource);
     let instance: BaseModel;
     if (!isCreate) {
         instance = ModelClass.get<BaseModel>(
-                        ownProps.params.resourceID, 
-                        true, 
-                        {}, 
-                        () => {}, 
-                        () => {},
-                        state,
-                        '' as 'edit' | 'create' 
-                    );
+                ownProps.params.resourceID, 
+                true, 
+                {}, 
+                () => {}, 
+                () => {},
+                state,
+                '' as 'edit' | 'create' 
+            );
     } else {
         instance = new ModelClass({});
     }

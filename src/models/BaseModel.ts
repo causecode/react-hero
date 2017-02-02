@@ -8,14 +8,14 @@ import {ModelService} from '../utils/modelService';
 import {saveAllInstances, unsetList} from '../actions/modelActions';
 import {findInstanceByID} from '../utils/storeService';
 import {NO_PROP_TYPES, NO_DEFAULT_PROPS} from '../constants';
-import {Dictionary} from '../interfaces';
+import {Dictionary, IFromJS} from '../interfaces';
 import {fromJS} from 'immutable';
 const objectAssign: any = require <any> ('object-assign');
 const getValues: (state : any) => any = require <{
     getValues: (state : any) => any
 }> ('redux-form').getValues;
 
-const FETCH_ERR_MSG = `Request couldn't be processed.`;
+const FETCH_ERR_MSG: string = `Request couldn't be processed.`;
 
 // TODO add generic type for the properties to be passed to BaseModel i.e. BaseModel<P>.
 export class BaseModel {
@@ -57,7 +57,7 @@ export class BaseModel {
         return (this.constructor as Function & {propTypes: any}).propTypes;
     }
 
-    static getResourceName() {
+    static getResourceName(): string {
         if (!this.resourceName) {
             throw new Error(MODEL_RESOURCE_ERROR);
         }
@@ -128,7 +128,7 @@ export class BaseModel {
         }
     }
 
-    static unsetList() {
+    static unsetList(): void {
         store.dispatch(unsetList(this.getResourceName()));
     }
 
@@ -145,7 +145,7 @@ export class BaseModel {
             if (!valueInStore) {
                 // Fetch list data from server and save it in the store followed by returning it.
                 let path: string = resourceName;
-                let filterFormData = getValues(store.getState().form[`${resourceName}Filters`]);
+                let filterFormData: any = getValues(store.getState().form[`${resourceName}Filters`]);
                 objectAssign(filters, filterFormData);
                 store.dispatch(
                     getPromiseAction(
@@ -240,10 +240,10 @@ export class BaseModel {
             return listInstance;
         }
         
-        let formInstances = state.forms.rhForms || {};
+        let formInstances: IFromJS | any = state.forms.rhForms || {};
         formInstances = formInstances.toJS ? formInstances.toJS() : formInstances;
-        let instanceKey = operation === 'edit' ? `${resourceName}Edit` : `${resourceName}Create`;
-        let formInstance = formInstances[instanceKey];
+        let instanceKey: string = operation === 'edit' ? `${resourceName}Edit` : `${resourceName}Create`;
+        let formInstance: any = formInstances[instanceKey];
 
         return formInstance || listInstance;
     }

@@ -3,7 +3,7 @@ import {GenericListPage} from '../components/CRUD/GenericListPage';
 import {GenericEditPage} from '../components/CRUD/GenericEditPage';
 import {GenericShowPage} from '../components/CRUD/GenericShowPage';
 import {StatelessComponent, ComponentClass} from 'react';
-import {getEnvironment} from './appService';
+import {getEnvironment, showWarn} from './appService';
 
 export type ComponentType = (ComponentClass<any> | StatelessComponent<any>) & {resourceName?: string};
 
@@ -18,24 +18,46 @@ module ComponentService {
     }
     export type pageType = 'edit' | 'create' | 'list' | 'show';
 
-    export function register(component: ComponentType, type: pageType) {
+    export function register(component: ComponentType, type: pageType): void {
         let name = `${component.resourceName}${type}`;
         resolver.set(name, component);
     }
 
-    export function registerAll(type: pageType, ...components: ComponentType[]) {
-        components.forEach((component) => {
-            register(component, type);
-        });
+    export function registerAll(): void {
+        try {
+            const modules: any = require<any>('../../../../src/components');
+            // const modules: any = require<any>('../Demo/components');
+            for (let component in modules) {
+                if (modules[component]) {
+                    if (modules[component].resourceName) {
+                        if (component.indexOf('Edit') > -1) {
+                            ComponentService.register(modules[component], 'edit');
+                        } else if (component.indexOf('List') > -1) {
+                            ComponentService.register(modules[component], 'list');
+                        } else if (component.indexOf('Show') > -1) {
+                            ComponentService.register(modules[component], 'show');
+                        } else if (component.indexOf('Create') > -1) {
+                            ComponentService.register(modules[component], 'create');
+                        }
+                    }
+                }
+            }
+        } catch (error) {
+            showWarn('Exported files not found in /src/components.');
+        }
     }
 
     export function getComponent(name: string, type: string = ''): ComponentType {
-        name = (type.length && (name.indexOf(type) === -1)) ? `${name}${type}`.toLowerCase() : name.toLowerCase();
+        if (type && type.length) {
+            return resolver.get(`${name}${type}`);
+        }
         return resolver.get(name);
     }
 
     export function hasComponent(name: string, type: string = ''): boolean {
-        name = (type.length && (name.indexOf(type) === -1)) ? `${name}${type}`.toLowerCase() : name.toLowerCase();
+        if (type && type.length) {
+            return resolver.has(`${name}${type}`);
+        }
         return resolver.has(name);
     }
 
@@ -97,7 +119,7 @@ module ComponentService {
 
     export function getFormPage(name: string, isCreatePage: boolean): ComponentType {
         if (isCreatePage) {
-            return getCreatePage(name)
+            return getCreatePage(name);
         } else {
             return getEditPage(name);
         }
@@ -106,17 +128,3 @@ module ComponentService {
 
 export {ComponentService};
 
-const modules: any = require<any>('../../../../src/components');
-for (let component in modules) {
-    if (modules[component]) {
-        if (modules[component].resourceName) {
-            if (component.indexOf('Edit') > -1) {
-                ComponentService.register(modules[component], 'edit');
-            } else if (component.indexOf('List') > -1) {
-                ComponentService.register(modules[component], 'list');
-            } else if (component.indexOf('Show') > -1) {
-                ComponentService.register(modules[component], 'show');
-            }
-        }
-    }
-}

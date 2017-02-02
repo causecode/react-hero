@@ -56,6 +56,7 @@ export interface IPagedListFiltersProps extends Props<{}> {
     fields?: string[];
     resource?: string;
     filtersOpen?: boolean;
+    filters?: any;
 }
 
 export interface IFromJS {
@@ -67,4 +68,39 @@ export interface IFromJS {
 export interface IImmutable {
     toJS: () => Object;
     getIn: (keys : string[], defaultVaue : Object) => Object | IImmutable;
+}
+
+export interface IUserReducer {
+    action: string;
+    records: number;
+}
+
+export interface ICheckboxReducer {
+    selectedIds: number[];
+    selectAll: boolean;
+    selectAllOnPage: boolean;
+}
+
+export interface IBulkUserActionType {
+    label: string;
+    action: Function;
+}
+
+export interface ICheckboxReducerAction {
+    type: string;
+    payload: number|boolean;
+}
+
+export interface IBulkUserActions {
+    type: string;
+    payload: number|string;
+}
+
+export interface IGenericAction {
+    type: string;
+}
+
+export interface IUserAction {
+    type: string;
+    payload: number|boolean|string;
 }

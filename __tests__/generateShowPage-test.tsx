@@ -5,7 +5,7 @@ jest.unmock('../src/cli/templateService');
 import * as fs from 'fs';
 import * as path from 'path';
 import {INVALID_COMMAND_ERROR, INVALID_MODEL_NAME} from '../src/constants';
-import {generateShowPage} from '../src/cli/generatorService';
+import {getShowPage} from '../src/cli/generatorService';
 import {ModelPropTypes} from '../src/models/ModelPropTypes';
 import {BaseModel} from '../src/models/BaseModel';
 
@@ -36,7 +36,7 @@ let testModelPath: string = 'test/Model';
 let testModelName: string = 'Test'; 
 let testOnCancelRoute: string = 'test/ModelName'; 
 
-describe('Test generateShowPage function', () => {
+describe('Test getShowPage function', () => {
 
     require = jest.fn((path: string) => {
         return {TestModel};
@@ -47,7 +47,7 @@ describe('Test generateShowPage function', () => {
         process.argv = testArgs.argv;
 
         expect(() => {
-            generateShowPage();
+            getShowPage();
         }).toThrow(new Error(INVALID_COMMAND_ERROR(...testArgs.missingArgs)));
         done();
     }, [
@@ -61,7 +61,7 @@ describe('Test generateShowPage function', () => {
         let invalidModelName = 'abcc';
         process.argv = ['--modelPath', testModelPath, '--modelName', invalidModelName, '--onCancel', testOnCancelRoute];
         
-        expect(() => generateShowPage()).toThrow(new Error(INVALID_MODEL_NAME(invalidModelName, testModelPath)));
+        expect(() => getShowPage()).toThrow(new Error(INVALID_MODEL_NAME(invalidModelName, testModelPath)));
     }); 
 
     it('should call the method write file method of fs with the correct file path and page content', () => {
@@ -69,7 +69,7 @@ describe('Test generateShowPage function', () => {
         process.argv = ['--modelPath', testModelPath, '--modelName', testModelName];
         __dirname = '';
         TemplateService.generateShowTemplate = () => testShow;
-        generateShowPage();
+        getShowPage();
 
         expect(require).toBeCalledWith(projectRoot + typescriptOut + testModelPath);
         expect(fs.writeFile).toBeCalledWith(

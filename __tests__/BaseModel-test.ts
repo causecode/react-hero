@@ -1,11 +1,11 @@
-import {IInstanceAction} from '../src/actions/modelActions';
 jest.unmock('../src/models/BaseModel');
+import * as axios from 'axios';
 import {DefaultModel, getData} from '../src/models/BaseModel';
+import {FETCH_INSTANCE_DATA} from '../src/constants';
+import {IInstanceAction} from '../src/actions/modelActions';
+import {IMockStore} from '../src/store/index';
 import {HTTP} from '../src/api/server/index';
 import 'babel-polyfill';
-import * as axios from 'axios';
-import {IMockStore} from '../src/store/index';
-import {FETCH_INSTANCE_DATA} from '../src/constants';
 const unroll: any = require<any>('unroll');
 const store = require<any>('../src/store').store as IMockStore; 
 
@@ -69,19 +69,6 @@ describe('Test Base Model', () => {
         verifyActions(`${functionName.toUpperCase()}_INSTANCE`, instance);
     }
 
-    /*async function testWithFlushAndWithoutKey(instance: DefaultModel, functionName: string,
-            HTTPMethod: Function, requestParams: Object) {
-        store.clearActions();
-        await instance[`$${functionName}`](true, headers, successCallback, failureCallback);
-
-        expect(HTTPMethod).toBeCalled();
-        if (functionName === 'update') {
-            expect(successCallback).not.toBeCalled();
-        }
-        expect(failureCallback).toBeCalled();
-        verifyActions(`${functionName.toUpperCase()}_INSTANCE`, instance);
-    }*/
-
     async function testWithFlushFalse(instance: DefaultModel, functionName: string,
             HTTPMethod: Function) {
         store.clearActions();
@@ -113,7 +100,7 @@ describe('Test Base Model', () => {
         expect(store.getActions().length).toBeFalsy();
     }
 
-    describe('Test $save method on the instance', () => {
+    describe('Test $save, $update and $delete method on the instance', () => {
 
         it('calls the Model methods without any params',
                 async () => {
@@ -134,15 +121,6 @@ describe('Test Base Model', () => {
             await testWithFlush(ModelInstance, 'delete', HTTP.deleteRequest,
                     [`${ModelInstance.resourceName}/${ModelInstance.properties.id}`, headers]);
         });
-        
-        // it('calls the methods with flush and without key', async () => {
-        //     await testWithFlushAndWithoutKey(new DefaultModel(instanceData), 'save', HTTP.postRequest,
-        //             [`${ModelInstance.resourceName}/save`, instanceData]);
-        //     await testWithFlushAndWithoutKey(ModelInstance, 'update', HTTP.putRequest,
-        //             [`${ModelInstance.resourceName}/update`, ModelInstance.properties]);
-        //     await testWithFlushAndWithoutKey(ModelInstance, 'delete', HTTP.deleteRequest,
-        //             [`${ModelInstance.resourceName}/delete/${ModelInstance.properties.id}`]);
-        // });
 
         it('calls the methods with flush false', async() => {
             await testWithFlushFalse(ModelInstance, 'save', HTTP.postRequest);

@@ -13,7 +13,7 @@ describe('Test server api methods', () => {
     let data: {id: number, author: string} = {id: 1, author: 'abc'};
     let headers: {token: string} = {token: 'dummyToken'};
     let failurePath: string = 'failurePath';
-    let successObject: {success: boolean} = {success: true};
+    let successObject: {data: {success: boolean}} = {data: {success: true}};
 
     afterEach(() => {
         axios.mockClear();
@@ -27,7 +27,7 @@ describe('Test server api methods', () => {
                 url: testArgs.expectedURL,
                 headers: testArgs.headers
             };
-            await HTTP.getRequest(testArgs.path, testArgs.data, testArgs.headers);
+            await HTTP.getRequest(testArgs.path, testArgs.headers, testArgs.data);
             expect(axios).toBeCalledWith(expectedGetConfig);
             done();
         }, [
@@ -61,7 +61,7 @@ describe('Test server api methods', () => {
             postConfig.data = testArgs.data;
             postConfig.headers = testArgs.headers;
             postConfig.url = BASE_URL + testArgs.path;
-            await HTTP.postRequest(testArgs.path, testArgs.data, testArgs.headers);
+            await HTTP.postRequest(testArgs.path, testArgs.headers, testArgs.data);
             expect(axios).toBeCalledWith(postConfig);
             done();
         }, [
@@ -93,7 +93,7 @@ describe('Test server api methods', () => {
 
         it('calls putRequest with all the parameters', async () => {
             putConfig.url = BASE_URL + successPath;
-            await HTTP.putRequest(successPath, data, headers).then((resp) => {
+            await HTTP.putRequest(successPath, headers, data).then((resp) => {
                 expect(resp).toEqual(successObject);
             });
             expect(axios).toBeCalledWith(putConfig);
@@ -103,7 +103,7 @@ describe('Test server api methods', () => {
             putConfig.url = BASE_URL + testArgs.path;
             putConfig.data = testArgs.data;
             putConfig.headers = testArgs.headers;
-            await HTTP.putRequest(testArgs.path, testArgs.data, testArgs.headers);
+            await HTTP.putRequest(testArgs.path, testArgs.headers, testArgs.data);
             expect(axios).toBeCalledWith(putConfig);
             done();
         }, [

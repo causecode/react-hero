@@ -5,7 +5,7 @@ jest.unmock('../src/cli/templateService');
 import * as fs from 'fs';
 import * as path from 'path';
 import {INVALID_COMMAND_ERROR, INVALID_MODEL_NAME} from '../src/constants';
-import {generateEditPage} from '../src/cli/generatorService';
+import {getEditPage} from '../src/cli/generatorService';
 import {ModelPropTypes} from '../src/models/ModelPropTypes';
 import {BaseModel} from '../src/models/BaseModel';
 
@@ -36,7 +36,7 @@ let testModelPath: string = 'test/Model';
 let testModelName: string = 'Test'; 
 let testOnCancelRoute: string = 'test/ModelName'; 
 
-describe('Test generateEditPage function', () => {
+describe('Test getEditPage function', () => {
 
     require = jest.fn((path: string) => {
         return {TestModel};
@@ -47,7 +47,7 @@ describe('Test generateEditPage function', () => {
         process.argv = testArgs.argv;
 
         expect(() => {
-            generateEditPage();
+            getEditPage();
         }).toThrow(new Error(INVALID_COMMAND_ERROR(...testArgs.missingArgs)));
         done();
     }, [
@@ -61,7 +61,7 @@ describe('Test generateEditPage function', () => {
         let invalidModelName = 'abcc';
         process.argv = ['--modelPath', testModelPath, '--modelName', invalidModelName, '--onCancel', testOnCancelRoute];
         
-        expect(() => generateEditPage()).toThrow(new Error(INVALID_MODEL_NAME(invalidModelName, testModelPath)));
+        expect(() => getEditPage()).toThrow(new Error(INVALID_MODEL_NAME(invalidModelName, testModelPath)));
     }); 
 
     it('should call the method write file method of fs with the correct file path and form content', () => {
@@ -69,7 +69,7 @@ describe('Test generateEditPage function', () => {
         process.argv = ['--modelPath', testModelPath, '--modelName', testModelName, '--onCancel', testOnCancelRoute];
         __dirname = '';
         TemplateService.generateFormTemplate = () => testForm;
-        generateEditPage();
+        getEditPage();
 
         expect(require).toBeCalledWith(projectRoot + typescriptOut + testModelPath);
         expect(fs.writeFile).toBeCalledWith(

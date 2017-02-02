@@ -2,7 +2,7 @@ jest.unmock('../src/utils/modelService');
 
 import {getEnvironment} from '../src/utils/appService';
 import {ModelService} from '../src/utils/modelService';
-import {BaseModel} from '../src/models/BaseModel';
+import {DefaultModel, BaseModel} from '../src/models/BaseModel';
 import {resolver} from '../src/resolver';
 
 const unroll: any = require<any>('unroll');
@@ -12,6 +12,7 @@ unroll.use(it);
 describe('Test Model Service', () => {
 
     class TestModel extends BaseModel {
+        static resourceName: string = 'test';
         constructor() {
             super({id: 1, author: 'nahush'});
         }
@@ -25,7 +26,9 @@ describe('Test Model Service', () => {
     });
 
     it('registers all the specified Models', () => {
-        class AbModel extends BaseModel {}
+        class AbModel extends BaseModel {
+            static resourceName: string = 'ab';
+        }
         ModelService.registerAll(TestModel, AbModel);
 
         expect(resolver.has('testmodel')).toBe(true);
@@ -63,8 +66,8 @@ describe('Test Model Service', () => {
             ['test', true, TestModel],
             ['testModel', true, TestModel],
             ['TestModel', true, TestModel],
-            ['abc', false, BaseModel],
-            ['abcModel', false, BaseModel]
+            ['abc', false, DefaultModel],
+            ['abcModel', false, DefaultModel]
         ]);
 
     });

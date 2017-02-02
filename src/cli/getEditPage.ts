@@ -1,5 +1,5 @@
 #! /usr/bin/env node
 
-import {generateEditPage} from './generatorService';
+import {getEditPage} from './generatorService';
 
-generateEditPage('edit');
+getEditPage('edit');

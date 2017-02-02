@@ -9,18 +9,19 @@ import {createStore, Store} from 'redux';
 import {IShallowTestUtils} from '../src/interfaces';
 import {IInitializerData} from '../src/utils/initializeTestCase';
 import {DateRangeFilter} from '../src/components/PagedList/Filters/DateRangeFilter';
-import {DropDownFilter} from '../src/components/PagedList/Filters/DropDownFilter';
+import {DropDownFilter, IDropDownFilter} from '../src/components/PagedList/Filters/DropDownFilter';
 import {RangeFilter} from '../src/components/PagedList/Filters/RangeFilter';
-import {QueryFilter} from '../src/components/PagedList/Filters/QueryFilter';
-import {FormFactory} from '../src/components/PagedList/Filters/DynamicForm';
+import {QueryFilter, IQueryFilter} from '../src/components/PagedList/Filters/QueryFilter';
+import {createFilterForm} from '../src/components/PagedList/Filters/DynamicForm';
 import {rootReducer} from '../src/reducers/rootReducer';
 import {findDOMNode} from 'react-dom';
-import {FilterForm} from '../src/components/PagedList/Filters/DynamicForm';
+import {InnerFilterForm} from '../src/components/PagedList/Filters/DynamicForm';
 import {BaseModel} from '../src/models/BaseModel';
 import {Provider} from 'react-redux';
 import {IFilter} from '../src/interfaces';
 import {Button} from 'react-bootstrap';
 import {fromJS} from 'immutable';
+import '../src/init';
 import drop = __React.__Addons.TestUtils.Simulate.drop;
 
 const ShallowTestUtils: IShallowTestUtils = require<IShallowTestUtils>('react-shallow-testutils');
@@ -34,7 +35,7 @@ interface IFilterStoreData {
     billAmountTo: IReduxFormStoreValue;
 }
 
-describe('render a simple FilterForm', () => {
+describe('render a simple InnerFilterForm', () => {
     let sendFilters: jest.Mock<Function>;
     let children = [
         <DropDownFilter
@@ -68,7 +69,7 @@ describe('render a simple FilterForm', () => {
     ];
     let reduxFormFields;
     let fields: string[] = [];
-    let { renderer , resource }: IInitializerData = initializeTestCase();
+    let {renderer , resource}: IInitializerData = initializeTestCase();
 
     for (let child: any of children) {
         let param = child.props.paramName;
@@ -89,20 +90,20 @@ describe('render a simple FilterForm', () => {
         sendFilters = jest.fn();
     });
 
-    it('renders a FilterForm without any props', () => {
+    it('renders a InnerFilterForm without any props', () => {
         renderer.render(
-            <FilterForm />
+            <InnerFilterForm />
         );
-        let form = renderer.getRenderOutput();
+        let form: TestUtils.ShallowRenderer = renderer.getRenderOutput();
 
-        let innerForm = ShallowTestUtils.findWithType(form, 'form');
+        let innerForm: React.ComponentClass<IPagedListFiltersProps> = ShallowTestUtils.findWithType(form, 'form');
         expect(innerForm).toBeTruthy();
         expect(ShallowTestUtils.findWithType(innerForm, Button)).toBeTruthy();
     });
 
-    it('renders a FilterForm with incorrect fields and Children', () => {
+    it('renders a InnerFilterForm with incorrect fields and Children', () => {
         renderer.render(
-            <FilterForm fields={{abc: {name: 'abc'}, dev: {name: 'dev'}, query: {name: 'query'}}}>
+            <InnerFilterForm fields={{abc: {name: 'abc'}, dev: {name: 'dev'}, query: {name: 'query'}}}>
                 <DropDownFilter
                     label="status"
                     paramName="status"
@@ -117,25 +118,25 @@ describe('render a simple FilterForm', () => {
                     paramName="query"
                     placeholder={['First Name', 'Last Name', 'Email']}
                 />
-            </FilterForm>
+            </InnerFilterForm>
         );
 
-        let form = renderer.getRenderOutput();
+        let form: TestUtils.ShallowRenderer = renderer.getRenderOutput();
 
-        let dropdown = ShallowTestUtils.findWithType(form, DropDownFilter);
+        let dropdown: React.ComponentClass<IDropDownFilter> = ShallowTestUtils.findWithType(form, DropDownFilter);
         expect(dropdown).toBeTruthy();
         expect(dropdown.props.fields).toBeFalsy();
         expect(dropdown.props.label).toEqual('status');
         expect(dropdown.props.paramName).toEqual('status');
         expect(dropdown.props.possibleValues).toEqual(['enable', 'disable', 'inactive']);
 
-        let range = ShallowTestUtils.findWithType(form, RangeFilter);
+        let range: React.ReactElement<IFilter> = ShallowTestUtils.findWithType(form, RangeFilter);
         expect(range).toBeTruthy();
         expect(range.props.fields).toBeFalsy();
         expect(range.props.label).toEqual('Bill Amount');
         expect(range.props.paramName).toEqual('billAmount');
 
-        let query = ShallowTestUtils.findWithType(form, QueryFilter);
+        let query: React.ReactElement<IQueryFilter> = ShallowTestUtils.findWithType(form, QueryFilter);
         expect(query).toBeTruthy();
         expect(query.props.fields).toBeTruthy();
         expect(query.props.fields[0]).toEqual({name: 'query'});
@@ -147,9 +148,9 @@ describe('render a simple FilterForm', () => {
 
     it('renders a simple filterForm', () => {
         renderer.render(
-            <FilterForm fields={reduxFormFields} filtersOpen={false} resource={resource} sendFilters={sendFilters}>
+            <InnerFilterForm fields={reduxFormFields} filtersOpen={false} resource={resource} sendFilters={sendFilters}>
                 {children}
-            </FilterForm>
+            </InnerFilterForm>
         );
 
         let form: React.ReactElement<IPagedListFiltersProps> = renderer.getRenderOutput();
@@ -186,11 +187,11 @@ describe('render a simple FilterForm', () => {
         expect(query[0].props.fields[0]).toEqual(reduxFormFields[query[0].props.paramName]);
     });
 
-    it('renders a FilterForm with a div child', () => {
+    it('renders a InnerFilterForm with a div child', () => {
         renderer.render(
-            <FilterForm>
+            <InnerFilterForm>
                 <div>test</div>
-            </FilterForm>
+            </InnerFilterForm>
         );
 
         let form: React.ReactElement<IPagedListFiltersProps> = renderer.getRenderOutput();
@@ -199,9 +200,9 @@ describe('render a simple FilterForm', () => {
         expect(ShallowTestUtils.findWithType(form, 'div')).toBeTruthy();
     });
 
-    it('renders a FilterForm with fields but no children', () => {
+    it('renders a InnerFilterForm with fields but no children', () => {
         renderer.render(
-            <FilterForm fields={{abc: {name: 'abc'}, dev: {name: 'dev'}}}/>
+            <InnerFilterForm fields={{abc: {name: 'abc'}, dev: {name: 'dev'}}}/>
         );
 
         let form: React.ReactElement<IPagedListFiltersProps> = renderer.getRenderOutput();
@@ -216,7 +217,7 @@ describe('render a simple FilterForm', () => {
     it('renders a Dynamic Form and saves form data in the <resource>Filters key', () => {
         let testDynamicFormData: {data: Object} = {data: fromJS({filtersOpen: true})};
         let store: Store = createStore(rootReducer, testDynamicFormData);
-        let DynamicForm: typeof FilterForm = FormFactory(resource);
+        let DynamicForm: typeof InnerFilterForm = createFilterForm(resource);
         let possibleValues: string[] = ['enable', 'disable', 'inactive'];
         let fieldValues: string[] = ['status', 'billAmountFrom', 'billAmountTo'];
         React.cloneElement = jest.fn(React.cloneElement);

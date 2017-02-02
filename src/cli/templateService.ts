@@ -17,7 +17,7 @@ interface IFormTemplateData {
     model: string;
 }
 
-export function writeFile(fpath, contents, cb) {
+export function writeFile(fpath, contents, cb): void {
     mkdirp(path.dirname(fpath), function (err) {
         if (err) { return cb(err); };
 
@@ -25,7 +25,7 @@ export function writeFile(fpath, contents, cb) {
     });
 }
 
-export function parseOptions(...options: string[]) {
+export function parseOptions(...options: string[]): void {
     let missingOptions: string[] = [];
     options.forEach((option : string) => {
         if (option.indexOf('--') === 0) {
@@ -41,10 +41,12 @@ export function parseOptions(...options: string[]) {
     }
 }
 
-export function getListPage(ModelClass: typeof BaseModel) {
+// TODO figure out the type and remove `any`
+export function getListPage(ModelClass: typeof BaseModel): any {
     let {resourceName} = ModelClass;
     let {modelName} = commandLine;
-    let listTemplate = _.template(require<string>('../../templates/ListTemplate.ejs'));
+    // TODO figure out the type and remove `any`
+    let listTemplate: any = _.template(require<string>('../../templates/ListTemplate.ejs'));
 
     return listTemplate({
         modelName,
@@ -53,23 +55,25 @@ export function getListPage(ModelClass: typeof BaseModel) {
 }
 
 function getSubFormPage(propertyName, subPropTypes, model, resourceName) {
-    let formControls = {};
+    // type `any` is used because it's a generic object.
+    let formControls: any = {};
     let {modelName} = commandLine;
     let inputTemplateString: string = `<FormInput 
-                                type="<%= type%>" ` + 
-                                `<% if (enumInstance) { %>` + ` 
-                                enum={<%= enumInstance%>}<% } %>` + `
-                                propertyName="<%= propertyName%>"
-                                model="<%= model%>"    
-                        />`;
+                                            type="<%= type%>" ` + 
+                                            `<% if (enumInstance) { %>` + ` 
+                                            enum={<%= enumInstance%>}<% } %>` + `
+                                            propertyName="<%= propertyName%>"
+                                            model="<%= model%>"    
+                                       />`;
 
-    let inputTemplate = _.template(inputTemplateString);
+    // TODO figure out the type and remove `any`
+    let inputTemplate: any = _.template(inputTemplateString);
     Object.keys(subPropTypes).forEach((prop: string, index: number) => {
         if (!subPropTypes.hasOwnProperty(prop)) {
             return;
         }
 
-        let currentPropType = subPropTypes[prop];
+        let currentPropType: any = subPropTypes[prop];
         let enumInstance: string = currentPropType.enum ? 
                 `${modelName.capitalize()}Model.propTypes.${propertyName}.propTypes[\`${prop}\`].enum` : '';
         let templateData: IFormTemplateData = {
@@ -94,15 +98,16 @@ export function generateFormPage(ModelClass: typeof BaseModel, pageType: 'edit' 
     let {modelName} = commandLine;
     
     let formControls: {[key: string]: string} = {};
-    let inputTemplateString = `<FormInput 
-                        type="<%= type%>" ` + 
-                        `<% if (enumInstance) { %>` + ` 
-                        enum={<%= enumInstance%>}<% } %>` + `
-                        propertyName="<%= propertyName%>"
-                        model="<%= model%>"    
-                />`;
+    let inputTemplateString: string = `<FormInput 
+                                            type="<%= type%>" ` + 
+                                            `<% if (enumInstance) { %>` + ` 
+                                            enum={<%= enumInstance%>}<% } %>` + `
+                                            propertyName="<%= propertyName%>"
+                                            model="<%= model%>"    
+                                       />`;
 
-    let inputTemplate = _.template(inputTemplateString);
+    // TODO figure out the type and remove `any`
+    let inputTemplate: any = _.template(inputTemplateString);
     let formModelString: string = resourceName;
     let componentName: string = modelName;
     if (pageType === 'edit') {
@@ -119,9 +124,9 @@ export function generateFormPage(ModelClass: typeof BaseModel, pageType: 'edit' 
                 return;
             }
 
-            let currentPropType = propTypes[prop];
+            let currentPropType: any = propTypes[prop];
 
-            let model: string = getModelString(formModelString, 'properties', prop) 
+            let model: string = getModelString(formModelString, 'properties', prop);
 
             if (currentPropType.type === 'object') {
                 formControls[prop] = getSubFormPage(
@@ -163,12 +168,13 @@ function getNestedObjectView(propertyName: string, propTypes: any, resourceName:
     if (appService.isEmpty(propTypes)) {
         throw new Error(`Could not find propTypes while generating show Page for resource ${resourceName}`);
     }
-    let subShowTemplate = _.template(require<string>('../../templates/SubShowTemplate.ejs'));
-    let tableRowTemplate = _.template(`<tr>
-                                        <td><strong><%= subPropertyName%></strong></td>
-                                        <td>{<%= subPropertyValue%>}</td>
-                                    </tr>`); 
-    let tableRowMap = {};   
+    // TODO figure out the type and remove `any`
+    let subShowTemplate: any = _.template(require<string>('../../templates/SubShowTemplate.ejs'));
+    let tableRowTemplate: any = _.template(`<tr>
+                <td><strong><%= subPropertyName%></strong></td>
+                <td>{<%= subPropertyValue%>}</td>
+            </tr>`); 
+    let tableRowMap: any = {};   
     Object.keys(propTypes).forEach((prop: string, index: number) => {
         tableRowMap[prop] = tableRowTemplate({
             subPropertyName: prop,
@@ -187,14 +193,16 @@ export function getShowPage(ModelClass: typeof BaseModel): string {
     if (appService.isEmpty(propTypes)) {
         throw new Error(`Could not find propTypes while generating show Page for resource ${resourceName}`);
     }
-    let showTemplate = _.template(require<string>('../../templates/ShowTemplate.ejs'));
+    // TODO figure out the type and remove `any`
+    let showTemplate: any = _.template(require<string>('../../templates/ShowTemplate.ejs'));
 
-    let tableRowTemplate = _.template(`<tr>
-                        <td><strong><%= propertyName%></strong></td>
-                        <td>{<%= propertyValue%>}</td>
-                    </tr>`); 
+    let tableRowTemplate: any = _.template(`<tr>
+            <td><strong><%= propertyName%></strong></td>
+            <td>{<%= propertyValue%>}</td>
+            </tr>`); 
 
-    let tableRowMap = {};   
+    // type `any` is used because it's a generic object.
+    let tableRowMap: any = {};   
     Object.keys(propTypes).forEach((prop: string, index: number) => {
         if (!propTypes.hasOwnProperty(prop)) {
             return;

@@ -53,15 +53,13 @@ describe('Test HeaderFooterLayout', () => {
         let footer: HTMLElement[] = TestUtils.scryRenderedDOMComponentsWithClass(layout, 'footer') as HTMLElement[];
         let nav: HTMLElement[] = TestUtils.scryRenderedDOMComponentsWithClass(layout, 'nav-menu') as HTMLElement[];
 
-        ['header-content', 'content-content', 'footer-content', 'nav-menu-content']
-            .forEach((contentClass) => {
-                expect(TestUtils.scryRenderedDOMComponentsWithClass(layout, contentClass).length).toBe(1);
-            });
+        ['header-content', 'content-content', 'footer-content', 'nav-menu-content'].forEach((contentClass) => {
+            expect(TestUtils.scryRenderedDOMComponentsWithClass(layout, contentClass).length).toBe(1);
+        });
 
-        [header[0], content[0], footer[0], nav[0]]
-            .forEach((component) => {
-                expect(component).toBeTruthy();
-            });
+        [header[0], content[0], footer[0], nav[0]].forEach((component) => {
+            expect(component).toBeTruthy();
+        });
 
         expect(TestUtils.isCompositeComponent(layout)).toBeTruthy();
         expect(header[0].children.length).toBe(2);
@@ -97,7 +95,7 @@ describe('Test HeaderFooterLayout', () => {
 
     it('renders a HeaderFooterLayout with only the Header and NavigationMenu', () => {
         HeaderFooterLayoutImpl.prototype.setNav =
-            jest.fn<typeof HeaderFooterLayoutImpl.prototype.setNav>(HeaderFooterLayoutImpl.prototype.setNav);
+                jest.fn<typeof HeaderFooterLayoutImpl.prototype.setNav>(HeaderFooterLayoutImpl.prototype.setNav);
         let navMenuContent: JSX.Element = <div className="nav-menu-content">NavMenu</div>;
         let headerContent: JSX.Element = <div className="header-content">Header</div>;
         let layout: React.Component<void, void> = TestUtils.renderIntoDocument<React.Component<void, void>>(

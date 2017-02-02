@@ -1,5 +1,5 @@
-import {BaseModel} from './../models/BaseModel';
-import {ModelPropTypes} from '../models/ModelPropTypes';
+import {BaseModel} from '../../models/BaseModel';
+import {ModelPropTypes} from '../../models/ModelPropTypes';
 
 export enum Status {
     PRESENT,
@@ -12,6 +12,8 @@ export enum IsCurrent {
 }
 
 export class BlogModel extends BaseModel {
+    static resourceName: string = 'blog';
+    
     static propTypes = {
         id: ModelPropTypes.NUMBER(),
         author: ModelPropTypes.STRING(),
@@ -30,8 +32,6 @@ export class BlogModel extends BaseModel {
         dateCreated: 0,
         lastUpdated: 0
     };
-
-    static resourceName: string = 'blog';
 
     static columnNames: string[] = [
         'id',
@@ -62,28 +62,7 @@ let blogInstance = new BlogModel({
             isCurrent: IsCurrent.YES 
         },
         enabled: false,
-        status: Status.FIRED,
+        status: Status.PRESENT,
     });
 
 export {blogInstance}
-
-export class UserModel extends BaseModel {
-
-    static resourceName: string = 'user';
-    
-    static defaultProps: Object = {
-        name: ''
-    };
-
-    static propTypes = {
-        id: ModelPropTypes.NUMBER(),
-        firstName: ModelPropTypes.STRING(),
-        lastName: ModelPropTypes.STRING(),
-        age: ModelPropTypes.STRING()
-    };
-
-    constructor(properties: any) {
-        super(properties);
-        this.properties = properties;
-    }
-}

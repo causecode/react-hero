@@ -6,18 +6,19 @@ import {toggleFilters as toggle} from '../../../actions/modelActions';
 import {IFilter, IPagedListFiltersProps} from '../../../interfaces';
 import {isEmpty} from '../../../utils/appService';
 
-let FilterForm: React.ComponentClass<IPagedListFiltersProps>;
+let InnerFilterForm: React.ComponentClass<IPagedListFiltersProps>;
 export class PagedListFilters extends React.Component<IPagedListFiltersProps, void> {
     filterProps: string[] = [];
     static defaultProps: IPagedListFiltersProps = {
-        resource: ''
+        resource: '',
+        filters: {}
     };
 
     constructFilters(): void {
         let children: React.ReactNode = this.props.children;
         React.Children.forEach(children, (child: React.ReactElement<IFilter> & {type: {name: string}}) => {
-            let paramName = child.props.paramName;
-            let filterName = child.type.name;
+            let paramName: string = child.props.paramName;
+            let filterName: string = child.type.name;
             if (['RangeFilter', 'DateRangeFilter'].indexOf(filterName) !== -1) {
                 this.filterProps.push(`${paramName}From`, `${paramName}To`);
             } else if (child.props.paramName) {
@@ -32,7 +33,7 @@ export class PagedListFilters extends React.Component<IPagedListFiltersProps, vo
     }
 
     render(): JSX.Element {
-        FilterForm = createFilterForm(this.props.resource);
+        InnerFilterForm = createFilterForm(this.props.resource);
         this.constructFilters();
         let children: React.ReactNode = this.props.children;
         if (isEmpty(children)) {
@@ -43,9 +44,13 @@ export class PagedListFilters extends React.Component<IPagedListFiltersProps, vo
                 <Button onClick={this.toggleFilters}>
                     <i className="fa fa-filter"/>
                 </Button>
-                <FilterForm fields={this.filterProps} resource={this.props.resource} filtersOpen={false}>
+                <InnerFilterForm
+                        filters={this.props.filters}
+                        fields={this.filterProps} 
+                        resource={this.props.resource} 
+                        filtersOpen={false}>
                     {children}
-                </FilterForm>
+                </InnerFilterForm>
             </div>
         );
     }

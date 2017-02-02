@@ -5,7 +5,7 @@ import {INVALID_INSTANCE} from '../constants';
 import {INVALID_STATE} from '../constants';
 
 export function deleteInstanceInList<T extends BaseModel>(state: any, resource: string, instance: T) {
-    let instanceList = getInstanceList(state, resource);
+    let instanceList: any = getInstanceList(state, resource);
     let {index} = findInstanceInList(instanceList, instance.properties.id);
 
     if (index >= 0) {
@@ -16,7 +16,7 @@ export function deleteInstanceInList<T extends BaseModel>(state: any, resource: 
 }
 
 export function getInstanceList(state: any, resource: string) {
-    let resourceData = getResourceData(state, resource).toJS();
+    let resourceData: any = getResourceData(state, resource).toJS();
     return !isEmpty(resourceData) && !isEmpty(resourceData.instanceList) ? resourceData.instanceList : [];
 }
 
@@ -31,7 +31,7 @@ export function setInstanceInList<T extends BaseModel>
         throw new Error(INVALID_INSTANCE);
     }
 
-    let instanceList = getInstanceList(state, resource);
+    let instanceList: any = getInstanceList(state, resource);
 
     let {index}: {index: number} = findInstanceInList<T>(instanceList, instance.properties.id);
     if (index < 0 && force) {
@@ -57,9 +57,9 @@ export function validateState(state: any) {
 export function deleteAllInstances<T extends BaseModel>(state: any, resource: string, instance: T) {
     validateState(state);
 
-    let updatedState = deleteInstanceInList(state, resource, instance); // Deleting instance from instanceList.
+    let updatedState: any = deleteInstanceInList(state, resource, instance); // Deleting instance from instanceList.
 
-    let editInstance = getEditInstance(updatedState, resource);
+    let editInstance: any = getEditInstance(updatedState, resource);
     if (!isEmpty(editInstance) && editInstance.properties.id === instance.properties.id) {
         updatedState = state.delete(`${resource}Edit`);
     }
@@ -73,11 +73,11 @@ export function deleteAllInstances<T extends BaseModel>(state: any, resource: st
 }
 
 export function setAllInstances<T extends BaseModel>
-(state: any, resource: string, instance: T, force: boolean = false) {
+        (state: any, resource: string, instance: T, force: boolean = false) {
     validateState(state);
     let updatedState = setInstanceInList(state, resource, instance, force); // Update the instance from <resource>List.
 
-    let editInstance = getEditInstance(updatedState, resource);
+    let editInstance: any = getEditInstance(updatedState, resource);
     if (!isEmpty(editInstance) && editInstance.properties.id === instance.properties.id) {
         // Update Edit Instance if the current and Edit instances are the same.
         updatedState = setEditInstance(state, resource, instance);
@@ -119,8 +119,8 @@ export function findInstanceInList<T>(instanceList: T[], id: string) {
             requiredInstance = instance;
             index = i;
             return false; // stop looping.
-            }
-    return true;
+        }
+        return true;
     });
 
     return {instance: requiredInstance, index};
