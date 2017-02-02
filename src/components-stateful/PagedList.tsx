@@ -9,9 +9,7 @@ import {BaseModel} from '../models/BaseModel';
 import {ModelService} from '../utils/modelService';
 import {UserActions} from '../components/PagedList/BulkUserActions';
 import {resetCheckboxState} from '../actions/userActions';
-import {IPagedListFiltersProps, IBulkUserActionType} from '../interfaces/index';
-import {createFilterForm} from '../components/PagedList/Filters/DynamicForm';
-import {QueryFilter} from '../components/PagedList/Filters/QueryFilter';
+import {IBulkUserActionType} from '../interfaces/index';
 import '../utils/appService';
 const objectAssign = require<any>('object-assign');
 
@@ -35,7 +33,6 @@ export interface IPagedListProps extends IPagedListStateProps, IPagedListDispatc
     userActionsMap?: IBulkUserActionType[];
 }
 
-let OuterQueryFilter: React.ComponentClass<IPagedListFiltersProps>;
 export class PagedListImpl extends React.Component<IPagedListProps, void> {
 
     fetchInstanceList(resource, filters: {max?: number, offset?: number} = {}): void {
@@ -96,7 +93,6 @@ export class PagedListImpl extends React.Component<IPagedListProps, void> {
     }
 
     render(): JSX.Element {
-        OuterQueryFilter = createFilterForm(this.props.resource);
         let activePage: number = this.props.activePage;
         let items: number = this.props.max ? Math.ceil(this.props.totalCount / this.props.max) : 1;
         return (
@@ -105,14 +101,7 @@ export class PagedListImpl extends React.Component<IPagedListProps, void> {
                     {this.props.resource.capitalize()} List
                     <Link to={`${this.props.resource}/create`} ><i className="fa fa-plus" /></Link>
                 </h2>
-                <OuterQueryFilter resource={this.props.resource} filtersOpen={true} fields={['query']}>
-                    <QueryFilter
-                            label="Search"
-                            paramName="query"
-                            placeholder={['Search']}
-                    />
-                </OuterQueryFilter>
-                <PagedListFilters resource={this.props.resource} filters={this.props.filters}>
+               <PagedListFilters resource={this.props.resource}>
                     {this.props.children}
                 </PagedListFilters>
                 {this.renderUserActionsComponent()}

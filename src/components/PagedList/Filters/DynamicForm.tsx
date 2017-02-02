@@ -1,77 +1,53 @@
 import * as React from 'react';
+import * as Radium from 'radium';
 import {IPagedListFiltersProps} from '../../../interfaces';
 import {ModelService} from '../../../utils/modelService';
 import {Button} from 'react-bootstrap';
+import {connect} from 'react-redux';
 const ReduxForm: any = require<any>('redux-form');
 const classNames: any = require<any>('classnames');
 
-export class InnerFilterForm extends React.Component<IPagedListFiltersProps, void> {
+@Radium
+export class InnerFilterFormImpl extends React.Component<IPagedListFiltersProps, void> {
 
     static defaultProps: IPagedListFiltersProps = {
-        filtersOpen: false,
-        fields: [],
-        filters: {}
+        filtersOpen: false
     };
 
     sendFilters(resource: string): void {
-        ModelService.getModel(resource).list(this.props.filters || {});
+        ModelService.getModel(resource).list();
     }
 
-    handleSubmit = (e): void => {
-        e.preventDefault();
+    handleSubmit = (event: React.FormEvent): void => {
+        event.preventDefault();
         this.sendFilters(this.props.resource);
     };
 
     render(): JSX.Element {
-        const { filtersOpen, children, fields } = this.props;
-        const childrenWithProps = React.Children.map(children,
-            (child: any) => {
-                let paramName = child.props.paramName;
-                let filterName = child.type.name;
-                if (['RangeFilter', 'DateRangeFilter'].indexOf(filterName) !== -1) {
-                    let from: string = `${paramName}From`;
-                    let to: string = `${paramName}To`;
-                    if (fields[from] && fields[to]) {
-                        return React.cloneElement(child, {
-                            fields: [fields[from], fields[to]]
-                        });
-                    } else {
-                        return child;
-                    }
-                } else {
-                    if (fields[paramName]) {
-                        return React.cloneElement(child, {
-                            fields: [fields[paramName]]
-                        });
-                    } else {
-                        return child;
-                    }
-                }
-            });
-
-        let hideClass: string = filtersOpen ? '' : 'hide';
+        let hideClass: string = this.props.filtersOpen ? '' : 'hide';
         return (
             <form className={classNames('form-inline', 'filter-form', 'stick-left', hideClass)}
-                  onSubmit={this.handleSubmit}>
-                {childrenWithProps}
+                    onSubmit={this.handleSubmit}>
+                {this.props.children}
                 <Button className="filter-button" bsStyle="primary" type="submit">Submit</Button>
             </form>
         );
     }
 }
 
-function mapStateToProps(state): {filtersOpen: boolean} {
+function mapStateToProps(state: {data: any}): {filtersOpen: boolean} {
     return {
         filtersOpen: state.data.get('filtersOpen')
     };
 }
 
-export function createFilterForm(resource): typeof InnerFilterForm {
-    return ReduxForm.reduxForm(
-        {
-            form: `${resource}Filters`,
-            destroyOnUnmount: false
-        },
-        mapStateToProps
-    )(InnerFilterForm);
+export function createFilterForm(resource: string) {
+    let InnerFilterFormConnected = ReduxForm.reduxForm({
+        form: `${resource}Filters`
+    })(InnerFilterFormImpl);
+
+    let InnerFilterForm: React.ComponentClass<IPagedListFiltersProps> = 
+            connect<{}, {}, IPagedListFiltersProps>(mapStateToProps)(InnerFilterFormConnected);
+    
+    return InnerFilterForm;
 }
