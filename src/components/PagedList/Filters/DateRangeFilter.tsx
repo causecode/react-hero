@@ -1,18 +1,27 @@
 import * as React from 'react';
-import {FormGroup, ControlLabel, FormControl} from 'react-bootstrap';
-import '../../../utils/appService';
+import {FormGroup, ControlLabel} from 'react-bootstrap';
 import {IFilter} from '../../../interfaces';
+import {GenericFilter} from './GenericFilter';
+const Field = require<any>('redux-form').Field;
 
-export function DateRangeFilter({ label, paramName, fields }: IFilter, {}): JSX.Element {
+export function DateRangeFilter({label, paramName}: IFilter): JSX.Element {
 
     label = label ? label : paramName;
     return (
         <FormGroup>
-            <ControlLabel>{ label.capitalize() }</ControlLabel>
+            <ControlLabel>{label.capitalize()}</ControlLabel>
             <strong>From</strong>
-            <FormControl type="date" {...fields[0]}/>
+            <Field 
+                    type="date"
+                    component={GenericFilter}
+                    name={`${paramName}From`}
+            />
             <strong>To</strong>
-            <FormControl type="date" {...fields[1]}/>
+            <Field 
+                    type="date"
+                    component={GenericFilter}
+                    name={`${paramName}To`}
+            />
         </FormGroup>
     );
 }
