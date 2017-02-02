@@ -48,12 +48,16 @@ module ComponentService {
     }
 
     export function getComponent(name: string, type: string = ''): ComponentType {
-        name = (type.length && (name.indexOf(type) === -1)) ? `${name}${type}`.toLowerCase() : name.toLowerCase();
+        if (type && type.length) {
+            return resolver.get(`${name}${type}`);
+        }
         return resolver.get(name);
     }
 
     export function hasComponent(name: string, type: string = ''): boolean {
-        name = (type.length && (name.indexOf(type) === -1)) ? `${name}${type}`.toLowerCase() : name.toLowerCase();
+        if (type && type.length) {
+            return resolver.has(`${name}${type}`);
+        }
         return resolver.has(name);
     }
 
@@ -115,7 +119,7 @@ module ComponentService {
 
     export function getFormPage(name: string, isCreatePage: boolean): ComponentType {
         if (isCreatePage) {
-            return getCreatePage(name)
+            return getCreatePage(name);
         } else {
             return getEditPage(name);
         }

@@ -9,11 +9,12 @@ export class InnerFilterForm extends React.Component<IPagedListFiltersProps, voi
 
     static defaultProps: IPagedListFiltersProps = {
         filtersOpen: false,
-        fields: []
+        fields: [],
+        filters: {}
     };
 
     sendFilters(resource: string): void {
-        ModelService.getModel(resource).list();
+        ModelService.getModel(resource).list(this.props.filters || {});
     }
 
     handleSubmit = (e): void => {

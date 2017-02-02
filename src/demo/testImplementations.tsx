@@ -100,7 +100,7 @@ export class ContentImpl extends ResponsiveView<any, any> {
 
     protected renderDefault(): JSX.Element {
         return (
-            <h1>THis is the default Content</h1>
+            <h1>This is the default Content</h1>
         );
     }
 

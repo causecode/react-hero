@@ -9,8 +9,16 @@ const {Form} = require<any>('react-redux-form');
 
 export interface IGenericEditPageProps extends IInstancePageProps {
     location?: {pathname?: string};
-    handleSubmit: (instance: BaseModel) => void;
-    handleDelete?: (instance: BaseModel) => void;
+    handleSubmit: (
+        instance: BaseModel, 
+        successCallBack?: ((any) => {}), 
+        failureCallBack?: ((any) => {})
+    ) => void;
+    handleDelete?: (
+        instance: BaseModel, 
+        successCallBack?: ((any) => {}), 
+        failureCallBack?: ((any) => {})
+    ) => void;
     params: {resource: string};
     instance: BaseModel;
     isCreatePage: boolean;
@@ -37,12 +45,12 @@ export class GenericEditPage extends React.Component<IGenericEditPageProps, void
 
     handleSubmit = (): void => {
         // Not using connect here to avoid rerendering of component on change of instance properties.
-        this.props.handleSubmit(this.fetchStoreInstance());
+        this.props.handleSubmit(this.fetchStoreInstance(), (): any => {}, (): any => {});
     }
 
     handleDelete = (): void => {
         if (this.props.handleDelete && this.props.handleDelete instanceof Function) {
-            this.props.handleDelete(this.fetchStoreInstance()); 
+            this.props.handleDelete(this.fetchStoreInstance(), (): any => {}, (): any => {}); 
         }
     }
 

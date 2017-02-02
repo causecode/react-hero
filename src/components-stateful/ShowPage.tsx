@@ -3,11 +3,10 @@ import {DefaultModel, BaseModel} from '../models/BaseModel';
 import {ComponentService} from '../utils/componentService';
 const connect: any = require<any>('react-redux').connect;
 import {ModelService} from '../utils/modelService';
-import {IInstanceContainerProps} from '../interfaces';
+import {IInstanceContainerProps, IFromJS} from '../interfaces';
 import {PAGE_NOT_FOUND} from '../constants';
 import {ErrorPage} from '../components/ErrorPage';
 import {store} from '../store';
-import {IFromJS} from '../../public/interfaces/index';
 
 export class ShowPageImpl extends React.Component<IInstanceContainerProps, void> {
 

@@ -2,13 +2,12 @@ import * as React from 'react';
 import {DefaultModel, BaseModel} from '../models/BaseModel';
 import {ComponentService, ComponentType} from '../utils/componentService';
 import {ModelService} from '../utils/modelService';
-import {IInstanceContainerProps} from '../interfaces';
+import {IInstanceContainerProps, IFromJS} from '../interfaces';
 import {IInjectedProps} from 'react-router';
 import {INSTANCE_NOT_FOUND} from '../constants';
 import {ErrorPage} from '../components/ErrorPage';
 import {IGenericEditPageProps} from '../components/CRUD/GenericEditPage';
 import {connect} from 'react-redux';
-import {IFromJS} from '../../public/interfaces/index';
 import {isEmpty, initializeFormWithInstance, objectEquals} from '../utils/appService';
 import {store} from '../store';
 import '../init';
@@ -55,16 +54,18 @@ export class EditPageImpl extends React.Component<EditPageProps, void> {
         initializeFormWithInstance(this.props.instance, this.isCreatePage());
     }
 
-    handleSubmit = (instance: BaseModel): void => {
+    handleSubmit = (instance: BaseModel, successCallBack?: (any) => {}, 
+            failureCallBack?: (any) => {}): void => {
         if (this.isCreatePage()) {
-            instance.$save(true);
+            instance.$save(true, {}, successCallBack, failureCallBack);
         } else {
-            instance.$update(true);
+            instance.$update(true, {}, successCallBack, failureCallBack);
         }
     }
 
-    handleDelete = (): void => {
-        this.props.instance.$delete(true);
+    handleDelete = (instance: BaseModel, successCallBack?: (any) => {}, 
+            failureCallBack?: (any) => {}): void => {
+        instance.$delete(true, {}, successCallBack, failureCallBack);
     };
 
     componentWillReceiveProps(nextProps: EditPageProps): void {

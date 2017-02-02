@@ -1,11 +1,11 @@
 import * as React from 'react';
+import * as moment from 'moment';
 import {BaseModel} from '../models/BaseModel';
 import {ModelPropTypes} from '../models/ModelPropTypes';
 import {store} from '../store';
 import {ControlLabel, Col, FormGroup} from 'react-bootstrap';
 import {FormInput} from '../components/Widgets';
-import * as moment from 'moment';
-import {IImmutable} from '../interfaces/index';
+import {IImmutable} from '../interfaces';
 import {fromJS} from 'immutable';
 const {actions} = require<any>('react-redux-form');
 
@@ -41,8 +41,7 @@ export function parseWidgetDate(date: number | string | Date): string {
     let timestamp: number = date as number;
     if (date instanceof Date) {
         timestamp = date.getTime();
-    }
-    if (typeof date === 'string') {
+    }else if (typeof date === 'string') {
         timestamp = parseInt(date, 10); 
     }
     return moment(timestamp).format('YYYY-MM-DD');
@@ -102,6 +101,7 @@ function fetchComponent(componentPath: string, componentName: string, theme?: st
     /**
      * TODO use the path of the app root directory instead of ../../../../src.
      */
+    // return require(`../../src/${theme || 'default'}/${componentPath}`)[`${componentName}`];
     return require(`../../../../src/${theme || 'default'}/${componentPath}`)[`${componentName}`];
 }
 
@@ -142,11 +142,11 @@ export function generateSubForm(propertyName: string, propTypes: any, model: str
             }
             return (
                 <FormInput
-                    type={propTypes[prop].type}
-                    enum={propTypes[prop].enum}
-                    key={`form-control-sub-${propertyName}-${index}`}
-                    propertyName={prop} 
-                    model={model + '.' + prop}
+                        type={propTypes[prop].type}
+                        enum={propTypes[prop].enum}
+                        key={`form-control-sub-${propertyName}-${index}`}
+                        propertyName={prop} 
+                        model={model + '.' + prop}
                 />
             );
         }
@@ -178,7 +178,8 @@ export function generateForm<T extends BaseModel>(
                 let keyPath: string = model ? model + '.' + prop : prop; 
                 let propertyValue: any = getIn(instance.properties, keyPath);
                 let type: string = instance.propTypes[prop].type;
-                let formModelString: string = isCreatePage ? `${instance.resourceName}Create` : `${instance.resourceName}Edit`;
+                let formModelString: string = isCreatePage ? `${instance.resourceName}Create` : 
+                        `${instance.resourceName}Edit`;
                 let modelString: string = getModelString(formModelString, 'properties', keyPath);
                 if (type === ModelPropTypes.objectInputType) {
                     return generateSubForm(
@@ -189,11 +190,12 @@ export function generateForm<T extends BaseModel>(
                 }
                 return (
                     <FormInput
-                        type={instance.propTypes[prop].type}
-                        enum={instance.propTypes[prop].enum}
-                        key={`form-control-${instance.resourceName}-${index}`}
-                        propertyName={prop} 
-                        model={modelString}
+                            type={instance.propTypes[prop].type}
+                            enum={instance.propTypes[prop].enum}
+                            key={`form-control-${instance.resourceName}-${index}`}
+                            propertyName={prop}
+                            propertyValue={propertyValue} 
+                            model={modelString}
                     />
                 );
             })}

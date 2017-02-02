@@ -1,7 +1,6 @@
 import {fromJS} from 'immutable';
 import {BaseModel} from '../models/BaseModel';
 import {ModelService} from '../utils/modelService';
-import {MissingActionPayloadError} from '../errors/MissingActionPayloadError';
 import {
     FETCH_INSTANCE_LIST_START,
     FETCH_INSTANCE_LIST_FULFILLED,
@@ -18,7 +17,7 @@ import {
 } from '../constants';
 import * as StoreService from '../utils/storeService';
 import {MISSING_ACTION_PAYLOAD} from '../constants';
-import {IFromJS} from '../../public/interfaces/index';
+import {IFromJS} from '../interfaces';
 
 const INITIAL_STATE = fromJS({
     filtersOpen: false,
@@ -39,7 +38,7 @@ function dataReducer(state = INITIAL_STATE, action ): IFromJS {
                 let payloadData = action.payload;
                 for (let key in payloadData) {
                     if (payloadData.hasOwnProperty(key)) {
-                        if (payloadData[key].constructor === Object) {
+                        if (payloadData[key] && payloadData[key].constructor === Object) {
                             (<any>Object).assign(instance, payloadData[key]);
                         } else {
                             instance[key] = payloadData[key];
