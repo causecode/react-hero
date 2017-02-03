@@ -17,7 +17,7 @@ describe('Tests for DateRangeFilter', () => {
     );
 
     unroll('should render #count #component', (done, args) => {
-         expect(dateRangeFilter.find(args.component).length).toBe(args.count);
+        expect(dateRangeFilter.find(args.component).length).toBe(args.count);
         done();
     }, [
         ['component', 'count'],
