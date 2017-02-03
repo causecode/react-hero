@@ -10,18 +10,18 @@ export function DateRangeFilter({label, paramName}: IFilter): JSX.Element {
     return (
         <FormGroup>
             <ControlLabel>{label.capitalize()}</ControlLabel>
+            
             <strong>From</strong>
-            <Field 
-                    type="date"
-                    component={GenericFilter}
-                    name={`${paramName}From`}
-            />
+            {renderDateRange(`${paramName}From`)}
+            
             <strong>To</strong>
-            <Field 
-                    type="date"
-                    component={GenericFilter}
-                    name={`${paramName}To`}
-            />
+            {renderDateRange(`${paramName}To`)}
         </FormGroup>
+    );
+}
+
+function renderDateRange(paramName: string): JSX.Element {
+    return (
+         <Field type="date" component={GenericFilter} name={paramName} />
     );
 }

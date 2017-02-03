@@ -10,18 +10,18 @@ export function RangeFilter({label, paramName, type}: IFilter): JSX.Element {
     return (
         <FormGroup>
             <ControlLabel>{label.capitalize()}</ControlLabel>
+            
             <strong>From</strong>
-            <Field 
-                    type={type || 'text'}
-                    name={`${paramName}From`}
-                    component={GenericFilter}
-            />
+            {renderRangeFilterField(`${paramName}From`, type || 'text')}
+            
             <strong>To</strong>
-            <Field 
-                    type={type || 'text'}
-                    name={`${paramName}To`}
-                    component={GenericFilter}
-            />
+            {renderRangeFilterField(`${paramName}To`, type || 'text')}
         </FormGroup>
+    );
+}
+
+function renderRangeFilterField(paramName: string, type: string): JSX.Element {
+    return (
+        <Field type={type} name={paramName} component={GenericFilter} />
     );
 }
