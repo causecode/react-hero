@@ -17,7 +17,7 @@ describe('Tests for RangeFilter', () => {
     );
 
     unroll('should render #count #component', (done, args) => {
-         expect(rangeFilter.find(args.component).length).toBe(args.count);
+        expect(rangeFilter.find(args.component).length).toBe(args.count);
         done();
     }, [
         ['component', 'count'],

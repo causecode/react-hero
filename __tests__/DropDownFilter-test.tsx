@@ -22,7 +22,7 @@ describe('Tests for DropDownFilter', () => {
     );
 
     unroll('should render #count #component', (done, args) => {
-         expect(dropDownFilter.find(args.component).length).toBe(args.count);
+        expect(dropDownFilter.find(args.component).length).toBe(args.count);
         done();
     }, [
         ['component', 'count'],

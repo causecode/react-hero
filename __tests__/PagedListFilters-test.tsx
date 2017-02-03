@@ -29,7 +29,7 @@ describe('Tests for PagedListFilters', () => {
     );
 
     unroll('should render #count #component', (done, args) => {
-         expect(pagedListFilters.find(args.component).length).toBe(args.count);
+        expect(pagedListFilters.find(args.component).length).toBe(args.count);
         done();
     }, [
         ['component', 'count'],

@@ -16,7 +16,7 @@ describe('Tests for QueryFilter', () => {
     );
 
     unroll('should render #count #component', (done, args) => {
-         expect(queryFilter.find(args.component).length).toBe(args.count);
+        expect(queryFilter.find(args.component).length).toBe(args.count);
         done();
     }, [
         ['component', 'count'],
