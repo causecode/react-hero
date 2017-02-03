@@ -13,7 +13,7 @@ unroll.use(it);
 describe('Tests for DateRangeFilter', () => {
 
     const dateRangeFilter: ShallowWrapper<IFilter, void> = shallow<IFilter,  void> (
-        <DateRangeFilter label="Date Range" paramName="dateBetween" />
+            <DateRangeFilter label="Date Range" paramName="dateBetween" />
     );
 
     unroll('should render #count #component', (done, args) => {

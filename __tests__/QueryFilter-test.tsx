@@ -12,7 +12,7 @@ unroll.use(it);
 describe('Tests for QueryFilter', () => {
 
     const queryFilter: ShallowWrapper<IQueryFilter, void> = shallow<IQueryFilter,  void> (
-        <QueryFilter label="Search" paramName="query" placeholder="Start typing to search..." />
+            <QueryFilter label="Search" paramName="query" placeholder="Start typing to search..." />
     );
 
     unroll('should render #count #component', (done, args) => {

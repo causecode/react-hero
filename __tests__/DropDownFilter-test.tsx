@@ -18,7 +18,7 @@ describe('Tests for DropDownFilter', () => {
     ];
 
     const dropDownFilter: ShallowWrapper<IDropDownFilter, void> = shallow<IDropDownFilter,  void> (
-        <DropDownFilter label="Country" paramName="countryName" possibleValues={possibleValues} />
+            <DropDownFilter label="Country" paramName="countryName" possibleValues={possibleValues} />
     );
 
     unroll('should render #count #component', (done, args) => {

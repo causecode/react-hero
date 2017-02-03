@@ -13,7 +13,7 @@ unroll.use(it);
 describe('Tests for RangeFilter', () => {
 
     const rangeFilter: ShallowWrapper<IFilter, void> = shallow<IFilter,  void> (
-        <RangeFilter label="Price Range" paramName="priceBetween" />
+            <RangeFilter label="Price Range" paramName="priceBetween" />
     );
 
     unroll('should render #count #component', (done, args) => {

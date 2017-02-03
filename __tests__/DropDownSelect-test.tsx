@@ -19,7 +19,7 @@ describe('Tests for DropDownSelect', () => {
     let handleChange: jest.Mock<void> = jest.fn<void>();
 
     const dropDownSelect: ShallowWrapper<IDropDownValueProps, void> = shallow<IDropDownValueProps,  void> (
-        <DropDownSelect input={{onChange: handleChange, value: 'india'}} possibleValues={possibleValues} />
+            <DropDownSelect input={{onChange: handleChange, value: 'india'}} possibleValues={possibleValues} />
     );
 
     unroll('should render #count #component', (done, args) => {

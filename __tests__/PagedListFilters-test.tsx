@@ -15,7 +15,7 @@ unroll.use(it);
 describe('Tests for PagedListFilters', () => {
 
     const emptyPagedListFilter: ShallowWrapper<IPagedListFiltersProps, void> = shallow<IPagedListFiltersProps, void> (
-        <PagedListFilters></PagedListFilters>
+            <PagedListFilters></PagedListFilters>
     );
 
     it('should render empty div when no filter is provided', () => {
@@ -23,9 +23,9 @@ describe('Tests for PagedListFilters', () => {
     });
 
     const pagedListFilters: ShallowWrapper<IPagedListFiltersProps, void> = shallow<IPagedListFiltersProps,  void> (
-        <PagedListFilters>
-             <QueryFilter label="Search" paramName="query" placeholder="Search" />
-        </PagedListFilters>
+            <PagedListFilters>
+                <QueryFilter label="Search" paramName="query" placeholder="Search" />
+            </PagedListFilters>
     );
 
     unroll('should render #count #component', (done, args) => {

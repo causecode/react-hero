@@ -51,9 +51,9 @@ describe('Tests for DynamicForm', () => {
     ];
 
     const dynamicForm: ShallowWrapper<IPagedListFiltersProps, void> = shallow<IPagedListFiltersProps, void> (
-        <InnerFilterFormImpl resource="blog" filtersOpen={false}>
-            {children}
-        </InnerFilterFormImpl>
+            <InnerFilterFormImpl resource="blog" filtersOpen={false}>
+                {children}
+            </InnerFilterFormImpl>
     );
 
     unroll('should render #count #component', (done, args) => {
