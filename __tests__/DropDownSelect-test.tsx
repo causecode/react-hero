@@ -32,7 +32,7 @@ describe('Tests for DropDownSelect', () => {
     ]);
 
     unroll('should render #prop correctly', (done, args) => {
-        expect(dropDownSelect.props()[``]);
+        expect(dropDownSelect.props()[args.prop]).toEqual(args.propValue);
         done();
     }, [
         ['prop', 'propValue'],
