@@ -16,10 +16,8 @@ export class DropDownSelect extends React.Component<IDropDownValueProps, void> {
         if (possibleValues && possibleValues.length > 0) {
             possibleValues.forEach((item: IDropDownFilterValueMap, index: number) => {
                 options.push(
-                    <option
-                            key={index}
-                            value={item.value}>
-                            {item.label}
+                    <option key={index} value={item.value}>
+                        {item.label}
                     </option>
                 );
             });
@@ -27,7 +25,7 @@ export class DropDownSelect extends React.Component<IDropDownValueProps, void> {
         return options;
     }
 
-    render() {
+    render(): JSX.Element {
         const {input} = this.props;
         return (
             <FormControl componentClass="select" {...input}>
