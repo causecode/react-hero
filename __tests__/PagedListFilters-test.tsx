@@ -18,23 +18,21 @@ describe('Tests for PagedListFilters', () => {
             <PagedListFilters></PagedListFilters>
     );
 
-    it('should render empty div when no filter is provided', () => {
-        expect(emptyPagedListFilter.find('div').length).toEqual(1);
-    });
-
     const pagedListFilters: ShallowWrapper<IPagedListFiltersProps, void> = shallow<IPagedListFiltersProps,  void> (
             <PagedListFilters>
                 <QueryFilter label="Search" paramName="query" placeholder="Search" />
             </PagedListFilters>
     );
 
-    unroll('should render #count #component', (done, args) => {
-        expect(pagedListFilters.find(args.component).length).toBe(args.count);
+    unroll('should render #count #element', (done, args) => {
+        expect(args.component.find(args.element).length).toBe(args.count);
         done();
     }, [
-        ['component', 'count'],
-        ['Button', 1],
-        ['div', 1]
+        ['component', 'element', 'count'],
+        [emptyPagedListFilter, 'Button', 0],
+        [emptyPagedListFilter, 'div', 0],
+        [pagedListFilters, 'Button', 1],
+        [pagedListFilters, 'div', 1]
     ]);
 
     toggleFilters = jest.fn(() => {

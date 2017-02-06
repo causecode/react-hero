@@ -6,21 +6,21 @@ const Field = require<any>('redux-form').Field;
 
 export function RangeFilter({label, paramName, type}: IFilter): JSX.Element {
 
-    label = label ? label : paramName;
+    label = label || paramName;
     return (
         <FormGroup>
             <ControlLabel>{label.capitalize()}</ControlLabel>
             
             <strong>From</strong>
-            {renderRangeFilterField(`${paramName}From`, type || 'text')}
+            {renderRangeFilter(`${paramName}From`, type || 'text')}
             
             <strong>To</strong>
-            {renderRangeFilterField(`${paramName}To`, type || 'text')}
+            {renderRangeFilter(`${paramName}To`, type || 'text')}
         </FormGroup>
     );
 }
 
-function renderRangeFilterField(paramName: string, type: string): JSX.Element {
+export function renderRangeFilter(paramName: string, type: string): JSX.Element {
     return (
         <Field type={type} name={paramName} component={GenericFilter} />
     );

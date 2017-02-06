@@ -1,16 +1,16 @@
 import * as React from 'react';
 import {FormGroup, ControlLabel} from 'react-bootstrap';
-import {IFilter, IDropDownFilterValueMap} from '../../../interfaces';
+import {IFilter, IDropDownFilterData} from '../../../interfaces';
 import {DropDownSelect} from './DropDownSelect';
 const Field = require<any>('redux-form').Field;
 
 export interface IDropDownFilter extends IFilter {
-    possibleValues?: IDropDownFilterValueMap[];
+    possibleValues?: IDropDownFilterData[];
 }
 
 export function DropDownFilter({label, paramName, possibleValues}: IDropDownFilter): JSX.Element {
 
-    label = label ? label : paramName;
+    label = label || paramName;
     return (
         <FormGroup>
             <ControlLabel>{label.capitalize()}</ControlLabel>

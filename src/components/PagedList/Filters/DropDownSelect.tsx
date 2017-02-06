@@ -1,20 +1,20 @@
 import * as React from 'react';
 import {FormControl} from 'react-bootstrap';
-import {IDropDownFilterValueMap} from '../../../interfaces';
+import {IDropDownFilterData} from '../../../interfaces';
 
-export interface IDropDownValueProps {
-    possibleValues: IDropDownFilterValueMap[];
+export interface IDropDownSelectProps {
+    possibleValues: IDropDownFilterData[];
     input: any; // this field is injected by redux-form
 }
 
-export class DropDownSelect extends React.Component<IDropDownValueProps, void> {
+export class DropDownSelect extends React.Component<IDropDownSelectProps, void> {
     
     renderOptions = (): JSX.Element[] => {
         let options: JSX.Element[] = [];
-        let possibleValues: IDropDownFilterValueMap[] = this.props.possibleValues;
+        let possibleValues: IDropDownFilterData[] = this.props.possibleValues;
         
         if (possibleValues && possibleValues.length > 0) {
-            possibleValues.forEach((item: IDropDownFilterValueMap, index: number) => {
+            possibleValues.forEach((item: IDropDownFilterData, index: number) => {
                 options.push(
                     <option key={index} value={item.value}>
                         {item.label}

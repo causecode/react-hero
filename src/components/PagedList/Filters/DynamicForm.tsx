@@ -47,7 +47,7 @@ export function createFilterForm(resource: string) {
     })(InnerFilterFormImpl);
 
     let InnerFilterForm: React.ComponentClass<IPagedListFiltersProps> = 
-            connect<{}, {}, IPagedListFiltersProps>(mapStateToProps)(InnerFilterFormConnected);
+            connect<void, void, IPagedListFiltersProps>(mapStateToProps)(InnerFilterFormConnected);
     
     return InnerFilterForm;
 }

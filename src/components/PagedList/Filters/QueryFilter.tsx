@@ -10,7 +10,7 @@ export interface IQueryFilter extends IFilter {
 
 export function QueryFilter ({label, placeholder, paramName}: IQueryFilter): JSX.Element {
 
-    label = label ? label : paramName;
+    label = label || paramName;
     return (
         <FormGroup className="query-filter">
             <ControlLabel>{label.capitalize()}</ControlLabel>

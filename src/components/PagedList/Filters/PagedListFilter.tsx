@@ -29,7 +29,7 @@ export class PagedListFilters extends React.Component<IPagedListFiltersProps, vo
     render(): JSX.Element {
         let children: React.ReactNode = this.props.children;
         if (isEmpty(children)) {
-            return <div></div>;
+            return null;
         }
         return (
             <div className="paged-list-filters">

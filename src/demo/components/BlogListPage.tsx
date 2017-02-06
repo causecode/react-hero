@@ -7,7 +7,7 @@ import {DateRangeFilter} from '../../components/PagedList/Filters/DateRangeFilte
 
 export class BlogListPage extends React.Component<{resource: string}, void> {
     static resourceName: string = 'blog';
-    
+
     render(): JSX.Element {
         return (
             <div>

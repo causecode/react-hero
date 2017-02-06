@@ -1,9 +1,9 @@
 jest.unmock('../src/components/PagedList/Filters/DropDownSelect');
 
 import * as React from 'react';
-import {DropDownSelect, IDropDownValueProps} from '../src/components/PagedList/Filters/DropDownSelect';
+import {DropDownSelect, IDropDownSelectProps} from '../src/components/PagedList/Filters/DropDownSelect';
 import {ShallowWrapper, shallow} from 'enzyme';
-import {IDropDownFilterValueMap} from '../src/interfaces';
+import {IDropDownFilterData} from '../src/interfaces';
 
 const unroll = require<any>('unroll');
 
@@ -11,14 +11,14 @@ unroll.use(it);
 
 describe('Tests for DropDownSelect', () => {
 
-    let possibleValues: IDropDownFilterValueMap[] = [
+    let possibleValues: IDropDownFilterData[] = [
         {label: 'India', value: 'india'},
         {label: 'United Kingdom', value: 'uk'}
     ];
 
     let handleChange: jest.Mock<void> = jest.fn<void>();
 
-    const dropDownSelect: ShallowWrapper<IDropDownValueProps, void> = shallow<IDropDownValueProps,  void> (
+    const dropDownSelect: ShallowWrapper<IDropDownSelectProps, void> = shallow<IDropDownSelectProps,  void> (
             <DropDownSelect input={{onChange: handleChange, value: 'india'}} possibleValues={possibleValues} />
     );
 
@@ -40,7 +40,7 @@ describe('Tests for DropDownSelect', () => {
         ['onChange', handleChange]
     ]);
 
-    it('should call handleChange function onChange', () => {
+    it('should call handleChange function when a value is selected from dropdown filter', () => {
         expect(handleChange).not.toBeCalled();
         dropDownSelect.find('FormControl').simulate('change');
         expect(handleChange).toBeCalled(); 
