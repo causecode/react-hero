@@ -15,14 +15,12 @@
     "react-motion": "registry:dt/react-motion#0.0.0+20160406115320",
     "react-redux": "registry:dt/react-redux#4.4.0+20160501125835",
     "redux": "registry:dt/redux#3.3.1+20160326112656",
-    "redux-form": "registry:dt/redux-form#4.0.3+20160614092506",
     "redux-logger": "registry:dt/redux-logger#2.6.0+20160619033847",
     "underscore": "registry:dt/underscore#1.8.3+20160908111004",
     "whatwg-fetch": "registry:dt/whatwg-fetch#0.0.0+20160524142046"
   },
   "dependencies": {
     "enzyme": "registry:npm/enzyme#2.2.0+20160322031343",
-    "radium": "registry:dt/radium#0.18.1+20160915014424",
     "react-router": "registry:npm/react-router#2.4.0+20160616150328",
     "react-router-redux": "registry:npm/react-router-redux#4.0.0+20160602212457"
   }

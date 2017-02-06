@@ -1,19 +1,16 @@
 import {MODEL_RESOURCE_ERROR, MISSING_ID_IN_METHOD} from './../constants';
-import {store} from '../store';
 import {saveInstance, updateInstance, deleteInstance} from '../actions/modelActions';
-import {HTTP} from '../api/server/index';
+import {HTTP} from '../api/server';
 import {isEmpty} from '../utils/appService';
-import {FETCH_INSTANCE_DATA, FETCH_INSTANCE_LIST} from '../constants';
+import {FETCH_INSTANCE_DATA, FETCH_INSTANCE_LIST, NO_PROP_TYPES, NO_DEFAULT_PROPS} from '../constants';
 import {ModelService} from '../utils/modelService';
 import {saveAllInstances, unsetList} from '../actions/modelActions';
 import {findInstanceByID} from '../utils/storeService';
-import {NO_PROP_TYPES, NO_DEFAULT_PROPS} from '../constants';
 import {Dictionary, IFromJS} from '../interfaces';
 import {fromJS} from 'immutable';
+import {store} from '../store';
 const objectAssign: any = require <any> ('object-assign');
-const getValues: (state : any) => any = require <{
-    getValues: (state : any) => any
-}> ('redux-form').getValues;
+const getFormValues = require<any>('redux-form').getFormValues;
 
 const FETCH_ERR_MSG: string = `Request couldn't be processed.`;
 
@@ -145,8 +142,9 @@ export class BaseModel {
             if (!valueInStore) {
                 // Fetch list data from server and save it in the store followed by returning it.
                 let path: string = resourceName;
-                let filterFormData: any = getValues(store.getState().form[`${resourceName}Filters`]);
+                let filterFormData: any = getFormValues(`${resourceName}Filters`)(store.getState());
                 objectAssign(filters, filterFormData);
+                
                 store.dispatch(
                     getPromiseAction(
                         FETCH_INSTANCE_LIST,

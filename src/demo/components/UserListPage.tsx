@@ -14,27 +14,35 @@ export class UserListPage extends React.Component<{resource: any}, any> {
                 <h1 style={{background : 'red'}}>This is MY user list page</h1>
                 <PagedList resource={this.props.resource} max={10}>
                     <DropDownFilter
-                        label = "status"
-                        paramName = "status"
-                        possibleValues = {['enable', 'disable', 'inactive']}
+                            label = "status"
+                            paramName = "status"
+                            possibleValues = {[
+                                {label: 'Enable', value: 'enable'},
+                                {label: 'Disable', value: 'disable'},
+                                {label: 'Inactive', value: 'inactive'}
+                            ]}
                     />
                     <RangeFilter
-                        label = "Bill Amount"
-                        paramName = "billAmount"
+                            label = "Bill Amount"
+                            paramName = "billAmount"
                     />
                     <DateRangeFilter
-                        label = "Date Created"
-                        paramName = "dateCreated"
+                            label = "Date Created"
+                            paramName = "dateCreated"
                     />
                     <DropDownFilter
-                        label = "types"
-                        paramName = "types"
-                        possibleValues = {['Zoo', 'Jungle', 'Forest']}
+                            label = "types"
+                            paramName = "types"
+                            possibleValues = {[
+                                {label: 'Zoo', value: 'zoo'},
+                                {label: 'Jungle', value: 'jungle'},
+                                {label: 'Forest', value: 'forest'}
+                            ]}
                     />
                     <QueryFilter
-                        label = "Search"
-                        paramName = "query"
-                        placeholder = {['First Name', 'Last Name', 'Email']}
+                            label = "Search"
+                            paramName = "query"
+                            placeholder = "First Name, Last Name, Email"
                     />
                 </PagedList>
             </div>
