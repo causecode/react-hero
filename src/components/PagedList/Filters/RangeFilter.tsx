@@ -1,19 +1,27 @@
 import * as React from 'react';
-import {FormGroup, FormControl, ControlLabel} from 'react-bootstrap';
-import '../../../utils/appService';
+import {FormGroup, ControlLabel} from 'react-bootstrap';
 import {IFilter} from '../../../interfaces';
+import {GenericFilter} from './GenericFilter';
+const Field = require<any>('redux-form').Field;
 
-export function RangeFilter({ label, paramName, fields }: IFilter, {}): JSX.Element {
+export function RangeFilter({label, paramName, type}: IFilter): JSX.Element {
 
-    label = label ? label : paramName;
+    label = label || paramName;
     return (
         <FormGroup>
-            <ControlLabel>{ label.capitalize() }</ControlLabel>
+            <ControlLabel>{label.capitalize()}</ControlLabel>
+            
             <strong>From</strong>
-            <FormControl type="text" {...fields[0]}/>
-
+            {renderRangeFilter(`${paramName}From`, type || 'text')}
+            
             <strong>To</strong>
-            <FormControl type="text" {...fields[1]}/>
+            {renderRangeFilter(`${paramName}To`, type || 'text')}
         </FormGroup>
+    );
+}
+
+export function renderRangeFilter(paramName: string, type: string): JSX.Element {
+    return (
+        <Field type={type} name={paramName} component={GenericFilter} />
     );
 }

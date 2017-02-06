@@ -1,4 +1,3 @@
-import {FieldProp} from 'redux-form';
 import {Props} from 'react';
 import {BaseModel} from '../models/BaseModel';
 
@@ -48,7 +47,8 @@ export interface IFilter {
     paramName?: string;
     offset?: number;
     sort?: 'asc' | 'desc';
-    fields?: FieldProp | FieldProp[];
+    // Added for range-filter customization to render field as number input field or normal text input field
+    type?: string;  
 }
 
 // Interface for props used by the PagedListFilters.
@@ -56,7 +56,6 @@ export interface IPagedListFiltersProps extends Props<{}> {
     fields?: string[];
     resource?: string;
     filtersOpen?: boolean;
-    filters?: any;
 }
 
 export interface IFromJS {
@@ -103,4 +102,9 @@ export interface IGenericAction {
 export interface IUserAction {
     type: string;
     payload: number|boolean|string;
+}
+
+export interface IDropDownFilterData {
+    label: string;
+    value: string;
 }

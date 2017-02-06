@@ -1,19 +1,25 @@
 import * as React from 'react';
-import {FormGroup, FormControl, ControlLabel} from 'react-bootstrap';
-import '../../../utils/appService';
+import {FormGroup, ControlLabel} from 'react-bootstrap';
 import {IFilter} from '../../../interfaces';
+import {GenericFilter} from './GenericFilter';
+const Field = require<any>('redux-form').Field;
 
 export interface IQueryFilter extends IFilter {
-    placeholder: Array<string>;
+    placeholder: string;
 }
 
-export function QueryFilter ({ label, placeholder, fields, paramName }: IQueryFilter, {}): JSX.Element {
+export function QueryFilter ({label, placeholder, paramName}: IQueryFilter): JSX.Element {
 
-    label = label ? label : paramName;
+    label = label || paramName;
     return (
         <FormGroup className="query-filter">
             <ControlLabel>{label.capitalize()}</ControlLabel>
-            <FormControl type="text" placeholder={placeholder.join(', ')} {...fields[0]} />
+            <Field 
+                    type="text"
+                    name={paramName} 
+                    component={GenericFilter} 
+                    placeholder={placeholder}
+            />
         </FormGroup>
     );
 }

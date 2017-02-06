@@ -1,57 +1,46 @@
 import * as React from 'react';
+import * as Radium from 'radium';
 import {createFilterForm} from './DynamicForm';
 import {Button} from 'react-bootstrap';
-import {store} from '../../../store';
 import {toggleFilters as toggle} from '../../../actions/modelActions';
-import {IFilter, IPagedListFiltersProps} from '../../../interfaces';
+import {IPagedListFiltersProps} from '../../../interfaces';
 import {isEmpty} from '../../../utils/appService';
+import {store} from '../../../store';
+const ReactFontAwesome = require('react-fontawesome');
+const FontAwesome = Radium(ReactFontAwesome);
 
 let InnerFilterForm: React.ComponentClass<IPagedListFiltersProps>;
+
+@Radium
 export class PagedListFilters extends React.Component<IPagedListFiltersProps, void> {
-    filterProps: string[] = [];
+    
     static defaultProps: IPagedListFiltersProps = {
-        resource: '',
-        filters: {}
+        resource: ''
     };
 
-    constructFilters(): void {
-        let children: React.ReactNode = this.props.children;
-        React.Children.forEach(children, (child: React.ReactElement<IFilter> & {type: {name: string}}) => {
-            let paramName: string = child.props.paramName;
-            let filterName: string = child.type.name;
-            if (['RangeFilter', 'DateRangeFilter'].indexOf(filterName) !== -1) {
-                this.filterProps.push(`${paramName}From`, `${paramName}To`);
-            } else if (child.props.paramName) {
-                this.filterProps.push(child.props.paramName);
-            }
-        });
+    componentWillMount = (): void => {
+        InnerFilterForm = createFilterForm(this.props.resource);
     }
 
-    // TODO use connect and mapDispatchToProps for this.
-    toggleFilters(): void {
+    toggleFilters = (): void => {
         store.dispatch(toggle());
     }
 
     render(): JSX.Element {
-        InnerFilterForm = createFilterForm(this.props.resource);
-        this.constructFilters();
         let children: React.ReactNode = this.props.children;
         if (isEmpty(children)) {
-            return <div></div>;
+            return null;
         }
         return (
             <div className="paged-list-filters">
                 <Button onClick={this.toggleFilters}>
-                    <i className="fa fa-filter"/>
+                    <FontAwesome name="filter" />
                 </Button>
-                <InnerFilterForm
-                        filters={this.props.filters}
-                        fields={this.filterProps} 
-                        resource={this.props.resource} 
-                        filtersOpen={false}>
+                <InnerFilterForm resource={this.props.resource} filtersOpen={false}>
                     {children}
                 </InnerFilterForm>
             </div>
         );
     }
 }
+

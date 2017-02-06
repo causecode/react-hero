@@ -1,269 +1,96 @@
 jest.unmock('../src/components/PagedList/Filters/DynamicForm');
 
 import * as React from 'react';
-import * as TestUtils from 'react-addons-test-utils';
-import {reducer as formReducer} from 'redux-form';
-import {IPagedListFiltersProps} from '../src/interfaces/index';
-import {initializeTestCase} from './../src/utils/initializeTestCase';
-import {createStore, Store} from 'redux';
-import {IShallowTestUtils} from '../src/interfaces';
-import {IInitializerData} from '../src/utils/initializeTestCase';
-import {DateRangeFilter} from '../src/components/PagedList/Filters/DateRangeFilter';
-import {DropDownFilter, IDropDownFilter} from '../src/components/PagedList/Filters/DropDownFilter';
+import {DropDownFilter} from '../src/components/PagedList/Filters/DropDownFilter';
 import {RangeFilter} from '../src/components/PagedList/Filters/RangeFilter';
-import {QueryFilter, IQueryFilter} from '../src/components/PagedList/Filters/QueryFilter';
-import {createFilterForm} from '../src/components/PagedList/Filters/DynamicForm';
-import {rootReducer} from '../src/reducers/rootReducer';
-import {findDOMNode} from 'react-dom';
-import {InnerFilterForm} from '../src/components/PagedList/Filters/DynamicForm';
-import {BaseModel} from '../src/models/BaseModel';
-import {Provider} from 'react-redux';
-import {IFilter} from '../src/interfaces';
-import {Button} from 'react-bootstrap';
-import {fromJS} from 'immutable';
-import '../src/init';
-import drop = __React.__Addons.TestUtils.Simulate.drop;
+import {DateRangeFilter} from '../src/components/PagedList/Filters/DateRangeFilter';
+import {QueryFilter} from '../src/components/PagedList/Filters/QueryFilter';
+import {shallow, ShallowWrapper} from 'enzyme';
+import {IPagedListFiltersProps} from '../src/interfaces/index';
+import {InnerFilterFormImpl} from '../src/components/PagedList/Filters/DynamicForm';
+import {ModelService} from '../src/utils/modelService';
+import {BlogModel} from '../src/demo/models/BlogModel';
 
-const ShallowTestUtils: IShallowTestUtils = require<IShallowTestUtils>('react-shallow-testutils');
+const unroll = require<any>('unroll');
 
-interface IReduxFormStoreValue {
-    visited: boolean;
-}
-interface IFilterStoreData {
-    status: IReduxFormStoreValue;
-    billAmountFrom: IReduxFormStoreValue;
-    billAmountTo: IReduxFormStoreValue;
-}
+unroll.use(it);
 
-describe('render a simple InnerFilterForm', () => {
-    let sendFilters: jest.Mock<Function>;
-    let children = [
+describe('Tests for DynamicForm', () => {
+    let children: JSX.Element[] = [
         <DropDownFilter
-            label="status"
-            paramName="status"
-            possibleValues={['enable', 'disable', 'inactive']}
-            key="1"
+                label="status"
+                paramName="status"
+                possibleValues={[
+                    {label: 'Enable', value: 'enable'},
+                    {label: 'Disable', value: 'disable'},
+                    {label: 'Inactive', value: 'inactive'}
+                ]}
         />,
         <RangeFilter
-            label="Bill Amount"
-            paramName="billAmount"
-            key="2"
+                label="Bill Amount"
+                paramName="billAmount"
         />,
         <DateRangeFilter
-            label="Date Created"
-            paramName="dateCreated"
-            key="3"
+                label="Date Created"
+                paramName="dateCreated"
         />,
         <DropDownFilter
-            label="types"
-            paramName="types"
-            possibleValues={['Zoo', 'Jungle', 'Forest']}
-            key="4"
+                label="types"
+                paramName="types"
+                possibleValues={[
+                    {label: 'Zoo', value: 'zoo'},
+                    {label: 'Jungle', value: 'jungle'},
+                    {label: 'Forest', value: 'forest'}
+                ]}
         />,
         <QueryFilter
-            label="Search"
-            paramName="query"
-            placeholder={['First Name', 'Last Name', 'Email']}
-            key="5"
+                label="Search"
+                paramName="query"
+                placeholder="First Name, Last Name, Email"
         />
     ];
-    let reduxFormFields;
-    let fields: string[] = [];
-    let {renderer , resource}: IInitializerData = initializeTestCase();
 
-    for (let child: any of children) {
-        let param = child.props.paramName;
-        if (['RangeFilter', 'DateRangeFilter'].indexOf(child.type.name) > -1) {
-            fields.push(`${param}From`, `${param}To`);
-        } else {
-            fields.push(param);
-        }
-    }
-
-    reduxFormFields = {};
-
-    for (let field: string of fields) {
-        reduxFormFields[field] = {name: field};
-    }
-
-    beforeEach(() => {
-        sendFilters = jest.fn();
-    });
-
-    it('renders a InnerFilterForm without any props', () => {
-        renderer.render(
-            <InnerFilterForm />
-        );
-        let form: TestUtils.ShallowRenderer = renderer.getRenderOutput();
-
-        let innerForm: React.ComponentClass<IPagedListFiltersProps> = ShallowTestUtils.findWithType(form, 'form');
-        expect(innerForm).toBeTruthy();
-        expect(ShallowTestUtils.findWithType(innerForm, Button)).toBeTruthy();
-    });
-
-    it('renders a InnerFilterForm with incorrect fields and Children', () => {
-        renderer.render(
-            <InnerFilterForm fields={{abc: {name: 'abc'}, dev: {name: 'dev'}, query: {name: 'query'}}}>
-                <DropDownFilter
-                    label="status"
-                    paramName="status"
-                    possibleValues={['enable', 'disable', 'inactive']}
-                />
-                <RangeFilter
-                    label="Bill Amount"
-                    paramName="billAmount"
-                />
-                <QueryFilter
-                    label="Search"
-                    paramName="query"
-                    placeholder={['First Name', 'Last Name', 'Email']}
-                />
-            </InnerFilterForm>
-        );
-
-        let form: TestUtils.ShallowRenderer = renderer.getRenderOutput();
-
-        let dropdown: React.ComponentClass<IDropDownFilter> = ShallowTestUtils.findWithType(form, DropDownFilter);
-        expect(dropdown).toBeTruthy();
-        expect(dropdown.props.fields).toBeFalsy();
-        expect(dropdown.props.label).toEqual('status');
-        expect(dropdown.props.paramName).toEqual('status');
-        expect(dropdown.props.possibleValues).toEqual(['enable', 'disable', 'inactive']);
-
-        let range: React.ReactElement<IFilter> = ShallowTestUtils.findWithType(form, RangeFilter);
-        expect(range).toBeTruthy();
-        expect(range.props.fields).toBeFalsy();
-        expect(range.props.label).toEqual('Bill Amount');
-        expect(range.props.paramName).toEqual('billAmount');
-
-        let query: React.ReactElement<IQueryFilter> = ShallowTestUtils.findWithType(form, QueryFilter);
-        expect(query).toBeTruthy();
-        expect(query.props.fields).toBeTruthy();
-        expect(query.props.fields[0]).toEqual({name: 'query'});
-        expect(query.props.label).toEqual('Search');
-        expect(query.props.paramName).toEqual('query');
-        expect(query.props.placeholder).toEqual(['First Name', 'Last Name', 'Email']);
-
-    });
-
-    it('renders a simple filterForm', () => {
-        renderer.render(
-            <InnerFilterForm fields={reduxFormFields} filtersOpen={false} resource={resource} sendFilters={sendFilters}>
+    const dynamicForm: ShallowWrapper<IPagedListFiltersProps, void> = shallow<IPagedListFiltersProps, void> (
+            <InnerFilterFormImpl resource="blog" filtersOpen={false}>
                 {children}
-            </InnerFilterForm>
-        );
+            </InnerFilterFormImpl>
+    );
 
-        let form: React.ReactElement<IPagedListFiltersProps> = renderer.getRenderOutput();
+    unroll('should render #count #component', (done, args) => {
+        expect(dynamicForm.find(args.component).length).toBe(args.count);
+        done();
+    }, [
+        ['component', 'count'],
+        ['DropDownFilter', 2],
+        ['RangeFilter', 1],
+        ['DateRangeFilter', 1],
+        ['QueryFilter', 1],
+        ['form', 1],
+        ['Button', 1]
+    ]);
 
-        let innerForm: Element = ShallowTestUtils.findWithClass(form, 'filter-form');
-        expect(innerForm).toBeTruthy();
-
-        let dropdown = ShallowTestUtils.findAllWithType(form, DropDownFilter);
-        let range = ShallowTestUtils.findAllWithType(form, RangeFilter);
-        let dateRange = ShallowTestUtils.findAllWithType(form, DateRangeFilter);
-        let query = ShallowTestUtils.findAllWithType(form, QueryFilter);
-
-        expect(ShallowTestUtils.findWithClass(form, 'hide')).toBeTruthy();
-        expect(ShallowTestUtils.findWithClass(form, 'filter-button')).toBeTruthy();
-
-        expect(dropdown.length).toEqual(2);
-        expect(dropdown[0].props.fields.length).toEqual(1);
-        expect(dropdown[0].props.fields[0]).toEqual(reduxFormFields[dropdown[0].props.paramName]);
-        expect(dropdown[1].props.fields.length).toEqual(1);
-        expect(dropdown[1].props.fields[0]).toEqual(reduxFormFields[dropdown[1].props.paramName]);
-
-        expect(range.length).toEqual(1);
-        expect(range[0].props.fields.length).toEqual(2);
-        expect(range[0].props.fields[0]).toEqual(reduxFormFields[`${range[0].props.paramName}From`]);
-        expect(range[0].props.fields[1]).toEqual(reduxFormFields[`${range[0].props.paramName}To`]);
-
-        expect(dateRange.length).toEqual(1);
-        expect(dateRange[0].props.fields.length).toEqual(2);
-        expect(dateRange[0].props.fields[0]).toEqual(reduxFormFields[`${dateRange[0].props.paramName}From`]);
-        expect(dateRange[0].props.fields[1]).toEqual(reduxFormFields[`${dateRange[0].props.paramName}To`]);
-
-        expect(query.length).toEqual(1);
-        expect(query[0].props.fields.length).toEqual(1);
-        expect(query[0].props.fields[0]).toEqual(reduxFormFields[query[0].props.paramName]);
+    it('should hide the filters when filtersOpen is false', () => {
+        expect(dynamicForm.find('form').props()[`className`]).toEqual('form-inline filter-form stick-left hide');
     });
 
-    it('renders a InnerFilterForm with a div child', () => {
-        renderer.render(
-            <InnerFilterForm>
-                <div>test</div>
-            </InnerFilterForm>
-        );
-
-        let form: React.ReactElement<IPagedListFiltersProps> = renderer.getRenderOutput();
-
-        expect(form).toBeTruthy();
-        expect(ShallowTestUtils.findWithType(form, 'div')).toBeTruthy();
+    it('should display all filters when filtersOpen is true', () => {
+        dynamicForm.setProps({filtersOpen: true});
+        expect(dynamicForm.find('form').props()[`className`]).toEqual('form-inline filter-form stick-left');
     });
 
-    it('renders a InnerFilterForm with fields but no children', () => {
-        renderer.render(
-            <InnerFilterForm fields={{abc: {name: 'abc'}, dev: {name: 'dev'}}}/>
-        );
+    ModelService.register(BlogModel);
 
-        let form: React.ReactElement<IPagedListFiltersProps> = renderer.getRenderOutput();
-
-        expect(form.props.children.length).toEqual(2);
-        expect(form.props.children[0]).toBeFalsy();
-        expect(ShallowTestUtils.findWithType(form, Button)).toBeTruthy();
+    ModelService.getModel = jest.fn<any>((resource: string) => {
+        return BlogModel;
     });
 
-
-
-    it('renders a Dynamic Form and saves form data in the <resource>Filters key', () => {
-        let testDynamicFormData: {data: Object} = {data: fromJS({filtersOpen: true})};
-        let store: Store = createStore(rootReducer, testDynamicFormData);
-        let DynamicForm: typeof InnerFilterForm = createFilterForm(resource);
-        let possibleValues: string[] = ['enable', 'disable', 'inactive'];
-        let fieldValues: string[] = ['status', 'billAmountFrom', 'billAmountTo'];
-        React.cloneElement = jest.fn(React.cloneElement);
-        let filter: React.Component<void, void> = TestUtils.renderIntoDocument<React.Component<void, void>>(
-            <Provider store = {store}>
-                <DynamicForm fields={fieldValues} resource={resource}>
-                    <DropDownFilter
-                        label="status"
-                        paramName="status"
-                        possibleValues={possibleValues}
-                        key="1"
-                    />
-                    <RangeFilter
-                        label="Bill Amount"
-                        paramName="billAmount"
-                    />
-                    <div className="dummy-filter">test</div>
-                </DynamicForm>
-            </Provider>
-        );
-        expect(store.getState().form.testFilters).toBeUndefined();
-
-        let dropdown: HTMLSelectElement = TestUtils
-            .scryRenderedDOMComponentsWithTag(filter, 'select')[0] as HTMLSelectElement;
-        let range: HTMLInputElement[] = TestUtils
-            .scryRenderedDOMComponentsWithTag(filter, 'input') as HTMLInputElement[];
-
-        [dropdown, ...range].forEach((filterDOM: HTMLSelectElement | HTMLInputElement): void => {
-            TestUtils.Simulate.focus(filterDOM);
-        });
-
-        let filterDataInStore: IFilterStoreData = store.getState().form[`${resource}Filters`];
-        expect(filterDataInStore).toBeTruthy();
-        fieldValues.forEach((field) => {
-            expect(filterDataInStore[field].visited).toBeTruthy();
-        });
-
-        BaseModel.list = jest.fn();
-        let form: HTMLFormElement = TestUtils.findRenderedDOMComponentWithTag(filter, 'form') as HTMLFormElement;
-        TestUtils.Simulate.submit(form);
-        expect(BaseModel.list).toBeCalled();
-
-        let dummyFilter: HTMLDivElement = TestUtils
-                .findRenderedDOMComponentWithClass(filter, 'dummy-filter') as HTMLDivElement;
-        expect(dummyFilter).toBeTruthy();
-        expect(dummyFilter.textContent).toEqual('test');
+    BlogModel.list = jest.fn<any>((filters: any) => {
+        return [];
     });
 
+    it('should call handleSubmit when form is submitted', () => {
+        expect(BlogModel.list).not.toBeCalled();
+        dynamicForm.find('form').simulate('submit', {preventDefault: () => {}});
+        expect(BlogModel.list).toBeCalled();
+    });
 });

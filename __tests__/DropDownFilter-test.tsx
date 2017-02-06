@@ -1,55 +1,51 @@
 jest.unmock('../src/components/PagedList/Filters/DropDownFilter');
+
 import * as React from 'react';
-import * as TestUtils from 'react-addons-test-utils';
-import * as ReactDOM from 'react-dom';
-import {FormGroup, ControlLabel, FormControl} from 'react-bootstrap';
 import {DropDownFilter, IDropDownFilter} from '../src/components/PagedList/Filters/DropDownFilter';
-import {Wrapper} from '../src/components/Wrapper';
-import {IFilter} from '../src/interfaces';
-import '../src/utils/appService';
-const unroll: any = require<any>('unroll');
-require<any>('../src/init');
+import {ShallowWrapper, shallow} from 'enzyme';
+import {IDropDownFilterData} from '../src/interfaces';
+import '../src/init';
+
+const unroll = require<any>('unroll');
 
 unroll.use(it);
 
-describe('Test cases for DropdownFilter', () => {
-    let paramName: string = 'test';
-    let labelData: string = 'testLabel';
-    let fieldValues: {name: string}[] = [
-        {name: `${paramName}From`},
-        {name: `${paramName}To`}
+describe('Tests for DropDownFilter', () => {
+
+    let possibleValues: IDropDownFilterData[] = [
+        {label: 'India', value: 'india'},
+        {label: 'United Kingdom', value: 'uk'}
     ];
-    let dropDownData: string[] = [ 'Zoo', 'Jungle', 'Forest' ];
 
-    it ('should render each tags correctly', ()  => {
-        let instance: React.Component<IDropDownFilter, void> =
-                TestUtils.renderIntoDocument<React.Component<IDropDownFilter, void>>(
-            <Wrapper>
-                <DropDownFilter label={labelData} paramName={paramName} possibleValues={dropDownData}
-                        fields={fieldValues}/>
-            </Wrapper>
-        );
+    const dropDownFilter: ShallowWrapper<IDropDownFilter, void> = shallow<IDropDownFilter,  void> (
+            <DropDownFilter label="Country" paramName="countryName" possibleValues={possibleValues} />
+    );
 
-        expect((TestUtils.findRenderedComponentWithType(instance, FormGroup)).props.children.length).toEqual(2);
-        expect((TestUtils.findRenderedComponentWithType(instance, ControlLabel)).props.children)
-                .toEqual(labelData.capitalize());
-        let component: React.Component<IDropDownFilter, void> = TestUtils.findRenderedComponentWithType
-                <React.Component<IDropDownFilter, void> , DropDownFilter<IDropDownFilter>> (instance, FormControl);
-        expect(component.props.name).toEqual(`${paramName}From`);
-        for (let i in dropDownData) {
-            if (dropDownData.hasOwnProperty(i)) {
-                expect(component.props.children[i].props.value).toEqual(dropDownData[i]);
-            }
-        }
+    unroll('should render #count #component', (done, args) => {
+        expect(dropDownFilter.find(args.component).length).toBe(args.count);
+        done();
+    }, [
+        ['component', 'count'],
+        ['FormGroup', 1],
+        ['ControlLabel', 1],
+        ['Field', 1]
+    ]);
+
+    it('should render label correctly', () => {
+        expect(dropDownFilter.find('ControlLabel').props()[`children`]).toEqual('Country'); 
+    });
+    
+    it('should render paramName as label when label is not provided', () => {
+        dropDownFilter.setProps({label: undefined});
+        expect(dropDownFilter.find('ControlLabel').props()[`children`]).toEqual('CountryName'); 
     });
 
-    it('should use paramName if label is not provided', () => {
-        let instance: React.Component<IDropDownFilter, void> = TestUtils.renderIntoDocument
-                <React.Component<IDropDownFilter, void>>(
-            <Wrapper>
-                <DropDownFilter paramName={paramName} possibleValues={dropDownData} fields={fieldValues}/>
-            </Wrapper>
-        );
-        expect(TestUtils.findRenderedComponentWithType(instance, ControlLabel).props.children).toEqual('Test');
-    });
+    unroll('Field should render #prop correctly', (done, args) => {
+        expect(dropDownFilter.find('Field').props()[args.prop]).toEqual(args.value);
+        done();
+    }, [
+        ['prop', 'value'],
+        ['name', 'countryName'],
+        ['possibleValues', possibleValues]
+    ]);
 });

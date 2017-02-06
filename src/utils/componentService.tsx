@@ -26,7 +26,7 @@ module ComponentService {
     export function registerAll(): void {
         try {
             const modules: any = require<any>('../../../../src/components');
-            // const modules: any = require<any>('../Demo/components');
+            // const modules: any = require<any>('../demo/components');
             for (let component in modules) {
                 if (modules[component]) {
                     if (modules[component].resourceName) {
