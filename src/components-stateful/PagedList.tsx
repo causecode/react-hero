@@ -9,9 +9,9 @@ import {BaseModel} from '../models/BaseModel';
 import {ModelService} from '../utils/modelService';
 import {UserActions} from '../components/PagedList/BulkUserActions';
 import {resetCheckboxState} from '../actions/checkboxActions';
-import {IPagedListFiltersProps, IBulkUserActionType} from '../interfaces';
-import {createFilterForm} from '../components/PagedList/Filters/DynamicForm';
+import {IBulkUserActionType} from '../interfaces';
 import {QueryFilter} from '../components/PagedList/Filters/QueryFilter';
+import {IOuterFilterProps, createOuterFilterForm} from '../components/PagedList/Filters/OuterFilter';
 import '../utils/appService';
 const objectAssign = require<any>('object-assign');
 
@@ -35,7 +35,8 @@ export interface IPagedListProps extends IPagedListStateProps, IPagedListDispatc
     userActionsMap?: IBulkUserActionType[];
 }
 
-let OuterQueryFilter: React.ComponentClass<IPagedListFiltersProps>;
+let OuterFilter: React.ComponentClass<IOuterFilterProps>;
+
 export class PagedListImpl extends React.Component<IPagedListProps, void> {
 
     fetchInstanceList(resource, filters: {max?: number, offset?: number} = {}): void {
@@ -66,6 +67,7 @@ export class PagedListImpl extends React.Component<IPagedListProps, void> {
     componentWillMount(): void {
         const {resource} = this.props;
         this.fetchInstanceList(resource);
+        OuterFilter = createOuterFilterForm(`${this.props.resource}Filters`);
     };
 
     componentWillUnmount(): void {
@@ -92,10 +94,10 @@ export class PagedListImpl extends React.Component<IPagedListProps, void> {
                 <UserActions isDisabled={true} userActionsMap={this.props.userActionsMap}/>
             );
         }
+        return null;
     }
 
     render(): JSX.Element {
-        OuterQueryFilter = createFilterForm(this.props.resource);
         let activePage: number = this.props.activePage;
         let items: number = this.props.max ? Math.ceil(this.props.totalCount / this.props.max) : 1;
         return (
@@ -104,14 +106,12 @@ export class PagedListImpl extends React.Component<IPagedListProps, void> {
                     {this.props.resource.capitalize()} List
                     <Link to={`${this.props.resource}/create`} ><i className="fa fa-plus" /></Link>
                 </h2>
-                <OuterQueryFilter resource={this.props.resource} filtersOpen={true} fields={['query']}>
-                    <QueryFilter
-                            label="Search"
-                            paramName="query"
-                            placeholder={['Search']}
-                    />
-                </OuterQueryFilter>
-                <PagedListFilters resource={this.props.resource} filters={this.props.filters}>
+                <div style={outerFilterStyle}>
+                    <OuterFilter resource={this.props.resource}>
+                        <QueryFilter placeholder="Search" paramName="query" label="Search"/>
+                    </OuterFilter>
+               </div>
+               <PagedListFilters resource={this.props.resource}>
                     {this.props.children}
                 </PagedListFilters>
                 {this.props.userActionsMap && this.props.userActionsMap.length ? 
@@ -167,3 +167,8 @@ let PagedList = connect<{}, {}, IPagedListProps>(
 )(PagedListImpl);
 
 export {PagedList};
+
+const outerFilterStyle: React.CSSProperties = {
+    maxWidth: '30%',
+    margin: '-10px 0px -20px -15px'
+};

@@ -33,12 +33,9 @@ function arrayEach(callback: Function): void {
 function equals<T>(obj: Object | Array<T>): boolean {
     // Adding try catch here to avoid 'Converting circular structure to JSON' error.
     try {
-        if ((this instanceof Object && obj instanceof Object) || 
-                (this instanceof Array && obj instanceof Array)
-        ) {
+        if ((this instanceof Object && obj instanceof Object) || (this instanceof Array && obj instanceof Array)) {
             return (
-                JSON.stringify(this) ===
-                JSON.stringify(obj)
+                JSON.stringify(this) === JSON.stringify(obj)
             );
         }
     } catch (e) {
