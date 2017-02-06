@@ -3,7 +3,7 @@ jest.unmock('../src/components/PagedList/Filters/DropDownFilter');
 import * as React from 'react';
 import {DropDownFilter, IDropDownFilter} from '../src/components/PagedList/Filters/DropDownFilter';
 import {ShallowWrapper, shallow} from 'enzyme';
-import {IDropDownFilterValueMap} from '../src/interfaces';
+import {IDropDownFilterData} from '../src/interfaces';
 import '../src/init';
 
 const unroll = require<any>('unroll');
@@ -12,7 +12,7 @@ unroll.use(it);
 
 describe('Tests for DropDownFilter', () => {
 
-    let possibleValues: IDropDownFilterValueMap[] = [
+    let possibleValues: IDropDownFilterData[] = [
         {label: 'India', value: 'india'},
         {label: 'United Kingdom', value: 'uk'}
     ];

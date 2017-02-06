@@ -47,7 +47,8 @@ export interface IFilter {
     paramName?: string;
     offset?: number;
     sort?: 'asc' | 'desc';
-    type?: string;  // Added for range-filter customization. User can provide type as string, number anything
+    // Added for range-filter customization to render field as number input field or normal text input field
+    type?: string;  
 }
 
 // Interface for props used by the PagedListFilters.
@@ -103,7 +104,7 @@ export interface IUserAction {
     payload: number|boolean|string;
 }
 
-export interface IDropDownFilterValueMap {
+export interface IDropDownFilterData {
     label: string;
     value: string;
 }
