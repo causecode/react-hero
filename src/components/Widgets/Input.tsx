@@ -17,7 +17,8 @@ const {actions} = require<any>('react-redux-form');
 
 export interface IInputProps {
     model: string;
-    propertyValue: any;
+    propertyValue?: any;
+    enum?: any;
     type: string;
     propertyName: string;
 }
@@ -203,4 +204,4 @@ let mapStateToProps = (state, ownProps) => {
     };
 };
 
-export let FormInput: React.ComponentClass<IInputProps> = connect(mapStateToProps)(FormInputImpl);
+export let FormInput: React.ComponentClass<IInputProps> = connect<{}, {}, IInputProps>(mapStateToProps)(FormInputImpl);

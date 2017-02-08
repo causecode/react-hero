@@ -18,7 +18,7 @@ import {
 } from '../constants';
 import * as StoreService from '../utils/storeService';
 import {MISSING_ACTION_PAYLOAD} from '../constants';
-import {IFromJS} from '../../public/interfaces/index';
+import {IFromJS} from '../interfaces';
 
 const INITIAL_STATE = fromJS({
     filtersOpen: false,
