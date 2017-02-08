@@ -5,6 +5,5 @@
 /typings
 *.iml
 npm-debug.log
-public
 /coverage
 .vscode
