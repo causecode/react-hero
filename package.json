@@ -15,7 +15,8 @@
     "lint-ts": "tslint 'src/*.tsx' 'src/**/*.tsx' 'src/*.ts' 'src/**/*.ts'",
     "start:dev": "npm run clean && webpack-dev-server --watch --hot",
     "buildCLI": "npm run compile",
-    "linkCLI": "npm run buildCLI && npm link"
+    "linkCLI": "npm run buildCLI && npm link",
+    "remove-src": "rimraf __mocks__ __tests__ Docs.md README.md tslint.js typings node_modules src"
   },
   "bin": {
     "RH-generate-create": "public/cli/getCreatePage.js",
