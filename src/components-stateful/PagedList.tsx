@@ -33,6 +33,8 @@ export interface IPagedListProps extends IPagedListStateProps, IPagedListDispatc
     filters?: any;
     handleRecordDelete?: Function;
     userActionsMap?: IBulkUserActionType[];
+    showDefaultActions?: boolean;
+    customAction?: React.ComponentClass<any> | JSX.Element;
 }
 
 let OuterFilter: React.ComponentClass<IOuterFilterProps>;
@@ -121,6 +123,8 @@ export class PagedListImpl extends React.Component<IPagedListProps, void> {
                         properties={this.props.properties}
                         handleRecordDelete={this.props.handleRecordDelete}
                         totalCount={this.props.totalCount}
+                        showDefaultActions={this.props.showDefaultActions}
+                        customAction={this.props.customAction}
                 />
                 <Pagination
                         prev

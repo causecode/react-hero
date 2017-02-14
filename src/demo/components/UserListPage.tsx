@@ -7,12 +7,21 @@ import {QueryFilter} from '../../components/PagedList/Filters/QueryFilter';
 
 export class UserListPage extends React.Component<{resource: any}, any> {
     static resourceName: string = 'user';
+
+    renderCustomAction = (): JSX.Element => {
+        return (
+            <button>TEST</button>
+        );
+    }
     
     render(): JSX.Element {
         return (
             <div>
-                <h1 style={{background : 'red'}}>This is MY user list page</h1>
-                <PagedList resource={this.props.resource} max={10}>
+                <h1 style={{background : '#eea303'}}>This is my user list page</h1>
+                <PagedList 
+                        resource={this.props.resource} 
+                        max={10}
+                        customAction={this.renderCustomAction()}>
                     <DropDownFilter
                             label = "status"
                             paramName = "status"

@@ -19,11 +19,7 @@ export class BlogModel extends BaseModel {
         author: ModelPropTypes.STRING(),
         blogIMGSrc: ModelPropTypes.STRING(),
         dateCreated: ModelPropTypes.STRING(),
-        lastUpdated: ModelPropTypes.STRING(),
-        name: ({
-            firstname: ModelPropTypes.STRING(),
-            lastname: ModelPropTypes.STRING()
-        })
+        lastUpdated: ModelPropTypes.STRING()
     };
 
     static defaultProps = {
@@ -37,9 +33,7 @@ export class BlogModel extends BaseModel {
         'id',
         'author',
         'dateCreated',
-        'lastUpdated',
-        'name.firstname',
-        'name.lastname'
+        'lastUpdated'
     ];
         
     constructor(properties?: any) {

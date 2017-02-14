@@ -5,7 +5,7 @@ import {Link} from 'react-router';
 import {MapStateToProps, MapDispatchToPropsFunction, connect} from 'react-redux';
 import {IState} from './BulkUserActions';
 import {BaseModel} from '../../models/BaseModel';
-import {getInnerData} from '../../utils/appService';
+import {getInnerData, getActionComponent} from '../../utils/appService';
 import {SELECT_ALL_RECORDS, SELECT_ALL_RECORDS_ON_PAGE, CHECK_CHECKBOX, UNCHECK_CHECKBOX} from '../../constants';
 import {selectAllRecords, toggleCheckbox} from '../../actions/checkboxActions';
 import FontAwesome = require('react-fontawesome');
@@ -29,9 +29,15 @@ export interface IDataGridProps extends IDataGridStateProps, IDataGridDispatchPr
     properties: string[];
     totalCount?: number;
     handleRecordDelete?: Function;
+    showDefaultActions?: boolean;
+    customAction?: React.ComponentClass<any> | JSX.Element;
 }
 
 export class DataGridImpl extends React.Component<IDataGridProps, void> {
+
+    static defaultProps = {
+        showDefaultActions: true
+    };
 
     private resource: string;
     private properties: string[];
@@ -114,6 +120,40 @@ export class DataGridImpl extends React.Component<IDataGridProps, void> {
         );    
     }
 
+    renderActions = (instanceId: string): JSX.Element | React.ComponentClass<any> => {
+        let {showDefaultActions, customAction, handleRecordDelete} = this.props;
+        let ActionComponent: React.ComponentClass<any> = getActionComponent(`${this.resource}Action`);
+        const tooltip: JSX.Element = (
+            <Tooltip id="tooltip"><strong>Remove from List</strong></Tooltip>
+        );
+
+        if (customAction) {
+            return <td>{customAction}</td>;
+        } else if (ActionComponent && React.isValidElement(<ActionComponent/>)) {
+            return <td><ActionComponent id={instanceId}/></td>;
+        } else if (showDefaultActions) {
+            return (
+                <td>
+                    <Link to={`/${this.resource}/edit/${instanceId}`}>
+                        <RadiumFontAwesome name="pencil" />
+                    </Link>
+                    <Link to={`/${this.resource}/show/${instanceId}`}>
+                        <RadiumFontAwesome name="location-arrow" />
+                    </Link>
+                    <OverlayTrigger placement="top" overlay={tooltip}>
+                        <a 
+                                onClick={handleRecordDelete && handleRecordDelete.bind(this, instanceId)} 
+                                style={trashIconStyle}>
+                            <RadiumFontAwesome name="trash-o" />
+                        </a>
+                    </OverlayTrigger>
+                </td>
+            );
+        } else {
+            return null;
+        }
+    }
+
     render(): JSX.Element {
         if (!this.props.instanceList || !this.props.instanceList.length) {
             return <div></div>;
@@ -129,9 +169,7 @@ export class DataGridImpl extends React.Component<IDataGridProps, void> {
             this.properties = this.props.properties;
         }
 
-        const tooltip: JSX.Element = (
-            <Tooltip id="tooltip"><strong>Remove from List</strong></Tooltip>
-        );
+        let {showDefaultActions, customAction} = this.props;
 
         return (
             <div className="data-grid">
@@ -151,7 +189,7 @@ export class DataGridImpl extends React.Component<IDataGridProps, void> {
                             {this.properties.map((property: string, index: number) => {
                                 return (<th key={index}>{property.capitalize()}</th>);
                             })}
-                            <th>Actions</th>
+                            {showDefaultActions || customAction ? <th>Actions</th> : null}
                         </tr>
                     </thead>
                     <tbody>
@@ -173,23 +211,7 @@ export class DataGridImpl extends React.Component<IDataGridProps, void> {
                                             </td> 
                                         );
                                     })}
-                                    <td>
-                                        <Link to={`/${this.resource}/edit/${instanceProperties.id}`}>
-                                            <RadiumFontAwesome name="pencil" />
-                                        </Link>
-                                        <Link to={`/${this.resource}/show/${instanceProperties.id}`}>
-                                            <RadiumFontAwesome name="location-arrow" />
-                                        </Link>
-                                        <OverlayTrigger placement="top" overlay={tooltip}>
-                                            <a 
-                                                    onClick={this.props.handleRecordDelete &&
-                                                            this.props.handleRecordDelete.bind(this, 
-                                                            instanceProperties.id)} 
-                                                    style={trashIconStyle}>
-                                                        <RadiumFontAwesome name="trash-o" />
-                                            </a>
-                                        </OverlayTrigger>
-                                    </td>
+                                    {this.renderActions(instanceProperties.id)}
                                 </tr>
                                 );
                             })}
