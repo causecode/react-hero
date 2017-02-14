@@ -7,6 +7,7 @@ import {ControlLabel, Col, FormGroup} from 'react-bootstrap';
 import {FormInput} from '../components/Widgets';
 import {IImmutable} from '../interfaces';
 import {fromJS} from 'immutable';
+import {AUTH_TOKEN_KEY, AUTH_TOKEN_KEY_TIMESTAMP} from '../constants';
 const {actions} = require<any>('react-redux-form');
 
 export interface IAppServiceConfig {
@@ -202,3 +203,31 @@ export function generateForm<T extends BaseModel>(
         </div>
     );
 }
+
+export const getActionComponent = (fileName: string): React.ComponentClass<any> => {
+    let fileNameSplittedToWords: string[] = fileName.split('-').map((item: string): string => {
+        return item.capitalize();
+    });
+
+    return require(`../../src`)[fileNameSplittedToWords.join('')];
+};
+
+export const setTokenInLocalStorage = (token: string): void => {
+    if (!token) {
+        console.warn('No Token sent to setTokenInLocalStorage');
+        return;
+    }
+
+    localStorage.setItem(AUTH_TOKEN_KEY, token);
+    localStorage.setItem(AUTH_TOKEN_KEY_TIMESTAMP, new Date().toString());
+};
+
+export const getTokenFromLocalStorage = (): string => {
+    let token: string = localStorage.getItem(AUTH_TOKEN_KEY);
+    if (!token) {
+        console.warn('Access Token not found');
+        return '';
+    }
+
+    return token;
+};

@@ -17,7 +17,8 @@
     "redux": "registry:dt/redux#3.3.1+20160326112656",
     "redux-logger": "registry:dt/redux-logger#2.6.0+20160619033847",
     "underscore": "registry:dt/underscore#1.8.3+20160908111004",
-    "whatwg-fetch": "registry:dt/whatwg-fetch#0.0.0+20160524142046"
+    "whatwg-fetch": "registry:dt/whatwg-fetch#0.0.0+20160524142046",
+    "radium": "registry:dt/radium#0.18.1+20160907102602"
   },
   "dependencies": {
     "enzyme": "registry:npm/enzyme#2.2.0+20160322031343",

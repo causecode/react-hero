@@ -1,6 +1,6 @@
 {
   "name": "react-hero",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description": "",
   "private": true,
   "main": "public/index.js",
@@ -31,11 +31,12 @@
   "jest": {
     "verbose": true,
     "transform": {
-      "^.+\\.(ts|tsx)$": "<rootDir>/preprocessor.js"
+      ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
     },
-    "transformIgnorePatterns": [
-      "<rootDir>/node_modules/",
-      "<rootDir>/typings/"
+    "testResultsProcessor": "<rootDir>/node_modules/ts-jest/coverageprocessor.js",
+    "moduleDirectories": [
+      "node_modules",
+      "<rootDir>/src"
     ],
     "moduleNameMapper": {
       "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js",
@@ -125,6 +126,7 @@
     "stylelint": "6.6.0",
     "stylelint-webpack-plugin": "0.2.0",
     "ts-loader": "1.2.2",
+    "ts-jest": "17.0.3",
     "unroll": "1.2.0"
   }
 }
