@@ -8,7 +8,7 @@ import {QueryFilter} from '../../components/PagedList/Filters/QueryFilter';
 export class UserListPage extends React.Component<{resource: any}, any> {
     static resourceName: string = 'user';
 
-    renderCustomAction = (): JSX.Element => {
+    renderCustomAction = (instance: {age: string, firstName: string, id: number, lastName: string}): JSX.Element => {
         return (
             <button>TEST</button>
         );
@@ -21,7 +21,7 @@ export class UserListPage extends React.Component<{resource: any}, any> {
                 <PagedList 
                         resource={this.props.resource} 
                         max={10}
-                        customAction={this.renderCustomAction()}>
+                        customAction={this.renderCustomAction}>
                     <DropDownFilter
                             label = "status"
                             paramName = "status"

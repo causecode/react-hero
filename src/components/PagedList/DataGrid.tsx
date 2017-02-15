@@ -30,7 +30,7 @@ export interface IDataGridProps extends IDataGridStateProps, IDataGridDispatchPr
     totalCount?: number;
     handleRecordDelete?: Function;
     showDefaultActions?: boolean;
-    customAction?: React.ComponentClass<any> | JSX.Element;
+    customAction?: (instance: any) => JSX.Element | React.ComponentClass<any>;
 }
 
 export class DataGridImpl extends React.Component<IDataGridProps, void> {
@@ -130,7 +130,7 @@ export class DataGridImpl extends React.Component<IDataGridProps, void> {
         );
 
         if (customAction) {
-            return <td>{customAction}</td>;
+            return <td>{customAction(instance)}</td>;
         } 
         
         if (ActionComponent && React.isValidElement(<ActionComponent/>)) {

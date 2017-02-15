@@ -209,7 +209,7 @@ export function getActionComponent(fileName: string): React.ComponentClass<any> 
         return item.capitalize();
     });
 
-    return require(`../../src`)[fileNameSplittedToWords.join('')];
+    return require(`../../../../src`)[fileNameSplittedToWords.join('')];
 };
 
 export function setTokenInLocalStorage(token: string): void {

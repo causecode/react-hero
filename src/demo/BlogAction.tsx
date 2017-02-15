@@ -1,6 +1,16 @@
 import * as React from 'react';
 
-export class BlogAction extends React.Component<void, void> {
+export interface IBlogAction {
+    instance: {
+        id: number,
+        author: string,
+        email: string,
+        age: number
+    };
+}
+
+export class BlogAction extends React.Component<IBlogAction, void> {
+
     render(): JSX.Element {
         return (
             <button>

@@ -34,7 +34,7 @@ export interface IPagedListProps extends IPagedListStateProps, IPagedListDispatc
     handleRecordDelete?: Function;
     userActionsMap?: IBulkUserActionType[];
     showDefaultActions?: boolean;
-    customAction?: React.ComponentClass<any> | JSX.Element;
+    customAction?: (instance: any) => JSX.Element | React.ReactElement<any>;
 }
 
 let OuterFilter: React.ComponentClass<IOuterFilterProps>;
