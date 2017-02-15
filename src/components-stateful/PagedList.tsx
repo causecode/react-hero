@@ -9,7 +9,7 @@ import {BaseModel} from '../models/BaseModel';
 import {ModelService} from '../utils/modelService';
 import {UserActions} from '../components/PagedList/BulkUserActions';
 import {resetCheckboxState} from '../actions/checkboxActions';
-import {IBulkUserActionType} from '../interfaces';
+import {IBulkUserActionType, CustomActionType} from '../interfaces';
 import {QueryFilter} from '../components/PagedList/Filters/QueryFilter';
 import {IOuterFilterProps, createOuterFilterForm} from '../components/PagedList/Filters/OuterFilter';
 import '../utils/appService';
@@ -34,7 +34,7 @@ export interface IPagedListProps extends IPagedListStateProps, IPagedListDispatc
     handleRecordDelete?: Function;
     userActionsMap?: IBulkUserActionType[];
     showDefaultActions?: boolean;
-    customAction?: (instance: any) => JSX.Element | React.ReactElement<any>;
+    customAction?: CustomActionType;
 }
 
 let OuterFilter: React.ComponentClass<IOuterFilterProps>;

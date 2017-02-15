@@ -8,6 +8,7 @@ import {BaseModel} from '../../models/BaseModel';
 import {getInnerData, getActionComponent} from '../../utils/appService';
 import {SELECT_ALL_RECORDS, SELECT_ALL_RECORDS_ON_PAGE, CHECK_CHECKBOX, UNCHECK_CHECKBOX} from '../../constants';
 import {selectAllRecords, toggleCheckbox} from '../../actions/checkboxActions';
+import {CustomActionType} from '../../interfaces';
 import FontAwesome = require('react-fontawesome');
 const RadiumFontAwesome: React.ComponentClass<any> = Radium(FontAwesome);
 
@@ -30,7 +31,7 @@ export interface IDataGridProps extends IDataGridStateProps, IDataGridDispatchPr
     totalCount?: number;
     handleRecordDelete?: Function;
     showDefaultActions?: boolean;
-    customAction?: (instance: any) => JSX.Element | React.ComponentClass<any>;
+    customAction?: CustomActionType;
 }
 
 export class DataGridImpl extends React.Component<IDataGridProps, void> {
@@ -123,14 +124,16 @@ export class DataGridImpl extends React.Component<IDataGridProps, void> {
     // type 'any' is intentional.
     renderActions = (instance: any): JSX.Element | React.ComponentClass<any> => {
         let {showDefaultActions, customAction, handleRecordDelete} = this.props;
+        // TODO: Figure out the type and remove any
+        let CustomAction: any = customAction;
         let ActionComponent: React.ComponentClass<any> = getActionComponent(`${this.resource}Action`);
 
         const tooltip: JSX.Element = (
             <Tooltip id="tooltip"><strong>Remove from List</strong></Tooltip>
         );
 
-        if (customAction) {
-            return <td>{customAction(instance)}</td>;
+        if (CustomAction && React.isValidElement(<CustomAction/>)) {
+            return <td><CustomAction instance={instance}/></td>;
         } 
         
         if (ActionComponent && React.isValidElement(<ActionComponent/>)) {

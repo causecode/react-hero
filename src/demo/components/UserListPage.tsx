@@ -58,3 +58,11 @@ export class UserListPage extends React.Component<{resource: any}, any> {
         );
     }
 }
+
+export class TestAction extends React.Component<{instance: any}, void> {
+    render() {
+        return (
+            <button>customActionComponent</button>
+        );
+    }
+}

@@ -4,7 +4,7 @@ import {getTokenFromLocalStorage} from '../../utils/appService';
 
 export const BASE_URL: string = config.APIUrl || config.serverUrl;
 
-axios.defaults.headers.common['X-Auth-Token'] = getTokenFromLocalStorage();
+// axios.defaults.headers.common['X-Auth-Token'] = getTokenFromLocalStorage();
 
 export module HTTP {
 

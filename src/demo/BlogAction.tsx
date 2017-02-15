@@ -14,7 +14,7 @@ export class BlogAction extends React.Component<IBlogAction, void> {
     render(): JSX.Element {
         return (
             <button>
-                testAction
+                testActionForBlog
             </button>
         );
     }
