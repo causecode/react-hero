@@ -183,8 +183,7 @@ describe('Test for AppService', () => {
     unroll('It should #operation the authentication token in the local storage', (
             done: () => void,
             args: {operation: string, tokenValue: string}
-        ) => {
-        
+    ) => {    
         localStorage.setItem = jest.fn<void>();
         setTokenInLocalStorage(args.tokenValue);
         if (args.tokenValue) {
@@ -203,8 +202,7 @@ describe('Test for AppService', () => {
     unroll('It should return #tokenValue if the token is #status in the local storage.', (
             done: () => void,
             args: {tokenValue: string, status: string}
-        ) => {
-        
+    ) => {
         expect(getTokenFromLocalStorage()).toEqual(args.tokenValue);
         localStorage.clear();
         done();

@@ -120,39 +120,45 @@ export class DataGridImpl extends React.Component<IDataGridProps, void> {
         );    
     }
 
-    renderActions = (instanceId: string): JSX.Element | React.ComponentClass<any> => {
+    // type 'any' is intentional.
+    renderActions = (instance: any): JSX.Element | React.ComponentClass<any> => {
         let {showDefaultActions, customAction, handleRecordDelete} = this.props;
         let ActionComponent: React.ComponentClass<any> = getActionComponent(`${this.resource}Action`);
+
         const tooltip: JSX.Element = (
             <Tooltip id="tooltip"><strong>Remove from List</strong></Tooltip>
         );
 
         if (customAction) {
             return <td>{customAction}</td>;
-        } else if (ActionComponent && React.isValidElement(<ActionComponent/>)) {
-            return <td><ActionComponent id={instanceId}/></td>;
-        } else if (showDefaultActions) {
+        } 
+        
+        if (ActionComponent && React.isValidElement(<ActionComponent/>)) {
+            return <td><ActionComponent instance={instance}/></td>;
+        } 
+        
+        if (showDefaultActions) {
             return (
                 <td>
-                    <Link to={`/${this.resource}/edit/${instanceId}`}>
+                    <Link to={`/${this.resource}/edit/${instance.id}`}>
                         <RadiumFontAwesome name="pencil" />
                     </Link>
-                    <Link to={`/${this.resource}/show/${instanceId}`}>
+                    <Link to={`/${this.resource}/show/${instance.id}`}>
                         <RadiumFontAwesome name="location-arrow" />
                     </Link>
                     <OverlayTrigger placement="top" overlay={tooltip}>
                         <a 
-                                onClick={handleRecordDelete && handleRecordDelete.bind(this, instanceId)} 
+                                onClick={handleRecordDelete && handleRecordDelete.bind(this, instance.id)} 
                                 style={trashIconStyle}
-                                id={`delete${instanceId}`}>
+                                id={`delete${instance.id}`}>
                             <RadiumFontAwesome name="trash-o" />
                         </a>
                     </OverlayTrigger>
                 </td>
             );
-        } else {
-            return null;
-        }
+        } 
+        
+        return null;
     }
 
     render(): JSX.Element {
@@ -212,7 +218,7 @@ export class DataGridImpl extends React.Component<IDataGridProps, void> {
                                             </td> 
                                         );
                                     })}
-                                    {this.renderActions(instanceProperties.id)}
+                                    {this.renderActions(instanceProperties)}
                                 </tr>
                                 );
                             })}

@@ -63,7 +63,7 @@ describe('Tests for DataGrid', () => {
         ['checkbox', 'input[type="checkbox"]', 2]
     ]);
 
-    it('It should delete the data when delete action is clicked.', (): void => {
+    it('It should delete the data when delete icon is clicked.', (): void => {
         dataGridComponent.find('#delete100').simulate('click');
         expect(testFunction).toBeCalled();
     });
@@ -71,7 +71,7 @@ describe('Tests for DataGrid', () => {
     describe('Tests for different actions.', (): void => {
 
         class TestAction extends React.Component<void, void> {
-            render() {
+            render(): JSX.Element {
                 return (
                     <button>testAction</button>
                 );
@@ -100,7 +100,7 @@ describe('Tests for DataGrid', () => {
             });
         });
 
-        describe('When custom action is passed as a prop.', (): void => {
+        describe('When custom action element is passed as a prop.', (): void => {
             let componentTree: ReactWrapper<IDataGridProps, void> = mount <IDataGridProps, void>(
                     <Provider store={configureStore ({checkbox: checkboxReducer})}>
                         <DataGrid 
@@ -112,7 +112,7 @@ describe('Tests for DataGrid', () => {
                     </Provider>
             );
 
-            it('It should not render actions.', (): void => {
+            it('should render custom actions.', (): void => {
                 expect(componentTree.find('#customAction').length).toEqual(1);
             });
         });
@@ -122,6 +122,7 @@ describe('Tests for DataGrid', () => {
             AppService.getActionComponent = jest.fn<React.ComponentClass<void>>((): React.ComponentClass<void> => {
                 return TestAction;
             });
+
             let componentTree: ReactWrapper<IDataGridProps, void> = mount <IDataGridProps, void>(
                     <Provider store={configureStore ({checkbox: checkboxReducer})}>
                         <DataGrid 
@@ -132,7 +133,8 @@ describe('Tests for DataGrid', () => {
                     </Provider>
             );
 
-            it('It should not render the custom action component.', (): void => {
+            it('It should render the custom action component by dynamic lookup.', (): void => {
+                expect(componentTree.find(Link).length).toEqual(0);
                 expect(AppService.getActionComponent).toBeCalled();
             });
         });
