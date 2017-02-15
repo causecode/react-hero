@@ -204,7 +204,7 @@ export function generateForm<T extends BaseModel>(
     );
 }
 
-export const getActionComponent = (fileName: string): React.ComponentClass<any> => {
+export function getActionComponent(fileName: string): React.ComponentClass<any> {
     let fileNameSplittedToWords: string[] = fileName.split('-').map((item: string): string => {
         return item.capitalize();
     });
@@ -212,7 +212,7 @@ export const getActionComponent = (fileName: string): React.ComponentClass<any> 
     return require(`../../src`)[fileNameSplittedToWords.join('')];
 };
 
-export const setTokenInLocalStorage = (token: string): void => {
+export function setTokenInLocalStorage(token: string): void {
     if (!token) {
         console.warn('No Token sent to setTokenInLocalStorage');
         return;
@@ -222,7 +222,7 @@ export const setTokenInLocalStorage = (token: string): void => {
     localStorage.setItem(AUTH_TOKEN_KEY_TIMESTAMP, new Date().toString());
 };
 
-export const getTokenFromLocalStorage = (): string => {
+export function getTokenFromLocalStorage(): string {
     let token: string = localStorage.getItem(AUTH_TOKEN_KEY);
     if (!token) {
         console.warn('Access Token not found');

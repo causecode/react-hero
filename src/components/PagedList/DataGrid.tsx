@@ -143,7 +143,8 @@ export class DataGridImpl extends React.Component<IDataGridProps, void> {
                     <OverlayTrigger placement="top" overlay={tooltip}>
                         <a 
                                 onClick={handleRecordDelete && handleRecordDelete.bind(this, instanceId)} 
-                                style={trashIconStyle}>
+                                style={trashIconStyle}
+                                id={`delete${instanceId}`}>
                             <RadiumFontAwesome name="trash-o" />
                         </a>
                     </OverlayTrigger>
