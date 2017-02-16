@@ -31,7 +31,7 @@ export interface IDataGridProps extends IDataGridStateProps, IDataGridDispatchPr
     totalCount?: number;
     handleRecordDelete?: Function;
     showDefaultActions?: boolean;
-    customAction?: CustomActionType;
+    customActions?: CustomActionType;
 }
 
 export class DataGridImpl extends React.Component<IDataGridProps, void> {
@@ -123,9 +123,9 @@ export class DataGridImpl extends React.Component<IDataGridProps, void> {
 
     // type 'any' is intentional.
     renderActions = (instance: any): JSX.Element | React.ComponentClass<any> => {
-        let {showDefaultActions, customAction, handleRecordDelete} = this.props;
+        let {showDefaultActions, customActions, handleRecordDelete} = this.props;
         // TODO: Figure out the type and remove any
-        let CustomAction: any = customAction;
+        let CustomAction: any = customActions;
         let ActionComponent: React.ComponentClass<any> = getActionComponent(`${this.resource}Action`);
 
         const tooltip: JSX.Element = (
@@ -179,7 +179,7 @@ export class DataGridImpl extends React.Component<IDataGridProps, void> {
             this.properties = this.props.properties;
         }
 
-        let {showDefaultActions, customAction} = this.props;
+        let {showDefaultActions, customActions} = this.props;
 
         return (
             <div className="data-grid">
@@ -199,7 +199,7 @@ export class DataGridImpl extends React.Component<IDataGridProps, void> {
                             {this.properties.map((property: string, index: number) => {
                                 return (<th key={index}>{property.capitalize()}</th>);
                             })}
-                            {showDefaultActions || customAction ? <th>Actions</th> : null}
+                            {showDefaultActions || customActions ? <th>Actions</th> : null}
                         </tr>
                     </thead>
                     <tbody>

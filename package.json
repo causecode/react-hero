@@ -48,7 +48,7 @@
       "js"
     ],
     "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx)$",
-    "setupTestFrameworkScriptFile":"<rootDir>/__mocks__/localStorage.js"
+    "setupTestFrameworkScriptFile": "<rootDir>/__mocks__/localStorage.js"
   },
   "keywords": [],
   "author": "",
@@ -126,8 +126,8 @@
     "rimraf": "2.5.2",
     "stylelint": "6.6.0",
     "stylelint-webpack-plugin": "0.2.0",
-    "ts-loader": "1.2.2",
     "ts-jest": "17.0.3",
+    "ts-loader": "1.2.2",
     "unroll": "1.2.0"
   }
 }

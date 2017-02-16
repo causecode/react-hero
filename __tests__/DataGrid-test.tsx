@@ -113,7 +113,7 @@ describe('Tests for DataGrid', () => {
                                     instanceList={instanceList}
                                     totalCount={totalCount}
                                     properties={testInstance.properties}
-                                    customAction={args.propValue}
+                                    customActions={args.propValue}
                             />
                         </Provider>
                 );

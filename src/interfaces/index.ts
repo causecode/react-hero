@@ -5,7 +5,7 @@ import {BaseModel} from '../models/BaseModel';
 // Data type for a stub function.
 export type Stub = (...args: any[]) => void ;
 
-export type CustomActionType = (instance: any) => JSX.Element | React.ComponentClass<any>;
+export type CustomActionType = React.ReactNode;
 
 export interface IShallowTestUtils {
     findAll: any;
