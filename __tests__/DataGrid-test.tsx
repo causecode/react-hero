@@ -1,6 +1,8 @@
 jest.unmock('../src/components/PagedList/DataGrid');
+jest.unmock('../src/utils/appService');
 
 import * as React from 'react';
+import * as AppService from '../src/utils/appService';
 import {ReactWrapper, mount} from 'enzyme';
 import {Provider} from 'react-redux';
 import {store, configureStore} from '../src/store';
@@ -16,6 +18,8 @@ const unroll: any = require<any>('unroll');
 unroll.use(it);
 
 describe('Tests for DataGrid', () => {
+
+    let testFunction: jest.Mock<void> = jest.fn<void>();
 
     class TestModel extends BaseModel {
         static resourceName: string = 'test';
@@ -44,6 +48,7 @@ describe('Tests for DataGrid', () => {
                     instanceList={instanceList}
                     totalCount={totalCount}
                     properties={testInstance.properties}
+                    handleRecordDelete={testFunction}
             />
         </Provider>
     );
@@ -57,4 +62,92 @@ describe('Tests for DataGrid', () => {
         ['Table', Table, 1],
         ['checkbox', 'input[type="checkbox"]', 2]
     ]);
+
+    it('It should delete the data when delete icon is clicked.', (): void => {
+        dataGridComponent.find('#delete100').simulate('click');
+        expect(testFunction).toBeCalled();
+    });
+
+    describe('Tests for different actions.', (): void => {
+
+        class TestActionComponent extends React.Component<void, void> {
+            render(): JSX.Element {
+                return (
+                    <button id="testActionComponent">testAction</button>
+                );
+            }
+        }
+        
+        let testActionElement = (instance: any): JSX.Element => {
+            return <button id="customAction">custom action</button>;
+        };
+
+        /**
+         * Using different component tree for each test suite because once the component is mounted,
+         * even after changing the props(using setProps), the tree failed to update.
+         * Tried using componentTree.update() and beforeEach() as well.
+         */
+        describe('When showDefaultActions is false and custom actions are not present', (): void => {
+            let componentTree: ReactWrapper<IDataGridProps, void> = mount <IDataGridProps, void>(
+                    <Provider store={configureStore ({checkbox: checkboxReducer})}>
+                        <DataGrid 
+                                instanceList={instanceList}
+                                totalCount={totalCount}
+                                properties={testInstance.properties}
+                                showDefaultActions={false}
+                        />
+                    </Provider>
+            );
+
+            it('It should not render actions.', (): void => {
+                expect(componentTree.find(Link).length).toEqual(0);
+            });
+        });
+
+        describe('When custom action prop is passed.', (): void => {
+
+            unroll('It should render the custom action #title.', (done: () => void, args): void => {
+                let componentTree: ReactWrapper<IDataGridProps, void> = mount <IDataGridProps, void>(
+                        <Provider store={configureStore ({checkbox: checkboxReducer})}>
+                            <DataGrid 
+                                    instanceList={instanceList}
+                                    totalCount={totalCount}
+                                    properties={testInstance.properties}
+                                    customActions={args.propValue}
+                            />
+                        </Provider>
+                );
+
+                expect(componentTree.find(`#${args.buttonId}`).length).toEqual(1);
+                done();
+            }, [
+                ['title', 'propValue', 'buttonId'],
+                ['element', testActionElement, 'customAction'],
+                ['component', TestActionComponent, 'testActionComponent']
+            ]);
+        });
+
+        describe('When custom action is not passed as a prop and custom action component is present.', (): void => {
+            
+            AppService.getActionComponent = jest.fn<React.ComponentClass<void>>((): React.ComponentClass<void> => {
+                return TestActionComponent;
+            });
+
+            let componentTree: ReactWrapper<IDataGridProps, void> = mount <IDataGridProps, void>(
+                    <Provider store={configureStore ({checkbox: checkboxReducer})}>
+                        <DataGrid 
+                                instanceList={instanceList}
+                                totalCount={totalCount}
+                                properties={testInstance.properties}
+                        />
+                    </Provider>
+            );
+
+            it('It should render the custom action component by dynamic lookup.', (): void => {
+                expect(componentTree.find('#testActionComponent').length).toEqual(1);
+                expect(AppService.getActionComponent).toBeCalled();
+            });
+        });
+        
+    });
 });

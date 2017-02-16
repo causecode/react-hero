@@ -1,8 +1,11 @@
+import * as React from 'react';
 import {Props} from 'react';
 import {BaseModel} from '../models/BaseModel';
 
 // Data type for a stub function.
 export type Stub = (...args: any[]) => void ;
+
+export type CustomActionType = React.ReactNode;
 
 export interface IShallowTestUtils {
     findAll: any;
