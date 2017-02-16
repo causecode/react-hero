@@ -65,10 +65,11 @@ export class BaseModel {
             flush: boolean = true,
             headers: Object = {},
             successCallBack = ( (...args: any[]) => {} ),
-            failureCallBack = ( (...args: any[]) => {} )
+            failureCallBack = ( (...args: any[]) => {} ),
+            path: string = `${this.resourceName}`,
     ): void {
         if (flush) {
-            HTTP.postRequest(`${this.resourceName}`, headers, this.properties)
+            HTTP.postRequest(path, headers, this.properties)
                 .then((response: Axios.AxiosXHR<{}>) => {
                     successCallBack(response);
                     this.properties = response.data;
@@ -85,13 +86,14 @@ export class BaseModel {
             flush: boolean = true,
             headers: Object = {},
             successCallBack = ( (...args: any[]) => {} ),
-            failureCallBack = ( (...args: any[]) => {} )
+            failureCallBack = ( (...args: any[]) => {} ),
+            path: string = `${this.resourceName}`
     ): void {
         if (flush) {
             if (!this.properties || !this.properties.hasOwnProperty('id')) {
                 throw new Error(MISSING_ID_IN_METHOD('$update'));
             }
-            HTTP.putRequest(`${this.resourceName}`, headers, this.properties)
+            HTTP.putRequest(path, headers, this.properties)
                 .then((response) => {
                     successCallBack(response);
                     store.dispatch(updateInstance(this, this.resourceName));
@@ -107,13 +109,17 @@ export class BaseModel {
             flush: boolean = true,
             headers: Object = {},
             successCallBack = ( (...args: any[]) => {} ),
-            failureCallBack = ( (...args: any[]) => {} )
+            failureCallBack = ( (...args: any[]) => {} ),
+            path?: string
     ): void {
         if (flush) {
             if (!this.properties.hasOwnProperty('id')) {
                 throw new Error(MISSING_ID_IN_METHOD('$delete'));
             }
-            HTTP.deleteRequest(`${this.resourceName}/${this.properties.id }`, headers)
+            
+            let requestUrl: string = path ? `path/${this.properties.id}` : `${this.resourceName}/${this.properties.id}`;
+            
+            HTTP.deleteRequest(requestUrl, headers)
                 .then((response) => {
                     successCallBack(response);
                     store.dispatch(deleteInstance(this, this.resourceName));
@@ -135,13 +141,13 @@ export class BaseModel {
         headers: Object = {},
         successCallBack: Function = () => {},
         failureCallBack: Function = () => {},
+        path: string = this.resourceName,
         state?: {data?: any}
     ) {
         let resourceName: string = this.getResourceName();
 
             if (!valueInStore) {
                 // Fetch list data from server and save it in the store followed by returning it.
-                let path: string = resourceName;
                 let filterFormData: any = getFormValues(`${resourceName}Filters`)(store.getState());
                 objectAssign(filters, filterFormData);
                 
@@ -290,5 +296,4 @@ export class DefaultModel extends BaseModel {
     constructor(properties: any) {
          super(properties);
      }
-
 }
