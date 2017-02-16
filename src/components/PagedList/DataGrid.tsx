@@ -36,7 +36,6 @@ export class DataGridImpl extends React.Component<IDataGridProps, void> {
     private resource: string;
     private properties: string[];
 
-    // TODO More specific type for event.
     handleChange = (id: number, event: React.FormEvent): void => {
         // For selectAllOnPage id will be -1
         if (id === -1) {
