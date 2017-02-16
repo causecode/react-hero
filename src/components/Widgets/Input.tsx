@@ -1,5 +1,8 @@
 import * as React from 'react';
 import * as moment from 'moment';
+import {connect, MapStateToProps, MapDispatchToPropsFunction} from 'react-redux';
+import {IDispatch} from '../../interfaces';
+import {isEmpty, parseWidgetDate} from '../../utils/appService';
 import {
     FormControl,
     FormGroup,
@@ -11,15 +14,19 @@ import {
     ListGroupItem,
     Radio
 } from 'react-bootstrap';
-import {isEmpty, parseWidgetDate} from '../../utils/appService';
-import {store} from '../../store';
-import {connect} from 'react-redux';
 const {actions} = require<any>('react-redux-form');
 const ReactDatetime = require<any>('react-datetime');
 
-export interface IInputProps {
-    model: string;
+export interface IInputStateProps {
     propertyValue?: any;
+}
+
+export interface IInputDispatchProps {
+    change?: (model: string, value: any) => void;
+}
+
+export interface IInputProps extends IInputStateProps, IInputDispatchProps {
+    model: string;
     enum?: any;
     type: string;
     propertyName: string;
@@ -158,9 +165,9 @@ class ListInputTemplate extends React.Component<any, any> {
 // TODO: Make it generic component by allowing it to accept all props of react-datetime
 class DateTimeComponent extends React.Component<IInputProps, void> {
     
-    handleChange = (newValue: any): void => {
+    handleChange = (newValue: {_d: {toISOString: () => any}}): void => {
         if (newValue && newValue._d) {
-            store.dispatch(actions.change(this.props.model, newValue._d.toISOString()));
+            this.props.change(this.props.model, newValue._d.toISOString());
         }
     }
 
@@ -181,7 +188,7 @@ class DateTimeComponent extends React.Component<IInputProps, void> {
 class FormInputImpl extends React.Component<IInputProps, {}> {
     
     handleChange = (newValue: any): void => {
-        store.dispatch(actions.change(this.props.model, newValue));
+        this.props.change(this.props.model, newValue);
     }
 
     getInputTemplate = (): React.ComponentClass<any> | React.StatelessComponent<any> => {
@@ -218,7 +225,8 @@ class FormInputImpl extends React.Component<IInputProps, {}> {
     }
 }
 
-let mapStateToProps = (state, ownProps) => {
+let mapStateToProps: MapStateToProps<IInputStateProps, IInputProps> = 
+        (state: {forms: any}, ownProps: IInputProps): IInputStateProps => {
     let data = state.forms || {};
     ownProps.model.split('.').forEach(prop => {
         data = data.hasOwnProperty(prop) ? data[prop] : '';
@@ -228,4 +236,14 @@ let mapStateToProps = (state, ownProps) => {
     };
 };
 
-export let FormInput: React.ComponentClass<IInputProps> = connect<{}, {}, IInputProps>(mapStateToProps)(FormInputImpl);
+let mapDispatchToProps: MapDispatchToPropsFunction<IInputDispatchProps, IInputProps> = 
+        (dispatch: IDispatch): IInputDispatchProps => {
+    return {
+        change: (model: string, value: any): void => {
+            dispatch(actions.change(model, value));
+        }
+    };
+}; 
+
+export let FormInput: React.ComponentClass<IInputProps> = connect<IInputStateProps, IInputDispatchProps, IInputProps>
+        (mapStateToProps, mapDispatchToProps)(FormInputImpl);
