@@ -36,7 +36,7 @@ export class PagedListFilters extends React.Component<IPagedListFiltersProps, vo
                 <Button onClick={this.toggleFilters}>
                     <FontAwesome name="filter" />
                 </Button>
-                <InnerFilterForm resource={this.props.resource} filtersOpen={false}>
+                <InnerFilterForm resource={this.props.resource} path={this.props.path} filtersOpen={false}>
                     {children}
                 </InnerFilterForm>
             </div>

@@ -56,6 +56,7 @@ export interface IPagedListFiltersProps extends Props<{}> {
     fields?: string[];
     resource?: string;
     filtersOpen?: boolean;
+    path?: string;
 }
 
 export interface IFromJS {
@@ -107,4 +108,9 @@ export interface IUserAction {
 export interface IDropDownFilterData {
     label: string;
     value: string;
+}
+
+// Type any is intentional
+export interface IDispatch {
+    (action: any): any;
 }
