@@ -11,7 +11,7 @@ export interface IUser {
     };
 }
 
-export class TestModel extends BaseModel {
+export class UserModel extends BaseModel {
 
     static propTypes = {
         id: ModelPropTypes.NUMBER(),
@@ -63,5 +63,5 @@ export const userStephenInstance: IUser = {
     }
 };
 
-export const userStephenModelInstance: TestModel = new TestModel(userStephenInstance);
+export const userStephenModelInstance: UserModel = new UserModel(userStephenInstance);
 
