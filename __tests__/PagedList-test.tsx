@@ -200,7 +200,7 @@ describe('Test cases for PagedList', (): void => {
 
 describe('Test cases for PagedList using mount', (): void => {
     
-    let storeInstances: {leadCreate?: IStoreInstanceType} = {};
+    let storeInstances: {testList?: IStoreInstanceType} = {};
 
     storeInstances[`testList`] = {
         instanceList: [userModelBruceInstance], 
