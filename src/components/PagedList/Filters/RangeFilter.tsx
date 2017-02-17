@@ -12,6 +12,7 @@ export interface IRangeFilter extends IFilter {
 export function RangeFilter({label, paramName, type, paramNameFrom, paramNameTo}: IRangeFilter): JSX.Element {
 
     label = label || paramName;
+    
     return (
         <FormGroup>
             <ControlLabel>{label.capitalize()}</ControlLabel>

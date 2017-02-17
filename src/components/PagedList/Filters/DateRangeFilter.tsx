@@ -5,6 +5,7 @@ import {renderRangeFilter, IRangeFilter} from './RangeFilter';
 export function DateRangeFilter({label, paramName, paramNameFrom, paramNameTo}: IRangeFilter): JSX.Element {
 
     label = label || paramName;
+    
     return (
         <FormGroup>
             <ControlLabel>{label.capitalize()}</ControlLabel>
