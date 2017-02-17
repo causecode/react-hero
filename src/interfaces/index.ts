@@ -117,3 +117,10 @@ export interface IDropDownFilterData {
 export interface IDispatch {
     (action: any): any;
 }
+
+export interface IStoreInstanceType {
+    instanceList?: BaseModel[];
+    totalCount?: number;
+    activePage?: number;
+    properties?: any;
+}
