@@ -225,7 +225,6 @@ export function setTokenInLocalStorage(token: string): void {
 export function getTokenFromLocalStorage(): string {
     let token: string = localStorage.getItem(AUTH_TOKEN_KEY);
     if (!token) {
-        console.warn('Access Token not found');
         return '';
     }
 
