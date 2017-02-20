@@ -18,9 +18,9 @@ import {DataGrid, IDataGridProps} from '../src/components/PagedList/DataGrid';
 import {PagedListFilters} from '../src/components/PagedList/Filters/PagedListFilter';
 import {PagedListImpl, PagedList, IPagedListProps} from '../src/components-stateful/PagedList';
 import {
-    IPagedListFiltersProps, 
-    IBulkUserActionType, 
-    IStoreInstanceType, 
+    IPagedListFiltersProps,
+    IBulkUserActionType,
+    IStoreInstanceType,
     ICheckboxReducer
 } from '../src/interfaces';
 import '../src/init';
@@ -35,11 +35,11 @@ describe('Test cases for PagedList', (): void => {
     it('should throw an error when resource name is not passed', (): void => {
         expect((): void => {
             shallow<IPagedListProps, void>(
-                <PagedListImpl 
+                <PagedListImpl
                         max={10}
                         resource=""
                 />
-            );   
+            );
         }).toThrowError('No resource name passed.');
     });
 
@@ -52,9 +52,9 @@ describe('Test cases for PagedList', (): void => {
     TestModel.list = jest.fn((): TestModel[] => {
         return [];
     });
-    
+
     let pagedList: ShallowWrapper<IPagedListProps, void> = shallow<IPagedListProps, void>(
-        <PagedListImpl 
+        <PagedListImpl
                 max={10}
                 resource="test"
         />
@@ -79,7 +79,7 @@ describe('Test cases for PagedList', (): void => {
     });
 
     unroll('should render #componentName #count', (
-        done: () => void, 
+        done: () => void,
         args: {componentName: string, component: string | JSX.Element, count: number}
     ) => {
         expect(pagedList.find(args.component).length).toBe(args.count);
@@ -100,20 +100,20 @@ describe('Test cases for PagedList', (): void => {
         TestModel.list.mockReset();
 
         shallow<IPagedListProps, void>(
-                <PagedListImpl 
+                <PagedListImpl
                         max={10}
                         resource="test"
                         fetchInstanceList={customFetchInstanceList}
                 />
         );
-        
+
         expect(TestModel.list).not.toBeCalled();
     });
 
     it('should render custom page header when pageHeader prop is passed', (): void => {
         expect(pagedList.find('h2').length).toBe(1);
         pagedList.setProps({pageHeader: <h1>This is my custom PageHeader.</h1>});
-        
+
         expect(pagedList.find('h1').length).toBe(1);
         expect(pagedList.find('h2').length).toBe(0);
     });
@@ -133,7 +133,7 @@ describe('Test cases for PagedList', (): void => {
     }
 
     let customDataGrid: JSX.Element = (
-        <DataGrid 
+        <DataGrid
                 properties={null}
                 instanceList={null}
         >
@@ -150,16 +150,16 @@ describe('Test cases for PagedList', (): void => {
     }
 
     let userActionsMap: IBulkUserActionType[] = [
-        {label: 'Bark Now..!', action: (): void => {}},
-        {label: 'Say Meow..!', action: (): void => {}}
+        {label: 'Add User', action: (): void => {}},
+        {label: 'Delete User', action: (): void => {}}
     ];
 
     unroll('should render #componentName when passed as prop', (
-        done: () => void, 
+        done: () => void,
         args: {
-            componentName: string, 
-            prop: string, 
-            propValue: JSX.Element | React.ComponentClass<any>, 
+            componentName: string,
+            prop: string,
+            propValue: JSX.Element | React.ComponentClass<any>,
             searchComponent: string
         }
     ) => {
@@ -177,7 +177,7 @@ describe('Test cases for PagedList', (): void => {
     ]);
 
     unroll('should call #methodName when page changes', (
-        done: () => void, 
+        done: () => void,
         args: {methodName: string, method: () => void, props: any, methodParam: number}
     ) => {
         TestModel.list.mockReset();
@@ -199,34 +199,31 @@ describe('Test cases for PagedList', (): void => {
 });
 
 describe('Test cases for PagedList using mount', (): void => {
-    
+
     let storeInstances: {testList?: IStoreInstanceType} = {};
 
     storeInstances[`testList`] = {
-        instanceList: [userModelBruceInstance], 
-        totalCount: 1, 
+        instanceList: [userModelBruceInstance],
+        totalCount: 1,
         activePage: 1,
         properties: userModelBruceInstance.properties
     };
 
     let checkbox: ICheckboxReducer = {selectedIds: [1], selectAllOnPage: false, selectAll: false};
-    
+
     let pagedList: ReactWrapper<IPagedListProps, void> = mount<IPagedListProps, void> (
-        <Provider store={configureStore({
-            data: fromJS(storeInstances),
-            checkbox: checkbox
-        })}>
+        <Provider store={configureStore({data: fromJS(storeInstances), checkbox: checkbox})}>
             <PagedList max={10} resource="test">
                 <h1>
                     My PagedListFilter test using mount.
                 </h1>
             </PagedList>
-        </Provider>   
+        </Provider>
     );
 
     it('should unmount PagedList when unmount is called', (): void => {
         expect(pagedList.find('h2').length).toBe(1);
         pagedList.unmount();
         expect(pagedList.find('h2').length).toBe(0);
-    }); 
+    });
 });
