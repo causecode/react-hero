@@ -32,7 +32,7 @@ export class UserModel extends BaseModel {
     static resourceName: string = 'test';
 
     static columnNames: string[] = [
-        'id', 
+        'id',
         'name.firstName',
         'top.secret',
         'organization'
@@ -46,16 +46,16 @@ export class UserModel extends BaseModel {
 
     getHTMLOrganization(instance: IUser): JSX.Element {
         return (
-            <Link to="/queenConsolidated">Queens Consolidated</Link>
+            <Link to="/queensConsolidated">Queens Consolidated</Link>
         );
     }
-    
+
     constructor(properties: IUser) {
         super(properties);
     }
 }
 
-export const userStephenInstance: IUser = {
+export const userInstance: IUser = {
     id: 1,
     name: {
         firstName: 'Stephen',
@@ -63,5 +63,5 @@ export const userStephenInstance: IUser = {
     }
 };
 
-export const userStephenModelInstance: UserModel = new UserModel(userStephenInstance);
+export const userModelStephenInstance: UserModel = new UserModel(userInstance);
 

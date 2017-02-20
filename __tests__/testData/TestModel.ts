@@ -21,19 +21,19 @@ export class TestModel extends BaseModel {
     static resourceName: string = 'test';
 
     static columnNames: string[] = [
-        'id', 
+        'id',
         'name'
     ];
-    
+
     constructor(properties: ITest) {
         super(properties);
     }
 }
 
-export const userBruceInstance: any = {
+export const userInstance: any = {
     id: 1,
     name: 'Bruce Wayne'
 };
 
-export const userModelBruceInstance: TestModel = new TestModel(userBruceInstance);
+export const userModelBruceInstance: TestModel = new TestModel(userInstance);
 
