@@ -18,7 +18,7 @@ export class UserModel extends BaseModel {
         name: ModelPropTypes.OBJECT({
             firstName: ModelPropTypes.STRING(),
             lastName: ModelPropTypes.STRING()
-        });
+        })
     };
 
     static defaultProps = {

@@ -12,9 +12,9 @@ import {ICheckboxReducer} from '../src/interfaces';
 import {IDataGridProps, DataGrid, DataGridImpl} from '../src/components/PagedList/DataGrid';
 import {TestModel, userModelBruceInstance} from './testData/TestModel';
 import {userModelStephenInstance} from './testData/UserModel';
-import '../src/init';
 import {getInnerData} from '../src/utils/appService';
 import {toggleCheckbox} from '../src/actions/checkboxActions';
+import '../src/init';
 const unroll: any = require<any>('unroll');
 
 unroll.use(it);
