@@ -11,7 +11,7 @@ import {Table} from 'react-bootstrap';
 import {ICheckboxReducer} from '../src/interfaces';
 import {IDataGridProps, DataGrid, DataGridImpl} from '../src/components/PagedList/DataGrid';
 import {TestModel, userModelBruceInstance} from './testData/TestModel';
-import {userStephenModelInstance} from './testData/UserModel';
+import {userModelStephenInstance} from './testData/UserModel';
 import '../src/init';
 import {getInnerData} from '../src/utils/appService';
 import {toggleCheckbox} from '../src/actions/checkboxActions';
@@ -32,8 +32,8 @@ describe('Tests for DataGrid', () => {
     let setChecked: jest.Mock<void> = jest.fn<void>();
     let setUnchecked: jest.Mock<void> = jest.fn<void>();
 
-    const dataGrid: ShallowWrapper<IDataGridProps, void> = shallow <IDataGridProps, void> (
-            <DataGridImpl 
+    const dataGrid: ShallowWrapper<IDataGridProps, void> = shallow<IDataGridProps, void> (
+            <DataGridImpl
                     totalCount={2}
                     instanceList={[userModelBruceInstance]}
                     properties={userModelBruceInstance.properties}
@@ -47,7 +47,7 @@ describe('Tests for DataGrid', () => {
     );
 
     unroll('should render #count #component elements', (
-        done: () => void, 
+        done: () => void,
         args: {component: string, selector: JSX.Element | string, count: number}
     ) => {
         expect(dataGrid.find(args.selector).length).toBe(args.count);
@@ -60,14 +60,14 @@ describe('Tests for DataGrid', () => {
     ]);
 
     unroll('should call handleChange when checkbox is checked or unchecked', (
-        done: () => void, 
+        done: () => void,
         args: {checkbox: ShallowWrapper<IDataGridProps, void>, method: jest.Mock<void>}
     ) => {
-        args.checkbox.simulate('change', {target: {checked: true}});         
+        args.checkbox.simulate('change', {target: {checked: true}});
         expect(args.method).toBeCalled();
 
         args.checkbox.simulate('change', {target: {checked: false}});
-        expect(selectAllRecordsOnPage).toBeCalled();  
+        expect(selectAllRecordsOnPage).toBeCalled();
         done();
     }, [
         ['checkbox', 'method'],
@@ -80,17 +80,25 @@ describe('Tests for DataGrid', () => {
         expect(testFunction).toBeCalled();
     });
 
-    it('should not render DataGrid content when instanceList is null or empty', (): void => {
-        expect(dataGrid.find('Table').length).toBe(1);
-        dataGrid.setProps({instanceList: null});
+    unroll('should not render DataGrid content when instanceList is #status.', (
+        done: () => void,
+        args: {status: string, propValue: any}
+    ): void => {
+        dataGrid.setProps({instanceList: args.propValue});
         expect(dataGrid.find('Table').length).toBe(0);
-    });
+
+        done();
+    }, [
+        ['status', 'propValue'],
+        ['null', null],
+        ['empty', []]
+    ]);
 
     describe('When getHTML method is defined for any property inside model', (): void => {
         let checkbox: ICheckboxReducer = {selectedIds: [1], selectAll: false, selectAllOnPage: false};
-    
+
         getInnerData = jest.fn();
-        
+
         selectAllRecords = jest.fn(() => {
             return {
                 type: 'DUMMY',
@@ -107,13 +115,11 @@ describe('Tests for DataGrid', () => {
 
         store.dispatch = jest.fn();
 
-        let userDataGrid: ReactWrapper <IDataGridProps, void> = mount <IDataGridProps, void> (
-                <Provider store={configureStore({
-                        checkbox: checkbox
-                })}>
+        let userDataGrid: ReactWrapper<IDataGridProps, void> = mount<IDataGridProps, void> (
+                <Provider store={configureStore({checkbox: checkbox})}>
                     <DataGrid
-                            instanceList={[userStephenModelInstance]}
-                            properties={userStephenModelInstance.properties}
+                            instanceList={[userModelStephenInstance]}
+                            properties={userModelStephenInstance.properties}
                     />
                 </Provider>
         );
@@ -122,7 +128,7 @@ describe('Tests for DataGrid', () => {
             expect(userDataGrid.find('Link').length).toBe(4);
             let renderedAsLink: boolean = false;
             userDataGrid.find('Link').forEach((link) => {
-                if (link.props()[`to`] === '/stephen' || link.props()[`to`] === '/queenConsolidated') {
+                if (link.props()[`to`] === '/stephen' || link.props()[`to`] === '/queensConsolidated') {
                     renderedAsLink = true;
                 }
             });
@@ -139,7 +145,7 @@ describe('Tests for DataGrid', () => {
                 );
             }
         }
-        
+
         let testActionElement = (instance: any): JSX.Element => {
             return <button id="customAction">custom action</button>;
         };
@@ -150,9 +156,9 @@ describe('Tests for DataGrid', () => {
          * Tried using componentTree.update() and beforeEach() as well.
          */
         describe('When showDefaultActions is false and custom actions are not present', (): void => {
-            let componentTree: ReactWrapper<IDataGridProps, void> = mount <IDataGridProps, void>(
+            let componentTree: ReactWrapper<IDataGridProps, void> = mount<IDataGridProps, void>(
                     <Provider store={configureStore ({checkbox: checkboxReducer})}>
-                        <DataGrid 
+                        <DataGrid
                                 instanceList={instanceList}
                                 totalCount={totalCount}
                                 properties={userModelBruceInstance.properties}
@@ -161,7 +167,7 @@ describe('Tests for DataGrid', () => {
                     </Provider>
             );
 
-            it('It should not render actions.', (): void => {
+            it('should not render actions.', (): void => {
                 expect(componentTree.find(Link).length).toEqual(0);
             });
         });
@@ -169,9 +175,9 @@ describe('Tests for DataGrid', () => {
         describe('When custom action prop is passed.', (): void => {
 
             unroll('should render the custom action #title.', (done: () => void, args): void => {
-                let componentTree: ReactWrapper<IDataGridProps, void> = mount <IDataGridProps, void>(
+                let componentTree: ReactWrapper<IDataGridProps, void> = mount<IDataGridProps, void>(
                         <Provider store={configureStore ({checkbox: checkboxReducer})}>
-                            <DataGrid 
+                            <DataGrid
                                     instanceList={instanceList}
                                     totalCount={totalCount}
                                     properties={userModelBruceInstance.properties}
@@ -190,14 +196,14 @@ describe('Tests for DataGrid', () => {
         });
 
         describe('When custom action is not passed as a prop and custom action component is present.', (): void => {
-            
+
             AppService.getActionComponent = jest.fn<React.ComponentClass<void>>((): React.ComponentClass<void> => {
                 return TestActionComponent;
             });
 
-            let componentTree: ReactWrapper<IDataGridProps, void> = mount <IDataGridProps, void>(
+            let componentTree: ReactWrapper<IDataGridProps, void> = mount<IDataGridProps, void>(
                     <Provider store={configureStore ({checkbox: checkboxReducer})}>
-                        <DataGrid 
+                        <DataGrid
                                 instanceList={instanceList}
                                 totalCount={totalCount}
                                 properties={userModelBruceInstance.properties}
