@@ -44,7 +44,7 @@ export interface IPagedListProps extends IPagedListStateProps, IPagedListDispatc
     showDefaultActions?: boolean;
     customActions?: CustomActionType;
 
-    // props for making PagedList composable
+    // List of props that can be passed to make PagedList customizable
     pageHeader?: JSX.Element;
     pagedListFilters?: React.ComponentClass<IPagedListFiltersProps> | JSX.Element;
     dataGrid?: React.ComponentClass<IDataGridProps> | JSX.Element;
@@ -110,8 +110,8 @@ export class PagedListImpl extends React.Component<IPagedListProps, void> {
     renderUserActions = (): JSX.Element => {
         if (this.props.userActionsMap && this.props.userActionsMap.length > 0) {
             return(
-                <UserActions 
-                        isDisabled={true} 
+                <UserActions
+                        isDisabled={true}
                         userActionsMap={this.props.userActionsMap}
                         totalCount={this.props.totalCount} />
             );
@@ -129,6 +129,7 @@ export class PagedListImpl extends React.Component<IPagedListProps, void> {
         }
         if (typeof this.props.pagedListFilters === 'function') {
             let CustomPagedListFilters: React.ComponentClass<IPagedListFiltersProps> = this.props.pagedListFilters;
+
             return (
                 <CustomPagedListFilters resource={this.props.resource}>
                     {this.props.children}
@@ -147,14 +148,15 @@ export class PagedListImpl extends React.Component<IPagedListProps, void> {
                         handleRecordDelete={this.props.handleRecordDelete}
                         totalCount={this.props.totalCount}
                         showDefaultActions={this.props.showDefaultActions}
-                        customActions={this.props.customActions} 
+                        customActions={this.props.customActions}
                 />
             );
         }
         if (typeof this.props.dataGrid === 'function') {
             let CustomDataGrid: React.ComponentClass<IDataGridProps> = this.props.dataGrid;
+
             return (
-                <CustomDataGrid 
+                <CustomDataGrid
                         instanceList={this.props.instanceList}
                         properties={this.props.properties}
                         handleRecordDelete={this.props.handleRecordDelete}
@@ -162,15 +164,16 @@ export class PagedListImpl extends React.Component<IPagedListProps, void> {
                 />
             );
         }
+
         return this.props.dataGrid;
     }
 
     render(): JSX.Element {
         let activePage: number = this.props.activePage;
-        let items: number = this.props.max ? Math.ceil(this.props.totalCount / this.props.max) : 1;
+        let numberOfPages: number = this.props.max ? Math.ceil(this.props.totalCount / this.props.max) : 1;
         return (
             <div>
-                {this.props.pageHeader || 
+                {this.props.pageHeader ||
                     <h2 className="caps">
                         {this.props.resource.capitalize()} List
                         <Link to={`${this.props.resource}/create`} >
@@ -184,16 +187,16 @@ export class PagedListImpl extends React.Component<IPagedListProps, void> {
                         <QueryFilter placeholder="Search" paramName="query" label="Search"/>
                     </OuterFilter>
                 </div>
-                
+
                 {this.renderPagedListFilters()}
 
                 {this.renderUserActions()}
-                
+
                 {this.props.afterFilters}
-            
+
                 {this.renderDataGrid()}
 
-                {this.props.pagination || 
+                {this.props.pagination ||
                     <Pagination
                             prev
                             next
@@ -202,9 +205,9 @@ export class PagedListImpl extends React.Component<IPagedListProps, void> {
                             ellipsis
                             boundaryLinks
                             maxButtons={5}
-                            items={items}
+                            items={numberOfPages}
                             activePage={activePage}
-                            onSelect={this.handlePagination} 
+                            onSelect={this.handlePagination}
                     />
                 }
             </div>
