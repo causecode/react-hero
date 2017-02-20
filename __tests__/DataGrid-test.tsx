@@ -5,15 +5,14 @@ import * as React from 'react';
 import * as AppService from '../src/utils/appService';
 import {ReactWrapper, mount, ShallowWrapper, shallow} from 'enzyme';
 import {Provider} from 'react-redux';
-import {store, configureStore} from '../src/store';
 import {Link} from 'react-router';
 import {Table} from 'react-bootstrap';
 import {ICheckboxReducer} from '../src/interfaces';
-import {IDataGridProps, DataGrid, DataGridImpl} from '../src/components/PagedList/DataGrid';
-import {TestModel, userModelBruceInstance} from './testData/TestModel';
+import {store, configureStore} from '../src/store';
 import {userModelStephenInstance} from './testData/UserModel';
-import {getInnerData} from '../src/utils/appService';
 import {toggleCheckbox} from '../src/actions/checkboxActions';
+import {TestModel, userModelBruceInstance} from './testData/TestModel';
+import {IDataGridProps, DataGrid, DataGridImpl} from '../src/components/PagedList/DataGrid';
 import '../src/init';
 const unroll: any = require<any>('unroll');
 
@@ -97,7 +96,7 @@ describe('Tests for DataGrid', () => {
     describe('When getHTML method is defined for any property inside model', (): void => {
         let checkbox: ICheckboxReducer = {selectedIds: [1], selectAll: false, selectAllOnPage: false};
 
-        getInnerData = jest.fn();
+        AppService.getInnerData = jest.fn();
 
         selectAllRecords = jest.fn(() => {
             return {
