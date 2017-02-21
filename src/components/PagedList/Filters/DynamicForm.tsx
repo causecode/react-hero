@@ -15,7 +15,9 @@ export class InnerFilterFormImpl extends React.Component<IPagedListFiltersProps,
     };
 
     sendFilters(resource: string): void {
-        ModelService.getModel(resource).list();
+        ModelService.getModel(resource).list(
+            {}, false, {}, this.props.successCallBack, this.props.failureCallBack, this.props.path
+        );
     }
 
     handleSubmit = (event: React.FormEvent): void => {
@@ -46,8 +48,8 @@ export function createFilterForm(resource: string) {
         form: `${resource}Filters`
     })(InnerFilterFormImpl);
 
-    let InnerFilterForm: React.ComponentClass<IPagedListFiltersProps> = 
+    let InnerFilterForm: React.ComponentClass<IPagedListFiltersProps> =
             connect<void, void, IPagedListFiltersProps>(mapStateToProps)(InnerFilterFormConnected);
-    
+
     return InnerFilterForm;
 }
