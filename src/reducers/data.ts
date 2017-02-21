@@ -50,11 +50,11 @@ function dataReducer(state = INITIAL_STATE, action ): IFromJS {
             }
 
             return StoreService.setInstanceInList(state, instanceResource, new Model(instance), true);
-            
+
         case FETCH_INSTANCE_DATA_ERROR:
             return state.set(`${action.resource}Edit`, fromJS({
                 hasError: true,
-                isLoading: false,
+                isLoading: false
             }));
 
         case FETCH_INSTANCE_LIST_START:
@@ -63,11 +63,12 @@ function dataReducer(state = INITIAL_STATE, action ): IFromJS {
         case FETCH_INSTANCE_LIST_FULFILLED:
             let listResource = action.resource || '';
             Model = ModelService.getModel(listResource);
+            let instanceListKey: string = Model[`instanceListKey`] || 'instanceList';
             let instanceList, totalCount: number, properties: string[];
-            if (action.payload && action.payload.instanceList) {
+            if (action.payload && action.payload[instanceListKey]) {
                 totalCount = action.payload.totalCount;
                 properties = action.payload.properties;
-                instanceList = action.payload.instanceList.map(instance => {
+                instanceList = action.payload[instanceListKey].map(instance => {
                     return new Model(instance);
                 });
             } else {
@@ -112,7 +113,7 @@ function dataReducer(state = INITIAL_STATE, action ): IFromJS {
         case DELETE_INSTANCE:
             return StoreService.deleteAllInstances(state, action.resource, action.instance);
 
-        case UNSET_RESOURCE_LIST: 
+        case UNSET_RESOURCE_LIST:
             return state.deleteIn([`${action.resource}List`, 'instanceList']);
 
         default:
