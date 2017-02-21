@@ -4,18 +4,24 @@ import {IFilter} from '../../../interfaces';
 import {GenericFilter} from './GenericFilter';
 const Field = require<any>('redux-form').Field;
 
-export function RangeFilter({label, paramName, type}: IFilter): JSX.Element {
+export interface IRangeFilter extends IFilter {
+    paramNameFrom?: string;
+    paramNameTo?: string;
+}
+
+export function RangeFilter({label, paramName, type, paramNameFrom, paramNameTo}: IRangeFilter): JSX.Element {
 
     label = label || paramName;
+    
     return (
         <FormGroup>
             <ControlLabel>{label.capitalize()}</ControlLabel>
             
             <strong>From</strong>
-            {renderRangeFilter(`${paramName}From`, type || 'text')}
+            {renderRangeFilter(paramNameFrom || `${paramName}From`, type || 'text')}
             
             <strong>To</strong>
-            {renderRangeFilter(`${paramName}To`, type || 'text')}
+            {renderRangeFilter(paramNameTo || `${paramName}To`, type || 'text')}
         </FormGroup>
     );
 }

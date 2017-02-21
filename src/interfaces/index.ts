@@ -46,8 +46,8 @@ export interface IImmutable {
 
 // Basic interface used by all filters.
 export interface IFilter {
+    paramName: string;
     label?: string;
-    paramName?: string;
     offset?: number;
     sort?: 'asc' | 'desc';
     // Added for range-filter customization to render field as number input field or normal text input field
@@ -59,6 +59,7 @@ export interface IPagedListFiltersProps extends Props<{}> {
     fields?: string[];
     resource?: string;
     filtersOpen?: boolean;
+    path?: string;
 }
 
 export interface IFromJS {
@@ -110,4 +111,16 @@ export interface IUserAction {
 export interface IDropDownFilterData {
     label: string;
     value: string;
+}
+
+// Type any is intentional
+export interface IDispatch {
+    (action: any): any;
+}
+
+export interface IStoreInstanceType {
+    instanceList?: BaseModel[];
+    totalCount?: number;
+    activePage?: number;
+    properties?: any;
 }

@@ -27,9 +27,9 @@ export class BaseModel {
     static defaultProps: Dictionary<any>;
 
     constructor(public properties) {
-        let propTypes = this.constructor[`propTypes`]; 
+        let propTypes = this.constructor[`propTypes`];
         let defaultProps = this.constructor[`defaultProps`];
-        
+
         if (!propTypes) {
             throw new Error(NO_PROP_TYPES(this.constructor.name));
         }
@@ -41,7 +41,7 @@ export class BaseModel {
         if (!this.constructor[`resourceName`]) {
             throw new Error(MODEL_RESOURCE_ERROR);
         }
-        
+
         this.properties = isEmpty(properties) ? defaultProps : properties ;
         this.resourceName = this.constructor[`resourceName`];
     }
@@ -65,10 +65,11 @@ export class BaseModel {
             flush: boolean = true,
             headers: Object = {},
             successCallBack = ( (...args: any[]) => {} ),
-            failureCallBack = ( (...args: any[]) => {} )
+            failureCallBack = ( (...args: any[]) => {} ),
+            path: string = `${this.resourceName}`,
     ): void {
         if (flush) {
-            HTTP.postRequest(`${this.resourceName}`, headers, this.properties)
+            HTTP.postRequest(path, headers, this.properties)
                 .then((response: Axios.AxiosXHR<{}>) => {
                     successCallBack(response);
                     this.properties = response.data;
@@ -85,13 +86,14 @@ export class BaseModel {
             flush: boolean = true,
             headers: Object = {},
             successCallBack = ( (...args: any[]) => {} ),
-            failureCallBack = ( (...args: any[]) => {} )
+            failureCallBack = ( (...args: any[]) => {} ),
+            path: string = this.resourceName
     ): void {
         if (flush) {
             if (!this.properties || !this.properties.hasOwnProperty('id')) {
                 throw new Error(MISSING_ID_IN_METHOD('$update'));
             }
-            HTTP.putRequest(`${this.resourceName}`, headers, this.properties)
+            HTTP.putRequest(path, headers, this.properties)
                 .then((response) => {
                     successCallBack(response);
                     store.dispatch(updateInstance(this, this.resourceName));
@@ -107,13 +109,17 @@ export class BaseModel {
             flush: boolean = true,
             headers: Object = {},
             successCallBack = ( (...args: any[]) => {} ),
-            failureCallBack = ( (...args: any[]) => {} )
+            failureCallBack = ( (...args: any[]) => {} ),
+            path?: string
     ): void {
         if (flush) {
             if (!this.properties.hasOwnProperty('id')) {
                 throw new Error(MISSING_ID_IN_METHOD('$delete'));
             }
-            HTTP.deleteRequest(`${this.resourceName}/${this.properties.id }`, headers)
+
+            let requestUrl: string = path ? `path/${this.properties.id}` : `${this.resourceName}/${this.properties.id}`;
+
+            HTTP.deleteRequest(requestUrl, headers)
                 .then((response) => {
                     successCallBack(response);
                     store.dispatch(deleteInstance(this, this.resourceName));
@@ -135,16 +141,16 @@ export class BaseModel {
         headers: Object = {},
         successCallBack: Function = () => {},
         failureCallBack: Function = () => {},
+        path: string = this.resourceName,
         state?: {data?: any}
     ) {
         let resourceName: string = this.getResourceName();
 
             if (!valueInStore) {
                 // Fetch list data from server and save it in the store followed by returning it.
-                let path: string = resourceName;
                 let filterFormData: any = getFormValues(`${resourceName}Filters`)(store.getState());
                 objectAssign(filters, filterFormData);
-                
+
                 store.dispatch(
                     getPromiseAction(
                         FETCH_INSTANCE_LIST,
@@ -159,7 +165,7 @@ export class BaseModel {
             }
 
         // Fetch list from store.
-        state = !isEmpty(state) ? state : store.getState(); 
+        state = !isEmpty(state) ? state : store.getState();
         let data = state.data || {};
         let listData = data.toJS ? data : fromJS(data); // converting to Immutable so that getIn can be called.
         return listData.getIn([`${resourceName}List`, 'instanceList'], []);
@@ -237,7 +243,7 @@ export class BaseModel {
         if (!operation) {
             return listInstance;
         }
-        
+
         let formInstances: IFromJS | any = state.forms.rhForms || {};
         formInstances = formInstances.toJS ? formInstances.toJS() : formInstances;
         let instanceKey: string = operation === 'edit' ? `${resourceName}Edit` : `${resourceName}Create`;
@@ -283,12 +289,11 @@ export function getData(path: string, filters = {}, headers: Object = {}): Promi
 }
 
 export class DefaultModel extends BaseModel {
-    
+
     static resourceName: string = 'default';
     static propTypes: any = {};
     static defaultProps = {};
     constructor(properties: any) {
          super(properties);
      }
-
 }

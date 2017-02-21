@@ -15,7 +15,7 @@ export class InnerFilterFormImpl extends React.Component<IPagedListFiltersProps,
     };
 
     sendFilters(resource: string): void {
-        ModelService.getModel(resource).list();
+        ModelService.getModel(resource).list({}, false, {}, () => {}, () => {}, this.props.path);
     }
 
     handleSubmit = (event: React.FormEvent): void => {

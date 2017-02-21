@@ -1,20 +1,20 @@
 import * as React from 'react';
 import {FormGroup, ControlLabel} from 'react-bootstrap';
-import {IFilter} from '../../../interfaces';
-import {renderRangeFilter} from './RangeFilter';
+import {renderRangeFilter, IRangeFilter} from './RangeFilter';
 
-export function DateRangeFilter({label, paramName}: IFilter): JSX.Element {
+export function DateRangeFilter({label, paramName, paramNameFrom, paramNameTo}: IRangeFilter): JSX.Element {
 
     label = label || paramName;
+    
     return (
         <FormGroup>
             <ControlLabel>{label.capitalize()}</ControlLabel>
             
             <strong>From</strong>
-            {renderRangeFilter(`${paramName}From`, 'date')}
+            {renderRangeFilter(paramNameFrom || `${paramName}From`, 'date')}
             
             <strong>To</strong>
-            {renderRangeFilter(`${paramName}To`, 'date')}
+            {renderRangeFilter(paramNameTo || `${paramName}To`, 'date')}
         </FormGroup>
     );
 }
