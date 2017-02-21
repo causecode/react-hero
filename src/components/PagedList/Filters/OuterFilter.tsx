@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as Radium from 'radium';
 import {ModelService} from '../../../utils/modelService';
-import {Button} from 'react-bootstrap';
+import {Button, Row, Col} from 'react-bootstrap';
 const ReduxForm: any = require<any>('redux-form');
 
 export interface IOuterFilterProps {
@@ -10,7 +10,7 @@ export interface IOuterFilterProps {
 
 @Radium
 export class OuterFilterImpl extends React.Component<IOuterFilterProps, void> {
-    
+
     sendFilters(resource: string): void {
         ModelService.getModel(resource).list();
     }
@@ -19,12 +19,18 @@ export class OuterFilterImpl extends React.Component<IOuterFilterProps, void> {
         event.preventDefault();
         this.sendFilters(this.props.resource);
     };
-    
+
     render(): JSX.Element {
         return (
-            <form onSubmit={this.handleSubmit}>
-                {this.props.children}
-                <Button style={submitBtn} type="submit">Search</Button>
+            <form onSubmit={this.handleSubmit} style={outerFilterStyle}>
+                <Row>
+                    <Col md={4}>
+                        {this.props.children}
+                    </Col>
+                    <Col>
+                        <Button style={btnStyle} type="submit">Search</Button>
+                    </Col>
+                </Row>
             </form>
         );
     }
@@ -34,10 +40,13 @@ export function createOuterFilterForm (formName: string): React.ComponentClass<I
     let OuterFilterForm = ReduxForm.reduxForm({
         form: formName
     })(OuterFilterImpl);
-    
+
     return OuterFilterForm;
 }
 
-const submitBtn: React.CSSProperties = {
-    margin: '-115px 0px 0px 375px'
+const outerFilterStyle: React.CSSProperties = {
+    margin: '0px 0px 0px -20px'
+};
+const btnStyle: React.CSSProperties = {
+    margin: '40px 0px 0px 0px'
 };
