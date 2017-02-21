@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {Props} from 'react';
 import {BaseModel} from '../models/BaseModel';
+export {CSSProperties as CSS} from 'react';
 
 // Data type for a stub function.
 export type Stub = (...args: any[]) => void ;
@@ -51,7 +52,7 @@ export interface IFilter {
     offset?: number;
     sort?: 'asc' | 'desc';
     // Added for range-filter customization to render field as number input field or normal text input field
-    type?: string;  
+    type?: string;
 }
 
 // Interface for props used by the PagedListFilters.
@@ -59,6 +60,9 @@ export interface IPagedListFiltersProps extends Props<{}> {
     fields?: string[];
     resource?: string;
     filtersOpen?: boolean;
+    path?: string;
+    successCallBack?: (response: any) => void;
+    failureCallBack?: (error: any) => void;
 }
 
 export interface IFromJS {
@@ -110,4 +114,34 @@ export interface IUserAction {
 export interface IDropDownFilterData {
     label: string;
     value: string;
+}
+
+// Type any is intentional
+export interface IDispatch {
+    (action: any): any;
+}
+
+export interface IStoreInstanceType {
+    instanceList?: BaseModel[];
+    totalCount?: number;
+    activePage?: number;
+    properties?: any;
+}
+
+export interface IAlertType {
+    show: boolean;
+    type: string;
+    message: string;
+}
+
+export interface IAlertAction {
+    type: string;
+    payload: {
+        alertType: string;
+        alertMessage: string;
+    };
+}
+
+export interface IDispatchProps {
+    saveData?: (model: string, value: any) => void;
 }
