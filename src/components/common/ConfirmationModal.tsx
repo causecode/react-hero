@@ -21,7 +21,7 @@ export interface IConfirmationModalState {
 
 @Radium
 export class ConfirmationModalImpl extends React.Component<IConfirmationModalProps, void> {
-    
+
     render(): JSX.Element {
         return (
             <Modal dialogClassName="modalDialog" show={this.props.show} onHide={this.props.onHide}>
@@ -47,10 +47,10 @@ export class ConfirmationModalImpl extends React.Component<IConfirmationModalPro
 };
 
 
-let mapStateToProps: MapStateToProps<IConfirmationModalStateProps, IConfirmationModalProps> = 
+let mapStateToProps: MapStateToProps<IConfirmationModalStateProps, IConfirmationModalProps> =
         (state: IConfirmationModalState): IConfirmationModalStateProps => {
             return {
-                show: state.confirmationModal
+                show: state.confirmationModal,
             };
 };
 
@@ -61,11 +61,11 @@ export {ConfirmationModal};
 const fontStyle: CSS = {
     fontSize: '16px',
     lineHeight: '22.5px',
-    wordBreak: 'break-all'
+    wordBreak: 'break-all',
 };
 const rowStyle: CSS = {
-    padding: '15px 5px'
+    padding: '15px 5px',
 };
 const footerStyle: CSS = {
-    padding: '20px'
+    padding: '20px',
 };

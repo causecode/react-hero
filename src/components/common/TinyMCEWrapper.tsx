@@ -27,7 +27,7 @@ export class TinyMCEWrapperImpl extends React.Component<ITinyMCEWrapperProps, vo
                         tinymceConfig={ this.props.config || {
                             plugins: 'autolink link image lists print',
                             toolbar: 'undo redo | bold italic | alignleft aligncenter alignright',
-                            height: '190px'
+                            height: '190px',
                         }}
                         onChange={this.handleChange}
                 />
@@ -36,34 +36,33 @@ export class TinyMCEWrapperImpl extends React.Component<ITinyMCEWrapperProps, vo
     }
 }
 
-let mapStateToProps: MapStateToProps<ITinyMCEWrapperProps, ITinyMCEWrapperProps> = 
+let mapStateToProps: MapStateToProps<ITinyMCEWrapperProps, ITinyMCEWrapperProps> =
         (state: {forms}, ownProps: ITinyMCEWrapperProps): {value: string} => {
     let data: string = state.forms || {};
-    
+
     ownProps.model.split('.').forEach(prop => {
         data = data.hasOwnProperty(prop) ? data[prop] : '';
     });
-    
     return {
-        value: data
+        value: data,
     };
 };
 
 // Values to save in store can be anything, so type 'any' is given.
-let mapDispatchToProps: MapDispatchToPropsFunction<IDispatchProps, ITinyMCEWrapperProps> = 
+let mapDispatchToProps: MapDispatchToPropsFunction<IDispatchProps, ITinyMCEWrapperProps> =
         (dispatch: IDispatch): IDispatchProps => {
            return {
                saveData: (model: string, value: any): void => {
                    dispatch(actions.change(model, value));
-               }
-    }; 
+               },
+    };
 };
 
-export const TinyMCEWrapper: React.ComponentClass<ITinyMCEWrapperProps> = 
+export const TinyMCEWrapper: React.ComponentClass<ITinyMCEWrapperProps> =
         connect<ITinyMCEWrapperProps, IDispatchProps, ITinyMCEWrapperProps>
                 (mapStateToProps, mapDispatchToProps)(TinyMCEWrapperImpl);
 
 const container: CSS = {
     margin: '15px 0px',
-    minHeight: '300px'
+    minHeight: '300px',
 };
