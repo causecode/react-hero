@@ -5,7 +5,7 @@ import {routerReducer} from 'react-router-redux';
 import {dataReducer as data} from '../reducers/data';
 import {checkboxReducer} from '../reducers/checkboxReducers';
 import {userReducer} from '../reducers/userReducer';
-import {alertReducer} from '../reducers/alertDismissableReducer';
+import {alertReducer} from '../reducers/alertReducer';
 import {confirmationModalReducer} from '../reducers/confirmationModalReducer';
 const {combineForms} = require<any>('react-redux-form');
 const reduxFormReducer = require<any>('redux-form').reducer;
