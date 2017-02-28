@@ -1,14 +1,14 @@
 import * as React from 'react';
 import * as Radium from 'radium';
-import {Table, Tooltip, OverlayTrigger} from 'react-bootstrap';
 import {Link} from 'react-router';
+import {Table, Tooltip, OverlayTrigger} from 'react-bootstrap';
 import {MapStateToProps, MapDispatchToPropsFunction, connect} from 'react-redux';
 import {IState} from './BulkUserActions';
 import {BaseModel} from '../../models/BaseModel';
-import {getInnerData, getActionComponent} from '../../utils/appService';
-import {SELECT_ALL_RECORDS, SELECT_ALL_RECORDS_ON_PAGE, CHECK_CHECKBOX, UNCHECK_CHECKBOX} from '../../constants';
-import {selectAllRecords, toggleCheckbox} from '../../actions/checkboxActions';
 import {CustomActionType} from '../../interfaces';
+import {getInnerData, getActionComponent} from '../../utils/appService';
+import {selectAllRecords, toggleCheckbox} from '../../actions/checkboxActions';
+import {SELECT_ALL_RECORDS, SELECT_ALL_RECORDS_ON_PAGE, CHECK_CHECKBOX, UNCHECK_CHECKBOX} from '../../constants';
 import FontAwesome = require('react-fontawesome');
 const RadiumFontAwesome: React.ComponentClass<any> = Radium(FontAwesome);
 
@@ -37,7 +37,7 @@ export interface IDataGridProps extends IDataGridStateProps, IDataGridDispatchPr
 export class DataGridImpl extends React.Component<IDataGridProps, void> {
 
     static defaultProps = {
-        showDefaultActions: true
+        showDefaultActions: true,
     };
 
     private resource: string;
@@ -132,8 +132,14 @@ export class DataGridImpl extends React.Component<IDataGridProps, void> {
             <Tooltip id="tooltip"><strong>Remove from List</strong></Tooltip>
         );
 
-        if (CustomAction && React.isValidElement(<CustomAction/>)) {
-            return <td><CustomAction instance={instance}/></td>;
+        if (CustomAction && typeof CustomAction === 'function') {
+            return (
+                <td><CustomAction instance={instance} /></td>
+            );
+        }
+
+        if (CustomAction && typeof CustomAction === 'object') {
+            return React.cloneElement(CustomAction, {instance: instance});
         }
 
         if (ActionComponent && React.isValidElement(<ActionComponent/>)) {
@@ -236,25 +242,25 @@ let mapStateToProps: MapStateToProps<IDataGridStateProps, IDataGridProps> = (sta
     return {
         selectedIds: state.checkbox.selectedIds,
         selectAllOnPage: state.checkbox.selectAllOnPage,
-        selectAll: state.checkbox.selectAll
+        selectAll: state.checkbox.selectAll,
     };
 };
 
 let mapDispatchToProps: MapDispatchToPropsFunction<IDataGridDispatchProps, IDataGridProps> =
         (dispatch): IDataGridDispatchProps => {
     return {
-        selectAllRecords: (isChecked: boolean) => {
+        selectAllRecords: (isChecked: boolean): void => {
             dispatch(selectAllRecords(SELECT_ALL_RECORDS, isChecked));
         },
-        selectAllRecordsOnPage: (isChecked: boolean) => {
+        selectAllRecordsOnPage: (isChecked: boolean): void => {
             dispatch(selectAllRecords(SELECT_ALL_RECORDS_ON_PAGE, isChecked));
         },
-        setChecked: (id: number) => {
+        setChecked: (id: number): void => {
             dispatch(toggleCheckbox(CHECK_CHECKBOX, id));
         },
-        setUnchecked: (id: number) => {
+        setUnchecked: (id: number): void => {
             dispatch(toggleCheckbox(UNCHECK_CHECKBOX, id));
-        }
+        },
     };
 };
 
@@ -265,5 +271,5 @@ export {DataGrid};
 const trashIconStyle: React.CSSProperties = {
     color: '#337ab7',
     cursor: 'pointer',
-    textDecoration: 'none'
+    textDecoration: 'none',
 };
