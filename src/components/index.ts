@@ -11,6 +11,7 @@ export * from './PagedList/Filters/DynamicForm';
 export * from './PagedList/Filters/PagedListFilter';
 export * from './PagedList/Filters/QueryFilter';
 export * from './PagedList/Filters/RangeFilter';
+export * from './PagedList/Filters/OuterFilter';
 export * from './PagedList/Filters/AutocompleteQueryFilter';
 export * from './CRUD/GenericEditPage';
 export * from './CRUD/GenericListPage';
