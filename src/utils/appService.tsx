@@ -230,3 +230,8 @@ export function getTokenFromLocalStorage(): string {
 
     return token;
 };
+
+export function removeTokenFromLocalStorage(): void {
+    localStorage.removeItem(AUTH_TOKEN_KEY);
+    localStorage.removeItem(AUTH_TOKEN_KEY_TIMESTAMP);
+}
