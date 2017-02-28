@@ -1,15 +1,20 @@
 import {store} from '../store';
-import {hideConfirmationModal, setAlertVisible, setAlertInvisible} from '../actions/commonActions';
+import {setAlertVisible, setAlertInvisible} from '../actions/alertActions';
+import {hideConfirmationModal, showConfirmationModal} from '../actions/confirmationModalActions';
+
+export function showModal(): void {
+    store.dispatch(showConfirmationModal());
+};
 
 export function hideModal(): void {
     store.dispatch(hideConfirmationModal());
 };
 
-export function showAlert(type: string, message: string): void {
+export function showAlert(type: string, message: string, hideAfter?: number): void {
     store.dispatch(setAlertVisible(type, message));
-    setTimeout(function() {
+    setTimeout((): void => {
         hideAlert();
-    }, 5000);
+    }, hideAfter || 5000);
 }
 
 export function hideAlert(): void {
