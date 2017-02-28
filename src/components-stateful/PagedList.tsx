@@ -181,7 +181,7 @@ export class PagedListImpl extends React.Component<IPagedListProps, void> {
                 {this.props.pageHeader ||
                     <h2 className="caps">
                         {this.props.resource.capitalize()} List
-                        <Link to={`${this.props.resource}/create`} >
+                        <Link to={`/${this.props.resource}/create`} >
                             <FontAwesome name="plus" />
                         </Link>
                     </h2>
