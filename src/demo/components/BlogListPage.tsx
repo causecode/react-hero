@@ -1,11 +1,13 @@
 import * as React from 'react';
-import {DropDownFilter} from '../../components/PagedList/Filters/DropDownFilter';
 import {PagedList} from '../../components-stateful/PagedList';
 import {QueryFilter} from '../../components/PagedList/Filters/QueryFilter';
 import {RangeFilter} from '../../components/PagedList/Filters/RangeFilter';
+import {DropDownFilter} from '../../components/PagedList/Filters/DropDownFilter';
 import {DateRangeFilter} from '../../components/PagedList/Filters/DateRangeFilter';
+import {AutocompleteQueryFilter} from '../../components/PagedList/Filters/AutocompleteQueryFilter';
 
 export class BlogListPage extends React.Component<{resource: string}, void> {
+
     static resourceName: string = 'blog';
 
     render(): JSX.Element {
@@ -19,7 +21,7 @@ export class BlogListPage extends React.Component<{resource: string}, void> {
                             possibleValues = {[
                                 {label: 'Enable', value: 'enable'},
                                 {label: 'Disable', value: 'disable'},
-                                {label: 'Inactive', value: 'inactive'}
+                                {label: 'Inactive', value: 'inactive'},
                             ]}
                     />
                     <RangeFilter
@@ -37,13 +39,23 @@ export class BlogListPage extends React.Component<{resource: string}, void> {
                             possibleValues = {[
                                 {label: 'Zoo', value: 'zoo'},
                                 {label: 'Jungle', value: 'jungle'},
-                                {label: 'Forest', value: 'forest'}
+                                {label: 'Forest', value: 'forest'},
                             ]}
                     />
                     <QueryFilter
                             label="Search"
                             paramName="query"
                             placeholder="First Name, Last Name, Email"
+                    />
+                    <AutocompleteQueryFilter
+                            multi={true}
+                            style={{width: '350px'}}
+                            paramName="autoQuery"
+                            options={[
+                                {label: 'Zoo', value: 'zoo'},
+                                {label: 'Jungle', value: 'jungle'},
+                                {label: 'Forest', value: 'forest'},
+                            ]}
                     />
                 </PagedList>
             </div>

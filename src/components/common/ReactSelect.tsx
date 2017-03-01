@@ -9,7 +9,7 @@ export interface IReactSelectProps {
     style?: CSS;
     label?: string;
     onInputChange?: (value: string) => void;
-    input?: {onChange: (value: string) => void, onBlur: (value: string) => void, value: any};
+    input?: {onChange: (value: any) => void, onBlur: (value: any) => void, value: any};
 }
 
 export interface ISelectProps extends IReactSelectProps {
@@ -36,13 +36,21 @@ export class ReactSelect extends React.Component<IReactSelectProps, void> {
         return (
             <Select
                     {...this.props}
-                    value={this.props.input.value || ''}
-                    onChange={(value) => {
-                        this.props.input.onChange(value);
+                    value={this.props.input.value}
+                    onChange={(value: any): void => {
+                        if (value && value.constructor === Array) {
+                            this.props.input.onChange([...value]);
+                        } else {
+                            this.props.input.onChange(value);
+                        }
                     }}
                     onInputChange={this.props.onInputChange}
-                    onBlur={() => {
-                        this.props.input.onBlur(this.props.input.value);
+                    onBlur={(value: any): void => {
+                        if (value && value.constructor === Array) {
+                            this.props.input.onBlur([...value]);
+                        } else if (value && value.length > 0) {
+                            this.props.input.onBlur(value);
+                        }
                     }}
                     options={this.props.options}
             />

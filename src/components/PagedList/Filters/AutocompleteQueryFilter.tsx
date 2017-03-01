@@ -12,22 +12,32 @@ export interface IAutocompleteQueryFilter extends IFilter {
     style?: CSS;
 }
 
-export function AutocompleteQueryFilter({
-        label, paramName, options, onInputChange, style, normalizer
-    }: IAutocompleteQueryFilter): JSX.Element {
+export function AutocompleteQueryFilter(props: IAutocompleteQueryFilter): JSX.Element {
 
-    label = label || paramName;
+    let label: string = props.label || props.paramName;
     return (
         <FormGroup>
             <ControlLabel>{label.capitalize()}</ControlLabel>
-            <Field 
-                    name={paramName}
-                    normalize={normalizer}
+            <Field
+                    {...props}
+                    name={props.paramName}
+                    normalize={props.normalizer || normalizer}
                     component={ReactSelect}
-                    options={options}
-                    onInputChange={onInputChange}
-                    style={style}
             />
         </FormGroup>
     );
+}
+
+export function normalizer(option: any, previousValue: any, allValues: any, previousAllValues: any): string|string[] {
+    if (option && option.constructor === Array) {
+        return option.map((item: IDropDownFilterData): string => {
+            return item.value;
+        });
+    }
+
+    if (option) {
+        return option.value;
+    }
+
+    return '';
 }
