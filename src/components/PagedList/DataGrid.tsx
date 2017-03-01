@@ -172,7 +172,7 @@ export class DataGridImpl extends React.Component<IDataGridProps, void> {
 
     render(): JSX.Element {
         if (!this.props.instanceList || !this.props.instanceList.length) {
-            return <div></div>;
+            return <div style={{margin: '40px 0px 0px 0px'}}>Sorry, No entry found.</div>;
         }
 
         this.resource = this.props.instanceList[0] ? this.props.instanceList[0].resourceName : '';
