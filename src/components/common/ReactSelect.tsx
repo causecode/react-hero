@@ -35,8 +35,7 @@ export class ReactSelect extends React.Component<IReactSelectProps, void> {
 
         return (
             <Select
-                    {...this.props}
-                    value={this.props.input.value}
+                    {...selectProps}
                     onChange={(value: any): void => {
                         if (value && value.constructor === Array) {
                             this.props.input.onChange([...value]);
@@ -44,7 +43,6 @@ export class ReactSelect extends React.Component<IReactSelectProps, void> {
                             this.props.input.onChange(value);
                         }
                     }}
-                    onInputChange={this.props.onInputChange}
                     onBlur={(value: any): void => {
                         if (value && value.constructor === Array) {
                             this.props.input.onBlur([...value]);
@@ -52,7 +50,6 @@ export class ReactSelect extends React.Component<IReactSelectProps, void> {
                             this.props.input.onBlur(value);
                         }
                     }}
-                    options={this.props.options}
             />
         );
     }
