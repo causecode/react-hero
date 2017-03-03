@@ -19,6 +19,22 @@ export interface ISelectProps extends IReactSelectProps {
 
 export class ReactSelect extends React.Component<IReactSelectProps, void> {
 
+    handleChange = (value: any): void => {
+        if (value && value.constructor === Array) {
+            this.props.input.onChange([...value]);
+        } else {
+            this.props.input.onChange(value);
+        }
+    }
+
+    handleBlur = (value: any): void => {
+        if (value && value.constructor === Array) {
+            this.props.input.onBlur([...value]);
+        } else if (value && value.length > 0) {
+            this.props.input.onBlur(value);
+        }
+    }
+
     render(): JSX.Element {
 
         let selectProps: ISelectProps = {
@@ -36,20 +52,8 @@ export class ReactSelect extends React.Component<IReactSelectProps, void> {
         return (
             <Select
                     {...selectProps}
-                    onChange={(value: any): void => {
-                        if (value && value.constructor === Array) {
-                            this.props.input.onChange([...value]);
-                        } else {
-                            this.props.input.onChange(value);
-                        }
-                    }}
-                    onBlur={(value: any): void => {
-                        if (value && value.constructor === Array) {
-                            this.props.input.onBlur([...value]);
-                        } else if (value && value.length > 0) {
-                            this.props.input.onBlur(value);
-                        }
-                    }}
+                    onChange={(value: any): void => {this.handleChange(value);}}
+                    onBlur={(value: any): void => {this.handleBlur(value);}}
             />
         );
     }
