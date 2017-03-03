@@ -212,14 +212,19 @@ export function getActionComponent(fileName: string): React.ComponentClass<any> 
     return require(`../../../../src`)[fileNameSplittedToWords.join('')];
 };
 
-export function setTokenInLocalStorage(token: string): void {
+export function setTokenInLocalStorage(token: string, callback?: Function): boolean {
     if (!token) {
         console.warn('No Token sent to setTokenInLocalStorage');
-        return;
+        return false;
     }
 
     localStorage.setItem(AUTH_TOKEN_KEY, token);
     localStorage.setItem(AUTH_TOKEN_KEY_TIMESTAMP, new Date().toString());
+    
+    if (callback) {
+        callback();
+    }
+    return true;
 };
 
 export function getTokenFromLocalStorage(): string {

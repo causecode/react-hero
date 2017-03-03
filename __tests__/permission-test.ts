@@ -4,17 +4,18 @@ jest.unmock('immutable');
 import {getUserRoles, hasAllRoles, hasAnyRole, isAdmin, isCrmManager} from '../src/utils/permission';
 import {Iterable} from 'immutable';
 import {store} from '../src/store';
+import {IFromJS} from '../src/interfaces/index';
 
 const unroll = require<any>('unroll');
 
 unroll.use(it);
 
-describe('Tests for permission.ts', (): void => {
+describe('Tests for permission', (): void => {
 
     describe('When the getUserRoles is called,', (): void => {
 
         beforeEach((): void => {
-            store.getState = jest.fn(() => {
+            store.getState = jest.fn<{currentUser: IFromJS}>(() => {
                 return {currentUser: Iterable({userData: {roles: ['ROLE_USER']}})};
             });
         });
@@ -59,6 +60,7 @@ describe('Tests for permission.ts', (): void => {
     describe('When the user is not authorized,', (): void => {
 
         let replace: jest.Mock<void> = jest.fn<void>((path: string) => {});
+        
         beforeEach((): void => {
             hasAnyRole = jest.fn((): boolean => {
                 return false;
