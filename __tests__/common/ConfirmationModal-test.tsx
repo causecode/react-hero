@@ -24,7 +24,7 @@ describe('Tests for ConfirmationModal', (): void => {
     );
 
     describe('When prop show is false or null', (): void => {
-        unroll('should not render Modal when show = #label', (
+        unroll('should not render Modal when show is #label', (
             done: () => void,
             args: {label: string, propValue: boolean}
         ): void => {
@@ -50,21 +50,21 @@ describe('Tests for ConfirmationModal', (): void => {
         }, [
             ['elementName', 'element', 'count'],
             ['Alert', Modal, 1],
-            ['Modal.Body', Modal.Body, 1],
-            ['Modal.Footer', Modal.Footer, 1],
+            ['Modal body', Modal.Body, 1],
+            ['Modal footer', Modal.Footer, 1],
             ['Button', Button, 2],
         ]);
     });
 
-    unroll('should call #functionName when #button button is clicked', (
+    unroll('should call #functionName when #buttonName button is clicked', (
         done: () => void,
-        args: {index: number, functionName: string, function: jest.Mock<void>, button: string}
+        args: {index: number, functionName: string, function: jest.Mock<void>, buttonName: string}
     ): void => {
         confirmationModalImpl.find(Button).at(args.index).simulate('click');
         expect(args.function).toBeCalled();
         done();
     }, [
-        ['index', 'functionName', 'function', 'button'],
+        ['index', 'functionName', 'function', 'buttonName'],
         [0, 'onConfirm', onConfirm, 'Confirm'],
         [1, 'onHide', onHide, 'Cancel'],
     ]);

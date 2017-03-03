@@ -22,7 +22,7 @@ describe('Tests for AlertDismissable', (): void => {
     );
 
     describe('When prop show is false or null', (): void => {
-        unroll('should not render Alert when show = #label', (
+        unroll('should not render Alert when show is #label', (
             done: () => void,
             args: {label: string, propValue: boolean}
         ): void => {
