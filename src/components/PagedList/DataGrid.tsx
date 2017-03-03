@@ -139,7 +139,7 @@ export class DataGridImpl extends React.Component<IDataGridProps, void> {
         }
 
         if (CustomAction && typeof CustomAction === 'object') {
-            return React.cloneElement(CustomAction, {instance: instance});
+            return <td>{React.cloneElement(CustomAction, {instance: instance})}</td>
         }
 
         if (ActionComponent && React.isValidElement(<ActionComponent/>)) {
