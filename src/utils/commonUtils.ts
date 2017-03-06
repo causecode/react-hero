@@ -20,3 +20,12 @@ export function showAlert(type: string, message: string, hideAfter?: number): vo
 export function hideAlert(): void {
     store.dispatch(setAlertInvisible());
 }
+
+export function scrollToTop(): void {
+    setTimeout(() => {
+        document.body.scrollTop = document.body.scrollTop - 70;
+        if (document.body.scrollTop > 0) {
+            scrollToTop();
+        }
+    }, 50);
+}
