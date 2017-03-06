@@ -1,14 +1,14 @@
 import * as React from 'react';
 import {FormGroup, ControlLabel} from 'react-bootstrap';
-import {renderRangeFilter, IRangeFilter} from './RangeFilter';
+import {renderRangeFilter, IRangeFilterProps} from './RangeFilter';
 
-export interface IDateRangeFilter extends IRangeFilter {
+export interface IDateRangeFilterProps extends IRangeFilterProps {
     formatter?: (value: any) => any;
     parser?: (value: string) => any;
 }
 
 export function DateRangeFilter(
-        {label, paramName, paramNameFrom, paramNameTo, formatter, parser}: IDateRangeFilter): JSX.Element {
+        {label, paramName, paramNameFrom, paramNameTo, formatter, parser}: IDateRangeFilterProps): JSX.Element {
 
     label = label || paramName;
 

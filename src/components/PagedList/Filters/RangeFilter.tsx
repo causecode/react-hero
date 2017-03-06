@@ -4,12 +4,12 @@ import {IFilter} from '../../../interfaces';
 import {GenericFilter} from './GenericFilter';
 const Field = require<any>('redux-form').Field;
 
-export interface IRangeFilter extends IFilter {
+export interface IRangeFilterProps extends IFilter {
     paramNameFrom?: string;
     paramNameTo?: string;
 }
 
-export function RangeFilter({label, paramName, type, paramNameFrom, paramNameTo}: IRangeFilter): JSX.Element {
+export function RangeFilter({label, paramName, type, paramNameFrom, paramNameTo}: IRangeFilterProps): JSX.Element {
 
     label = label || paramName;
 

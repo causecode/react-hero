@@ -29,7 +29,7 @@ describe('Tests for alertActions and confirmationModalActions', () => {
         [AlertActions.setAlertInvisible, 'HIDE_ALERT'],
     ]);
 
-    it('should create setAlertVisible action', () => {
+    it('should create setAlertVisible action', (): void => {
         let result: IAlertAction = {type: 'SHOW_ALERT', payload: {alertType: 'info', alertMessage: 'Success'}};
         expect(AlertActions.setAlertVisible('info', 'Success')).toEqual(result);
     });
