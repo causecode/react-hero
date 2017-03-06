@@ -4,11 +4,14 @@ import {getTokenFromLocalStorage} from '../../utils/appService';
 
 export const BASE_URL: string = config.APIUrl || config.serverUrl;
 
-axios.defaults.headers.common['X-Auth-Token'] = getTokenFromLocalStorage();
+export function setDefaultHeader(): void {
+    axios.defaults.headers.common['X-Auth-Token'] = getTokenFromLocalStorage();
+}
 
 export module HTTP {
 
     export function postRequest(path: string, headers = {}, data = {}): Axios.IPromise<Axios.AxiosXHR<{}>> {
+        setDefaultHeader();
         return axios({
             method: 'post',
             url: BASE_URL + path,
@@ -31,6 +34,7 @@ export module HTTP {
     }
 
     export function getRequest(path: string, headers = {}, data = {}): Axios.IPromise<Axios.AxiosXHR<{}>> {
+        setDefaultHeader();
         let url: string = Object.keys(data).length ? BASE_URL + path + `?${serialize(data)}` : BASE_URL + path;
         return axios({
             method: 'get',
@@ -40,6 +44,7 @@ export module HTTP {
     }
 
     export function putRequest(path: string, headers = {}, data = {}): Axios.IPromise<Axios.AxiosXHR<{}>> {
+        setDefaultHeader();
         return axios({
             method: 'put',
             url: BASE_URL + path,
@@ -49,6 +54,7 @@ export module HTTP {
     }
 
     export function deleteRequest(path: string, headers = {}): Axios.IPromise<Axios.AxiosXHR<{}>> {
+        setDefaultHeader();
         return axios({
             method: 'delete',
             url: BASE_URL + path,
