@@ -68,9 +68,9 @@ describe('Tests for permission', (): void => {
         });
 
         unroll('It should call the replace function to change the route when the user is not #title.', (
-            done: () => void,
-            args: {title: string, functionName: Function}
-        ): void => {
+                done: () => void,
+                args: {title: string, functionName: Function}
+            ): void => {
             args.functionName({location: {pathname: '/'}}, replace);
             expect(replace).toBeCalled();
             done();
