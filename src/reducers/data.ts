@@ -69,26 +69,15 @@ function dataReducer(state = INITIAL_STATE, action ): IFromJS {
             if (action.payload) {
                 let payloadData = action.payload;
                 for (let payloadKey in payloadData) {
-                        if (payloadData.hasOwnProperty(payloadKey)) {
-                            switch (payloadKey) {
-                                case 'totalCount':
-                                    storeData.totalCount = payloadData.totalCount;
-                                break;
-
-                                case 'properties':
-                                    storeData.properties = payloadData.properties;
-                                break;
-
-                                case instanceListKey:
-                                    storeData.instanceList = payloadData[payloadKey].map((instance) => {
-                                        return new Model(instance);
-                                    });
-                                break;
-
-                                default:
-                                    storeData[payloadKey] = payloadData[payloadKey];
-                            }
+                    if (payloadData.hasOwnProperty(payloadKey)) {
+                        if (payloadKey === instanceListKey) {
+                            storeData.instanceList = payloadData[payloadKey].map((instance): BaseModel => {
+                                return new Model(instance);
+                            });
+                        } else {
+                            storeData[payloadKey] = payloadData[payloadKey];
                         }
+                    }
                 }
                 storeData.hasError = false;
                 storeData.isLoading = false;

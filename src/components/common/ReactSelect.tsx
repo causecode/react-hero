@@ -52,8 +52,8 @@ export class ReactSelect extends React.Component<IReactSelectProps, void> {
         return (
             <Select
                     {...selectProps}
-                    onChange={(value: any): void => {this.handleChange(value);}}
-                    onBlur={(value: any): void => {this.handleBlur(value);}}
+                    onChange={this.handleChange}
+                    onBlur={this.handleBlur}
             />
         );
     }
