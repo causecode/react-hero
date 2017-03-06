@@ -1,18 +1,19 @@
 import * as React from 'react';
 import {ComponentClass} from 'react';
 import {Pagination} from 'react-bootstrap';
-import {PagedListFilters} from '../components/PagedList/Filters/PagedListFilter';
-import {DataGrid, IDataGridProps} from '../components/PagedList/DataGrid';
-import {setPage} from '../actions/modelActions';
 import {Link} from 'react-router';
 import {connect} from 'react-redux';
 import {BaseModel} from '../models/BaseModel';
+import {setPage} from '../actions/modelActions';
+import {scrollToTop} from '../utils/commonUtils';
 import {ModelService} from '../utils/modelService';
-import {UserActions} from '../components/PagedList/BulkUserActions';
 import {resetCheckboxState} from '../actions/checkboxActions';
-import {IBulkUserActionType, IPagedListFiltersProps, IDispatch, CustomActionType} from '../interfaces';
+import {UserActions} from '../components/PagedList/BulkUserActions';
 import {QueryFilter} from '../components/PagedList/Filters/QueryFilter';
+import {DataGrid, IDataGridProps} from '../components/PagedList/DataGrid';
+import {PagedListFilters} from '../components/PagedList/Filters/PagedListFilter';
 import {IOuterFilterProps, createOuterFilterForm} from '../components/PagedList/Filters/OuterFilter';
+import {IBulkUserActionType, IPagedListFiltersProps, IDispatch, CustomActionType} from '../interfaces';
 import '../utils/appService';
 const objectAssign = require<any>('object-assign');
 const FontAwesome = require<any>('react-fontawesome');
@@ -107,6 +108,7 @@ export class PagedListImpl extends React.Component<IPagedListProps, void> {
         this.fetchInstanceList(this.props.resource, {offset: (pageNumber - 1) * this.props.max});
         this.props.setPage(pageNumber, this.props.resource);
         this.props.resetCheckboxState();
+        scrollToTop();
     };
 
     renderUserActions = (): JSX.Element => {
