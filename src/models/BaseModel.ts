@@ -64,9 +64,9 @@ export class BaseModel {
     $save(
             flush: boolean = true,
             headers: Object = {},
-            successCallBack = ( (...args: any[]) => {} ),
-            failureCallBack = ( (...args: any[]) => {} ),
-            path: string = `${this.resourceName}`,
+            successCallBack = ((...args: any[]) => {}),
+            failureCallBack = ((...args: any[]) => {}),
+            path: string = this.resourceName
     ): void {
         if (flush) {
             HTTP.postRequest(path, headers, this.properties)
@@ -85,9 +85,9 @@ export class BaseModel {
     $update(
             flush: boolean = true,
             headers: Object = {},
-            successCallBack = ( (...args: any[]) => {} ),
-            failureCallBack = ( (...args: any[]) => {} ),
-            path: string = this.resourceName
+            successCallBack = ((...args: any[]) => {}),
+            failureCallBack = ((...args: any[]) => {}),
+            path: string = `${this.resourceName}/${this.properties.id}`
     ): void {
         if (flush) {
             if (!this.properties || !this.properties.hasOwnProperty('id')) {
@@ -108,8 +108,8 @@ export class BaseModel {
     $delete(
             flush: boolean = true,
             headers: Object = {},
-            successCallBack = ( (...args: any[]) => {} ),
-            failureCallBack = ( (...args: any[]) => {} ),
+            successCallBack = ((...args: any[]) => {}),
+            failureCallBack = ((...args: any[]) => {}),
             path?: string
     ): void {
         if (flush) {

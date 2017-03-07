@@ -10,7 +10,7 @@ export interface IOuterFilterProps {
 
 @Radium
 export class OuterFilterImpl extends React.Component<IOuterFilterProps, void> {
-    
+
     sendFilters(resource: string): void {
         ModelService.getModel(resource).list();
     }
@@ -19,7 +19,7 @@ export class OuterFilterImpl extends React.Component<IOuterFilterProps, void> {
         event.preventDefault();
         this.sendFilters(this.props.resource);
     };
-    
+
     render(): JSX.Element {
         return (
             <form onSubmit={this.handleSubmit} style={outerFilterStyle}>
@@ -38,15 +38,15 @@ export class OuterFilterImpl extends React.Component<IOuterFilterProps, void> {
 
 export function createOuterFilterForm (formName: string): React.ComponentClass<IOuterFilterProps> {
     let OuterFilterForm = ReduxForm.reduxForm({
-        form: formName
+        form: formName,
     })(OuterFilterImpl);
-    
+
     return OuterFilterForm;
 }
 
 const outerFilterStyle: React.CSSProperties = {
-    margin: '0px 0px 0px -20px'
+    margin: '0px 0px 0px -15px',
 };
 const btnStyle: React.CSSProperties = {
-    margin: '40px 0px 0px 0px'
+    margin: '40px 0px 0px 0px',
 };

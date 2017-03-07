@@ -50,7 +50,7 @@ function dataReducer(state = INITIAL_STATE, action ): IFromJS {
             }
 
             return StoreService.setInstanceInList(state, instanceResource, new Model(instance), true);
-            
+
         case FETCH_INSTANCE_DATA_ERROR:
             return state.set(`${action.resource}Edit`, fromJS({
                 hasError: true,
@@ -63,25 +63,28 @@ function dataReducer(state = INITIAL_STATE, action ): IFromJS {
         case FETCH_INSTANCE_LIST_FULFILLED:
             let listResource = action.resource || '';
             Model = ModelService.getModel(listResource);
-            let instanceList, totalCount: number, properties: string[];
-            if (action.payload && action.payload.instanceList) {
-                totalCount = action.payload.totalCount;
-                properties = action.payload.properties;
-                instanceList = action.payload.instanceList.map(instance => {
-                    return new Model(instance);
-                });
+            let instanceListKey: string = Model[`instanceListKey`] || 'instanceList';
+            let storeData: any = {};
+            // Also save other values which are sent with instanceList
+            if (action.payload) {
+                let payloadData = action.payload;
+                for (let payloadKey in payloadData) {
+                    if (payloadData.hasOwnProperty(payloadKey)) {
+                        if (payloadKey === instanceListKey) {
+                            storeData.instanceList = payloadData[payloadKey].map((instance): BaseModel => {
+                                return new Model(instance);
+                            });
+                        } else {
+                            storeData[payloadKey] = payloadData[payloadKey];
+                        }
+                    }
+                }
+                storeData.hasError = false;
+                storeData.isLoading = false;
             } else {
                 throw new Error(MISSING_ACTION_PAYLOAD);
             }
-            let listProps = {};
-            listProps = fromJS({
-                totalCount: totalCount,
-                instanceList: instanceList,
-                properties: properties,
-                hasError: false,
-                isLoading: false,
-            });
-            return state.mergeIn([`${listResource}List`], listProps);
+            return state.mergeIn([`${listResource}List`], fromJS(storeData));
 
         case FETCH_INSTANCE_LIST_ERROR:
             return state.set(`${action.resource}List`, fromJS({
@@ -112,7 +115,7 @@ function dataReducer(state = INITIAL_STATE, action ): IFromJS {
         case DELETE_INSTANCE:
             return StoreService.deleteAllInstances(state, action.resource, action.instance);
 
-        case UNSET_RESOURCE_LIST: 
+        case UNSET_RESOURCE_LIST:
             return state.deleteIn([`${action.resource}List`, 'instanceList']);
 
         default:

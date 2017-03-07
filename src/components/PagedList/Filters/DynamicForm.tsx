@@ -11,11 +11,13 @@ const classNames: any = require<any>('classnames');
 export class InnerFilterFormImpl extends React.Component<IPagedListFiltersProps, void> {
 
     static defaultProps: IPagedListFiltersProps = {
-        filtersOpen: false
+        filtersOpen: false,
     };
 
     sendFilters(resource: string): void {
-        ModelService.getModel(resource).list({}, false, {}, () => {}, () => {}, this.props.path);
+        ModelService.getModel(resource).list(
+            {}, false, {}, this.props.successCallBack, this.props.failureCallBack, this.props.path
+        );
     }
 
     handleSubmit = (event: React.FormEvent): void => {
@@ -43,11 +45,11 @@ function mapStateToProps(state: {data: any}): {filtersOpen: boolean} {
 
 export function createFilterForm(resource: string) {
     let InnerFilterFormConnected = ReduxForm.reduxForm({
-        form: `${resource}Filters`
+        form: `${resource}Filters`,
     })(InnerFilterFormImpl);
 
-    let InnerFilterForm: React.ComponentClass<IPagedListFiltersProps> = 
+    let InnerFilterForm: React.ComponentClass<IPagedListFiltersProps> =
             connect<void, void, IPagedListFiltersProps>(mapStateToProps)(InnerFilterFormConnected);
-    
+
     return InnerFilterForm;
 }

@@ -13,9 +13,9 @@ let InnerFilterForm: React.ComponentClass<IPagedListFiltersProps>;
 
 @Radium
 export class PagedListFilters extends React.Component<IPagedListFiltersProps, void> {
-    
+
     static defaultProps: IPagedListFiltersProps = {
-        resource: ''
+        resource: '',
     };
 
     componentWillMount = (): void => {
@@ -36,7 +36,12 @@ export class PagedListFilters extends React.Component<IPagedListFiltersProps, vo
                 <Button onClick={this.toggleFilters}>
                     <FontAwesome name="filter" />
                 </Button>
-                <InnerFilterForm resource={this.props.resource} path={this.props.path} filtersOpen={false}>
+                <InnerFilterForm
+                        resource={this.props.resource}
+                        path={this.props.path}
+                        filtersOpen={false}
+                        successCallBack={this.props.successCallBack}
+                        failureCallBack={this.props.failureCallBack}>
                     {children}
                 </InnerFilterForm>
             </div>
