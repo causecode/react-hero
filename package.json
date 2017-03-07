@@ -1,6 +1,6 @@
 {
   "name": "react-hero",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description": "",
   "private": true,
   "main": "public/index.js",
@@ -31,11 +31,12 @@
   "jest": {
     "verbose": true,
     "transform": {
-      "^.+\\.(ts|tsx)$": "<rootDir>/preprocessor.js"
+      ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
     },
-    "transformIgnorePatterns": [
-      "<rootDir>/node_modules/",
-      "<rootDir>/typings/"
+    "testResultsProcessor": "<rootDir>/node_modules/ts-jest/coverageprocessor.js",
+    "moduleDirectories": [
+      "node_modules",
+      "<rootDir>/src"
     ],
     "moduleNameMapper": {
       "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js",
@@ -46,7 +47,8 @@
       "tsx",
       "js"
     ],
-    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx)$"
+    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx)$",
+    "setupTestFrameworkScriptFile": "<rootDir>/__mocks__/localStorage.js"
   },
   "keywords": [],
   "author": "",
@@ -81,7 +83,9 @@
     "react-redux-form": "1.2.3",
     "react-router": "2.4.1",
     "react-router-redux": "4.0.5",
+    "react-select": "1.0.0-rc.3",
     "react-shallow-testutils": "2.0.0",
+    "react-tinymce-input": "1.2.1",
     "redux": "3.6.0",
     "redux-form": "6.5.0",
     "redux-logger": "2.6.1",
@@ -124,6 +128,7 @@
     "rimraf": "2.5.2",
     "stylelint": "6.6.0",
     "stylelint-webpack-plugin": "0.2.0",
+    "ts-jest": "17.0.3",
     "ts-loader": "1.2.2",
     "unroll": "1.2.0"
   }

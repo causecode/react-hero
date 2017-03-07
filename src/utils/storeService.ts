@@ -33,7 +33,7 @@ export function setInstanceInList<T extends BaseModel>
 
     let instanceList: any = getInstanceList(state, resource);
 
-    let {index}: {index: number} = findInstanceInList<T>(instanceList, instance.properties.id);
+    let {index}: {index: number} = findInstanceInList<T>(instanceList, instance.properties.id.toString());
     if (index < 0 && force) {
         instanceList.push(instance);
     } else if (index >= 0) {

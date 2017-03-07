@@ -4,6 +4,7 @@ jest.unmock('immutable');
 import {BaseModel} from '../src/models/BaseModel';
 import {store, IMockStore} from '../src/store';
 import {fromJS} from 'immutable';
+import {ModelPropTypes} from '../src/models/ModelPropTypes';
 import {
     getIn, 
     getModelString, 
@@ -11,9 +12,12 @@ import {
     isEmpty, 
     objectEquals, 
     parseWidgetDate, 
-    initializeFormWithInstance
+    initializeFormWithInstance,
+    getTokenFromLocalStorage,
+    setTokenInLocalStorage,
+    getActionComponent
 } from '../src/utils/appService';
-import {ModelPropTypes} from '../src/models/ModelPropTypes';
+import '../src/init';
 
 const unroll = require<any>('unroll');
 
@@ -36,7 +40,7 @@ describe('Test for AppService', () => {
         process.env.NODE_ENV = oldEnv;
     });
 
-    unroll('tests the isEmpty function when the object is #object', (done, testArgs) => {
+    unroll('tests the isEmpty function when the object is #params', (done, testArgs) => {
         let obj: Object;
         try {
              obj = JSON.parse(testArgs.params);
@@ -176,4 +180,35 @@ describe('Test for AppService', () => {
         [JSON.stringify({id: 10}), 'id.name', 1, 1, true]
     ]);
 
+    unroll('It should #operation the authentication token in the local storage', (
+            done: () => void,
+            args: {operation: string, tokenValue: string}
+    ) => {    
+        localStorage.setItem = jest.fn<void>();
+        setTokenInLocalStorage(args.tokenValue);
+        if (args.tokenValue) {
+            expect(localStorage.setItem).toBeCalled();
+        } else {
+            expect(localStorage.setItem).not.toBeCalled();
+        }
+        done();
+    }, [
+        ['operation', 'tokenValue'],
+        ['save', 'qwerty12345'],
+        ['not save', '']
+    ]);
+
+    setTokenInLocalStorage('qwerty12345');
+    unroll('It should return #tokenValue if the token is #status in the local storage.', (
+            done: () => void,
+            args: {tokenValue: string, status: string}
+    ) => {
+        expect(getTokenFromLocalStorage()).toEqual(args.tokenValue);
+        localStorage.clear();
+        done();
+    }, [
+        ['status', 'tokenValue'],
+        ['present', 'qwerty12345'],
+        ['not present', '']
+    ]);
 });

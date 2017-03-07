@@ -1,3 +1,5 @@
+export const AUTH_TOKEN_KEY: string = 'AUTH_TOKEN_KEY';
+export const AUTH_TOKEN_KEY_TIMESTAMP: string = 'AUTH_TOKEN_KEY_TIMESTAMP';
 export const SAVE_INSTANCE: string = 'SAVE_INSTANCE';
 export const UPDATE_INSTANCE: string = 'UPDATE_INSTANCE';
 export const DELETE_INSTANCE: string = 'DELETE_INSTANCE';
