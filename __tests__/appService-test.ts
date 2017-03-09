@@ -15,7 +15,8 @@ import {
     initializeFormWithInstance,
     getTokenFromLocalStorage,
     setTokenInLocalStorage,
-    getActionComponent
+    getActionComponent,
+    removeTokenFromLocalStorage
 } from '../src/utils/appService';
 import '../src/init';
 
@@ -211,4 +212,11 @@ describe('Test for AppService', () => {
         ['present', 'qwerty12345'],
         ['not present', '']
     ]);
+
+    it('should delete the token from the local storage.', (): void => {
+        localStorage.removeItem = jest.fn<void>();
+        removeTokenFromLocalStorage();
+        expect(localStorage.removeItem).toBeCalledWith('AUTH_TOKEN_KEY');
+        expect(localStorage.removeItem).toBeCalledWith('AUTH_TOKEN_KEY_TIMESTAMP');
+    });
 });

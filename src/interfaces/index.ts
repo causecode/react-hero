@@ -47,7 +47,7 @@ export interface IImmutable {
 
 // Basic interface used by all filters.
 export interface IFilter {
-    paramName: string;
+    paramName?: string;
     label?: string;
     offset?: number;
     sort?: 'asc' | 'desc';
