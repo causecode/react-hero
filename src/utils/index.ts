@@ -8,4 +8,3 @@ export * from './permission';
 import * as StoreService from './storeService';
 
 export {StoreService};
-

@@ -10,3 +10,7 @@ export * from './actions/modelActions';
 export * from './actions/userActions'
 export * from './actions/checkboxActions';
 export * from './interfaces';
+import {ModelService, ComponentService} from './utils';
+
+ModelService.registerAll();
+ComponentService.registerAll();

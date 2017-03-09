@@ -8,8 +8,8 @@ export interface INextState {
 }
 
 export const getUserRoles = (): string[] => {
-    let userData: {username: string, roles: string[]} = store.getState().currentUser.toJS().userData;
-    return userData ? userData.roles : null;
+    let userRoles: string[] = store.getState().currentUser.toJS().userRoles;
+    return userRoles || null;
 };
 
 export function hasAllRoles(roles: string[]): boolean {
