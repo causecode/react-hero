@@ -1,0 +1,21 @@
+"use strict";
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var InvalidInstanceDataError = (function (_super) {
+    __extends(InvalidInstanceDataError, _super);
+    function InvalidInstanceDataError() {
+        var _this;
+        var message = 'Cannot instantiate Model with instanceData. ' +
+            'Please make sure the instanceData passed contains an id field';
+        _this = _super.call(this, message) || this;
+        _this.name = 'InvalidInstanceDataError';
+        _this.message = message;
+        return _this;
+    }
+    return InvalidInstanceDataError;
+}(Error));
+exports.InvalidInstanceDataError = InvalidInstanceDataError;
+//# sourceMappingURL=InvalidInstanceDataError.js.map
