@@ -79,7 +79,7 @@ export function getModelString(...args: any[]): string {
  * Returns the themed component. If the theme name or the theme directory is not found, 
  * the default component i.e. the component in the default directory is returned.
  * @function
- * @param {string} componentPath - The path of the component from your theme directpry.
+ * @param {string} componentPath - The path of the component from your theme directory.
  * @param {string} componentName - The component name to be rendered. This is needed because require returns an Object.
  * To access the component in the Object, component name is required.
  */
