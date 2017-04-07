@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>React Hero</title>
+<link rel="stylesheet" href="https://stackedit.io/res-min/themes/base.css" />
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+</head>
+<body><div class="container"><h1 id="react-hero-v104">React Hero (v1.0.4)</h1>
+
+<p>Plugin provides utility directives and services.</p>
+
+
+
+<h2 id="installation">Installation</h2>
+
+<ol>
+<li><code>npm Install</code></li>
+<li><code>typings Install</code></li>
+<li><code>npm run start:dev</code></li>
+<li>Installing new typings, eg. <code>typings install dt~react-dom --global --save</code></li>
+</ol>
+
+
+
+<h2 id="releasing-a-new-version">Releasing a new Version</h2>
+
+<p>After you have merged everything to the master branch, follow the following steps to release a new version.</p>
+
+<ol>
+<li>Uglify all script files</li>
+<li>Add all uglified files to the repository <code>$ git add .</code> and commit them <code>$ git commit</code></li>
+<li>Use bump task to release a new version passing required arguments</li>
+</ol>
+
+
+
+<h2 id="running-test-cases">Running Test Cases</h2>
+
+<pre><code>jest --no-cache --coverage
+</code></pre>
+
+
+
+<h2 id="detailed-documentation">Detailed Documentation</h2>
+
+
+
+<h3 id="1-responsiveview">1. ResponsiveView :</h3>
+
+<ul>
+<li>Used to render device specific Views.</li>
+<li><p>Create a Component by extending <code>ResponsiveView&lt;P, S&gt;</code> and implement device specific render methods. <br>
+<code>renderDefault</code> needs to be implemented if not any other render methods. <br>
+Example:</p>
+
+<pre class="prettyprint"><code class="language-js hljs "><span class="hljs-keyword">class</span> TestView extends ResponsiveView&lt;ITestViewProps, ITestViewState&gt; {
+
+  renderDefault() {
+    <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+  }
+  renderMobile() {
+    return <span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+  }
+  renderMobilePortrait() {
+    return <span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+  }
+  renderTablet() {
+    return <span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+  }
+}</span></code></pre>
+
+<ul><li>If any render method is not overridden in the implementing app for a particular device type with a specific orientation, then <code>renderDefault</code> will be executed.</li></ul></li>
+</ul>
+
+
+
+<h3 id="2-headerfooterlayout">2. HeaderFooterLayout :</h3>
+
+<ul>
+<li><p>Provides the basic skeleton of a HeaderFooterLayout with some basic styles.</p></li>
+<li><p>Usage:</p>
+
+<pre class="prettyprint"><code class="language-js hljs ">render() {
+<span class="hljs-keyword">return</span> (
+  <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">HeaderFooterLayout</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">HeaderView</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">HeaderView</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">ContentView</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">ContentView</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">FooterView</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">FooterView</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">NavigationMenu</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">NavigationMenu</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-title">HeaderFooterLayout</span>&gt;</span>
+  )
+}</span></code></pre></li>
+<li>If <code>NavigationMenu</code>component is rendered within the <code>HeaderFooterLayout</code> the sliding nav-menu along with the burger icon in the Header will be generated automatically. If it is not defined neither the icon nor the menu will be rendered.</li>
+<li>There are also a few custom Widgets that have been provided for use in the <code>HeaderFooterLayout</code> which provide pre defined styles. <br>
+eg: <br>
+<ul><li><code>Title</code></li>
+<li><code>Description</code></li>
+<li><code>Content</code></li>
+<li><code>ButtonList</code></li>
+<li><code>ButtonListItem</code></li></ul></li>
+<li><p><code>HeaderFooterLayout</code> accepts a <code>style</code> prop to override the default styles:</p>
+
+<pre class="prettyprint"><code class="language-js hljs "><span class="hljs-keyword">const</span> customStyle = {
+  header: {
+      padding: <span class="hljs-string">'0px'</span>,
+      background: <span class="hljs-string">'transparent'</span>,
+  },
+  content: {
+      overflow: <span class="hljs-string">'auto'</span>
+  },
+  navIcon: {
+      display: <span class="hljs-string">'none'</span>
+  },
+  nav: {
+      backgroundColor: <span class="hljs-string">'#EEA303'</span>
+  },
+  footer: {
+      padding: <span class="hljs-string">'0px'</span>
+  }
+};
+
+render() {
+    <span class="hljs-keyword">return</span> (
+      <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">HeaderFooterLayout</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{customStyle}</span>&gt;</span>
+        ...
+      <span class="hljs-tag">&lt;/<span class="hljs-title">HeaderFooterLayout</span>&gt;</span>
+    )
+}</span></code></pre></li>
+</ul>
+
+
+
+<h3 id="3-themeable-layout">3 Themeable Layout</h3>
+
+<ul>
+<li>Themeable layout is used in the scenarios when we want to use the same functionality of an app with the different theme/layouts.</li>
+<li><p>Prerequisites:</p>
+
+<ul><li>A default app directrory: <code>src/default/yourComponentPath</code></li>
+<li>A themed app directory: <code>src/yourThemeName/yourComponentPath</code></li>
+<li><p>The theme name should be present in the redux store before the app is rendered. The structure of the store should be:</p>
+
+<pre class="prettyprint"><code class="language-js hljs ">state: {
+      theme: yourThemeName
+}</code></pre></li></ul></li>
+<li><p>The function <code>getThemedComponent</code> accepts two parameters:</p>
+
+<ul><li><code>componentPath</code> : The path of the component from your theme directory.</li>
+<li><p><code>componentName</code> : The component name to be rendered. A component file can have multiple exported modules. Therefore, this parameter is needed</p></li>
+<li><p>Usage:</p></li></ul>
+
+<pre class="prettyprint"><code class="language-js hljs "><span class="hljs-keyword">const</span> ThemedComponent = getThemedComponent(<span class="hljs-string">'Test/HomePage'</span>, <span class="hljs-string">'HomePage'</span>)
+
+render(
+   <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">Router</span> <span class="hljs-attribute">history</span>=<span class="hljs-value">{hashHistory}</span>&gt;</span>
+       <span class="hljs-tag">&lt;<span class="hljs-title">Route</span> <span class="hljs-attribute">path</span>=<span class="hljs-value">"/"</span> <span class="hljs-attribute">component</span>=<span class="hljs-value">{ThemedComponent}</span>/&gt;</span>
+   <span class="hljs-tag">&lt;/<span class="hljs-title">Router</span>&gt;</span>
+);</span></code></pre></li>
+<li><p>If the theme name or the <code>ThemedComponent</code> is not found, the component from the <code>default</code> directory will get rendered.</p></li>
+</ul>
+
+
+
+<h3 id="4-http-requests">4 HTTP requests</h3>
+
+<ul>
+<li><p>Before using this feature the following configuration should be present in the  package.json:</p>
+
+<pre class="prettyprint"><code class=" hljs bash"><span class="hljs-string">"reactHero"</span>: {
+    <span class="hljs-string">"serverUrl"</span>: <span class="hljs-string">"http://example.com/"</span>,
+    <span class="hljs-string">"APIUrl"</span>: <span class="hljs-string">"http://example.com/api/version"</span>
+},</code></pre>
+
+<ul><li><code>APIUrl</code> is prefixed to the path provided with every request via <code>HTTP</code> module. If the <code>APIUrl</code> is not found, <code>serverUrl</code> is used.</li>
+<li>API:</li></ul>
+
+<table>
+<thead>
+<tr>
+  <th>Function name</th>
+  <th>Parameters</th>
+</tr>
+</thead>
+<tbody><tr>
+  <td><code>postRequest</code></td>
+  <td><code>path</code>: The path of the server endpoint. <br><br> <code>headers</code>(optional): Headers to sent with the request.<br><br>  <code>data</code>(optional): Data to be sent as the request body</td>
+</tr>
+<tr>
+  <td><code>getRequest</code></td>
+  <td><code>path</code>: The path of the server endpoint.<br><br>  <code>headers</code>(optional): Headers to sent with the request.<br><br>  <code>data</code>(optional): Data to be sent as the query parameters</td>
+</tr>
+<tr>
+  <td><code>putRequest</code></td>
+  <td><code>path</code>: The path of the server endpoint.<br><br>  <code>headers</code>(optional): Headers to sent with the request.<br><br>  <code>data</code>(optional): Data to be sent as the request body</td>
+</tr>
+<tr>
+  <td><code>deleteRequest</code></td>
+  <td><code>path</code>: The path of the server endpoint.<br><br>  <code>headers</code>(optional): Headers to sent with the request.</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+
+
+
+<h3 id="5-basemodel">5 BaseModel</h3>
+
+<ul>
+<li><strong>resourceName</strong>: String <br>
+<ul><li>The name of the model for which the CRUD operations are to be performed</li>
+<li>Example: <code>static resourceName: string = 'demo';</code></li></ul></li>
+<li><p><strong>propTypes</strong>: { [any]: ModelPropTypes }</p>
+
+<ul><li>The object containing the properties or the fields on which the operations are to be performed.</li>
+<li><code>ModelPropTypes</code> should be used for specifying the data type.</li>
+<li>The create and edit pages renders the form inputs based on the <code>ModelPropTypes</code> assigned for each property.</li>
+<li>Example: <br>
+<code>js <br>
+static propTypes = { <br>
+    id: ModelPropTypes.NUMBER(), <br>
+    firstname: ModelPropTypes.STRING(), <br>
+    lastname: ModelPropTypes.STRING() <br>
+}; <br>
+</code></li></ul></li>
+<li><p><strong>defaultProps</strong>: { [any]: any }</p>
+
+<ul><li><code>defaultProps</code> specifies the default value for each of the <code>propTypes</code></li>
+<li>These default values will be present in the inputs of the create page form.</li>
+<li><p>Example: </p>
+
+<pre class="prettyprint"><code class="language-js hljs ">static defaultProps = {
+    id: <span class="hljs-number">001</span>,
+    firstname: <span class="hljs-string">'John'</span>,
+    lastname: <span class="hljs-string">'Doe'</span>
+};</code></pre></li></ul></li>
+<li><p><strong>columnNames</strong>: string[]</p>
+
+<ul><li>By default, the listing page generated the table with a column for each of the property specified in the <code>propTypes</code></li>
+<li>This default behaviour can be avoided by specifying the property name as a string in the <code>columnNames</code></li>
+<li><p>Example:</p>
+
+<pre class="prettyprint"><code class="language-js hljs ">static columnNames: string[] = [
+    <span class="hljs-string">'id'</span>,
+    <span class="hljs-string">'firstname'</span>,
+];</code></pre>
+
+<ul><li>With the above example only two columns (<em>Id</em> and the <em>Firstname</em>) will be generated in the table.</li></ul></li></ul></li>
+<li><p><strong>list</strong></p>
+
+<ul><li>It fetches a list from the server and saves it in the redux store with the key: <code>${resourceName}List</code>. For this example, the key would be <code>demoList</code> since the <code>resourceName</code> is <strong>demo</strong>.</li>
+<li><p>Parameters:</p>
+
+<table>
+<thead>
+<tr>
+  <th>Name</th>
+  <th>Optional</th>
+  <th>Default value</th>
+  <th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>filters</td>
+  <td>Yes</td>
+  <td>{}</td>
+  <td>Query parameters to be sent with the HTTP request.</td>
+</tr>
+<tr>
+  <td>valueInStore</td>
+  <td>Yes</td>
+  <td>false</td>
+  <td>If <em>false</em> then dispatch an action which fetches the instance list from the server, save the instance to the store and return the instance list.<br><br> If <em>true</em> then simply fetch the instance list from the store and return it(i.e. don’t dispatch an action to fetch the list from the server).</td>
+</tr>
+<tr>
+  <td>headers</td>
+  <td>Yes</td>
+  <td>{}</td>
+  <td>HTTP request headers.</td>
+</tr>
+<tr>
+  <td>successCallBack</td>
+  <td>Yes</td>
+  <td>() =&gt; {}</td>
+  <td>Operation to be performed when the list is fetched successfully.</td>
+</tr>
+<tr>
+  <td>failureCallBack</td>
+  <td>Yes</td>
+  <td>() =&gt; {}</td>
+  <td>Operation to be performed if any error occurred while fetching the list.</td>
+</tr>
+<tr>
+  <td>path</td>
+  <td>Yes</td>
+  <td>resourceName</td>
+  <td>The server path from where the list is to be fetched.</td>
+</tr>
+</tbody></table>
+</li></ul></li>
+<li><p><strong>get</strong></p>
+
+<ul><li>This function fetches the data for an instance id.</li>
+<li>The request is sent to the path: <code>${resourceName}/${id}</code>.</li>
+<li><p>Parameters:</p>
+
+<table>
+<thead>
+<tr>
+  <th>Name</th>
+  <th>Optional</th>
+  <th>Default value</th>
+  <th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>id</td>
+  <td>No</td>
+  <td></td>
+  <td>The instance id for which the data is to be fetched. The request path would be <code>${resourceName}/${id}</code></td>
+</tr>
+<tr>
+  <td>valueInStore</td>
+  <td>Yes</td>
+  <td>false</td>
+  <td>If <em>false</em> then dispatch an action which fetches the instance data from the server, save the instance to the store and return the instance.<br><br> If <em>true</em> then simply fetch the instance from the store and return it(i.e. don’t dispatch an action to fetch the data from the server).</td>
+</tr>
+<tr>
+  <td>headers</td>
+  <td>Yes</td>
+  <td>{}</td>
+  <td>HTTP request headers.</td>
+</tr>
+<tr>
+  <td>successCallBack</td>
+  <td>Yes</td>
+  <td>() =&gt; {}</td>
+  <td>Operation to be performed when the data is fetched successfully.</td>
+</tr>
+<tr>
+  <td>failureCallBack</td>
+  <td>Yes</td>
+  <td>() =&gt; {}</td>
+  <td>Operation to be performed if any error occurred while fetching the data.</td>
+</tr>
+</tbody></table>
+</li></ul></li>
+<li><p><strong>$save</strong></p>
+
+<ul><li>It sends a POST request to the server for creating a new instance.</li>
+<li><p>Parameters:</p>
+
+<table>
+<thead>
+<tr>
+  <th>Name</th>
+  <th>Optional</th>
+  <th>Default value</th>
+  <th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>flush</td>
+  <td>Yes</td>
+  <td>true</td>
+  <td>If <em>true</em> then dispatch an action which sends POST request to the server and save the instance to the store.<br><br> If <em>false</em> then create an instance only in the redux store.</td>
+</tr>
+<tr>
+  <td>headers</td>
+  <td>Yes</td>
+  <td>{}</td>
+  <td>HTTP request headers.</td>
+</tr>
+<tr>
+  <td>successCallBack</td>
+  <td>Yes</td>
+  <td>() =&gt; {}</td>
+  <td>Operation to be performed when data saved successfully.</td>
+</tr>
+<tr>
+  <td>failureCallBack</td>
+  <td>Yes</td>
+  <td>() =&gt; {}</td>
+  <td>Operation to be performed if any error occurred while saving the data.</td>
+</tr>
+<tr>
+  <td>path</td>
+  <td>Yes</td>
+  <td>resourceName</td>
+  <td>The server URL to which the POST request is to be made.</td>
+</tr>
+</tbody></table>
+</li></ul></li>
+<li><p><strong>$update</strong></p>
+
+<ul><li>This function is used to modify the data of an existing instance.</li>
+<li><p>Prameters:</p>
+
+<table>
+<thead>
+<tr>
+  <th>Name</th>
+  <th>Optional</th>
+  <th>Default value</th>
+  <th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>flush</td>
+  <td>Yes</td>
+  <td>true</td>
+  <td>If <em>true</em> then dispatch an action which sends the PUT request to the server and save the instance in the store.<br><br> If <em>false</em> then update the instance data only in the redux store.</td>
+</tr>
+<tr>
+  <td>headers</td>
+  <td>Yes</td>
+  <td>{}</td>
+  <td>HTTP request headers.</td>
+</tr>
+<tr>
+  <td>successCallBack</td>
+  <td>Yes</td>
+  <td>() =&gt; {}</td>
+  <td>Operation to be performed when the instance is updated successfully.</td>
+</tr>
+<tr>
+  <td>failureCallBack</td>
+  <td>Yes</td>
+  <td>() =&gt; {}</td>
+  <td>Operation to be performed if any error occurred while updating the instance.</td>
+</tr>
+<tr>
+  <td>path</td>
+  <td>Yes</td>
+  <td>resourceName/id</td>
+  <td>The server URL to which the PUT request is to be made.</td>
+</tr>
+</tbody></table>
+</li></ul></li>
+<li><p><strong>$delete</strong></p>
+
+<ul><li><p>Parameters</p>
+
+<table>
+<thead>
+<tr>
+  <th>Name</th>
+  <th>Optional</th>
+  <th>Default value</th>
+  <th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>flush</td>
+  <td>Yes</td>
+  <td>true</td>
+  <td>If <em>true</em> then dispatch an action which sends the DELETE request to the server, and deletes the instance from the store.<br><br> If <em>false</em> then delete the instance from the redux store.</td>
+</tr>
+<tr>
+  <td>headers</td>
+  <td>Yes</td>
+  <td>{}</td>
+  <td>HTTP request headers.</td>
+</tr>
+<tr>
+  <td>successCallBack</td>
+  <td>Yes</td>
+  <td>() =&gt; {}</td>
+  <td>Operation to be performed when the instance is deleted successfully.</td>
+</tr>
+<tr>
+  <td>failureCallBack</td>
+  <td>Yes</td>
+  <td>() =&gt; {}</td>
+  <td>Operation to be performed if any error occurred while deleting the instance.</td>
+</tr>
+<tr>
+  <td>path</td>
+  <td>Yes</td>
+  <td>resourceName/id</td>
+  <td>The server URL to which the DELETE request is to be made.</td>
+</tr>
+</tbody></table>
+</li></ul></li>
+</ul>
+
+
+
+<h3 id="6-crud-cli">6 CRUD CLI</h3>
+
+<ul>
+<li><p>Available commands: <br>
+    - <code>npm run RH-generate-edit</code> <br>
+    - <code>npm run RH-generate-show</code> <br>
+    - <code>npm run RH-generate-list</code> <br>
+    - <code>npm run RH-generate-create</code></p></li>
+<li><p>Flags: </p>
+
+<table>
+<thead>
+<tr>
+  <th>Flag</th>
+  <th>Required for pages</th>
+  <th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>–modelPath</td>
+  <td>All</td>
+  <td>Relative path of the model from the <code>src</code> directory.</td>
+</tr>
+<tr>
+  <td>–modelName</td>
+  <td>All</td>
+  <td>The resource name provided in the model.</td>
+</tr>
+<tr>
+  <td>–onCancel</td>
+  <td>Create, Show</td>
+  <td>The route to open when the Cancel button is clicked in the edit and the show page.</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>Example:</p>
+
+<pre class="prettyprint"><code class="language-shell hljs brainfuck"><span class="hljs-comment">npm</span> <span class="hljs-comment">run</span> <span class="hljs-comment">RH</span><span class="hljs-literal">-</span><span class="hljs-comment">generate</span><span class="hljs-literal">-</span><span class="hljs-comment">edit</span> <span class="hljs-literal">-</span><span class="hljs-literal">-</span> <span class="hljs-literal">-</span><span class="hljs-literal">-</span><span class="hljs-comment">modelPath</span> <span class="hljs-comment">/models/DemoModel</span> <span class="hljs-literal">-</span><span class="hljs-literal">-</span><span class="hljs-comment">modelName</span> <span class="hljs-comment">demo</span> <span class="hljs-literal">-</span><span class="hljs-literal">-</span><span class="hljs-comment">onCancel</span> <span class="hljs-comment">/demoList</span></code></pre></li>
+</ul>
+
+
+
+<h3 id="7-filters">7 Filters</h3>
+
+<ul>
+<li><p><strong>DropDownFilter</strong></p>
+
+<ul><li>It creates a drop-down input with the possible values provided in the prop.</li>
+<li><p>Props:</p>
+
+<table>
+<thead>
+<tr>
+  <th>Name</th>
+  <th>Type</th>
+  <th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>label</td>
+  <td>String</td>
+  <td>Name or the label for the input box. If  <code>label</code> is not provided, <code>paramName</code> will be used</td>
+</tr>
+<tr>
+  <td>paramName</td>
+  <td>String</td>
+  <td>The request will be sent to the server with this key.</td>
+</tr>
+<tr>
+  <td>possibleValues</td>
+  <td>{value: string, label: string}[]</td>
+  <td>The <code>label</code> will get rendered in the list and the <code>value</code> will be assigned to the key <code>${paramName}</code> while sending the request to the server.</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>Example: </p>
+
+<pre class="prettyprint"><code class="language-js hljs ">&lt;DropDownFilter
+    label=<span class="hljs-string">"Order"</span>
+    paramName=<span class="hljs-string">"order"</span>
+    possibleValues={[
+        {label: <span class="hljs-string">'Ascending'</span>, value: <span class="hljs-string">'asc'</span>},
+        {label: <span class="hljs-string">'Descending'</span>, value: <span class="hljs-string">'desc'</span>}
+    ]}
+/&gt;</code></pre></li></ul></li>
+<li><p><strong>QueryFilter</strong></p>
+
+<ul><li>It filters out the list based on the string provided as input.</li>
+<li><p>Props:</p>
+
+<table>
+<thead>
+<tr>
+  <th>Name</th>
+  <th>Type</th>
+  <th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>label</td>
+  <td>String</td>
+  <td>Name or the label for the input box. If  <code>label</code> is not provided, <code>paramName</code> will be used</td>
+</tr>
+<tr>
+  <td>paramName</td>
+  <td>String</td>
+  <td>The request will be sent to the server with this key.</td>
+</tr>
+<tr>
+  <td>placeholder</td>
+  <td>String</td>
+  <td>The placeholder for the input box.</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>Example:</p>
+
+<pre class="prettyprint"><code class="language-js hljs ">&lt;QueryFilter
+    label=<span class="hljs-string">"Search"</span>
+    paramName=<span class="hljs-string">"query"</span>
+    placeholder=<span class="hljs-string">"Subject, Name, Body"</span>
+/&gt;</code></pre></li></ul></li>
+<li><p><strong>RangeFilter</strong></p>
+
+<ul><li><p>Props:</p>
+
+<table>
+<thead>
+<tr>
+  <th>Name</th>
+  <th>Type</th>
+  <th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>label</td>
+  <td>String</td>
+  <td>Name or the label for the input boxes. If  <code>label</code> is not provided, <code>paramName</code> will be used. <br> Two input box would be generated with the labels: <code>${label}From</code> and <code>${label}To</code></td>
+</tr>
+<tr>
+  <td>paramName</td>
+  <td>String</td>
+  <td>The key with which the request is to be made to the server.</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>This is a generic filter used for filtering out the list for given range. For example: if we want to view the product list for a given price range:</p>
+
+<pre class="prettyprint"><code class="language-js hljs ">&lt;RangeFilter
+    label = <span class="hljs-string">"Amount"</span>
+    paramName = <span class="hljs-string">"price"</span>
+/&gt;</code></pre>
+
+<p>On submit, the request will be sent to the server with the query: <code>example.com?priceFrom=1000&amp;priceTo=5000</code>.</p></li></ul></li>
+<li><p><strong>DateRangeFilter</strong></p>
+
+<ul><li>The props and the functionality of this filter is same as that of the <strong>RangeFilter</strong>. Except in this case, the date selector input is rendered.</li>
+<li><p>Example:</p>
+
+<pre class="prettyprint"><code class="language-js hljs ">&lt;DateRangeFilter
+    label = <span class="hljs-string">"Date Created"</span>
+    paramName = <span class="hljs-string">"dateCreated"</span>
+/&gt;</code></pre></li></ul></li>
+<li><p><strong>AutocompleteQueryFilter</strong></p>
+
+<ul><li>This is essentially a query filter with autocomplete functionality. When you start typing, it will compare the input text with the data list and render the matched items as a drop-down list.</li>
+<li><p>Props: </p>
+
+<table>
+<thead>
+<tr>
+  <th>Name</th>
+  <th>Type</th>
+  <th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>label</td>
+  <td>String</td>
+  <td>Name or the label for the input box.</td>
+</tr>
+<tr>
+  <td>paramName</td>
+  <td>String</td>
+  <td>The key with which the request is to be made to the server.</td>
+</tr>
+<tr>
+  <td>style</td>
+  <td>React.CSSProperties</td>
+  <td>Custom CSS properties.</td>
+</tr>
+<tr>
+  <td>options</td>
+  <td>{value: string, label: string}[]</td>
+  <td>The data list with which the input text is to be compared.</td>
+</tr>
+<tr>
+  <td>onInputChange</td>
+  <td>Function</td>
+  <td>This works similar to the <code>onchange</code> function of the html input tag.</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>Example:</p>
+
+<p>In the following example, I have assigned the value of the options to a state: <code>selectOptions: {label: string, value: string}[]</code></p>
+
+<pre class="prettyprint"><code class="language-js hljs ">&lt;AutocompleteQueryFilter
+    style={{width: <span class="hljs-string">'300px'</span>}}
+    label=<span class="hljs-string">"Employee"</span>
+    paramName=<span class="hljs-string">"employeeID"</span>
+    options={<span class="hljs-keyword">this</span>.state.selectOptions}
+    onInputChange={<span class="hljs-keyword">this</span>.handleInputChange}
+/&gt;</code></pre>
+
+<p>Whenever the user start typing in the input, <code>handleInputChange</code> is executed. In this function a request is made to the server with the the input data. The response is then saved to the <code>selectOptions</code>.</p>
+
+<pre class="prettyprint"><code class="language-js hljs ">handleInputChange = (value: string): <span class="hljs-keyword">void</span> =&gt; {
+    HTTP.getRequest(`action/autocomplete`, {}, {query: value})
+    .then((response) =&gt; {
+        <span class="hljs-keyword">this</span>.setState({selectOptions: response.data});
+    });
+}</code></pre></li></ul></li>
+</ul>
+
+
+
+<h3 id="8-pagedlist">8 PagedList</h3>
+
+<ul>
+<li>This component is responsible for rendering the table and the filters in the listing pages. </li>
+<li><p>Props:</p>
+
+<table>
+<thead>
+<tr>
+  <th>Name</th>
+  <th>Type</th>
+  <th>Default value</th>
+  <th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>max</td>
+  <td>Number</td>
+  <td>20</td>
+  <td>The maximum number of rows to display.</td>
+</tr>
+<tr>
+  <td>resource</td>
+  <td>String</td>
+  <td></td>
+  <td>The resource name specified in the Model</td>
+</tr>
+<tr>
+  <td>pageHeader</td>
+  <td>JSX.Element</td>
+  <td><code>&lt;h1&gt;${resource}List&lt;/h1&gt;</code></td>
+  <td>The text to be rendered at the top of the table.</td>
+</tr>
+<tr>
+  <td>showDefaultAction</td>
+  <td>Boolean</td>
+  <td>true</td>
+  <td>If <strong>true</strong>, a column is added to the table which contains actions to view, edit and delete the record. <br><br> If <strong>false</strong>, the default actions will not be rendered.</td>
+</tr>
+<tr>
+  <td>customAction</td>
+  <td>React.ReactNode</td>
+  <td></td>
+  <td><code>customAction</code> overrides the default actions in the listing page. It can be a JSX.Element, a function or a class.</td>
+</tr>
+<tr>
+  <td>userActionMap</td>
+  <td>{label: string, action: Function}[]</td>
+  <td></td>
+  <td>This prop is used for the bulk operations (eg: exporting the records to csv or deleting multiple records at once) to be performed on the list.<br> The <code>label</code> is the text which will be rendered in the drop-down menu. When an item selected from the drop-down, the <code>action</code> is executed.</td>
+</tr>
+</tbody></table>
+
+
+<ul><li><p>Example:</p>
+
+<pre class="prettyprint"><code class="language-js hljs ">&lt;PagedList 
+    resource=<span class="hljs-string">"demo"</span>
+    max={<span class="hljs-number">15</span>}
+    userActionMap={[
+        {label: <span class="hljs-string">'Delete Records'</span>, action: handleDelete}
+    ]}
+    customActions={TestAction}&gt;
+        <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">DropDownFilter
+</span>            <span class="hljs-attribute">label</span> = "<span class="hljs-attribute">status</span>"
+            <span class="hljs-attribute">paramName</span> = "<span class="hljs-attribute">status</span>"
+            <span class="hljs-attribute">possibleValues</span> = {[
+              {<span class="hljs-attribute">label:</span> '<span class="hljs-attribute">Enable</span>', <span class="hljs-attribute">value:</span> '<span class="hljs-attribute">enable</span>'},
+              {<span class="hljs-attribute">label:</span> '<span class="hljs-attribute">Disable</span>', <span class="hljs-attribute">value:</span> '<span class="hljs-attribute">disable</span>'},
+              {<span class="hljs-attribute">label:</span> '<span class="hljs-attribute">Inactive</span>', <span class="hljs-attribute">value:</span> '<span class="hljs-attribute">inactive</span>'}
+            ]}
+        /&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">RangeFilter
+</span>            <span class="hljs-attribute">label</span> = "<span class="hljs-attribute">Bill</span> <span class="hljs-attribute">Amount</span>"
+            <span class="hljs-attribute">paramName</span> = "<span class="hljs-attribute">billAmount</span>"
+        /&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">PagedList</span>&gt;</span></span></code></pre>
+
+<p>In the above example, following function will be executed when the user selects <code>Delete Records</code> from the drop-down.</p>
+
+<pre class="prettyprint"><code class="language-js hljs "><span class="hljs-keyword">this</span>.handleDelete = () =&gt; {
+    <span class="hljs-comment">//perform operations to delete.</span>
+}</code></pre>
+
+<p>In this case, the custom action is a class:</p>
+
+<pre class="prettyprint"><code class="language-js hljs "><span class="hljs-keyword">class</span> TestAction extends React.Component&lt;{instance: any}, <span class="hljs-keyword">void</span>&gt; {
+
+    openAlert = (): <span class="hljs-keyword">void</span> =&gt; {
+        alert(<span class="hljs-keyword">this</span>.props.instance);
+    }
+
+    render() {
+        <span class="hljs-keyword">return</span> (
+            <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">button</span> <span class="hljs-attribute">onClick</span>=<span class="hljs-value">{this.openAlert}</span>&gt;</span>Open ALert<span class="hljs-tag">&lt;/<span class="hljs-title">button</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+        );
+     }
+}</span></code></pre></li></ul></li>
+</ul></div></body>
+</html>
