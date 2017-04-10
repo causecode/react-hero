@@ -13,7 +13,7 @@
     "postInstall": "npm run compile",
     "test": "NODE_ENV=test jest --no-cache",
     "lint-ts": "tslint 'src/*.tsx' 'src/**/*.tsx' 'src/*.ts' 'src/**/*.ts'",
-    "start:dev": "npm run clean && webpack-dev-server --watch --hot",
+    "start:dev": "npm run clean && webpack-dev-server --watch --hot --inline",
     "buildCLI": "npm run compile",
     "linkCLI": "npm run buildCLI && npm link"
   },

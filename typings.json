@@ -7,6 +7,7 @@
     "jest/v16": "registry:dt/jest/v16#16.0.0+20170126171223",
     "moment": "registry:dt/moment#2.11.1+20161010105546",
     "node": "registry:dt/node#6.0.0+20161102143327",
+    "radium": "registry:dt/radium#0.18.1+20160907102602",
     "react": "registry:dt/react#0.14.0+20160621225615",
     "react-addons-test-utils": "registry:dt/react-addons-test-utils#0.14.0+20160427035638",
     "react-bootstrap": "registry:dt/react-bootstrap#0.0.0+20160621215554",
@@ -17,8 +18,7 @@
     "redux": "registry:dt/redux#3.3.1+20160326112656",
     "redux-logger": "registry:dt/redux-logger#2.6.0+20160619033847",
     "underscore": "registry:dt/underscore#1.8.3+20160908111004",
-    "whatwg-fetch": "registry:dt/whatwg-fetch#0.0.0+20160524142046",
-    "radium": "registry:dt/radium#0.18.1+20160907102602"
+    "whatwg-fetch": "registry:dt/whatwg-fetch#0.0.0+20160524142046"
   },
   "dependencies": {
     "enzyme": "registry:npm/enzyme#2.2.0+20160322031343",

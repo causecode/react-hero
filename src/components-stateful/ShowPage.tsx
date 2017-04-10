@@ -7,6 +7,7 @@ import {IInstanceContainerProps, IFromJS} from '../interfaces';
 import {PAGE_NOT_FOUND} from '../constants';
 import {ErrorPage} from '../components/ErrorPage';
 import {store} from '../store';
+import {getOwnPropsParams} from '../utils/appService';
 
 export class ShowPageImpl extends React.Component<IInstanceContainerProps, void> {
 
@@ -40,10 +41,19 @@ export class ShowPageImpl extends React.Component<IInstanceContainerProps, void>
 }
 
 function mapStateToProps(state: IFromJS, ownProps: IInstanceContainerProps): {instance: BaseModel} {
+    let {params} = ownProps;
+
+    if (!params.resource && window.location.pathname) {
+        let ownPropsParams:
+                {resource: string, resourceID: string} = getOwnPropsParams(window.location.pathname);
+        params.resource = ownPropsParams.resource;
+        params.resourceID = ownPropsParams.resourceID;
+    }
+
     let instance: BaseModel = ModelService.getModel(ownProps.params.resource)
             .get<BaseModel>(ownProps.params.resourceID, true, {}, () => {}, () => {}, state, 'edit');
     return {
-        instance
+        instance,
     };
 }
 

@@ -16,7 +16,8 @@ import {
     getTokenFromLocalStorage,
     setTokenInLocalStorage,
     getActionComponent,
-    removeTokenFromLocalStorage
+    removeTokenFromLocalStorage,
+    getOwnPropsParams
 } from '../src/utils/appService';
 import '../src/init';
 
@@ -218,5 +219,9 @@ describe('Test for AppService', () => {
         removeTokenFromLocalStorage();
         expect(localStorage.removeItem).toBeCalledWith('AUTH_TOKEN_KEY');
         expect(localStorage.removeItem).toBeCalledWith('AUTH_TOKEN_KEY_TIMESTAMP');
+    });
+
+    it('should get the resource and resourceID from getOwnPropsParams.', (): void => {
+        expect(getOwnPropsParams('/blog/edit/34')).toEqual({resource: 'blog', resourceID: '34'})
     });
 });

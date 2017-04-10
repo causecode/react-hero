@@ -8,7 +8,7 @@ import {INSTANCE_NOT_FOUND} from '../constants';
 import {ErrorPage} from '../components/ErrorPage';
 import {IGenericEditPageProps} from '../components/CRUD/GenericEditPage';
 import {connect} from 'react-redux';
-import {isEmpty, initializeFormWithInstance, objectEquals} from '../utils/appService';
+import {isEmpty, initializeFormWithInstance, objectEquals, getOwnPropsParams} from '../utils/appService';
 import {store} from '../store';
 import '../init';
 
@@ -103,7 +103,16 @@ export class EditPageImpl extends React.Component<EditPageProps, void> {
 }
 
 function mapStateToProps(state: IFromJS, ownProps: EditPageProps): Object {
-    let isCreate: boolean = isCreatePage(ownProps.location.pathname); 
+    let {location, params} = ownProps;
+    let isCreate: boolean = isCreatePage(location.pathname);
+
+    if (!params.resource && location.pathname) {
+        let ownPropsParams:
+                {resource: string, resourceID: string} = getOwnPropsParams(location.pathname);
+        params.resource = ownPropsParams.resource;
+        params.resourceID = ownPropsParams.resourceID;
+    }
+
     let ModelClass: typeof BaseModel = ModelService.getModel(ownProps.params.resource);
     let instance: BaseModel;
     if (!isCreate) {
@@ -120,7 +129,7 @@ function mapStateToProps(state: IFromJS, ownProps: EditPageProps): Object {
         instance = new ModelClass({});
     }
     return {
-        instance 
+        instance,
     };
 }
 
