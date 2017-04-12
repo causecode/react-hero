@@ -18,8 +18,8 @@ import {
 
 const MarkdownEditor = require<any>('react-markdown-editor').MarkdownEditor;
 
-let Unroll: any = require('unroll');
-Unroll.use(it);
+let unroll: any = require('unroll');
+unroll.use(it);
 
 describe('Markdown and RawContent Wrapper test cases', (): void => {
    
@@ -42,18 +42,23 @@ describe('Markdown and RawContent Wrapper test cases', (): void => {
         />
     );
 
-    it('should render textarea', () => {
-        expect(rawContent.find('textarea').length).toBe(1);
-    });
+    unroll('Component should contain #selector element', (
+        done: () => void, 
+        args: {key: ShallowWrapper<IRawContentProps | IMarkdownProps, void>, 
+                    selector: React.ComponentClass<any> | string}): 
+        void => {
+        expect(args.key.find(args.selector).length).toEqual(1);
+            done();
+    }, [
+        ['key', 'selector'],
+        [rawContent, 'textarea'],
+        [markDown, MarkdownEditor],
+    ]);
+    
 
     it('When changes made in testarea should call handleChange', () => {
         rawContent.find('textarea').simulate('change', {target: {value: text}});
         expect(saveData).toBeCalledWith(text, text);
-    });
-
-
-    it('should render MarkdownEditor', () => {
-        expect(markDown.find(MarkdownEditor).length).toBe(1);
     });
 
     describe('When the component is connected to redux store', (): void => {
@@ -73,7 +78,7 @@ describe('Markdown and RawContent Wrapper test cases', (): void => {
             </Provider>
         );
 
-        Unroll('it should render #componentName', (done: () => void, args): void => {
+        unroll('it should render #componentName', (done: () => void, args): void => {
             expect(args.component.find(args.innerComponent).length).toBe(1);
             done();
         }, [

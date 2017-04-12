@@ -77,8 +77,8 @@ export function getModelString(...args: any[]): string {
 
 export function getOwnPropsParams(pathName: string): {resource: string,
      resourceID: string} {
-    let type = pathName.split('/');
-    let resource, resourceID = '';
+    let type: string[] = pathName.split('/');
+    let resource: string, resourceID: string = '';
 
     if (type.length > 1) {
         resource = type[1];
