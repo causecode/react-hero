@@ -75,7 +75,7 @@ export function getModelString(...args: any[]): string {
     return `rhForms.${args.join('.')}`;
 }
 
-export function getOwnPropsParams(pathName: string): {resource: string,
+export function getResourceParams(pathName: string): {resource: string,
      resourceID: string} {
     let type: string[] = pathName.split('/');
     let resource: string, resourceID: string = '';

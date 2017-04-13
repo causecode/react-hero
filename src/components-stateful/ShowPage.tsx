@@ -7,7 +7,7 @@ import {IInstanceContainerProps, IFromJS} from '../interfaces';
 import {PAGE_NOT_FOUND} from '../constants';
 import {ErrorPage} from '../components/ErrorPage';
 import {store} from '../store';
-import {getOwnPropsParams} from '../utils/appService';
+import {getResourceParams} from '../utils/appService';
 
 export class ShowPageImpl extends React.Component<IInstanceContainerProps, void> {
 
@@ -45,7 +45,7 @@ function mapStateToProps(state: IFromJS, ownProps: IInstanceContainerProps): {in
 
     if (!params.resource && window.location.pathname) {
         let ownPropsParams:
-                {resource: string, resourceID: string} = getOwnPropsParams(window.location.pathname);
+                {resource: string, resourceID: string} = getResourceParams(window.location.pathname);
         params.resource = ownPropsParams.resource;
         params.resourceID = ownPropsParams.resourceID;
     }

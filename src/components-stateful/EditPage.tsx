@@ -8,7 +8,7 @@ import {INSTANCE_NOT_FOUND} from '../constants';
 import {ErrorPage} from '../components/ErrorPage';
 import {IGenericEditPageProps} from '../components/CRUD/GenericEditPage';
 import {connect} from 'react-redux';
-import {isEmpty, initializeFormWithInstance, objectEquals, getOwnPropsParams} from '../utils/appService';
+import {isEmpty, initializeFormWithInstance, objectEquals, getResourceParams} from '../utils/appService';
 import {store} from '../store';
 import '../init';
 
@@ -108,7 +108,7 @@ function mapStateToProps(state: IFromJS, ownProps: EditPageProps): Object {
 
     if (!params.resource && location.pathname) {
         let ownPropsParams:
-                {resource: string, resourceID: string} = getOwnPropsParams(location.pathname);
+                {resource: string, resourceID: string} = getResourceParams(location.pathname);
         params.resource = ownPropsParams.resource;
         params.resourceID = ownPropsParams.resourceID;
     }

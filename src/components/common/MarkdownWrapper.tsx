@@ -15,6 +15,8 @@ export interface IMarkdownProps extends IMarkdownStateProps, IDispatchProps {
     style?: CSS;
 };
 
+// TODO: Merge wrapper components (MarkdownWrapper & RawContentWrapper).
+// Only config and part of render method is different.
 @Radium
 export class MarkdownWrapperImpl extends React.Component<IMarkdownProps, void> {
 
