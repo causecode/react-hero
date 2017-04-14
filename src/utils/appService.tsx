@@ -75,6 +75,22 @@ export function getModelString(...args: any[]): string {
     return `rhForms.${args.join('.')}`;
 }
 
+export function getResourceParams(pathName: string): {resource: string,
+     resourceID: string} {
+    let type: string[] = pathName.split('/');
+    let resource: string, resourceID: string = '';
+
+    if (type.length > 1) {
+        resource = type[1];
+
+        if (type[3]) {
+            resourceID = type[3];
+        }
+    }
+
+    return {resource: resource, resourceID: resourceID};
+}
+
 /**
  * Returns the themed component. If the theme name or the theme directory is not found, 
  * the default component i.e. the component in the default directory is returned.
@@ -130,7 +146,7 @@ export function isImmutable(obj: Object | IImmutable): obj is IImmutable {
 export function getIn(object: Object | IImmutable, path: string, defaultValue: Object = ''): Object {
     let immutableObject = isImmutable(object) ? object : fromJS(object) ;
     let propertyValue: IImmutable = (immutableObject as IImmutable).getIn(path.split('.'), defaultValue) as IImmutable;
-    return propertyValue.toJS ? propertyValue.toJS() : propertyValue;
+    return propertyValue && propertyValue.toJS ? propertyValue.toJS() : propertyValue;
 }
 
 export function generateSubForm(propertyName: string, propTypes: any, model: string): JSX.Element {

@@ -13,7 +13,7 @@
     "postInstall": "npm run compile",
     "test": "NODE_ENV=test jest --no-cache",
     "lint-ts": "tslint 'src/*.tsx' 'src/**/*.tsx' 'src/*.ts' 'src/**/*.ts'",
-    "start:dev": "npm run clean && webpack-dev-server --watch --hot",
+    "start:dev": "npm run clean && webpack-dev-server --watch --hot --inline",
     "buildCLI": "npm run compile",
     "linkCLI": "npm run buildCLI && npm link"
   },
@@ -78,6 +78,8 @@
     "react-dom": "15.2.0",
     "react-fontawesome": "1.1.0",
     "react-hot-loader": "1.3.0",
+    "react-markdown": "2.4.6",
+    "react-markdown-editor": "0.3.2",
     "react-motion": "0.4.4",
     "react-redux": "4.4.5",
     "react-redux-form": "1.2.3",
