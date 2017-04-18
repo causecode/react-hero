@@ -9,3 +9,4 @@ public
 /coverage
 .vscode
 .DS_Store
+localConfig.json

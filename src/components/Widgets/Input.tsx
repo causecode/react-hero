@@ -3,6 +3,7 @@ import * as moment from 'moment';
 import {connect, MapStateToProps, MapDispatchToPropsFunction} from 'react-redux';
 import {IDispatch} from '../../interfaces';
 import {isEmpty, parseWidgetDate} from '../../utils/appService';
+import {CSS} from '../../interfaces/index';
 import {
     FormControl,
     FormGroup,
@@ -14,6 +15,7 @@ import {
     ListGroupItem,
     Radio
 } from 'react-bootstrap';
+
 const {actions} = require<any>('react-redux-form');
 const ReactDatetime = require<any>('react-datetime');
 
@@ -30,6 +32,9 @@ export interface IInputProps extends IInputStateProps, IInputDispatchProps {
     enum?: any;
     type: string;
     propertyName: string;
+    fieldSize?: number;
+    labelSize?: number;
+    style?: React.CSSProperties;
 }
 
 let GenericInputTemplate = (props): JSX.Element => {
@@ -187,6 +192,15 @@ class DateTimeComponent extends React.Component<IInputProps, void> {
 
 class FormInputImpl extends React.Component<IInputProps, {}> {
     
+    static defaultProps: IInputProps = {
+        fieldSize: 9,
+        labelSize: 3,
+        model: '',
+        enum: '',
+        type: '',
+        propertyName: ''
+    };
+
     handleChange = (newValue: any): void => {
         this.props.change(this.props.model, newValue);
     }
@@ -210,10 +224,10 @@ class FormInputImpl extends React.Component<IInputProps, {}> {
         let InputTemplate: React.ComponentClass<any> = this.getInputTemplate() as React.ComponentClass<any>;
         return (
             <FormGroup className="row" style={{margin: '0px'}}>
-                <Col sm={3}>
+                <Col sm={this.props.labelSize}>
                     <ControlLabel style={{textAlign: 'right'}}>{this.props.propertyName}</ControlLabel>
                 </Col>
-                <Col sm={4}>
+                <Col sm={this.props.fieldSize} style={this.props.style}>
                     <InputTemplate 
                         {...this.props}
                         value={propertyValue}

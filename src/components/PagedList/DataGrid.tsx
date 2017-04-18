@@ -27,6 +27,8 @@ export interface IDataGridDispatchProps {
 
 export interface IDataGridProps extends IDataGridStateProps, IDataGridDispatchProps {
     instanceList: BaseModel[];
+    max: number;
+    offset: number;
     properties: string[];
     totalCount?: number;
     handleRecordDelete?: Function;
@@ -169,6 +171,16 @@ export class DataGridImpl extends React.Component<IDataGridProps, void> {
         return null;
     }
 
+    renderCount = (): JSX.Element => {
+        return (
+            <tr>
+                <td colSpan={this.properties.length + 3}>
+                    Showing <strong>{this.props.offset+1}-{(this.props.totalCount <= this.props.offset + this.props.max) ? this.props.totalCount : this.props.offset + this.props.max}</strong> of <strong>{this.props.totalCount}</strong>
+                </td>
+            </tr>
+        );
+    }
+
     render(): JSX.Element {
         if (!this.props.instanceList || !this.props.instanceList.length) {
             return <div style={{margin: '40px 0px 0px 0px'}}>Sorry, No entry found.</div>;
@@ -185,6 +197,7 @@ export class DataGridImpl extends React.Component<IDataGridProps, void> {
         }
 
         let {showDefaultActions, customActions} = this.props;
+        let listIndex: number = this.props.offset+1;
 
         return (
             <div className="data-grid">
@@ -218,7 +231,7 @@ export class DataGridImpl extends React.Component<IDataGridProps, void> {
                                                         this.props.selectedIds.indexOf(instanceProperties.id) !== -1}
                                                 onChange={this.handleChange.bind(this, instanceProperties.id)}/>
                                     </td>
-                                    <td>{index}</td>
+                                    <td>{listIndex++}</td>
                                     {this.properties.map((property: string, key: number) => {
                                         return (
                                             <td key={`property-${key}`}>
@@ -230,6 +243,7 @@ export class DataGridImpl extends React.Component<IDataGridProps, void> {
                                 </tr>
                                 );
                             })}
+                            {this.renderCount()}
                     </tbody>
                 </Table>
             </div>
