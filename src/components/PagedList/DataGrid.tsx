@@ -142,7 +142,7 @@ export class DataGridImpl extends React.Component<IDataGridProps, void> {
         }
 
         if (CustomAction && typeof CustomAction === 'object') {
-            return <td>{React.cloneElement(CustomAction, {instance: instance})}</td>
+            return <td>{React.cloneElement(CustomAction, {instance: instance})}</td>;
         }
 
         if (ActionComponent && React.isValidElement(<ActionComponent/>)) {
@@ -177,7 +177,8 @@ export class DataGridImpl extends React.Component<IDataGridProps, void> {
         return (
             <tr>
                 <td colSpan={this.properties.length + 3}>
-                    Showing <strong>{this.props.offset+1}-{(this.props.totalCount <= this.props.offset + this.props.max) ? 
+                    Showing <strong>{this.props.offset + 1}-
+                        {(this.props.totalCount <= this.props.offset + this.props.max) ? 
                             this.props.totalCount : 
                                 this.props.offset + this.props.max}
                                     </strong> of <strong>{this.props.totalCount}</strong>
@@ -202,7 +203,7 @@ export class DataGridImpl extends React.Component<IDataGridProps, void> {
         }
 
         let {showDefaultActions, customActions} = this.props;
-        let listIndex: number = this.props.offset+1;
+        let listIndex: number = this.props.offset + 1;
 
         return (
             <div className="data-grid">

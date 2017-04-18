@@ -3,7 +3,6 @@ import * as moment from 'moment';
 import {connect, MapStateToProps, MapDispatchToPropsFunction} from 'react-redux';
 import {IDispatch} from '../../interfaces';
 import {isEmpty, parseWidgetDate} from '../../utils/appService';
-import {CSS} from '../../interfaces/index';
 import {
     FormControl,
     FormGroup,
@@ -13,7 +12,7 @@ import {
     Button,
     ListGroup,
     ListGroupItem,
-    Radio
+    Radio,
 } from 'react-bootstrap';
 
 const {actions} = require<any>('react-redux-form');
@@ -92,7 +91,7 @@ let DropDownInputTemplate = (props): JSX.Element => {
                 value=""
                 style={{
                 color: 'grey',
-                pointerEvents: 'none'
+                pointerEvents: 'none',
             }}>Select One</option>
             {(() => {
                 let enumInstance = props.enum;
@@ -198,7 +197,7 @@ class FormInputImpl extends React.Component<IInputProps, {}> {
         model: '',
         enum: '',
         type: '',
-        propertyName: ''
+        propertyName: '',
     };
 
     handleChange = (newValue: any): void => {
@@ -246,7 +245,7 @@ let mapStateToProps: MapStateToProps<IInputStateProps, IInputProps> =
         data = data.hasOwnProperty(prop) ? data[prop] : '';
     });
     return {
-        propertyValue: data
+        propertyValue: data,
     };
 };
 
@@ -255,7 +254,7 @@ let mapDispatchToProps: MapDispatchToPropsFunction<IInputDispatchProps, IInputPr
     return {
         change: (model: string, value: any): void => {
             dispatch(actions.change(model, value));
-        }
+        },
     };
 }; 
 

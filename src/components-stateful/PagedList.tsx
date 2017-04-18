@@ -32,7 +32,7 @@ export interface IPagedListStateProps {
 
 export interface IPagedListState {
     data: {
-        get: (string, {}) => IPagedListStateProps & {toJS?: () => IPagedListStateProps};
+        get: (str, {}) => IPagedListStateProps & {toJS?: () => IPagedListStateProps};
     };
 }
 
@@ -86,7 +86,7 @@ export class PagedListImpl extends React.Component<IPagedListProps, void> {
         totalCount: 0,
         activePage: 1,
         instanceList: [],
-        setPage: (pageNumber: number) => { return; }
+        setPage: (pageNumber: number) => { return; },
     };
 
     componentWillMount(): void {
