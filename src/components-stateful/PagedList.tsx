@@ -60,6 +60,8 @@ let OuterFilter: React.ComponentClass<IOuterFilterProps>;
 
 export class PagedListImpl extends React.Component<IPagedListProps, void> {
 
+    private offset: number = 0;
+
     fetchInstanceList(resource, filters: {max?: number, offset?: number} = {}): void {
         if (!this.props.fetchInstanceList) {
             filters = this.props.filters ? objectAssign(filters, this.props.filters) : filters;
@@ -96,15 +98,15 @@ export class PagedListImpl extends React.Component<IPagedListProps, void> {
     componentWillUnmount(): void {
         this.props.resetCheckboxState();
     }
-
     /*
      * Using any here because the type defined by react-bootstrap i.e. SelectCallback was not assignable here.
      * TODO Remove any in handlePagination.
      */
-    handlePagination: any = (pageNumber: number, e: React.SyntheticEvent): void => {
+    handlePagination: any = (pageNumber: number, e: React.SyntheticEvent): void => {        
         if (pageNumber !== this.props.activePage) {
             this.props.resetCheckboxState();
         }
+        this.offset =  (pageNumber - 1) * this.props.max;
         this.fetchInstanceList(this.props.resource, {offset: (pageNumber - 1) * this.props.max});
         this.props.setPage(pageNumber, this.props.resource);
         this.props.resetCheckboxState();
@@ -151,6 +153,8 @@ export class PagedListImpl extends React.Component<IPagedListProps, void> {
             return(
                 <DataGrid
                         instanceList={this.props.instanceList}
+                        max={this.props.max}
+                        offset={this.offset}
                         properties={this.props.properties}
                         handleRecordDelete={this.props.handleRecordDelete}
                         totalCount={this.props.totalCount}
@@ -165,6 +169,8 @@ export class PagedListImpl extends React.Component<IPagedListProps, void> {
             return (
                 <CustomDataGrid
                         instanceList={this.props.instanceList}
+                        max={this.props.max}
+                        offset={this.offset}
                         properties={this.props.properties}
                         handleRecordDelete={this.props.handleRecordDelete}
                         totalCount={this.props.totalCount}
