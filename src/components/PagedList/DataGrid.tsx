@@ -75,7 +75,8 @@ export class DataGridImpl extends React.Component<IDataGridProps, void> {
         let instances: BaseModel[] = this.props.instanceList;
         if (isChecked) {
             for (let i: number = 0; i < instances.length; i++) {
-                if (this.props.selectedIds && this.props.selectedIds.indexOf(instances[i].properties.id) === -1) {
+                if (this.props.selectedIds && 
+                        this.props.selectedIds.indexOf(instances[i].properties.id) === -1) {
                     this.props.setChecked(instances[i].properties.id);
                 }
             }
@@ -86,7 +87,8 @@ export class DataGridImpl extends React.Component<IDataGridProps, void> {
         }
     }
 
-    getInnerHtml = (property: string, instance: BaseModel, instanceProperties: string[]): JSX.Element | string => {
+    getInnerHtml = (property: string, instance: BaseModel, 
+            instanceProperties: string[]): JSX.Element | string => {
         if (property.indexOf('.') > 0) {
             let method: Function = instance['getHTML' + property.capitalize().substring(0, property.indexOf('.'))];
             if (method) {
@@ -175,7 +177,10 @@ export class DataGridImpl extends React.Component<IDataGridProps, void> {
         return (
             <tr>
                 <td colSpan={this.properties.length + 3}>
-                    Showing <strong>{this.props.offset+1}-{(this.props.totalCount <= this.props.offset + this.props.max) ? this.props.totalCount : this.props.offset + this.props.max}</strong> of <strong>{this.props.totalCount}</strong>
+                    Showing <strong>{this.props.offset+1}-{(this.props.totalCount <= this.props.offset + this.props.max) ? 
+                            this.props.totalCount : 
+                                this.props.offset + this.props.max}
+                                    </strong> of <strong>{this.props.totalCount}</strong>
                 </td>
             </tr>
         );
