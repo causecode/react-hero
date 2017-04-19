@@ -32,7 +32,7 @@ export interface IPagedListStateProps {
 
 export interface IPagedListState {
     data: {
-        get: (str, {}) => IPagedListStateProps & {toJS?: () => IPagedListStateProps};
+        get: (resourceKey: string, {}) => IPagedListStateProps & {toJS?: () => IPagedListStateProps};
     };
 }
 
@@ -107,7 +107,7 @@ export class PagedListImpl extends React.Component<IPagedListProps, void> {
             this.props.resetCheckboxState();
         }
         this.offset =  (pageNumber - 1) * this.props.max;
-        this.fetchInstanceList(this.props.resource, {offset: (pageNumber - 1) * this.props.max});
+        this.fetchInstanceList(this.props.resource, {offset: this.offset});
         this.props.setPage(pageNumber, this.props.resource);
         this.props.resetCheckboxState();
         scrollToTop();

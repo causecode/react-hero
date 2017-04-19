@@ -87,8 +87,7 @@ export class DataGridImpl extends React.Component<IDataGridProps, void> {
         }
     }
 
-    getInnerHtml = (property: string, instance: BaseModel, 
-            instanceProperties: string[]): JSX.Element | string => {
+    getInnerHtml = (property: string, instance: BaseModel, instanceProperties: string[]): JSX.Element | string => {
         if (property.indexOf('.') > 0) {
             let method: Function = instance['getHTML' + property.capitalize().substring(0, property.indexOf('.'))];
             if (method) {
@@ -174,14 +173,12 @@ export class DataGridImpl extends React.Component<IDataGridProps, void> {
     }
 
     renderCount = (): JSX.Element => {
+        let {max, offset, totalCount} = this.props;
         return (
             <tr>
                 <td colSpan={this.properties.length + 3}>
-                    Showing <strong>{this.props.offset + 1}-
-                        {(this.props.totalCount <= this.props.offset + this.props.max) ? 
-                            this.props.totalCount : 
-                                this.props.offset + this.props.max}
-                                    </strong> of <strong>{this.props.totalCount}</strong>
+                    Showing <strong>{offset + 1} - {(totalCount <= offset + max) ? totalCount : offset + max}</strong>
+                    of <strong>{totalCount}</strong>
                 </td>
             </tr>
         );
