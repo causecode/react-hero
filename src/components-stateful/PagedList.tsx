@@ -38,6 +38,7 @@ export interface IPagedListState {
 
 export interface IPagedListProps extends IPagedListStateProps, IPagedListDispatchProps {
     max: number;
+    offset?: number;
     resource: string;
     filters?: any;
     handleRecordDelete?: Function;
@@ -154,7 +155,7 @@ export class PagedListImpl extends React.Component<IPagedListProps, void> {
                 <DataGrid
                         instanceList={this.props.instanceList}
                         max={this.props.max}
-                        offset={this.offset}
+                        offset={this.props.offset || this.offset}
                         properties={this.props.properties}
                         handleRecordDelete={this.props.handleRecordDelete}
                         totalCount={this.props.totalCount}
@@ -170,7 +171,7 @@ export class PagedListImpl extends React.Component<IPagedListProps, void> {
                 <CustomDataGrid
                         instanceList={this.props.instanceList}
                         max={this.props.max}
-                        offset={this.offset}
+                        offset={this.props.offset || this.offset}
                         properties={this.props.properties}
                         handleRecordDelete={this.props.handleRecordDelete}
                         totalCount={this.props.totalCount}
