@@ -75,8 +75,7 @@ export class DataGridImpl extends React.Component<IDataGridProps, void> {
         let instances: BaseModel[] = this.props.instanceList;
         if (isChecked) {
             for (let i: number = 0; i < instances.length; i++) {
-                if (this.props.selectedIds && 
-                        this.props.selectedIds.indexOf(instances[i].properties.id) === -1) {
+                if (this.props.selectedIds && this.props.selectedIds.indexOf(instances[i].properties.id) === -1) {
                     this.props.setChecked(instances[i].properties.id);
                 }
             }
