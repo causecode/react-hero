@@ -37,7 +37,7 @@ export interface IPagedListState {
 }
 
 export interface IPagedListProps extends IPagedListStateProps, IPagedListDispatchProps {
-    max: number;
+    max?: number;
     offset?: number;
     resource: string;
     filters?: any;

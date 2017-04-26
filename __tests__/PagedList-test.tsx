@@ -21,7 +21,7 @@ import {
     IPagedListFiltersProps,
     IBulkUserActionType,
     IStoreInstanceType,
-    ICheckboxReducer
+    ICheckboxReducer,
 } from '../src/interfaces';
 import '../src/init';
 
@@ -62,13 +62,13 @@ describe('Test cases for PagedList', (): void => {
 
     setPage = jest.fn((): {type: string} => {
         return {
-            type: 'DUMMY'
+            type: 'DUMMY',
         };
     });
 
     resetCheckboxState = jest.fn((): {type: string} => {
         return {
-            type: 'DUMMY'
+            type: 'DUMMY',
         };
     });
 
@@ -92,7 +92,7 @@ describe('Test cases for PagedList', (): void => {
         ['QueryFilter', QueryFilter, 1],
         ['PagedListFilters', PagedListFilters, 1],
         ['DataGrid', DataGrid, 1],
-        ['Pagination', Pagination, 1]
+        ['Pagination', Pagination, 1],
     ]);
 
     it('should not call list method when custom fetchInstanceList method is provided as prop', (): void => {
@@ -151,7 +151,7 @@ describe('Test cases for PagedList', (): void => {
 
     let userActionsMap: IBulkUserActionType[] = [
         {label: 'Add User', action: (): void => {}},
-        {label: 'Delete User', action: (): void => {}}
+        {label: 'Delete User', action: (): void => {}},
     ];
 
     unroll('should render #componentName when passed as prop', (
@@ -173,7 +173,7 @@ describe('Test cases for PagedList', (): void => {
         ['CustomPagedListFilter', 'pagedListFilters', CustomPagedListFilter, CustomPagedListFilter],
         ['UserActions', 'userActionsMap', userActionsMap, UserActions],
         ['customDataGrid', 'dataGrid', customDataGrid, 'b'],
-        ['CustomDataGrid', 'dataGrid', CustomDataGrid, CustomDataGrid]
+        ['CustomDataGrid', 'dataGrid', CustomDataGrid, CustomDataGrid],        
     ]);
 
     unroll('should call #methodName when page changes', (
@@ -194,8 +194,14 @@ describe('Test cases for PagedList', (): void => {
     }, [
         ['methodName', 'method', 'props', 'methodParam'],
         ['resetCheckboxState', resetCheckboxState, {resetCheckboxState: resetCheckboxState}, null],
-        ['setPage', setPage, {activePage: 1, setPage: setPage}, 1]
+        ['setPage', setPage, {activePage: 1, setPage: setPage}, 1],
     ]);
+
+    it('should calculate offset when page changes', (): void => {
+        pagedList.setProps({pageNumber: 2, max: 10});
+        pagedList.instance()[`handlePagination`]();
+        expect(this.offset).not.toBeNull();
+    });
 });
 
 describe('Test cases for PagedList using mount', (): void => {
@@ -206,7 +212,7 @@ describe('Test cases for PagedList using mount', (): void => {
         instanceList: [userModelBruceInstance],
         totalCount: 1,
         activePage: 1,
-        properties: userModelBruceInstance.properties
+        properties: userModelBruceInstance.properties,
     };
 
     let checkbox: ICheckboxReducer = {selectedIds: [1], selectAllOnPage: false, selectAll: false};

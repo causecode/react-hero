@@ -27,8 +27,8 @@ export interface IDataGridDispatchProps {
 
 export interface IDataGridProps extends IDataGridStateProps, IDataGridDispatchProps {
     instanceList: BaseModel[];
-    max: number;
-    offset: number;
+    max?: number;
+    offset?: number;
     properties: string[];
     totalCount?: number;
     handleRecordDelete?: Function;
@@ -173,8 +173,11 @@ export class DataGridImpl extends React.Component<IDataGridProps, void> {
 
     renderCount = (): JSX.Element => {
         let {max, offset, totalCount} = this.props;
+        if (!max  || !totalCount) {
+            return null;
+        }
         return (
-            <tr>
+            <tr id="totalCount">
                 <td colSpan={this.properties.length + 3}>
                     Showing <strong>{offset + 1} - {(totalCount <= offset + max) ? totalCount : offset + max}</strong> 
                     &nbsp;of <strong>{totalCount}</strong>
