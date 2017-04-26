@@ -173,7 +173,7 @@ describe('Test cases for PagedList', (): void => {
         ['CustomPagedListFilter', 'pagedListFilters', CustomPagedListFilter, CustomPagedListFilter],
         ['UserActions', 'userActionsMap', userActionsMap, UserActions],
         ['customDataGrid', 'dataGrid', customDataGrid, 'b'],
-        ['CustomDataGrid', 'dataGrid', CustomDataGrid, CustomDataGrid],        
+        ['CustomDataGrid', 'dataGrid', CustomDataGrid, CustomDataGrid],
     ]);
 
     unroll('should call #methodName when page changes', (
@@ -199,8 +199,8 @@ describe('Test cases for PagedList', (): void => {
 
     it('should calculate offset when page changes', (): void => {
         pagedList.setProps({pageNumber: 2, max: 10});
-        pagedList.instance()[`handlePagination`]();
-        expect(this.offset).not.toBeNull();
+        pagedList.instance()[`handlePagination`](2);
+        expect(pagedList.instance().offset).toEqual(10);
     });
 });
 

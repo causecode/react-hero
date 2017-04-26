@@ -176,10 +176,11 @@ export class DataGridImpl extends React.Component<IDataGridProps, void> {
         if (!max  || !totalCount) {
             return null;
         }
+
         return (
             <tr id="totalCount">
                 <td colSpan={this.properties.length + 3}>
-                    Showing <strong>{offset + 1} - {(totalCount <= offset + max) ? totalCount : offset + max}</strong> 
+                    Showing <strong>{offset + 1} - {(totalCount <= offset + max) ? totalCount : offset + max}</strong>
                     &nbsp;of <strong>{totalCount}</strong>
                 </td>
             </tr>
