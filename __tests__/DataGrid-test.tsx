@@ -33,7 +33,9 @@ describe('Tests for DataGrid', () => {
 
     const dataGrid: ShallowWrapper<IDataGridProps, void> = shallow<IDataGridProps, void> (
             <DataGridImpl
-                    totalCount={2}
+                    totalCount={20}
+                    max={10}
+                    offset={0}
                     instanceList={[userModelBruceInstance]}
                     properties={userModelBruceInstance.properties}
                     setChecked={setChecked}
@@ -55,7 +57,8 @@ describe('Tests for DataGrid', () => {
         ['component', 'selector', 'count'],
         ['Link', Link, 2],
         ['Table', Table, 1],
-        ['checkbox', 'input[type="checkbox"]', 2]
+        ['checkbox', 'input[type="checkbox"]', 2],
+        ['totalCount', '#totalCount', 1],
     ]);
 
     unroll('should call handleChange when checkbox is checked or unchecked', (
@@ -71,7 +74,7 @@ describe('Tests for DataGrid', () => {
     }, [
         ['checkbox', 'method'],
         [dataGrid.find('input[type="checkbox"]').at(0), selectAllRecordsOnPage],
-        [dataGrid.find('input[type="checkbox"]').at(1), setChecked]
+        [dataGrid.find('input[type="checkbox"]').at(1), setChecked],
     ]);
 
     it('should delete the data when delete icon is clicked.', (): void => {
@@ -90,7 +93,7 @@ describe('Tests for DataGrid', () => {
     }, [
         ['status', 'propValue'],
         ['null', null],
-        ['empty', []]
+        ['empty', []],
     ]);
 
     describe('When getHTML method is defined for any property inside model', (): void => {
@@ -101,14 +104,14 @@ describe('Tests for DataGrid', () => {
         selectAllRecords = jest.fn(() => {
             return {
                 type: 'DUMMY',
-                payload: 1
+                payload: 1,
             };
         });
 
         toggleCheckbox = jest.fn(() => {
             return {
                 type: 'DUMMY',
-                payload: false
+                payload: false,
             };
         });
 
@@ -190,7 +193,7 @@ describe('Tests for DataGrid', () => {
             }, [
                 ['title', 'propValue', 'buttonId'],
                 ['element', testActionElement, 'customAction'],
-                ['component', TestActionComponent, 'testActionComponent']
+                ['component', TestActionComponent, 'testActionComponent'],
             ]);
         });
 
