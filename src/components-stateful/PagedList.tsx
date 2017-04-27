@@ -32,12 +32,13 @@ export interface IPagedListStateProps {
 
 export interface IPagedListState {
     data: {
-        get: (string, {}) => IPagedListStateProps & {toJS?: () => IPagedListStateProps};
+        get: (resourceKey: string, {}) => IPagedListStateProps & {toJS?: () => IPagedListStateProps};
     };
 }
 
 export interface IPagedListProps extends IPagedListStateProps, IPagedListDispatchProps {
-    max: number;
+    max?: number;
+    offset?: number;
     resource: string;
     filters?: any;
     handleRecordDelete?: Function;
@@ -59,6 +60,8 @@ export interface IPagedListProps extends IPagedListStateProps, IPagedListDispatc
 let OuterFilter: React.ComponentClass<IOuterFilterProps>;
 
 export class PagedListImpl extends React.Component<IPagedListProps, void> {
+
+    private offset: number = 0;
 
     fetchInstanceList(resource, filters: {max?: number, offset?: number} = {}): void {
         if (!this.props.fetchInstanceList) {
@@ -84,7 +87,7 @@ export class PagedListImpl extends React.Component<IPagedListProps, void> {
         totalCount: 0,
         activePage: 1,
         instanceList: [],
-        setPage: (pageNumber: number) => { return; }
+        setPage: (pageNumber: number) => { return; },
     };
 
     componentWillMount(): void {
@@ -96,7 +99,6 @@ export class PagedListImpl extends React.Component<IPagedListProps, void> {
     componentWillUnmount(): void {
         this.props.resetCheckboxState();
     }
-
     /*
      * Using any here because the type defined by react-bootstrap i.e. SelectCallback was not assignable here.
      * TODO Remove any in handlePagination.
@@ -105,7 +107,8 @@ export class PagedListImpl extends React.Component<IPagedListProps, void> {
         if (pageNumber !== this.props.activePage) {
             this.props.resetCheckboxState();
         }
-        this.fetchInstanceList(this.props.resource, {offset: (pageNumber - 1) * this.props.max});
+        this.offset =  (pageNumber - 1) * this.props.max;
+        this.fetchInstanceList(this.props.resource, {offset: this.offset});
         this.props.setPage(pageNumber, this.props.resource);
         this.props.resetCheckboxState();
         scrollToTop();
@@ -151,6 +154,8 @@ export class PagedListImpl extends React.Component<IPagedListProps, void> {
             return(
                 <DataGrid
                         instanceList={this.props.instanceList}
+                        max={this.props.max}
+                        offset={this.props.offset || this.offset}
                         properties={this.props.properties}
                         handleRecordDelete={this.props.handleRecordDelete}
                         totalCount={this.props.totalCount}
@@ -165,6 +170,8 @@ export class PagedListImpl extends React.Component<IPagedListProps, void> {
             return (
                 <CustomDataGrid
                         instanceList={this.props.instanceList}
+                        max={this.props.max}
+                        offset={this.props.offset || this.offset}
                         properties={this.props.properties}
                         handleRecordDelete={this.props.handleRecordDelete}
                         totalCount={this.props.totalCount}
