@@ -71,6 +71,7 @@ var config = {
     output: {
         path: path.join(__dirname, 'dist'),
         filename: isProduction ? 'bundle.[hash].min.js' : 'bundle.js',
+        publicPath: '/'
     },
     devServer: {
         historyApiFallback: true
@@ -106,7 +107,7 @@ var config = {
 
 if (isRunningOnServer) {
     config.devServer = {
-        contentBase: 'dist'
+        historyApiFallback: true
     }
 }
 
