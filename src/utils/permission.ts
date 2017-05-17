@@ -1,5 +1,5 @@
 import {store} from '../store';
-import {LocationDescriptor} from '~react-router-redux~history';
+import {LocationDescriptor} from '~react-router-redux~history/history';
 
 export interface INextState {
     location: {

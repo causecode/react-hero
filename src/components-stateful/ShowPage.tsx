@@ -13,7 +13,7 @@ export class ShowPageImpl extends React.Component<IInstanceContainerProps, void>
 
     static defaultProps: IInstanceContainerProps = {
         instance: new DefaultModel({}),
-        params: {resource: '', resourceID: ''}
+        params: {resource: '', resourceID: ''},
     };
 
     fetchInstanceData(resource: string , resourceID: string): void {
@@ -51,7 +51,7 @@ function mapStateToProps(state: IFromJS, ownProps: IInstanceContainerProps): {in
     }
 
     let instance: BaseModel = ModelService.getModel(ownProps.params.resource)
-            .get<BaseModel>(ownProps.params.resourceID, true, {}, () => {}, () => {}, state, 'edit');
+            .get<BaseModel>(ownProps.params.resourceID, true, {}, () => {}, () => {}, state, null);
     return {
         instance,
     };
