@@ -10,7 +10,7 @@ import {confirmationModalReducer} from './confirmationModalReducer';
 const {combineForms} = require<any>('react-redux-form');
 const reduxFormReducer = require<any>('redux-form').reducer;
 
-let rootReducer: Reducer = combineReducers({
+let rootReducer: Reducer<any> = combineReducers({
     open,
     data,
     checkbox: checkboxReducer,
