@@ -119,7 +119,7 @@ function fetchComponent(componentPath: string, componentName: string, theme?: st
      * TODO use the path of the app root directory instead of ../../../../src.
      */
     // return require(`../../src/${theme || 'default'}/${componentPath}`)[`${componentName}`];
-    return require(`../../../../src/${theme || 'default'}/${componentPath}`)[`${componentName}`];
+    return require(`../../../../app/${theme || 'default'}/${componentPath}`)[`${componentName}`];
 }
 
 export function showWarn(message: string): void {
@@ -225,7 +225,7 @@ export function getActionComponent(fileName: string): React.ComponentClass<any> 
         return item.capitalize();
     });
 
-    return require(`../../../../src`)[fileNameSplittedToWords.join('')];
+    return require(`../../../../app/containers`)[fileNameSplittedToWords.join('')];
 };
 
 export function setTokenInLocalStorage(token: string): boolean {
