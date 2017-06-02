@@ -54,9 +54,7 @@
   "author": "",
   "license": "ISC",
   "homepage": "https://bitbucket.org/causecode/react-hero#readme",
-  "dependencies": {
-    "@types/history": "4.5.1",
-    "@types/redux-logger": "3.0.0",
+  "dependencies": {    
     "axios": "0.12.0",
     "bootstrap": "^3.3.6",
     "classnames": "2.2.5",
@@ -66,8 +64,7 @@
     "es6-promise": "3.3.1",
     "extract-text-webpack-plugin": "^1.0.1",
     "file-loader": "0.8.5",
-    "font-awesome": "4.6.1",
-    "history": "4.6.1",
+    "font-awesome": "4.6.1",    
     "html-webpack-plugin": "2.19.0",
     "immutable": "3.8.1",
     "json-loader": "0.5.4",
@@ -109,6 +106,8 @@
     "webpack-dev-server": "1.14.1"
   },
   "devDependencies": {
+    "@types/history": "4.5.1",
+    "@types/redux-logger": "3.0.0",
     "autoprefixer": "6.3.6",
     "autoprefixer-core": "6.0.1",
     "babel-core": "6.10.4",
@@ -122,6 +121,7 @@
     "ejs": "^2.5.5",
     "ejs-html-loader": "2.0.2",
     "enzyme": "2.6.0",
+    "history": "4.6.1",
     "jest": "17.0.3",
     "jest-cli": "17.0.3",
     "postcss-cssnext": "2.6.0",
