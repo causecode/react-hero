@@ -51,8 +51,8 @@ export class EditPageImpl extends React.Component<EditPageProps, void> {
         initializeFormWithInstance(this.props.instance, this.isCreatePage());
     }
 
-    handleSubmit = (instance: BaseModel, successCallBack?: (prop) => {},
-            failureCallBack?: (prop) => {}): void => {
+    handleSubmit = (instance: BaseModel, successCallBack?: (args) => {},
+            failureCallBack?: (args) => {}): void => {
         if (this.isCreatePage()) {
             instance.$save(true, {}, successCallBack, failureCallBack);
         } else {
@@ -60,8 +60,8 @@ export class EditPageImpl extends React.Component<EditPageProps, void> {
         }
     }
 
-    handleDelete = (instance: BaseModel, successCallBack?: (prop) => {},
-            failureCallBack?: (prop) => {}): void => {
+    handleDelete = (instance: BaseModel, successCallBack?: (args) => {},
+            failureCallBack?: (args) => {}): void => {
         instance.$delete(true, {}, successCallBack, failureCallBack);
     };
 

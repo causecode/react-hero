@@ -31,6 +31,12 @@ export function configureStore(initialState): Store | IMockStore {
     return store;
 }
 
+/**
+ * Using any here because, type GenericStoreEnhancer is not available in
+ * typings v3.1.1. And, typings cannot be upgraded due to changed definition of compose(...)
+ * in latest typings.
+ * TODO : Figure out a way to add GenericStoreEnhancer as return type for _getMiddelware()
+ */
 function _getMiddleware(): any {
     let middleware = [
         promiseMiddleware,

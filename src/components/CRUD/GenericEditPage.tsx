@@ -11,13 +11,13 @@ export interface IGenericEditPageProps extends IInstancePageProps {
     location?: {pathname?: string};
     handleSubmit: (
         instance: BaseModel,
-        successCallBack?: ((prop) => {}),
-        failureCallBack?: ((prop) => {})
+        successCallBack?: ((args) => {}),
+        failureCallBack?: ((args) => {})
     ) => void;
     handleDelete?: (
         instance: BaseModel,
-        successCallBack?: ((prop) => {}),
-        failureCallBack?: ((prop) => {})
+        successCallBack?: ((args) => {}),
+        failureCallBack?: ((args) => {})
     ) => void;
     params: {resource: string};
     instance: BaseModel;
