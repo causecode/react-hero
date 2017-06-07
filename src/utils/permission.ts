@@ -1,5 +1,4 @@
 import {store} from '../store';
-import {LocationDescriptor} from '~react-router-redux~history/history';
 
 export interface INextState {
     location: {
@@ -36,29 +35,26 @@ export function hasAnyRole(roles: string[]): boolean {
     return false;
 }
 
-export function isAdmin(nextState: INextState, replace: (location: LocationDescriptor) => void): void {
+export function isAdmin(): boolean {
     if (!hasAnyRole(['ROLE_ADMIN'])) {
-        replace({
-            pathname: '/unauthorized',
-            state: {nextPathname: nextState.location.pathname},
-        });
+        return false;
     }
+
+    return true;
 }
 
-export function isCrmManager(nextState: INextState, replace: (location: LocationDescriptor) => void): void {
+export function isCrmManager(): boolean {
     if (!hasAnyRole(['ROLE_ADMIN', 'ROLE_CRM_MANAGER', 'ROLE_CRM_USER'])) {
-        replace({
-            pathname: '/unauthorized',
-            state: {nextPathname: nextState.location.pathname},
-        });
+        return false;
     }
+
+    return true;
 }
 
-export function isEmployee(nextState: INextState, replace: (location: LocationDescriptor) => void): void {
+export function isEmployee(): boolean {
     if (!hasAnyRole(['ROLE_EMPLOYEE', 'ROLE_EMPLOYEE_MANAGER', 'ROLE_CONTENT_MANAGER', 'ROLE_CRM_USER', 'ROLE_USER'])) {
-        replace({
-            pathname: '/unauthorized',
-            state: {nextPathname: nextState.location.pathname},
-        });
+        return false;
     }
+
+    return true;
 }

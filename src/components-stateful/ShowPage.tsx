@@ -1,19 +1,21 @@
 import * as React from 'react';
+import {RouteComponentProps} from 'react-router';
 import {DefaultModel, BaseModel} from '../models/BaseModel';
 import {ComponentService} from '../utils/componentService';
 const connect: any = require<any>('react-redux').connect;
 import {ModelService} from '../utils/modelService';
-import {IInstanceContainerProps, IFromJS} from '../interfaces';
+import {IInstanceContainerProps, IFromJS, IRouteParams} from '../interfaces';
 import {PAGE_NOT_FOUND} from '../constants';
 import {ErrorPage} from '../components/ErrorPage';
 import {store} from '../store';
 import {getResourceParams} from '../utils/appService';
 
-export class ShowPageImpl extends React.Component<IInstanceContainerProps, void> {
+export type ShowPageProps = IInstanceContainerProps & RouteComponentProps<IRouteParams>
+
+export class ShowPageImpl extends React.Component<ShowPageProps, void> {
 
     static defaultProps: IInstanceContainerProps = {
         instance: new DefaultModel({}),
-        params: {resource: '', resourceID: ''},
     };
 
     fetchInstanceData(resource: string , resourceID: string): void {
@@ -21,7 +23,7 @@ export class ShowPageImpl extends React.Component<IInstanceContainerProps, void>
     }
 
     componentWillMount(): void {
-        const {resource, resourceID} = this.props.params;
+        const {resource, resourceID} = this.props.match.params;
         this.fetchInstanceData(resource, resourceID);
     }
 
@@ -31,7 +33,7 @@ export class ShowPageImpl extends React.Component<IInstanceContainerProps, void>
                 <ErrorPage message={PAGE_NOT_FOUND} />
             );
         }
-        const resource: string = this.props.params.resource;
+        const resource: string = this.props.match.params.resource;
         const childProps = {instance: this.props.instance, resource: resource};
         let Page: React.ComponentClass<void> = ComponentService.getShowPage(resource) as React.ComponentClass<void>;
         return (
@@ -40,18 +42,18 @@ export class ShowPageImpl extends React.Component<IInstanceContainerProps, void>
     }
 }
 
-function mapStateToProps(state: IFromJS, ownProps: IInstanceContainerProps): {instance: BaseModel} {
-    let {params} = ownProps;
+function mapStateToProps(state: IFromJS, ownProps: ShowPageProps): {instance: BaseModel} {
+    let {location, match} = ownProps;
 
-    if (!params.resource && window.location.pathname) {
+    if (!match.params.resource && location.pathname) {
         let ownPropsParams:
-                {resource: string, resourceID: string} = getResourceParams(window.location.pathname);
-        params.resource = ownPropsParams.resource;
-        params.resourceID = ownPropsParams.resourceID;
+                {resource: string, resourceID: string} = getResourceParams(location.pathname);
+        match.params.resource = ownPropsParams.resource;
+        match.params.resourceID = ownPropsParams.resourceID;
     }
 
-    let instance: BaseModel = ModelService.getModel(ownProps.params.resource)
-            .get<BaseModel>(ownProps.params.resourceID, true, {}, () => {}, () => {}, state, null);
+    let instance: BaseModel = ModelService.getModel(match.params.resource)
+            .get<BaseModel>(match.params.resourceID, true, {}, () => {}, () => {}, state, null);
     return {
         instance,
     };

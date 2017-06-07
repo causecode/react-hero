@@ -2,7 +2,6 @@ import {Store, compose, createStore, applyMiddleware} from 'redux';
 import {rootReducer} from './../reducers/rootReducer';
 import {promiseMiddleware} from '../middleware/promiseMiddleware';
 import logger from './logger';
-import {getEnvironment} from '../utils/appService';
 const thunk = require<any>('redux-thunk').default;
 const configureMockStore: Function = require<{default: any}>('redux-mock-store').default;
 
@@ -12,7 +11,6 @@ const configureMockStore: Function = require<{default: any}>('redux-mock-store')
 export interface IMockStore extends Store {
     getState(): any;
     getActions(): Array<any>;
-    dispatch(action: any): any;
     clearActions(): void;
     subscribe(): any;
 }
@@ -33,7 +31,13 @@ export function configureStore(initialState): Store | IMockStore {
     return store;
 }
 
-function _getMiddleware(): Function {
+/**
+ * Using any here because, type GenericStoreEnhancer is not available in
+ * typings v3.1.1. And, typings cannot be upgraded due to changed definition of compose(...)
+ * in latest typings.
+ * TODO : Figure out a way to add GenericStoreEnhancer as return type for _getMiddelware()
+ */
+function _getMiddleware(): any {
     let middleware = [
         promiseMiddleware,
         thunk,

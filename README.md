@@ -1,4 +1,4 @@
-# React Hero (v1.0.7)
+# React Hero (v1.0.8)
 
 Plugin provides utility directives and services.
 
@@ -111,7 +111,7 @@ eg:
     - A default app directrory: `src/default/yourComponentPath`
     - A themed app directory: `src/yourThemeName/yourComponentPath`
     - The theme name should be present in the redux store before the app is rendered. The structure of the store should be:
-    
+
        ```
        state: {
 	          theme: yourThemeName
@@ -121,9 +121,9 @@ eg:
 
     -  `componentPath` : The path of the component from your theme directory.
     -  `componentName` : The component name to be rendered. A component file can have multiple exported modules. Therefore, this parameter is needed
- 
+
  - Usage:
- 
+
    ```
    const ThemedComponent = getThemedComponent('Test/HomePage', 'HomePage')
 
@@ -133,7 +133,7 @@ eg:
        </Router>
    );
    ```
-   
+
 - If the theme name or the `ThemedComponent` is not found, the component from the `default` directory will get rendered.
 
 ### 4 HTTP requests
@@ -146,18 +146,18 @@ eg:
         "APIUrl": "http://example.com/api/version"
     },
     ```
-    
+
  - `APIUrl` is prefixed to the path provided with every request via `HTTP` module. If the `APIUrl` is not found, `serverUrl` is used.
  - API:
- 
+
      | Function name   | Parameters                                                                                                                                                   |
      |-----------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------|
      |  `postRequest`  |  `path`: The path of the server endpoint. <br/><br/> `headers`(optional): Headers to sent with the request.<br/><br/>  `data`(optional): Data to be sent as the request body     |
      |   `getRequest`  |  `path`: The path of the server endpoint.<br/><br/>  `headers`(optional): Headers to sent with the request.<br/><br/>  `data`(optional): Data to be sent as the query parameters |
      |   `putRequest`  |  `path`: The path of the server endpoint.<br/><br/>  `headers`(optional): Headers to sent with the request.<br/><br/>  `data`(optional): Data to be sent as the request body     |
      | `deleteRequest` |  `path`: The path of the server endpoint.<br/><br/>  `headers`(optional): Headers to sent with the request.                                                            |
-    
-    
+
+
 ### 5 BaseModel
 
 - __resourceName__: String
@@ -175,12 +175,12 @@ eg:
             lastname: ModelPropTypes.STRING()
         };
         ```
-        
+
 - __defaultProps__: { [any]: any }
 
     - `defaultProps` specifies the default value for each of the `propTypes`
     - These default values will be present in the inputs of the create page form.
-    - Example: 
+    - Example:
 
 		```
         static defaultProps = {
@@ -202,7 +202,7 @@ eg:
         	'firstname',
         ];
         ```
-        
+
      - With the above example only two columns (*Id* and the *Firstname*) will be generated in the table.
 
 - __list__
@@ -217,7 +217,7 @@ eg:
         | headers | Yes | {} | HTTP request headers. |
         | successCallBack | Yes | () => {} | Operation to be performed when the list is fetched successfully. |
         | failureCallBack | Yes | () => {} | Operation to be performed if any error occurred while fetching the list. |
-        | path | Yes | resourceName | The server path from where the list is to be fetched. 
+        | path | Yes | resourceName | The server path from where the list is to be fetched.
 
 - __get__
 
@@ -232,7 +232,7 @@ eg:
         | headers | Yes | {} | HTTP request headers. |
         | successCallBack | Yes | () => {} | Operation to be performed when the data is fetched successfully. |
         | failureCallBack | Yes | () => {} | Operation to be performed if any error occurred while fetching the data. |
-       
+
 - __$save__
 
 	- It sends a POST request to the server for creating a new instance.
@@ -245,12 +245,12 @@ eg:
         | successCallBack | Yes | () => {} | Operation to be performed when data saved successfully. |
         | failureCallBack | Yes | () => {} | Operation to be performed if any error occurred while saving the data. |
         | path | Yes | resourceName | The server URL to which the POST request is to be made. |
-        
+
 - __$update__
 
 	- This function is used to modify the data of an existing instance.
 	- Prameters:
-	
+
 		| Name | Optional | Default value | Description |
         |-----------------|----------|-----------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
         | flush | Yes | true | If *true* then dispatch an action which sends the PUT request to the server and save the instance in the store.<br/><br/> If *false* then update the instance data only in the redux store. |
@@ -258,7 +258,7 @@ eg:
         | successCallBack | Yes | () => {} | Operation to be performed when the instance is updated successfully. |
         | failureCallBack | Yes | () => {} | Operation to be performed if any error occurred while updating the instance. |
         | path | Yes | resourceName/id | The server URL to which the PUT request is to be made. |
-        
+
 - __$delete__
 
 	- Parameters
@@ -270,8 +270,8 @@ eg:
         | successCallBack | Yes | () => {} | Operation to be performed when the instance is deleted successfully. |
         | failureCallBack | Yes | () => {} | Operation to be performed if any error occurred while deleting the instance. |
         | path | Yes | resourceName/id | The server URL to which the DELETE request is to be made. |
-		
-        
+
+
 ### 6 CRUD CLI
 
 - Available commands:
@@ -280,14 +280,14 @@ eg:
 		- `npm run RH-generate-list`
 		- `npm run RH-generate-create`
 
-- Flags: 
-		
+- Flags:
+
      | Flag | Required for pages | Description |
      |-------------|--------------------|------------------------------------------------------------------------------------|
      | --modelPath | All  | Relative path of the model from the `src` directory. |
      | --modelName | All | The resource name provided in the model. |
      | --onCancel | Create, Show | The route to open when the Cancel button is clicked in the edit and the show page. |
-       
+
 - Example:
 
   ```
@@ -300,14 +300,14 @@ eg:
 
 	* It creates a drop-down input with the possible values provided in the prop.
 	* Props:
-		
+
         | Name | Type | Description |
         |----------------|----------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------|
         | label | String | Name or the label for the input box. If  `label` is not provided, `paramName` will be used  |
         | paramName | String | The request will be sent to the server with this key. |
         | possibleValues | {value: string, label: string}[] | The `label` will get rendered in the list and the `value` will be assigned to the key `${paramName}` while sending the request to the server. |
-        
-    * Example: 
+
+    * Example:
 
 		```
         <DropDownFilter
@@ -319,7 +319,7 @@ eg:
             ]}
         />
         ```
-        
+
 - __QueryFilter__
 
 	* It filters out the list based on the string provided as input.
@@ -330,7 +330,7 @@ eg:
         | label | String | Name or the label for the input box. If  `label` is not provided, `paramName` will be used |
         | paramName | String | The request will be sent to the server with this key. |
         | placeholder | String | The placeholder for the input box. |
-       
+
 	* Example:
 
         ```
@@ -348,8 +348,8 @@ eg:
 		| Name | Type | Description |
         |-----------|--------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
         | label | String | Name or the label for the input boxes. If  `label` is not provided, `paramName` will be used. <br/> Two input box would be generated with the labels: `${label}From` and `${label}To` |
-        | paramName | String | The key with which the request is to be made to the server. |        
-        
+        | paramName | String | The key with which the request is to be made to the server. |
+
     * This is a generic filter used for filtering out the list for given range. For example: if we want to view the product list for a given price range:
 
 		```
@@ -359,7 +359,7 @@ eg:
         />
         ```
         On submit, the request will be sent to the server with the query: `example.com?priceFrom=1000&priceTo=5000`.
-        
+
 - __DateRangeFilter__
 
 	* The props and the functionality of this filter is same as that of the __RangeFilter__. Except in this case, the date selector input is rendered.
@@ -376,7 +376,7 @@ eg:
 - __AutocompleteQueryFilter__
 
 	* This is essentially a query filter with autocomplete functionality. When you start typing, it will compare the input text with the data list and render the matched items as a drop-down list.
-	* Props: 
+	* Props:
 
 		| Name | Type | Description |
         |-------------|----------------------------------|----------------------------------------------------------------------|
@@ -399,9 +399,9 @@ eg:
             onInputChange={this.handleInputChange}
         />
         ```
-        
+
         Whenever the user start typing in the input, `handleInputChange` is executed. In this function a request is made to the server with the the input data. The response is then saved to the `selectOptions`.
-        
+
         ```
         handleInputChange = (value: string): void => {
         	HTTP.getRequest(`action/autocomplete`, {}, {query: value})
@@ -413,7 +413,7 @@ eg:
 
 ### 8 PagedList
 
- * This component is responsible for rendering the table and the filters in the listing pages. 
+ * This component is responsible for rendering the table and the filters in the listing pages.
  * Props:
 
 	| Name | Type | Default value | Description |
@@ -424,11 +424,11 @@ eg:
     | showDefaultAction | Boolean | true | If __true__, a column is added to the table which contains actions to view, edit and delete the record. <br/><br/> If __false__, the default actions will not be rendered. |
     | customAction | React.ReactNode |  | `customAction` overrides the default actions in the listing page. It can be a JSX.Element, a function or a class.  |
     | userActionMap | {label: string, action: Function}[] |  | This prop is used for the bulk operations (eg: exporting the records to csv or deleting multiple records at once) to be performed on the list.<br/> The `label` is the text which will be rendered in the drop-down menu. When an item selected from the drop-down, the `action` is executed. |
-    
+
    * Example:
 
 		```
-        <PagedList 
+        <PagedList
             resource="demo"
             max={15}
             userActionMap={[
@@ -450,14 +450,14 @@ eg:
                 />
         </PagedList>
         ```
-        
+
         In the above example, following function will be executed when the user selects `Delete Records` from the drop-down.
         ```
         this.handleDelete = () => {
         	//perform operations to delete.
         }
         ```
-        
+
         In this case, the custom action is a class:
         ```
         class TestAction extends React.Component<{instance: any}, void> {

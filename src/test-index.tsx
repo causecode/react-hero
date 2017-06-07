@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Router, Route, hashHistory} from 'react-router';
+import {BrowserRouter, Route} from 'react-router-dom';
 import {ComponentService} from './utils/componentService';
 import {ModelService} from './utils/modelService';
 import {Provider} from 'react-redux';
@@ -12,9 +12,9 @@ ComponentService.registerAll();
 
 render(
     <Provider store={store}>
-        <Router history={hashHistory}>
-            <Route path="*" component={NewPage} />
-        </Router>
+        <BrowserRouter>
+            <Route path="/" component={NewPage} />
+        </BrowserRouter>
     </Provider>,
     document.getElementsByClassName('main-container')[0]
 );

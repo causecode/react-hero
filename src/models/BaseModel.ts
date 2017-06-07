@@ -261,7 +261,7 @@ function getPromiseAction(
     headers: Object = {},
     successCallBack: Function,
     failureCallBack: Function
-) {
+): any {
     return () =>
         (dispatch) => {
             return dispatch({
