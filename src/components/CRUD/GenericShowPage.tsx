@@ -8,7 +8,7 @@ import {isEmpty} from '../../utils/appService';
 // TODO handle how dates are displayed.
 export class GenericShowPage extends React.Component<IInstancePageProps, void> {
     static defaultProps: IInstancePageProps = {
-        instance: new DefaultModel({})
+        instance: new DefaultModel({}),
     };
 
     render(): JSX.Element {
