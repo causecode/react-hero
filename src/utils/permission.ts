@@ -1,5 +1,4 @@
 import {store} from '../store';
-import {LocationDescriptor} from 'history';
 
 export interface INextState {
     location: {
