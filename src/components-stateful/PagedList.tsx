@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {ComponentClass} from 'react';
 import {Pagination} from 'react-bootstrap';
-import {Link} from 'react-router';
+import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {BaseModel} from '../models/BaseModel';
 import {setPage} from '../actions/modelActions';

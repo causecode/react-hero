@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Grid, Col, FormGroup, Button} from 'react-bootstrap';
-import {Link} from 'react-router';
+import {Link} from 'react-router-dom';
 import {IInstancePageProps} from '../../interfaces';
 import {BaseModel, DefaultModel} from '../../models/BaseModel';
 import {generateForm, getModelString, isEmpty} from '../../utils/appService';
@@ -10,14 +10,14 @@ const {Form} = require<any>('react-redux-form');
 export interface IGenericEditPageProps extends IInstancePageProps {
     location?: {pathname?: string};
     handleSubmit: (
-        instance: BaseModel, 
-        successCallBack?: ((any) => {}), 
-        failureCallBack?: ((any) => {})
+        instance: BaseModel,
+        successCallBack?: ((args) => {}),
+        failureCallBack?: ((args) => {})
     ) => void;
     handleDelete?: (
-        instance: BaseModel, 
-        successCallBack?: ((any) => {}), 
-        failureCallBack?: ((any) => {})
+        instance: BaseModel,
+        successCallBack?: ((args) => {}),
+        failureCallBack?: ((args) => {})
     ) => void;
     params: {resource: string};
     instance: BaseModel;
@@ -29,7 +29,7 @@ export class GenericEditPage extends React.Component<IGenericEditPageProps, void
         handleSubmit: (instance: BaseModel): void => {},
         params: {resource: ''},
         instance: new DefaultModel({}),
-        isCreatePage: false
+        isCreatePage: false,
     };
 
     getResource(): string {
@@ -39,7 +39,7 @@ export class GenericEditPage extends React.Component<IGenericEditPageProps, void
     fetchStoreInstance = (): BaseModel => {
         let instance: BaseModel = this.props.instance;
         let instanceKey = this.props.isCreatePage ? `${instance.resourceName}Create` : `${instance.resourceName}Edit`;
-        instance.properties = store.getState().forms[`rhForms`][instanceKey].properties; 
+        instance.properties = store.getState().forms[`rhForms`][instanceKey].properties;
         return instance;
     }
 
@@ -50,7 +50,7 @@ export class GenericEditPage extends React.Component<IGenericEditPageProps, void
 
     handleDelete = (): void => {
         if (this.props.handleDelete && this.props.handleDelete instanceof Function) {
-            this.props.handleDelete(this.fetchStoreInstance(), (): any => {}, (): any => {}); 
+            this.props.handleDelete(this.fetchStoreInstance(), (): any => {}, (): any => {});
         }
     }
 
@@ -83,7 +83,7 @@ export class GenericEditPage extends React.Component<IGenericEditPageProps, void
                                         );
                                     }
                                 })()}
-                            <Link className="btn btn-default" to={`${this.getResource()}/list`}>Cancel</Link>
+                            <Link className="btn btn-default" to={`/${this.getResource()}/list`}>Cancel</Link>
                         </Col>
                     </FormGroup>
                 </Grid>

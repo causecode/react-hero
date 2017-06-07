@@ -1,33 +1,34 @@
 import * as React from 'react';
+import {Switch, Route, Link} from 'react-router-dom';
 import {Title, Description, Content, ButtonList, ButtonListItem} from '../components/Widgets/Widgets';
-import {HeaderView, FooterView, ContentView, NavigationMenu} from './../components/HeaderFooterLayout';
-import {Router, Route, Link} from 'react-router';
-import {HeaderFooterLayout} from './../components/HeaderFooterLayout';
-import {ResponsiveView} from './../components/ResponsiveView';
-import {hashHistory} from 'react-router';
+import {HeaderView, FooterView, ContentView, NavigationMenu} from '../components/HeaderFooterLayout';
+import {HeaderFooterLayout} from '../components/HeaderFooterLayout';
+import {ResponsiveView} from '../components/ResponsiveView';
 import {ListPage} from '../components-stateful/ListPage';
-import {ShowPage} from './../components-stateful/ShowPage';
-import {EditPage} from './../components-stateful/EditPage';
+import {ShowPage} from '../components-stateful/ShowPage';
+import {EditPage} from '../components-stateful/EditPage';
+import {ErrorPage} from '../components/ErrorPage';
+import {PAGE_NOT_FOUND} from '../constants';
 require<void>('../init');
 
 const headerFooterLayoutStyles = {
         header: {
-            padding: 'none'
+            padding: 'none',
         },
         nav: {
-            padding: 'none'
+            padding: 'none',
         },
         content: {
-            color: '#888'
+            color: '#888',
         },
         footer: {
             backgroundColor: '#888',
             fontSize: '15px',
-            color: 'white'
+            color: 'white',
         },
         navIcon: {
-            color: '#777'
-        }
+            color: '#777',
+        },
 };
 
 export class NewPage extends React.Component<void, void> {
@@ -48,15 +49,16 @@ export class NewPage extends React.Component<void, void> {
                 </Content>
             </HeaderView>
             <ContentView>
-                <Router history={hashHistory}>
-                    <Route path="/" component={HomeContent}/>
+                <Switch>
+                    <Route exact path="/" component={HomeContent}/>
                     <Route path="/page2" component={Page2Content}/>
                     <Route path="/resp" component={ContentImpl}/>
                     <Route path="/:resource/list" component={ListPage}/>
                     <Route path="/:resource/create" component={EditPage}/>
                     <Route path="/:resource/show/:resourceID" component={ShowPage} />
                     <Route path="/:resource/edit/:resourceID" component={EditPage} />
-                </Router>
+                    <Route render={() => <ErrorPage message={PAGE_NOT_FOUND}/>} />
+                </Switch>
             </ContentView>
             <FooterView>my footer</FooterView>
             <NavigationMenu>

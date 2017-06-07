@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as Radium from 'radium';
-import {Link} from 'react-router';
+import {Link} from 'react-router-dom';
 import {Table, Tooltip, OverlayTrigger} from 'react-bootstrap';
 import {MapStateToProps, MapDispatchToPropsFunction, connect} from 'react-redux';
 import {IState} from './BulkUserActions';

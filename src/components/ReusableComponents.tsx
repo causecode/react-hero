@@ -1,6 +1,5 @@
 import * as Bootstrap from 'react-bootstrap';
 import * as Radium from 'radium';
-import * as Router from 'react-router';
 const ReactFontAwesome = require<any>('react-fontawesome');
 
 export const Pagination = Radium(Bootstrap.Pagination);
@@ -8,7 +7,6 @@ export const Grid = Radium(Bootstrap.Grid);
 export const Row = Radium(Bootstrap.Row);
 export const Col = Radium(Bootstrap.Col);
 export const FontAwesome = Radium(ReactFontAwesome);
-export const Link = Radium(Router.Link);
 export const Alert = Radium(Bootstrap.Alert);
 export const Button = Radium(Bootstrap.Button);
 export const FormControl = Radium(Bootstrap.FormControl);

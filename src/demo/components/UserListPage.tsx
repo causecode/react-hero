@@ -4,7 +4,7 @@ import {PagedList} from '../../components-stateful/PagedList';
 import {RangeFilter} from '../../components/PagedList/Filters/RangeFilter';
 import {DateRangeFilter} from '../../components/PagedList/Filters/DateRangeFilter';
 import {QueryFilter} from '../../components/PagedList/Filters/QueryFilter';
-import {Link} from 'react-router';
+import {Link} from 'react-router-dom';
 
 export interface IUser {
     age: string;
@@ -15,7 +15,7 @@ export interface IUser {
 
 export class UserListPage extends React.Component<{resource: any}, any> {
     static resourceName: string = 'user';
-    
+
     renderCustomAction = (instance: IUser): JSX.Element => {
         return (
             <button>testAction</button>
@@ -26,7 +26,7 @@ export class UserListPage extends React.Component<{resource: any}, any> {
         return (
             <div>
                 <h1 style={{background : '#eea303'}}>This is my user list page</h1>
-                <PagedList 
+                <PagedList
                         resource={this.props.resource}
                         max={10}
                         customActions={TestAction}>
@@ -36,7 +36,7 @@ export class UserListPage extends React.Component<{resource: any}, any> {
                             possibleValues = {[
                                 {label: 'Enable', value: 'enable'},
                                 {label: 'Disable', value: 'disable'},
-                                {label: 'Inactive', value: 'inactive'}
+                                {label: 'Inactive', value: 'inactive'},
                             ]}
                     />
                     <RangeFilter
@@ -53,7 +53,7 @@ export class UserListPage extends React.Component<{resource: any}, any> {
                             possibleValues = {[
                                 {label: 'Zoo', value: 'zoo'},
                                 {label: 'Jungle', value: 'jungle'},
-                                {label: 'Forest', value: 'forest'}
+                                {label: 'Forest', value: 'forest'},
                             ]}
                     />
                     <QueryFilter
