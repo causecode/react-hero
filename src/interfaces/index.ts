@@ -144,3 +144,10 @@ export interface IAlertAction {
 export interface IDispatchProps {
     saveData?: (model: string, value: any) => void;
 }
+
+export interface IPagedListStyle {
+    searchButton?: React.CSSProperties;
+    headerStyle?: React.CSSProperties;
+    rowStyle?: React.CSSProperties;
+    dataStyle?: React.CSSProperties;
+}

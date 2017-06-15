@@ -5,7 +5,7 @@ import {Table, Tooltip, OverlayTrigger} from 'react-bootstrap';
 import {MapStateToProps, MapDispatchToPropsFunction, connect} from 'react-redux';
 import {IState} from './BulkUserActions';
 import {BaseModel} from '../../models/BaseModel';
-import {CustomActionType, CSS} from '../../interfaces';
+import {CustomActionType, CSS, IPagedListStyle} from '../../interfaces';
 import {getInnerData, getActionComponent} from '../../utils/appService';
 import {selectAllRecords, toggleCheckbox} from '../../actions/checkboxActions';
 import {SELECT_ALL_RECORDS, SELECT_ALL_RECORDS_ON_PAGE, CHECK_CHECKBOX, UNCHECK_CHECKBOX} from '../../constants';
@@ -34,11 +34,7 @@ export interface IDataGridProps extends IDataGridStateProps, IDataGridDispatchPr
     handleRecordDelete?: Function;
     showDefaultActions?: boolean;
     customActions?: CustomActionType;
-    style?: {
-        tdStyle: CSS,
-        thStyle: CSS,
-        trStyle: CSS,
-    };
+    style?: IPagedListStyle;
     isBordered: boolean;
 }
 
@@ -114,15 +110,15 @@ export class DataGridImpl extends React.Component<IDataGridProps, void> {
         let style = this.props.style;
 
         return (
-            <tr style={style.trStyle}>
-                <th style={style.thStyle}>
+            <tr style={style.rowStyle}>
+                <th style={style.headerStyle}>
                     <input
                             type="checkbox"
                             onChange={this.handleChange.bind(this, -2)}
                             checked={this.props.selectAll}
                     />
                 </th>
-                <td colSpan={this.properties.length + 2} style={style.tdStyle}>
+                <td colSpan={this.properties.length + 2} style={style.dataStyle}>
                     All <strong>{this.props.instanceList.length}</strong> records visible on this page are selected.
                     Click to select all <strong>{this.props.totalCount}</strong> records.
                 </td>
@@ -143,31 +139,31 @@ export class DataGridImpl extends React.Component<IDataGridProps, void> {
 
         if (CustomAction && typeof CustomAction === 'function') {
             return (
-                <td style={style.tdStyle}><CustomAction instance={instance} /></td>
+                <td style={style.dataStyle}><CustomAction instance={instance} /></td>
             );
         }
 
         if (CustomAction && typeof CustomAction === 'object') {
-            return <td style={style.tdStyle}>{React.cloneElement(CustomAction, {instance: instance})}</td>;
+            return <td style={style.dataStyle}>{React.cloneElement(CustomAction, {instance: instance})}</td>;
         }
 
         if (ActionComponent && React.isValidElement(<ActionComponent/>)) {
-            return <td style={style.tdStyle}><ActionComponent instance={instance}/></td>;
+            return <td style={style.dataStyle}><ActionComponent instance={instance}/></td>;
         }
 
         if (showDefaultActions) {
             return (
                 <td>
-                    <Link style={style.tdStyle} to={`/${this.resource}/edit/${instance.id}`}>
+                    <Link style={style.dataStyle} to={`/${this.resource}/edit/${instance.id}`}>
                         <RadiumFontAwesome name="pencil" />
                     </Link>
-                    <Link style={style.tdStyle} to={`/${this.resource}/show/${instance.id}`}>
+                    <Link style={style.dataStyle} to={`/${this.resource}/show/${instance.id}`}>
                         <RadiumFontAwesome name="location-arrow" />
                     </Link>
                     <OverlayTrigger placement="top" overlay={tooltip}>
                         <a
                                 onClick={handleRecordDelete && handleRecordDelete.bind(this, instance.id)}
-                                style={style.tdStyle}
+                                style={style.dataStyle || trashIconStyle}
                                 id={`delete${instance.id}`}>
                             <RadiumFontAwesome name="trash-o" />
                         </a>
@@ -186,8 +182,8 @@ export class DataGridImpl extends React.Component<IDataGridProps, void> {
         }
 
         return (
-            <tr style={style.trStyle} id="totalCount">
-                <td style={style.tdStyle} colSpan={this.properties.length + 3}>
+            <tr style={style.rowStyle} id="totalCount">
+                <td style={style.dataStyle} colSpan={this.properties.length + 3}>
                     Showing <strong>{offset + 1} - {(totalCount <= offset + max) ? totalCount : offset + max}</strong>
                     &nbsp;of <strong>{totalCount}</strong>
                 </td>
@@ -219,8 +215,8 @@ export class DataGridImpl extends React.Component<IDataGridProps, void> {
                 <Table responsive striped bordered={isBordered} hover>
                     <thead>
                         {this.props.selectAllOnPage ? this.renderSelectAllRecordsCheckbox() : null}
-                        <tr style={style.trStyle} className="data-grid-header">
-                            <th style={style.thStyle}>
+                        <tr style={style.rowStyle} className="data-grid-header">
+                            <th style={style.headerStyle}>
                                 <input
                                         type="checkbox"
                                         checked={this.props.selectAllOnPage &&
@@ -228,29 +224,29 @@ export class DataGridImpl extends React.Component<IDataGridProps, void> {
                                         onChange={this.handleChange.bind(this, -1)}
                                 />
                             </th>
-                            <th style={style.thStyle}>#</th>
+                            <th style={style.headerStyle}>#</th>
                             {this.properties.map((property: string, index: number) => {
-                                return (<th style={style.thStyle} key={index}>{property.capitalize()}</th>);
+                                return (<th style={style.headerStyle} key={index}>{property.capitalize()}</th>);
                             })}
-                            {showDefaultActions || customActions ? <th style={style.thStyle}>Actions</th> : null}
+                            {showDefaultActions || customActions ? <th style={style.headerStyle}>Actions</th> : null}
                         </tr>
                     </thead>
                     <tbody>
                         {this.props.instanceList.map((instance, index) => {
                             let instanceProperties = instance.properties;
                             return (
-                                <tr style={style.trStyle} key={index} className="data-grid-row">
-                                    <td style={style.tdStyle}>
+                                <tr style={style.rowStyle} key={index} className="data-grid-row">
+                                    <td style={style.dataStyle}>
                                         <input
                                                 type="checkbox"
                                                 checked={this.props.selectedIds &&
                                                         this.props.selectedIds.indexOf(instanceProperties.id) !== -1}
                                                 onChange={this.handleChange.bind(this, instanceProperties.id)}/>
                                     </td>
-                                    <td style={style.tdStyle}>{listIndex++}</td>
+                                    <td style={style.dataStyle}>{listIndex++}</td>
                                     {this.properties.map((property: string, key: number) => {
                                         return (
-                                            <td style={style.tdStyle} key={`property-${key}`}>
+                                            <td style={style.dataStyle} key={`property-${key}`}>
                                                 {this.getInnerHtml(property, instance, instanceProperties)}
                                             </td>
                                         );
@@ -296,3 +292,9 @@ let mapDispatchToProps: MapDispatchToPropsFunction<IDataGridDispatchProps, IData
 let DataGrid: React.ComponentClass<IDataGridProps> = connect(mapStateToProps, mapDispatchToProps)(DataGridImpl);
 
 export {DataGrid};
+
+const trashIconStyle: CSS = {
+    color: '#337ab7',
+    cursor: 'pointer',
+    textDecoration: 'none',
+};
