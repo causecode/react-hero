@@ -1,4 +1,4 @@
-# React Hero (v1.0.8)
+# React Hero (v1.0.9)
 
 Plugin provides utility directives and services.
 
