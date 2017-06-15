@@ -12,10 +12,15 @@ import {QueryFilter} from '../components/PagedList/Filters/QueryFilter';
 import {DataGrid, IDataGridProps} from '../components/PagedList/DataGrid';
 import {PagedListFilters} from '../components/PagedList/Filters/PagedListFilter';
 import {IOuterFilterProps, createOuterFilterForm} from '../components/PagedList/Filters/OuterFilter';
-import {IBulkUserActionType, IPagedListFiltersProps, IDispatch, CustomActionType, CSS} from '../interfaces';
 import '../utils/appService';
 const objectAssign = require<any>('object-assign');
 const FontAwesome = require<any>('react-fontawesome');
+import {
+    IBulkUserActionType,
+    IPagedListFiltersProps,
+    IDispatch, CustomActionType,
+    IPagedListStyle,
+} from '../interfaces';
 
 export interface IPagedListDispatchProps {
     setPage?: (pageNumber: number, resource: string) => void;
@@ -54,12 +59,7 @@ export interface IPagedListProps extends IPagedListStateProps, IPagedListDispatc
     fetchInstanceList?: (resource: string, ...args: any[]) => void;
     successCallBack?: () => void;
     failureCallBack?: () => void;
-    style?: {
-        searchButton: CSS,
-        thStyle: CSS,
-        tdStyle: CSS,
-        trStyle: CSS,
-    }
+    style?: IPagedListStyle;
     isBordered?: boolean;
 }
 
@@ -96,9 +96,9 @@ export class PagedListImpl extends React.Component<IPagedListProps, void> {
         setPage: (pageNumber: number) => { return; },
         style: {
             searchButton: {},
-            thStyle: {},
-            tdStyle: {},
-            trStyle: {},
+            headerStyle: {},
+            dataStyle: {},
+            rowStyle: {},
         },
         isBordered: true,
     };
