@@ -14,15 +14,12 @@
     "react-dom": "registry:dt/react-dom#0.14.0+20160412154040",
     "react-fontawesome": "registry:dt/react-fontawesome#1.1.0+20170123203653",
     "react-motion": "registry:dt/react-motion#0.0.0+20160406115320",
-    "react-redux": "registry:dt/react-redux#4.4.0+20160501125835",
     "react-router": "registry:dt/react-router#4.0.0+20170323201651",
-    "react-router-dom": "registry:dt/react-router-dom#4.0.0+20170323201651",
     "redux": "registry:dt/redux#3.3.1+20160326112656",
     "underscore": "registry:dt/underscore#1.8.3+20160908111004"
   },
   "dependencies": {
     "enzyme": "registry:npm/enzyme#2.2.0+20160322031343",
-    "history": "registry:npm/history#2.0.0+20160607172317",
     "react-router-redux": "registry:npm/react-router-redux#4.0.0+20160602212457",
     "react-select": "registry:npm/react-select#1.0.0+20160723033700"
   }

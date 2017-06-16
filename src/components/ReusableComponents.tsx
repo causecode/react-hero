@@ -20,7 +20,11 @@ export const Checkbox = Radium(Bootstrap.Checkbox);
 export const Tabs = Radium(Bootstrap.Tabs);
 export const Tab = Radium(Bootstrap.Tab);
 export const Radio = Radium(Bootstrap.Radio);
-export const Input = Radium(Bootstrap.Input);
+/**
+ * Using any here to avoid an error occured due different versions of type definitions
+ * TODO: Remove any after porting react-hero to new boilerplate
+ */
+export const InputGroup: any = Radium(Bootstrap.InputGroup);
 export const Label = Radium(Bootstrap.Label);
 export const Well = Radium(Bootstrap.Well);
 export const Table = Radium(Bootstrap.Table);
