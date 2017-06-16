@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {ComponentClass} from 'react';
 import {Pagination} from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
@@ -13,10 +12,15 @@ import {QueryFilter} from '../components/PagedList/Filters/QueryFilter';
 import {DataGrid, IDataGridProps} from '../components/PagedList/DataGrid';
 import {PagedListFilters} from '../components/PagedList/Filters/PagedListFilter';
 import {IOuterFilterProps, createOuterFilterForm} from '../components/PagedList/Filters/OuterFilter';
-import {IBulkUserActionType, IPagedListFiltersProps, IDispatch, CustomActionType} from '../interfaces';
 import '../utils/appService';
 const objectAssign = require<any>('object-assign');
 const FontAwesome = require<any>('react-fontawesome');
+import {
+    IBulkUserActionType,
+    IPagedListFiltersProps,
+    IDispatch, CustomActionType,
+    IPagedListStyle,
+} from '../interfaces';
 
 export interface IPagedListDispatchProps {
     setPage?: (pageNumber: number, resource: string) => void;
@@ -55,6 +59,8 @@ export interface IPagedListProps extends IPagedListStateProps, IPagedListDispatc
     fetchInstanceList?: (resource: string, ...args: any[]) => void;
     successCallBack?: () => void;
     failureCallBack?: () => void;
+    style?: IPagedListStyle;
+    isBordered?: boolean;
 }
 
 let OuterFilter: React.ComponentClass<IOuterFilterProps>;
@@ -88,6 +94,13 @@ export class PagedListImpl extends React.Component<IPagedListProps, void> {
         activePage: 1,
         instanceList: [],
         setPage: (pageNumber: number) => { return; },
+        style: {
+            searchButton: {},
+            headerStyle: {},
+            dataStyle: {},
+            rowStyle: {},
+        },
+        isBordered: true,
     };
 
     componentWillMount(): void {
@@ -161,6 +174,8 @@ export class PagedListImpl extends React.Component<IPagedListProps, void> {
                         totalCount={this.props.totalCount}
                         showDefaultActions={this.props.showDefaultActions}
                         customActions={this.props.customActions}
+                        style={this.props.style}
+                        isBordered={this.props.isBordered}
                 />
             );
         }
@@ -175,6 +190,8 @@ export class PagedListImpl extends React.Component<IPagedListProps, void> {
                         properties={this.props.properties}
                         handleRecordDelete={this.props.handleRecordDelete}
                         totalCount={this.props.totalCount}
+                        style={this.props.style}
+                        isBordered={this.props.isBordered}
                 />
             );
         }
@@ -183,7 +200,7 @@ export class PagedListImpl extends React.Component<IPagedListProps, void> {
     }
 
     render(): JSX.Element {
-        let activePage: number = this.props.activePage;
+        let {activePage, style} = this.props;
         let numberOfPages: number = this.props.max ? Math.ceil(this.props.totalCount / this.props.max) : 1;
         return (
             <div>
@@ -197,7 +214,7 @@ export class PagedListImpl extends React.Component<IPagedListProps, void> {
                 }
 
                 <div>
-                    <OuterFilter resource={this.props.resource}>
+                    <OuterFilter style={style.searchButton} resource={this.props.resource}>
                         <QueryFilter placeholder="Search" paramName="query" label="Search"/>
                     </OuterFilter>
                 </div>
