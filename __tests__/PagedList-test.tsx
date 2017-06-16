@@ -3,7 +3,7 @@ jest.mock('../src/utils/appService');
 
 import * as React from 'react';
 import {fromJS} from 'immutable';
-import {Link} from 'react-router';
+import {Link} from 'react-router-dom';
 import {Provider} from 'react-redux';
 import {Pagination} from 'react-bootstrap';
 import {ShallowWrapper, shallow, ReactWrapper, mount} from 'enzyme';
@@ -136,6 +136,7 @@ describe('Test cases for PagedList', (): void => {
         <DataGrid
                 properties={null}
                 instanceList={null}
+                isBordered={true}
         >
             <b>Custom DataGrid</b>
         </DataGrid>
