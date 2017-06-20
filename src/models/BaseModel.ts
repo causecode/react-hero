@@ -201,7 +201,8 @@ export class BaseModel {
        headers?: {},
        successCallBack?: Function,
        failureCallBack?: Function,
-       state?: {data?: any}
+       state?: {data?: any},
+       params?: {},
    ): T;
    static get<T extends BaseModel>(
        id: string,
@@ -210,7 +211,8 @@ export class BaseModel {
        successCallBack?: Function,
        failureCallBack?: Function,
        state?: {data?: any},
-       operation?: 'edit' | 'create'
+       operation?: 'edit' | 'create',
+       params?: {},
    ): T;
    static get<T extends BaseModel>(
        id: string,
@@ -219,7 +221,8 @@ export class BaseModel {
        successCallBack: Function = () => {},
        failureCallBack: Function = () => {},
        state?: {forms?: any},
-       operation?: 'edit' | 'create'
+       operation?: 'edit' | 'create',
+       params?: {},
    ): T {
        let resourceName: string = this.getResourceName();
        if (!valueInStore && operation !== 'create') {
@@ -230,7 +233,7 @@ export class BaseModel {
                    FETCH_INSTANCE_DATA,
                    resourceName,
                    path,
-                   {},
+                   params,
                    headers,
                    successCallBack,
                    failureCallBack
