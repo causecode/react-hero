@@ -49,6 +49,7 @@ export interface IPagedListProps extends IPagedListStateProps, IPagedListDispatc
     userActionsMap?: IBulkUserActionType[];
     showDefaultActions?: boolean;
     customActions?: CustomActionType;
+    dbType?: string;
 
     // List of props that can be passed to make PagedList customizable
     pageHeader?: JSX.Element;
@@ -69,7 +70,7 @@ export class PagedListImpl extends React.Component<IPagedListProps, void> {
 
     private offset: number = 0;
 
-    fetchInstanceList(resource, filters: {max?: number, offset?: number} = {}): void {
+    fetchInstanceList(resource, filters: {max?: number, offset?: number, dbType?: string} = {}): void {
         if (!this.props.fetchInstanceList) {
             filters = this.props.filters ? objectAssign(filters, this.props.filters) : filters;
             if (this.props.max > 0) {
@@ -101,11 +102,12 @@ export class PagedListImpl extends React.Component<IPagedListProps, void> {
             rowStyle: {},
         },
         isBordered: true,
+        dbType: 'Mysql',
     };
 
     componentWillMount(): void {
         const {resource} = this.props;
-        this.fetchInstanceList(resource);
+        this.fetchInstanceList(resource, {dbType: this.props.dbType});
         OuterFilter = createOuterFilterForm(`${this.props.resource}Filters`);
     };
 
@@ -121,7 +123,7 @@ export class PagedListImpl extends React.Component<IPagedListProps, void> {
             this.props.resetCheckboxState();
         }
         this.offset =  (pageNumber - 1) * this.props.max;
-        this.fetchInstanceList(this.props.resource, {offset: this.offset});
+        this.fetchInstanceList(this.props.resource, {offset: this.offset, dbType: this.props.dbType});
         this.props.setPage(pageNumber, this.props.resource);
         this.props.resetCheckboxState();
         scrollToTop();
