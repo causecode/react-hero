@@ -222,7 +222,7 @@ export class BaseModel {
        failureCallBack: Function = () => {},
        state?: {forms?: any},
        operation?: 'edit' | 'create',
-       params?: {},
+       params: object = {},
    ): T {
        let resourceName: string = this.getResourceName();
        if (!valueInStore && operation !== 'create') {
