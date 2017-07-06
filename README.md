@@ -1,4 +1,4 @@
-# React Hero (v1.1.1)
+# React Hero (v1.1.2)
 
 Plugin provides utility directives and services.
 
@@ -232,6 +232,7 @@ eg:
         | headers | Yes | {} | HTTP request headers. |
         | successCallBack | Yes | () => {} | Operation to be performed when the data is fetched successfully. |
         | failureCallBack | Yes | () => {} | Operation to be performed if any error occurred while fetching the data. |
+        | params | Yes | {} | Parameters to be passed as query string along with GET request. |
 
 - __$save__
 
