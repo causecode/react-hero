@@ -37,8 +37,8 @@ export interface IInputProps extends IInputStateProps, IInputDispatchProps {
     radioButtonLabels?: {first: string, second: string}
 }
 
-let GenericInputTemplate = (props): JSX.Element => {
-    let handleChange: (e: React.FormEvent) => void = (e: React.FormEvent) => {
+const GenericInputTemplate = (props): JSX.Element => {
+    const handleChange: (e: React.FormEvent) => void = (e: React.FormEvent) => {
         props.onChange(e.target[`value`]);
     };
 
@@ -47,9 +47,9 @@ let GenericInputTemplate = (props): JSX.Element => {
     );
 };
 
-let BooleanInputTemplate = (props): JSX.Element => {
+const BooleanInputTemplate = (props): JSX.Element => {
 
-    let handleChange: (e: React.FormEvent) => void = (e: React.FormEvent) => {
+    const handleChange: (e: React.FormEvent) => void = (e: React.FormEvent) => {
         props.onChange((e.target[`value`] === 'option-true'));
     };
 
@@ -77,9 +77,9 @@ let BooleanInputTemplate = (props): JSX.Element => {
     );
 };
 
-let DropDownInputTemplate = (props): JSX.Element => {
+const DropDownInputTemplate = (props): JSX.Element => {
 
-    let handleChange: (e: React.FormEvent) => void = (e: React.FormEvent) => {
+    const handleChange: (e: React.FormEvent) => void = (e: React.FormEvent) => {
         props.onChange(e.target[`value`]);
     };
 
@@ -95,7 +95,7 @@ let DropDownInputTemplate = (props): JSX.Element => {
                 pointerEvents: 'none',
             }}>Select One</option>
             {(() => {
-                let enumInstance = props.enum;
+                const enumInstance = props.enum;
                 if (isEmpty(enumInstance)) {
                     return;
                 }
@@ -135,7 +135,7 @@ class ListInputTemplate extends React.Component<any, any> {
     }
 
     render(): JSX.Element {
-        let list: string[] = this.props.propertyValue || ['Nothing to show.'];
+        const list: string[] = this.props.propertyValue || ['Nothing to show.'];
         return (
             <div>
                 <Row>
@@ -206,7 +206,7 @@ class FormInputImpl extends React.Component<IInputProps, {}> {
     }
 
     getInputTemplate = (): React.ComponentClass<any> | React.StatelessComponent<any> => {
-        let type: string = this.props.type;
+        const type: string = this.props.type;
         switch (type) {
             case 'boolean': return BooleanInputTemplate;
             case 'select': return DropDownInputTemplate;
@@ -221,7 +221,7 @@ class FormInputImpl extends React.Component<IInputProps, {}> {
         if (this.props.type === 'date') {
             propertyValue = propertyValue ? parseWidgetDate(propertyValue) : '';
         }
-        let InputTemplate: React.ComponentClass<any> = this.getInputTemplate() as React.ComponentClass<any>;
+        const InputTemplate: React.ComponentClass<any> = this.getInputTemplate() as React.ComponentClass<any>;
         return (
             <FormGroup className="row" style={{margin: '0px'}}>
                 <Col sm={this.props.labelSize}>
@@ -239,7 +239,7 @@ class FormInputImpl extends React.Component<IInputProps, {}> {
     }
 }
 
-let mapStateToProps: MapStateToProps<IInputStateProps, IInputProps> =
+const mapStateToProps: MapStateToProps<IInputStateProps, IInputProps> =
         (state: {forms: any}, ownProps: IInputProps): IInputStateProps => {
     let data = state.forms || {};
     ownProps.model.split('.').forEach(prop => {
@@ -250,7 +250,7 @@ let mapStateToProps: MapStateToProps<IInputStateProps, IInputProps> =
     };
 };
 
-let mapDispatchToProps: MapDispatchToPropsFunction<IInputDispatchProps, IInputProps> =
+const mapDispatchToProps: MapDispatchToPropsFunction<IInputDispatchProps, IInputProps> =
         (dispatch: IDispatch): IInputDispatchProps => {
     return {
         change: (model: string, value: any): void => {
@@ -259,5 +259,5 @@ let mapDispatchToProps: MapDispatchToPropsFunction<IInputDispatchProps, IInputPr
     };
 };
 
-export let FormInput: React.ComponentClass<IInputProps> = connect<IInputStateProps, IInputDispatchProps, IInputProps>
+export const FormInput: React.ComponentClass<IInputProps> = connect<IInputStateProps, IInputDispatchProps, IInputProps>
         (mapStateToProps, mapDispatchToProps)(FormInputImpl);
