@@ -34,10 +34,11 @@ export interface IInputProps extends IInputStateProps, IInputDispatchProps {
     fieldSize?: number;
     labelSize?: number;
     style?: React.CSSProperties;
+    radioButtonLabels?: {first: string, second: string}
 }
 
-let GenericInputTemplate = (props): JSX.Element => {
-    let handleChange: (e: React.FormEvent) => void = (e: React.FormEvent) => {
+const GenericInputTemplate = (props): JSX.Element => {
+    const handleChange: (e: React.FormEvent) => void = (e: React.FormEvent) => {
         props.onChange(e.target[`value`]);
     };
 
@@ -46,9 +47,9 @@ let GenericInputTemplate = (props): JSX.Element => {
     );
 };
 
-let BooleanInputTemplate = (props): JSX.Element => {
-    
-    let handleChange: (e: React.FormEvent) => void = (e: React.FormEvent) => {
+const BooleanInputTemplate = (props): JSX.Element => {
+
+    const handleChange: (e: React.FormEvent) => void = (e: React.FormEvent) => {
         props.onChange((e.target[`value`] === 'option-true'));
     };
 
@@ -60,7 +61,7 @@ let BooleanInputTemplate = (props): JSX.Element => {
                     value="option-true"
                     name={props.propertyName}
                     checked={props.propertyValue}>
-                    True
+                    {props.radioButtonLabels.first || 'True'}
                 </Radio>
             </Col>
             <Col sm={6}>
@@ -69,19 +70,19 @@ let BooleanInputTemplate = (props): JSX.Element => {
                     value="option-false"
                     name={props.propertyName}
                     checked={!props.propertyValue}>
-                    False
+                    {props.radioButtonLabels.second || 'False'}
                 </Radio>
             </Col>
         </Row>
     );
 };
 
-let DropDownInputTemplate = (props): JSX.Element => {
+const DropDownInputTemplate = (props): JSX.Element => {
 
-    let handleChange: (e: React.FormEvent) => void = (e: React.FormEvent) => {
+    const handleChange: (e: React.FormEvent) => void = (e: React.FormEvent) => {
         props.onChange(e.target[`value`]);
     };
-    
+
     return (
         <select
             value={props.propertyValue}
@@ -94,7 +95,7 @@ let DropDownInputTemplate = (props): JSX.Element => {
                 pointerEvents: 'none',
             }}>Select One</option>
             {(() => {
-                let enumInstance = props.enum;
+                const enumInstance = props.enum;
                 if (isEmpty(enumInstance)) {
                     return;
                 }
@@ -132,9 +133,9 @@ class ListInputTemplate extends React.Component<any, any> {
         propertyValue.push(this.state.newListItem);
         this.props.onChange(propertyValue);
     }
-    
+
     render(): JSX.Element {
-        let list: string[] = this.props.propertyValue || ['Nothing to show.'];
+        const list: string[] = this.props.propertyValue || ['Nothing to show.'];
         return (
             <div>
                 <Row>
@@ -147,8 +148,8 @@ class ListInputTemplate extends React.Component<any, any> {
                     <Col sm={4}>
                         <Button bsStyle="default" onClick={this.addListItem}>Add</Button>
                     </Col>
-                </Row> 
-                <ListGroup style={{margin: '10px'}}> 
+                </Row>
+                <ListGroup style={{margin: '10px'}}>
                 {(() => {
                     return list.map((listItem : string, index : number) => {
                         return (
@@ -159,16 +160,16 @@ class ListInputTemplate extends React.Component<any, any> {
                             </ListGroupItem>
                         );
                     });
-                })()} 
+                })()}
                 </ListGroup>
             </div>
-        );        
+        );
     }
 }
 
 // TODO: Make it generic component by allowing it to accept all props of react-datetime
 class DateTimeComponent extends React.Component<IInputProps, void> {
-    
+
     handleChange = (newValue: {_d: {toISOString: () => any}}): void => {
         if (newValue && newValue._d) {
             this.props.change(this.props.model, newValue._d.toISOString());
@@ -177,8 +178,8 @@ class DateTimeComponent extends React.Component<IInputProps, void> {
 
     render(): JSX.Element {
         return(
-           <ReactDatetime 
-                defaultValue={this.props.propertyValue ? 
+           <ReactDatetime
+                defaultValue={this.props.propertyValue ?
                         moment(this.props.propertyValue).format('MM-DD-YYYY HH:mm') : ''}
                 strictParsing={true}
                 utc={true}
@@ -190,7 +191,7 @@ class DateTimeComponent extends React.Component<IInputProps, void> {
 }
 
 class FormInputImpl extends React.Component<IInputProps, {}> {
-    
+
     static defaultProps: IInputProps = {
         fieldSize: 9,
         labelSize: 3,
@@ -205,7 +206,7 @@ class FormInputImpl extends React.Component<IInputProps, {}> {
     }
 
     getInputTemplate = (): React.ComponentClass<any> | React.StatelessComponent<any> => {
-        let type: string = this.props.type;
+        const type: string = this.props.type;
         switch (type) {
             case 'boolean': return BooleanInputTemplate;
             case 'select': return DropDownInputTemplate;
@@ -220,14 +221,14 @@ class FormInputImpl extends React.Component<IInputProps, {}> {
         if (this.props.type === 'date') {
             propertyValue = propertyValue ? parseWidgetDate(propertyValue) : '';
         }
-        let InputTemplate: React.ComponentClass<any> = this.getInputTemplate() as React.ComponentClass<any>;
+        const InputTemplate: React.ComponentClass<any> = this.getInputTemplate() as React.ComponentClass<any>;
         return (
             <FormGroup className="row" style={{margin: '0px'}}>
                 <Col sm={this.props.labelSize}>
                     <ControlLabel style={{textAlign: 'right'}}>{this.props.propertyName}</ControlLabel>
                 </Col>
                 <Col sm={this.props.fieldSize} style={this.props.style}>
-                    <InputTemplate 
+                    <InputTemplate
                         {...this.props}
                         value={propertyValue}
                         onChange={this.handleChange}
@@ -238,7 +239,7 @@ class FormInputImpl extends React.Component<IInputProps, {}> {
     }
 }
 
-let mapStateToProps: MapStateToProps<IInputStateProps, IInputProps> = 
+const mapStateToProps: MapStateToProps<IInputStateProps, IInputProps> =
         (state: {forms: any}, ownProps: IInputProps): IInputStateProps => {
     let data = state.forms || {};
     ownProps.model.split('.').forEach(prop => {
@@ -249,14 +250,14 @@ let mapStateToProps: MapStateToProps<IInputStateProps, IInputProps> =
     };
 };
 
-let mapDispatchToProps: MapDispatchToPropsFunction<IInputDispatchProps, IInputProps> = 
+const mapDispatchToProps: MapDispatchToPropsFunction<IInputDispatchProps, IInputProps> =
         (dispatch: IDispatch): IInputDispatchProps => {
     return {
         change: (model: string, value: any): void => {
             dispatch(actions.change(model, value));
         },
     };
-}; 
+};
 
-export let FormInput: React.ComponentClass<IInputProps> = connect<IInputStateProps, IInputDispatchProps, IInputProps>
+export const FormInput: React.ComponentClass<IInputProps> = connect<IInputStateProps, IInputDispatchProps, IInputProps>
         (mapStateToProps, mapDispatchToProps)(FormInputImpl);
