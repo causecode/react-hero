@@ -19,21 +19,21 @@ export class BlogModel extends BaseModel {
         author: ModelPropTypes.STRING(),
         blogIMGSrc: ModelPropTypes.STRING(),
         dateCreated: ModelPropTypes.STRING(),
-        lastUpdated: ModelPropTypes.STRING()
+        lastUpdated: ModelPropTypes.STRING(),
     };
 
     static defaultProps = {
         author: '',
         blogIMGSrc: '',
         dateCreated: 0,
-        lastUpdated: 0
+        lastUpdated: 0,
     };
 
     static columnNames: string[] = [
         'id',
         'author',
         'dateCreated',
-        'lastUpdated'
+        'lastUpdated',
     ];
         
     constructor(properties?: any) {
@@ -53,7 +53,7 @@ let blogInstance = new BlogModel({
             current: true, 
             livingSince: new Date(), 
             residents: ['Nahush', 'Piyush'],
-            isCurrent: IsCurrent.YES 
+            isCurrent: IsCurrent.YES,
         },
         enabled: false,
         status: Status.PRESENT,

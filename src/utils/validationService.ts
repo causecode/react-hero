@@ -13,11 +13,11 @@ export class ValidationService {
     maxlength: 'Please enter no more than {{validValue}} characters.',
     editable: 'Please select a value from dropdown.',
     pattern: 'Please fix the pattern.',
-    equalTo: 'Please enter the same value again.'
+    equalTo: 'Please enter the same value again.',
     };
 
     validators = {
-        required: () => {}
+        required: () => {},
     };
 
     validate() {

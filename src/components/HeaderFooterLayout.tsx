@@ -66,13 +66,13 @@ export interface IHeaderFooterLayoutProps {
 
 const mapStateToProps = (state): {open: boolean}  => {
     return {
-        open: state.open
+        open: state.open,
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        toggleNav: (): void => dispatch(toggleNav())
+        toggleNav: (): void => dispatch(toggleNav()),
     };
 };
 
@@ -90,8 +90,8 @@ export class HeaderFooterLayoutImpl extends React.Component<IHeaderFooterLayoutP
             nav: {},
             content: {},
             footer: {},
-            navIcon: {}
-        }
+            navIcon: {},
+        },
     };
 
     private isNavBarPresent: boolean = false;

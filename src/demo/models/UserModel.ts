@@ -9,22 +9,21 @@ export class UserModel extends BaseModel {
         id: ModelPropTypes.NUMBER(),
         firstName: ModelPropTypes.STRING(),
         lastName: ModelPropTypes.STRING(),
-        age: ModelPropTypes.STRING()
+        age: ModelPropTypes.STRING(),
     };
     
     static defaultProps: Object = {
         id: 0,
         firstName: '',
         lastNAme: '',
-        age: ''
+        age: '',
     };
-
 
     static columnNames: string[] = [
         'id',
         'firstName',
         'lastName',
-        'age'
+        'age',
     ];
 
     constructor(properties: any) {

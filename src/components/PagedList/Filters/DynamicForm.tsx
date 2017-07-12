@@ -39,7 +39,7 @@ export class InnerFilterFormImpl extends React.Component<IPagedListFiltersProps,
 
 function mapStateToProps(state: {data: any}): {filtersOpen: boolean} {
     return {
-        filtersOpen: state.data.get('filtersOpen')
+        filtersOpen: state.data.get('filtersOpen'),
     };
 }
 

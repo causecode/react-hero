@@ -107,7 +107,7 @@ let mapStateToProps: MapStateToProps<IUserActionStateProps, IUserActionProps> =
         action: state.userAction.action,
         selectedIds: state.checkbox.selectedIds,
         selectAllOnPage: state.checkbox.selectAllOnPage,
-        selectAll: state.checkbox.selectAll
+        selectAll: state.checkbox.selectAll,
     };
 };
 
@@ -116,7 +116,7 @@ let UserActions: React.ComponentClass<IUserActionProps> = connect(mapStateToProp
 export {UserActions};
 
 const rightStyle: React.CSSProperties = {
-    textAlign: 'right'
+    textAlign: 'right',
 };
 const dropDownStyle: React.CSSProperties = {
     textAlign: 'center',
@@ -129,9 +129,9 @@ const dropDownStyle: React.CSSProperties = {
     minHeight: '35px',
     padding: '5px 10px',
     transition: 'border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s',
-    margin: '0px 5px' 
+    margin: '0px 5px',
 };
 const disabledStyle: React.CSSProperties = {
     background: '#eee none repeat scroll 0% 0% / auto padding-box border-box',
-    cursor: 'not-allowed'
+    cursor: 'not-allowed',
 };
