@@ -1,8 +1,9 @@
 import * as React from 'react';
+import * as Radium from 'radium';
 import {NavMenuLauncherIcon} from './NavMenuLauncherIcon';
 import {Motion, spring} from 'react-motion';
 import {toggleNav, toggleSecondaryNav} from '../actions/modelActions';
-const objectAssign: any = require<any>('object-assign');
+import {CSS} from '../interfaces';
 
 // Importing connect this way because of bug in react-redux type definition
 // TODO Revisit https://github.com/DefinitelyTyped/DefinitelyTyped/issues/8866
@@ -51,12 +52,12 @@ export class NavigationMenu extends React.Component<{}, {}> {
 }
 
 export interface IHeaderFooterLayoutStyle {
-    header?: React.CSSProperties;
-    primaryNav?: React.CSSProperties;
-    secondaryNav?: React.CSSProperties;
-    content?: React.CSSProperties;
-    footer?: React.CSSProperties;
-    navIcon?: React.CSSProperties;
+    header?: CSS;
+    primaryNav?: CSS;
+    secondaryNav?: CSS;
+    content?: CSS;
+    footer?: CSS;
+    navIcon?: CSS;
 }
 
 export interface IHeaderFooterLayoutProps {
@@ -84,12 +85,14 @@ const mapDispatchToProps = (dispatch) => {
     };
 };
 
+@Radium
 export class HeaderFooterLayoutImpl extends React.Component<IHeaderFooterLayoutProps, {}> {
 
     header: JSX.Element;
     footer: JSX.Element;
     content: JSX.Element;
-    nav: JSX.Element;
+    primaryNav: JSX.Element;
+    secondaryNav: JSX.Element;
 
     static defaultProps: IHeaderFooterLayoutProps = {
         primaryMenuPosition: 'left',
@@ -121,7 +124,10 @@ export class HeaderFooterLayoutImpl extends React.Component<IHeaderFooterLayoutP
                 this.footer = child;
                 break;
             case navigationMenuType:
-                this.setNav(child, ++this.navMenuCount);
+                // Maximum of two navigation drawer should be rendered.
+                if (++this.navMenuCount <= 2) {
+                    this.setNav(child, this.navMenuCount);
+                }
                 break;
         }
     };
@@ -156,11 +162,11 @@ export class HeaderFooterLayoutImpl extends React.Component<IHeaderFooterLayoutP
     protected setNav(NavImpl: JSX.Element, navMenuCount: number): void {
         if (navMenuCount === 2) {
             this.isSecondaryNavBarPresent = true;
+            this.secondaryNav = NavImpl;
         } else {
             this.isNavBarPresent = true;
-
+            this.primaryNav = NavImpl;
         }
-        this.nav = NavImpl;
     }
 
     componentWillMount(): void {
@@ -192,20 +198,21 @@ export class HeaderFooterLayoutImpl extends React.Component<IHeaderFooterLayoutP
         let closeButtonClasses: string = 'fa fa-times highlight-on-hover ';
         closeButtonClasses += menuPosition === 'left' ? 'right' : 'left';
 
-        const customStyle: React.CSSProperties = style[isPrimaryNav ? 'primaryNav' : 'secondaryNav'] || {};
+        const customStyle: CSS = style[isPrimaryNav ? 'primaryNav' : 'secondaryNav'] || {};
 
         return (
             <Motion
                     style={{x: spring(this.props[isPrimaryNav ? 'open' : 'secondaryNavOpen'] ? 0 : menuClosePosition)}}
-                    key={`${isPrimaryNav ? 'primary-nav' : 'secondary-nav'}`}>
-                {({x}) =>
+                    key={isPrimaryNav ? 'primary-nav' : 'secondary-nav'}>
+                {({x}: {x: number}): JSX.Element =>
                     <div
                         className={navMenuClasses}
-                        style={objectAssign({}, {WebkitTransform: `translate3d(${x}%, 0, 0)`,
-                            transform: `translate3d(${x}%, 0, 0)`}, customStyle)}
-                    >
+                        style={[
+                            {WebkitTransform: `translate3d(${x}%, 0, 0)`, transform: `translate3d(${x}%, 0, 0)`},
+                            customStyle,
+                        ]}>
                         <i className={closeButtonClasses} onClick={isPrimaryNav ? toggleNav : toggleSecondaryNav}/>
-                        {this.nav}
+                        {this[isPrimaryNav ? 'primaryNav' : 'secondaryNav']}
                     </div>
                 }
             </Motion>

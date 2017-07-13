@@ -76,7 +76,7 @@ export class NewPage extends React.Component<void, void> {
                     </Switch>
                 </ContentView>
                 <FooterView>my footer</FooterView>
-                <NavigationMenu key="primary">
+                <NavigationMenu>
                     <Content>
                         <Title>This is the primary nav-mnu</Title>
                         <Description>This is the description</Description>
@@ -87,7 +87,7 @@ export class NewPage extends React.Component<void, void> {
                         </ButtonList>
                     </Content>
                 </NavigationMenu>
-                <NavigationMenu key="secondary">
+                <NavigationMenu>
                     <Content>
                         <Title>This is the secondary nav-mnu</Title>
                         <Description>This is the description</Description>
