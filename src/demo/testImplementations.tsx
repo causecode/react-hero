@@ -28,7 +28,7 @@ const headerFooterLayoutStyles: IHeaderFooterLayoutStyle = {
     },
     secondaryNav: {
         padding: 'none',
-        width: '70%',
+        width: '50%',
     },
     content: {
         color: '#888',

@@ -65,7 +65,6 @@ After you have merged everything to the master branch, follow the following step
       )
   }
   ```
-- If `NavigationMenu`component is rendered within the `HeaderFooterLayout` the sliding nav-menu along with the burger icon in the Header will be generated automatically. If it is not defined neither the icon nor the menu will be rendered.
 - There are also a few custom Widgets that have been provided for use in the `HeaderFooterLayout` which provide pre defined styles.
 eg:
   - `Title`
@@ -73,35 +72,69 @@ eg:
   - `Content`
   - `ButtonList`
   - `ButtonListItem`
+- __Navigation Menu__
+    * The `HeaderFooterLayout` has the ability to render upto two navigation menu. No additional prop is required in the `NavigationMenu` for differentiating between the two navigation menu. Just add two `NavigationMenu` elements inside `HeaderFooterLayout`.<br/><br/>`react-hero` is smart enough to identify the drawer.
+    The `NavigationMenu` appearing first in the sequence is the __primary__ menu and the other one is the __secondary__ menu. If any more `NavigationMenu` is added, it will be ignored.<br/>
+    Example: 
+    
+        ```
+        <HeaderFooterLayout>
+            ...
+            <NavigationMenu>    // The primary navigation menu.
+                <div>A navigation menu<div>
+            </NavigationMenu>
+            <NavigationMenu>    // The secondary navigation menu.
+                <div>Another navigation menu<div>
+            </NavigationMenu>
+        </HeaderFooterLayout>
+        ```  
+    * The default position for the primary menu is the _left_ side of the screen and for the secondary menu it's the _right_ side. But the sides can be changed as per the requirements by passing the props: `primaryMenuPosition` and `secondaryMenuPosition`. The value of these props can either be __left__ or __right__.
+    * The style of each navigation menu can be changed via the custom style passed to the `HeaderFooterLayout`. The style for the primary and the secondary menu can be assigned to the keys __primaryNav__ and __secondaryNav__ respectively. The example of the same can be found below.
+
 - `HeaderFooterLayout` accepts a `style` prop to override the default styles:
   ```
-  const customStyle = {
+  const customStyle: IHeaderFooterLayoutStyle = {
       header: {
-          padding: '0px',
-          background: 'transparent',
+          padding: 'none',
+      },
+      primaryNav: {
+          padding: 'none',
+          width: '30%',
+          backgroundColor: '#eea303',
+      },
+      secondaryNav: {
+          padding: 'none',
+          width: '50%',
       },
       content: {
-          overflow: 'auto'
-      },
-      navIcon: {
-          display: 'none'
-      },
-      nav: {
-          backgroundColor: '#EEA303'
+          color: '#888',
       },
       footer: {
-          padding: '0px'
-      }
+          backgroundColor: '#888',
+          fontSize: '15px',
+          color: 'white',
+      },
+      navIcon: {
+          color: '#777',
+      },
   };
 
   render() {
 	    return (
-	      <HeaderFooterLayout style={customStyle}>
-	        ...
-	      </HeaderFooterLayout>
+            <HeaderFooterLayout style={customStyle} primaryMenuPosition="left" secondaryMenuPosition="right">
+                ...
+                <NavigationMenu>    // The primary navigation menu.
+                    <div>A navigation menu<div>
+                </NavigationMenu>
+                <NavigationMenu>    // The secondary navigation menu.
+                    <div>Another navigation menu<div>
+                </NavigationMenu>
+	        </HeaderFooterLayout>
 	    )
   }
   ```
+  ![NavigationMenuDemo screenshot](src/demo/images/NavigationMenuDemo.png "NavigationMenuDemo")
+  
 
 ### 3 Themeable Layout
 
