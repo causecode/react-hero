@@ -1,4 +1,5 @@
 import {open} from '../reducers/open';
+import {secondaryNavReducer} from '../reducers/secondaryNavReducer';
 import {combineReducers} from 'redux';
 import {Reducer} from 'redux';
 import {routerReducer} from 'react-router-redux';
@@ -15,6 +16,7 @@ export const addReducers = (ReducerConfig: Object): Reducer => {
     return combineReducers(objectAssign({}, ReducerConfig, {
         open,
         data,
+        secondaryNavOpen: secondaryNavReducer,
         routing: routerReducer,
         form: reduxFormReducer,
         checkbox: checkboxReducer,
