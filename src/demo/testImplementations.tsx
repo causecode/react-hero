@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {Title, Description, Content, ButtonList, ButtonListItem} from '../components/Widgets/Widgets';
-import {HeaderView, FooterView, ContentView, NavigationMenu} from './../components/HeaderFooterLayout';
 import {Router, Route, Link} from 'react-router';
 import {HeaderFooterLayout} from './../components/HeaderFooterLayout';
 import {ResponsiveView} from './../components/ResponsiveView';
@@ -8,68 +7,84 @@ import {hashHistory} from 'react-router';
 import {ListPage} from '../components-stateful/ListPage';
 import {ShowPage} from './../components-stateful/ShowPage';
 import {EditPage} from './../components-stateful/EditPage';
+import {
+    HeaderView,
+    FooterView,
+    ContentView,
+    NavigationMenu,
+    IHeaderFooterLayoutStyle,
+} from '../components/HeaderFooterLayout';
 require<void>('../init');
 
-const headerFooterLayoutStyles = {
-        header: {
-            padding: 'none'
-        },
-        nav: {
-            padding: 'none'
-        },
-        content: {
-            color: '#888'
-        },
-        footer: {
-            backgroundColor: '#888',
-            fontSize: '15px',
-            color: 'white'
-        },
-        navIcon: {
-            color: '#777'
-        }
+const headerFooterLayoutStyles: IHeaderFooterLayoutStyle = {
+    header: {
+        padding: 'none',
+    },
+    primaryNav: {
+        padding: 'none',
+        width: '30%',
+        backgroundColor: '#eea303',
+    },
+    secondaryNav: {
+        padding: 'none',
+        width: '50%',
+    },
+    content: {
+        color: '#888',
+    },
+    footer: {
+        backgroundColor: '#888',
+        fontSize: '15px',
+        color: 'white',
+    },
+    navIcon: {
+        color: '#777',
+    },
 };
 
 export class NewPage extends React.Component<void, void> {
 
     render(): JSX.Element {
         return (
-            <HeaderFooterLayout menuPosition="left" style={headerFooterLayoutStyles}>
-            <HeaderView>
-                <Content>
-                    <Title>New App</Title>
-                    <ButtonList highlightOnHover={true}>
-                        <ButtonListItem><Link to="/">Home</Link> </ButtonListItem>
-                        <ButtonListItem><Link to="/page2">Button 2</Link></ButtonListItem>
-                        <ButtonListItem><Link to="/resp">Responsive View Page</Link></ButtonListItem>
-                        <ButtonListItem><Link to="/blog/list">Blog List</Link></ButtonListItem>
-                        <ButtonListItem><Link to="/user/list">User List</Link></ButtonListItem>
-                    </ButtonList>
-                </Content>
-            </HeaderView>
-            <ContentView>
-                <Router history={hashHistory}>
-                    <Route path="/" component={HomeContent}/>
-                    <Route path="/page2" component={Page2Content}/>
-                    <Route path="/resp" component={ContentImpl}/>
-                    <Route path="/:resource/list" component={ListPage}/>
-                    <Route path="/:resource/create" component={EditPage}/>
-                    <Route path="/:resource/show/:resourceID" component={ShowPage} />
-                    <Route path="/:resource/edit/:resourceID" component={EditPage} />
-                </Router>
-            </ContentView>
-            <FooterView>my footer</FooterView>
-            <NavigationMenu>
-                <Content>
-                    <Title>This is the nav-mnu</Title>
-                    <Description>This is the description</Description>
-                    <ButtonList highlightOnHover={true}>
-                        <ButtonListItem><Link to="/">Home</Link></ButtonListItem>
-                        <ButtonListItem><Link to="/page2">Button 2</Link></ButtonListItem>
-                        <ButtonListItem><Link to="/resp">Responsive View Page</Link></ButtonListItem>
-                    </ButtonList>
-                </Content>
-            </NavigationMenu>
+            <HeaderFooterLayout
+                    primaryMenuPosition="left"
+                    secondaryMenuPosition="right"
+                    style={headerFooterLayoutStyles}>
+                <HeaderView>
+                    <Content>
+                        <Title>New App</Title>
+                        <ButtonList highlightOnHover={true}>
+                            <ButtonListItem><Link to="/">Home</Link> </ButtonListItem>
+                            <ButtonListItem><Link to="/page2">Button 2</Link></ButtonListItem>
+                            <ButtonListItem><Link to="/resp">Responsive View Page</Link></ButtonListItem>
+                            <ButtonListItem><Link to="/blog/list">Blog List</Link></ButtonListItem>
+                            <ButtonListItem><Link to="/user/list">User List</Link></ButtonListItem>
+                        </ButtonList>
+                    </Content>
+                </HeaderView>
+                <ContentView>
+                    <Router history={hashHistory}>
+                        <Route path="/" component={HomeContent}/>
+                        <Route path="/page2" component={Page2Content}/>
+                        <Route path="/resp" component={ContentImpl}/>
+                        <Route path="/:resource/list" component={ListPage}/>
+                        <Route path="/:resource/create" component={EditPage}/>
+                        <Route path="/:resource/show/:resourceID" component={ShowPage} />
+                        <Route path="/:resource/edit/:resourceID" component={EditPage} />
+                    </Router>
+                </ContentView>
+                <FooterView>my footer</FooterView>
+                <NavigationMenu>
+                    <Content>
+                        <Title>This is the nav-mnu</Title>
+                        <Description>This is the description</Description>
+                        <ButtonList highlightOnHover={true}>
+                            <ButtonListItem><Link to="/">Home</Link></ButtonListItem>
+                            <ButtonListItem><Link to="/page2">Button 2</Link></ButtonListItem>
+                            <ButtonListItem><Link to="/resp">Responsive View Page</Link></ButtonListItem>
+                        </ButtonList>
+                    </Content>
+                </NavigationMenu>
             </HeaderFooterLayout>
         );
     }

@@ -1,8 +1,9 @@
 import * as React from 'react';
+import * as Radium from 'radium';
 import {NavMenuLauncherIcon} from './NavMenuLauncherIcon';
 import {Motion, spring} from 'react-motion';
-import {toggleNav} from '../actions/modelActions';
-const objectAssign: any = require<any>('object-assign');
+import {toggleNav, toggleSecondaryNav} from '../actions/modelActions';
+import {CSS} from '../interfaces';
 
 // Importing connect this way because of bug in react-redux type definition
 // TODO Revisit https://github.com/DefinitelyTyped/DefinitelyTyped/issues/8866
@@ -50,51 +51,65 @@ export class NavigationMenu extends React.Component<{}, {}> {
     }
 }
 
-export interface IHeaderFooterLayoutProps {
-    menuPosition: 'left'|'right';
-    children?: any;
-    open?: boolean;
-    toggleNav?: () => void;
-    style?: {
-        header: React.CSSProperties,
-        nav: React.CSSProperties,
-        content: React.CSSProperties,
-        footer: React.CSSProperties,
-        navIcon: React.CSSProperties
-    };
+export interface IHeaderFooterLayoutStyle {
+    header?: CSS;
+    primaryNav?: CSS;
+    secondaryNav?: CSS;
+    content?: CSS;
+    footer?: CSS;
+    navIcon?: CSS;
 }
 
-const mapStateToProps = (state): {open: boolean}  => {
+export interface IHeaderFooterLayoutProps {
+    primaryMenuPosition: 'left'|'right';
+    secondaryMenuPosition?: 'left'|'right';
+    children?: any;
+    open?: boolean;
+    secondaryNavOpen?: boolean;
+    toggleNav?: () => void;
+    toggleSecondaryNav?: () => void;
+    style?: IHeaderFooterLayoutStyle;
+}
+
+const mapStateToProps = (state): {open: boolean, secondaryNavOpen: boolean}  => {
     return {
-        open: state.open
+        open: state.open,
+        secondaryNavOpen: state.secondaryNavOpen,
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        toggleNav: (): void => dispatch(toggleNav())
+        toggleNav: (): void => dispatch(toggleNav()),
+        toggleSecondaryNav: (): void => dispatch(toggleSecondaryNav()),
     };
 };
 
+@Radium
 export class HeaderFooterLayoutImpl extends React.Component<IHeaderFooterLayoutProps, {}> {
 
     header: JSX.Element;
     footer: JSX.Element;
     content: JSX.Element;
-    nav: JSX.Element;
+    primaryNav: JSX.Element;
+    secondaryNav: JSX.Element;
 
     static defaultProps: IHeaderFooterLayoutProps = {
-        menuPosition: 'left',
+        primaryMenuPosition: 'left',
+        secondaryMenuPosition: 'right',
         style: {
             header: {},
-            nav: {},
+            primaryNav: {},
+            secondaryNav: {},
             content: {},
             footer: {},
-            navIcon: {}
-        }
+            navIcon: {},
+        },
     };
 
     private isNavBarPresent: boolean = false;
+    private isSecondaryNavBarPresent: boolean = false;
+    private navMenuCount: number = 0;
 
     // type `any` is intentional because child can be anything.
     parseChild = (child: any): void => {
@@ -109,7 +124,10 @@ export class HeaderFooterLayoutImpl extends React.Component<IHeaderFooterLayoutP
                 this.footer = child;
                 break;
             case navigationMenuType:
-                this.setNav(child);
+                // Maximum of two navigation drawer should be rendered.
+                if (++this.navMenuCount <= 2) {
+                    this.setNav(child, this.navMenuCount);
+                }
                 break;
         }
     };
@@ -141,59 +159,76 @@ export class HeaderFooterLayoutImpl extends React.Component<IHeaderFooterLayoutP
         this.footer = footerImpl;
     }
 
-    protected setNav(NavImpl: JSX.Element): void {
-        this.isNavBarPresent = true;
-        this.nav = NavImpl;
-    }
-
-    componentWillMount(): void {
-        if (this.isNavBarPresent && !this.props.menuPosition) {
-            throw new Error('The prop menuPosition has not been defined.');
+    protected setNav(NavImpl: JSX.Element, navMenuCount: number): void {
+        if (navMenuCount === 2) {
+            this.isSecondaryNavBarPresent = true;
+            this.secondaryNav = NavImpl;
+        } else {
+            this.isNavBarPresent = true;
+            this.primaryNav = NavImpl;
         }
     }
 
-    render(): JSX.Element {
-        const {toggleNav, menuPosition, style} = this.props;
-        let navMenuClasses: string = `nav-menu ${menuPosition}`;
-        let menuClosePosition: number = (menuPosition === 'left') ? -100 : 100;
-        let closeButtonClasses: string = 'fa fa-times highlight-on-hover ';
-        closeButtonClasses += (menuPosition === 'left') ? 'right' : 'left';
+    componentWillMount(): void {
+        if (this.isNavBarPresent && !this.props.primaryMenuPosition) {
+            throw new Error('The prop primaryMenuPosition has not been defined.');
+        }
+    }
 
-        const getNavMenu = () => {
-            if (this.isNavBarPresent) {
-                return (
-                    <Motion style={{x: spring(this.props.open ? 0 : menuClosePosition )}}>
-                        {({x}) =>
-                        <div
-                                className={navMenuClasses}
-                                style={objectAssign({}, {WebkitTransform: `translate3d(${x}%, 0, 0)`,
-                                        transform: `translate3d(${x}%, 0, 0)`}, style.nav || {})}
-                        >
-                            <i className={closeButtonClasses} onClick={toggleNav}/>
-                            {this.nav}
-                        </div>
-                            }
-                    </Motion>
-                );
-            } else {
-                return;
-            }
-        };
+    renderNavMenuLauncherIcon = (isPrimaryNav: boolean): JSX.Element => {
+        const {toggleNav, primaryMenuPosition, style, secondaryMenuPosition, toggleSecondaryNav} = this.props;
+
+        return (
+            <NavMenuLauncherIcon
+                key={`${isPrimaryNav ? 'primary-nav-icon' : 'secondary-nav-icon'}`}
+                style={style.navIcon}
+                position={isPrimaryNav ? primaryMenuPosition : secondaryMenuPosition}
+                onClick={isPrimaryNav ? toggleNav : toggleSecondaryNav}
+            />
+        );
+    }
+
+    renderNavMenu = (isPrimaryNav: boolean): JSX.Element => {
+        const {toggleNav, primaryMenuPosition, style, secondaryMenuPosition, toggleSecondaryNav} = this.props;
+
+        const menuPosition: string = isPrimaryNav ? primaryMenuPosition : secondaryMenuPosition;
+        const navMenuClasses: string = `nav-menu ${menuPosition}`;
+        const menuClosePosition: number = menuPosition === 'left' ? -100 : 100;
+
+        let closeButtonClasses: string = 'fa fa-times highlight-on-hover ';
+        closeButtonClasses += menuPosition === 'left' ? 'right' : 'left';
+
+        const customStyle: CSS = style[isPrimaryNav ? 'primaryNav' : 'secondaryNav'] || {};
+
+        return (
+            <Motion
+                style={{x: spring(this.props[isPrimaryNav ? 'open' : 'secondaryNavOpen'] ? 0 : menuClosePosition)}}
+                key={isPrimaryNav ? 'primary-nav' : 'secondary-nav'}>
+                {({x}: {x: number}): JSX.Element =>
+                    <div
+                        className={navMenuClasses}
+                        style={[
+                            {WebkitTransform: `translate3d(${x}%, 0, 0)`, transform: `translate3d(${x}%, 0, 0)`},
+                            customStyle,
+                        ]}>
+                        <i className={closeButtonClasses} onClick={isPrimaryNav ? toggleNav : toggleSecondaryNav}/>
+                        {this[isPrimaryNav ? 'primaryNav' : 'secondaryNav']}
+                    </div>
+                }
+            </Motion>
+        );
+    }
+
+    render(): JSX.Element {
+        const {style} = this.props;
 
         return (
             <div>
-                {getNavMenu()}
+                {this.isNavBarPresent && this.renderNavMenu(true)}
+                {this.isSecondaryNavBarPresent && this.renderNavMenu(false)}
                 <div className="header" style={style.header}>
-                    {(() => {
-                        if (this.isNavBarPresent) {
-                            return (
-                                <NavMenuLauncherIcon
-                                        style={style.navIcon}
-                                        position={`${this.props.menuPosition}`}
-                                        onClick={toggleNav}/>
-                            );
-                        }
-                    })()}
+                    {this.isNavBarPresent && this.renderNavMenuLauncherIcon(true)}
+                    {this.isSecondaryNavBarPresent && this.renderNavMenuLauncherIcon(false)}
                     {this.header}
                 </div>
                 <div className="content" style={style.content}>
