@@ -8,6 +8,7 @@ import {
     TOGGLE_NAV,
     UNSET_RESOURCE_LIST,
     SAVE_ALL_INSTANCES,
+    TOGGLE_SECONDARY_NAV,
 } from '../constants';
 
 export interface IInstanceAction {
@@ -56,6 +57,12 @@ export const toggleFilters = (): {type: string} => {
 export const toggleNav = (): {type: string} => {
     return {
         type: TOGGLE_NAV,
+    };
+};
+
+export const toggleSecondaryNav = (): {type: string} => {
+    return {
+        type: TOGGLE_SECONDARY_NAV,
     };
 };
 
