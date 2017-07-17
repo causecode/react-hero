@@ -175,12 +175,6 @@ export class BaseModel {
         if (!instanceDataList || !instanceDataList.length) {
             return;
         }
-        instanceDataList = instanceDataList.map(instanceData => {
-            if (instanceData instanceof Model) {
-                return instanceData;
-            }
-            return new Model(instanceData);
-        });
 
         let resource: string = this.getResourceName();
         let Model: typeof BaseModel = ModelService.getModel(resource);
