@@ -151,3 +151,8 @@ export interface IPagedListStyle {
     rowStyle?: React.CSSProperties;
     dataStyle?: React.CSSProperties;
 }
+
+export interface IColumnNames {
+    label: string;
+    accessor: string;
+};

@@ -159,6 +159,7 @@ export class PagedListImpl extends React.Component<IPagedListProps, void> {
                 </CustomPagedListFilters>
             );
         }
+
         return this.props.pagedListFilters;
     }
 
