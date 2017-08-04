@@ -50,20 +50,25 @@ export function parseWidgetDate(date: number | string | Date): string {
 
 export function getInnerData(data: any, nestedPath: string) {
     let result: string = '';
+
     if (data) {
         nestedPath.split('.').forEach((item) => {
-            if (data.constructor === Array) {
-                data.forEach((innerItem, index) => {
-                    result = `${result} ${innerItem[item].toString()}`;
-                });
-            } else {
-                data = data[item];
-            }
-            if (data && data.constructor !== Array && data.constructor !== Object) {
-                result = `${result} ${data}`;
+            if (data) {
+                if (data.constructor === Array) {
+                    data.forEach((innerItem, index) => {
+                        result = `${result} ${innerItem[item].toString()}`;
+                    });
+                } else {
+                    data = data[item];
+                }
+
+                if (data && data.constructor !== Array && data.constructor !== Object) {
+                    result = `${result} ${data}`;
+                }
             }
         });
     }
+
     return result;
 };
 
