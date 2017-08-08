@@ -35,6 +35,7 @@ export interface IInputProps extends IInputStateProps, IInputDispatchProps {
     labelSize?: number;
     style?: React.CSSProperties;
     radioButtonLabels?: {first: string, second: string}
+    onBlur?: boolean;
 }
 
 const GenericInputTemplate = (props): JSX.Element => {
@@ -42,8 +43,9 @@ const GenericInputTemplate = (props): JSX.Element => {
         props.onChange(e.target[`value`]);
     };
 
+    const inputProps = props.onBlur ? {onBlur: handleChange} : {onChange: handleChange};
     return (
-        <input type={props.type} className="form-control" value={props.propertyValue} onChange={handleChange}/>
+        <input type={props.type} className="form-control" defaultValue={props.propertyValue} {...inputProps} />
     );
 };
 
@@ -242,9 +244,18 @@ class FormInputImpl extends React.Component<IInputProps, {}> {
 const mapStateToProps: MapStateToProps<IInputStateProps, IInputProps> =
         (state: {forms: any}, ownProps: IInputProps): IInputStateProps => {
     let data = state.forms || {};
-    ownProps.model.split('.').forEach(prop => {
-        data = data.hasOwnProperty(prop) ? data[prop] : '';
+
+    ownProps.model.split('.').forEach((splittedKey: string) => {
+        const arrayRegExp = /(\w+\[\d+\])$/;
+        if (arrayRegExp.test(splittedKey)) {
+            const index = splittedKey.substring(splittedKey.lastIndexOf('[') + 1, splittedKey.lastIndexOf(']'));
+            const key = splittedKey.substring(splittedKey.lastIndexOf('['), 0);
+            data = data[key] && data[key][index] ? data[key][index] : '';
+        } else {
+            data = data.hasOwnProperty(splittedKey) ? data[splittedKey] : '';
+        }
     });
+    
     return {
         propertyValue: data,
     };

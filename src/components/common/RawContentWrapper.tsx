@@ -10,6 +10,7 @@ export interface IRawContentStateProps {
 export interface IRawContentProps extends IRawContentStateProps, IDispatchProps {
     model?: string;
     style?: CSS;
+    onBlur?: boolean;
 };
 
 export class RawContentWrapperImpl extends React.Component<IRawContentProps, void> {
@@ -19,13 +20,14 @@ export class RawContentWrapperImpl extends React.Component<IRawContentProps, voi
     }
 
     render(): JSX.Element {
+        const eventHandlerProps = this.props.onBlur ? {onBlur: this.handleChange} : {onChange: this.handleChange};
          return(
             <div style={this.props.style ? this.props.style : container}>
                 <textarea
                         className="form-control"
                         defaultValue={this.props.value}
-                        onChange={this.handleChange}
                         style={rawContentTextArea}
+                        {...eventHandlerProps}
                 />
             </div>
         );
@@ -36,8 +38,15 @@ let mapStateToProps: MapStateToProps<IRawContentStateProps, IRawContentProps> =
     (state: {forms}, ownProps: IRawContentProps): {value: string} => {
     let data: string = state.forms || {};
 
-    ownProps.model.split('.').forEach((prop: any): void => {
-        data = data.hasOwnProperty(prop) ? data[prop] : '';
+    ownProps.model.split('.').forEach((splittedKey: string) => {
+        const arrayRegExp = /(\w+\[\d+\])$/;
+        if (arrayRegExp.test(splittedKey)) {
+            const index = splittedKey.substring(splittedKey.lastIndexOf('[') + 1, splittedKey.lastIndexOf(']'));
+            const key = splittedKey.substring(splittedKey.lastIndexOf('['), 0);
+            data = data[key] && data[key][index] ? data[key][index] : '';
+        } else {
+            data = data.hasOwnProperty(splittedKey) ? data[splittedKey] : '';
+        }
     });
 
     return {
