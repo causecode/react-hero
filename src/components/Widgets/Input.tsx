@@ -13,6 +13,8 @@ import {
     ListGroup,
     ListGroupItem,
     Radio,
+    FormControlProps,
+    ButtonProps,
 } from 'react-bootstrap';
 
 const {actions} = require<any>('react-redux-form');
@@ -39,7 +41,7 @@ export interface IInputProps extends IInputStateProps, IInputDispatchProps {
 }
 
 const GenericInputTemplate = (props): JSX.Element => {
-    const handleChange: (e: React.FormEvent) => void = (e: React.FormEvent) => {
+    const handleChange: (e: React.FormEvent<void>) => void = (e: React.FormEvent<void>) => {
         props.onChange(e.target[`value`]);
     };
 
@@ -51,7 +53,7 @@ const GenericInputTemplate = (props): JSX.Element => {
 
 const BooleanInputTemplate = (props): JSX.Element => {
 
-    const handleChange: (e: React.FormEvent) => void = (e: React.FormEvent) => {
+    const handleChange: (e: React.FormEvent<Radio>) => void = (e: React.FormEvent<Radio>) => {
         props.onChange((e.target[`value`] === 'option-true'));
     };
 
@@ -81,7 +83,7 @@ const BooleanInputTemplate = (props): JSX.Element => {
 
 const DropDownInputTemplate = (props): JSX.Element => {
 
-    const handleChange: (e: React.FormEvent) => void = (e: React.FormEvent) => {
+    const handleChange: (e: React.ChangeEvent<HTMLSelectElement>) => void = (e: React.ChangeEvent<HTMLSelectElement>) => {
         props.onChange(e.target[`value`]);
     };
 
@@ -125,11 +127,11 @@ class ListInputTemplate extends React.Component<any, any> {
          this.state = {newListItem: ''};
     }
 
-    handleTextChange = (e: React.FormEvent): void => {
+    handleTextChange = (e: React.FormEvent<React.Component<FormControlProps, {}>>): void => {
         this.setState({newListItem: e.target[`value`]});
     }
 
-    addListItem = (e: React.FormEvent): void => {
+    addListItem = (e: React.MouseEvent<React.ClassicComponent<ButtonProps, {}>>): void => {
         this.setState({newListItem: ''});
         let propertyValue = this.props.propertyValue ? this.props.propertyValue.slice() : [] ;
         propertyValue.push(this.state.newListItem);

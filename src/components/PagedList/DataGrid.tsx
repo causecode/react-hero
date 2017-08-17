@@ -48,7 +48,7 @@ export class DataGridImpl extends React.Component<IDataGridProps, void> {
     private properties: string[];
     private columnNames: string[];
 
-    handleChange = (id: number, event: React.FormEvent): void => {
+    handleChange = (id: number, event: React.FormEvent<void>): void => {
         // For selectAllOnPage id will be -1
         if (id === -1) {
             if (event.target[`checked`]) {

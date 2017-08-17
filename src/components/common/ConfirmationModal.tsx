@@ -3,6 +3,7 @@ import * as Radium from 'radium';
 import {MapStateToProps, connect} from 'react-redux';
 import {CSS} from '../../interfaces';
 import {Modal, Button, Row, Col, FontAwesome} from '../ReusableComponents';
+import {ButtonProps} from "react-bootstrap";
 
 export interface IConfirmationModalStateProps {
     show?: boolean;
@@ -11,8 +12,8 @@ export interface IConfirmationModalStateProps {
 }
 
 export interface IConfirmationModalProps extends IConfirmationModalStateProps {
-    onConfirm: React.EventHandler<React.MouseEvent>;
-    onHide: React.EventHandler<React.MouseEvent>;
+    onConfirm: React.EventHandler<React.MouseEvent<React.ClassicComponent<ButtonProps, {}>>>;
+    onHide: React.EventHandler<React.MouseEvent<React.ClassicComponent<ButtonProps, {}>>>;
 }
 
 export interface IConfirmationModalState {

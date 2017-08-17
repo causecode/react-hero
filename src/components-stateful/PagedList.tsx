@@ -116,7 +116,7 @@ export class PagedListImpl extends React.Component<IPagedListProps, void> {
      * Using any here because the type defined by react-bootstrap i.e. SelectCallback was not assignable here.
      * TODO Remove any in handlePagination.
      */
-    handlePagination: any = (pageNumber: number, e: React.SyntheticEvent): void => {
+    handlePagination: any = (pageNumber: number, e: React.SyntheticEvent<void>): void => {
         if (pageNumber !== this.props.activePage) {
             this.props.resetCheckboxState();
         }

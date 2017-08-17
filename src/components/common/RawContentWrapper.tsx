@@ -15,7 +15,7 @@ export interface IRawContentProps extends IRawContentStateProps, IDispatchProps 
 
 export class RawContentWrapperImpl extends React.Component<IRawContentProps, void> {
 
-    handleChange = (event: React.FormEvent): void => {
+    handleChange = (event: React.ChangeEvent<HTMLTextAreaElement> | React.FocusEvent<HTMLTextAreaElement>): void => {
         this.props.saveData(this.props.model, event.target[`value`]);
     }
 
