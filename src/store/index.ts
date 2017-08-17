@@ -8,24 +8,21 @@ const configureMockStore: Function = require<{default: any}>('redux-mock-store')
 // Doing this to avoid cyclic imports problem when used through commandline.
 
 // MockStore interface copied from redux-mock-store index.d.ts file since interface is not exported.
-export interface IMockStore extends Store {
+export interface IMockStore extends Store<{}> {
     getState(): any;
     getActions(): Array<any>;
     clearActions(): void;
     subscribe(): any;
 }
 
-export function configureStore(initialState): Store | IMockStore {
-    let store: Store | IMockStore;
+export function configureStore(initialState): Store<{}> | IMockStore {
+    let store: Store<{}> | IMockStore;
     // Using process.env.NODE_ENV instead of appService.getEnvironment because appService Import was returning empty.
     if (process.env.NODE_ENV === 'test') {
         store = configureMockStore()(initialState);
         // store = configureMockStore(_getMiddleware())(initialState, rootReducer, _getMiddleware());
     } else {
-        store = compose(
-            _getMiddleware(),
-            ..._getEnhancers()
-        )(createStore)(rootReducer, initialState);
+        store = compose.apply(null, [_getMiddleware(), ..._getEnhancers()])(createStore)(rootReducer, initialState);
     }
 
     return store;
@@ -60,4 +57,4 @@ export function _getEnhancers(): any {
     return enhancers;
 }
 
-export const store: Store | IMockStore = configureStore({});
+export const store: Store<{}> | IMockStore = configureStore({});
