@@ -180,10 +180,10 @@ export class HeaderFooterLayoutImpl extends React.Component<IHeaderFooterLayoutP
 
         return (
             <NavMenuLauncherIcon
-                key={`${isPrimaryNav ? 'primary-nav-icon' : 'secondary-nav-icon'}`}
-                style={style.navIcon}
-                position={isPrimaryNav ? primaryMenuPosition : secondaryMenuPosition}
-                onClick={isPrimaryNav ? toggleNav : toggleSecondaryNav}
+                    key={`${isPrimaryNav ? 'primary-nav-icon' : 'secondary-nav-icon'}`}
+                    style={style.navIcon}
+                    position={isPrimaryNav ? primaryMenuPosition : secondaryMenuPosition}
+                    onClick={isPrimaryNav ? toggleNav : toggleSecondaryNav}
             />
         );
     }
