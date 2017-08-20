@@ -170,7 +170,7 @@ export class HeaderFooterLayoutImpl extends React.Component<IHeaderFooterLayoutP
                                 style={objectAssign({}, {WebkitTransform: `translate3d(${x}%, 0, 0)`,
                                         transform: `translate3d(${x}%, 0, 0)`}, style.nav || {})}
                         >
-                            <i className={closeButtonClasses} onClick={onNavClose ? onNavClose : toggleNav}/>
+                            <i className={closeButtonClasses} onClick={onNavClose || toggleNav}/>
                             {this.nav}
                         </div>
                             }

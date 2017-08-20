@@ -29,3 +29,22 @@ export function scrollToTop(): void {
         }
     }, 50);
 }
+
+export function getNestedData(parent: any, path: string): any {
+
+    path.split('.').forEach((splittedKey: string) => {
+        if (!parent) {
+            return '';
+        }
+        const arrayRegExp = /(\w+\[\d+\])$/;
+        if (arrayRegExp.test(splittedKey)) {
+            const index = splittedKey.substring(splittedKey.lastIndexOf('[') + 1, splittedKey.lastIndexOf(']'));
+            const key = splittedKey.substring(splittedKey.lastIndexOf('['), 0);
+            parent = parent[key] && parent[key][index] ? parent[key][index] : '';
+        } else {
+            parent = parent.hasOwnProperty(splittedKey) ? parent[splittedKey] : '';
+        }
+    });
+
+    return parent;
+}

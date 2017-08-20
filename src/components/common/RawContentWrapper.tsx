@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {connect, MapDispatchToPropsFunction, MapStateToProps} from 'react-redux';
 import {IDispatchProps, CSS, IDispatch} from '../../interfaces';
+import {getNestedData} from '../../utils/commonUtils';
 const {actions} = require<any>('react-redux-form');
 
 export interface IRawContentStateProps {
@@ -38,19 +39,8 @@ let mapStateToProps: MapStateToProps<IRawContentStateProps, IRawContentProps> =
     (state: {forms}, ownProps: IRawContentProps): {value: string} => {
     let data: string = state.forms || {};
 
-    ownProps.model.split('.').forEach((splittedKey: string) => {
-        const arrayRegExp = /(\w+\[\d+\])$/;
-        if (arrayRegExp.test(splittedKey)) {
-            const index = splittedKey.substring(splittedKey.lastIndexOf('[') + 1, splittedKey.lastIndexOf(']'));
-            const key = splittedKey.substring(splittedKey.lastIndexOf('['), 0);
-            data = data[key] && data[key][index] ? data[key][index] : '';
-        } else {
-            data = data.hasOwnProperty(splittedKey) ? data[splittedKey] : '';
-        }
-    });
-
     return {
-        value: data,
+        value: getNestedData(data, ownProps.model),
     };
 };
 

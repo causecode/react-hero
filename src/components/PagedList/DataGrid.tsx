@@ -205,25 +205,27 @@ export class DataGridImpl extends React.Component<IDataGridProps, void> {
         this.resource = this.props.instanceList[0] ? this.props.instanceList[0].resourceName : '';
 
         if (!this.props.properties || !this.props.properties.length) {
-        // TODO Better names for the properties array which is supposed to be send by the server.
+            // TODO Better names for the properties array which is supposed to be send by the server.
             const instance = this.props.instanceList[0];
 
             let columnNames: string[] = [];
             let propertyNames: string[] = [];
 
-            if (instance.columnNames) {
+            // To make it backward compatible
+            if (instance.columnNames && typeof instance.columnNames[0] === 'object') {
                 instance.columnNames.forEach((property: IColumnNames) => {
                     columnNames.push(property.label);
                     propertyNames.push(property.accessor);
                 });
             }
 
-            this.columnNames = columnNames;
+            this.columnNames = columnNames.length > 0 ? columnNames : this.properties;
 
             this.properties = propertyNames.length > 0 ? propertyNames :
                     Object.keys(this.props.instanceList[0].properties);
         } else {
             this.properties = this.props.properties;
+            this.columnNames = this.props.properties;
         }
 
         let {showDefaultActions, customActions, style, isBordered} = this.props;

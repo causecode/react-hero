@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as Radium from 'radium';
 import {connect, MapStateToProps, MapDispatchToPropsFunction} from 'react-redux';
 import {CSS, IDispatchProps, IDispatch} from '../../interfaces';
+import {getNestedData} from '../../utils/commonUtils';
 const {actions} = require<any>('react-redux-form');
 const MarkdownEditor = require<any>('react-markdown-editor').MarkdownEditor;
 const MarkDownPreview = require<any>('react-markdown');
@@ -57,11 +58,8 @@ let mapStateToProps: MapStateToProps<IMarkdownStateProps, IMarkdownProps> =
         (state : {forms}, ownProps : IMarkdownProps) : {value : string} => {
     let data : string = state.forms || {};
 
-    ownProps.model.split('.').forEach((prop: any): void => {
-        data = data.hasOwnProperty(prop) ? data[prop] : '';
-    });
     return {
-        value : data,
+        value : getNestedData(data, ownProps.model),
     };
 };
 

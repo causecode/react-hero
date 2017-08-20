@@ -16,6 +16,7 @@ import {
     FormControlProps,
     ButtonProps,
 } from 'react-bootstrap';
+import {getNestedData} from '../../utils/commonUtils';
 
 const {actions} = require<any>('react-redux-form');
 const ReactDatetime = require<any>('react-datetime');
@@ -246,20 +247,9 @@ class FormInputImpl extends React.Component<IInputProps, {}> {
 const mapStateToProps: MapStateToProps<IInputStateProps, IInputProps> =
         (state: {forms: any}, ownProps: IInputProps): IInputStateProps => {
     let data = state.forms || {};
-
-    ownProps.model.split('.').forEach((splittedKey: string) => {
-        const arrayRegExp = /(\w+\[\d+\])$/;
-        if (arrayRegExp.test(splittedKey)) {
-            const index = splittedKey.substring(splittedKey.lastIndexOf('[') + 1, splittedKey.lastIndexOf(']'));
-            const key = splittedKey.substring(splittedKey.lastIndexOf('['), 0);
-            data = data[key] && data[key][index] ? data[key][index] : '';
-        } else {
-            data = data.hasOwnProperty(splittedKey) ? data[splittedKey] : '';
-        }
-    });
     
     return {
-        propertyValue: data,
+        propertyValue: getNestedData(data, ownProps.model),
     };
 };
 
