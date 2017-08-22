@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {connect, MapDispatchToPropsFunction, MapStateToProps} from 'react-redux';
 import {IDispatchProps, CSS, IDispatch} from '../../interfaces';
+import {getNestedData} from '../../utils/commonUtils';
 const {actions} = require<any>('react-redux-form');
 
 export interface IRawContentStateProps {
@@ -10,22 +11,24 @@ export interface IRawContentStateProps {
 export interface IRawContentProps extends IRawContentStateProps, IDispatchProps {
     model?: string;
     style?: CSS;
+    onBlur?: boolean;
 };
 
 export class RawContentWrapperImpl extends React.Component<IRawContentProps, void> {
 
-    handleChange = (event: React.FormEvent): void => {
+    handleChange = (event: React.ChangeEvent<HTMLTextAreaElement> | React.FocusEvent<HTMLTextAreaElement>): void => {
         this.props.saveData(this.props.model, event.target[`value`]);
     }
 
     render(): JSX.Element {
+        const eventHandlerProps = this.props.onBlur ? {onBlur: this.handleChange} : {onChange: this.handleChange};
          return(
             <div style={this.props.style ? this.props.style : container}>
                 <textarea
                         className="form-control"
                         defaultValue={this.props.value}
-                        onChange={this.handleChange}
                         style={rawContentTextArea}
+                        {...eventHandlerProps}
                 />
             </div>
         );
@@ -36,12 +39,8 @@ let mapStateToProps: MapStateToProps<IRawContentStateProps, IRawContentProps> =
     (state: {forms}, ownProps: IRawContentProps): {value: string} => {
     let data: string = state.forms || {};
 
-    ownProps.model.split('.').forEach((prop: any): void => {
-        data = data.hasOwnProperty(prop) ? data[prop] : '';
-    });
-
     return {
-        value: data,
+        value: getNestedData(data, ownProps.model),
     };
 };
 

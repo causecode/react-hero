@@ -13,7 +13,10 @@ import {
     ListGroup,
     ListGroupItem,
     Radio,
+    FormControlProps,
+    ButtonProps,
 } from 'react-bootstrap';
+import {getNestedData} from '../../utils/commonUtils';
 
 const {actions} = require<any>('react-redux-form');
 const ReactDatetime = require<any>('react-datetime');
@@ -35,21 +38,23 @@ export interface IInputProps extends IInputStateProps, IInputDispatchProps {
     labelSize?: number;
     style?: React.CSSProperties;
     radioButtonLabels?: {first: string, second: string}
+    onBlur?: boolean;
 }
 
 const GenericInputTemplate = (props): JSX.Element => {
-    const handleChange: (e: React.FormEvent) => void = (e: React.FormEvent) => {
+    const handleChange: (e: React.FormEvent<void>) => void = (e: React.FormEvent<void>) => {
         props.onChange(e.target[`value`]);
     };
 
+    const inputProps = props.onBlur ? {onBlur: handleChange} : {onChange: handleChange};
     return (
-        <input type={props.type} className="form-control" value={props.propertyValue} onChange={handleChange}/>
+        <input type={props.type} className="form-control" defaultValue={props.propertyValue} {...inputProps} />
     );
 };
 
 const BooleanInputTemplate = (props): JSX.Element => {
 
-    const handleChange: (e: React.FormEvent) => void = (e: React.FormEvent) => {
+    const handleChange: (e: React.FormEvent<Radio>) => void = (e: React.FormEvent<Radio>) => {
         props.onChange((e.target[`value`] === 'option-true'));
     };
 
@@ -79,7 +84,7 @@ const BooleanInputTemplate = (props): JSX.Element => {
 
 const DropDownInputTemplate = (props): JSX.Element => {
 
-    const handleChange: (e: React.FormEvent) => void = (e: React.FormEvent) => {
+    const handleChange: (e: React.ChangeEvent<HTMLSelectElement>) => void = (e: React.ChangeEvent<HTMLSelectElement>) => {
         props.onChange(e.target[`value`]);
     };
 
@@ -123,11 +128,11 @@ class ListInputTemplate extends React.Component<any, any> {
          this.state = {newListItem: ''};
     }
 
-    handleTextChange = (e: React.FormEvent): void => {
+    handleTextChange = (e: React.FormEvent<React.Component<FormControlProps, {}>>): void => {
         this.setState({newListItem: e.target[`value`]});
     }
 
-    addListItem = (e: React.FormEvent): void => {
+    addListItem = (e: React.MouseEvent<React.ClassicComponent<ButtonProps, {}>>): void => {
         this.setState({newListItem: ''});
         let propertyValue = this.props.propertyValue ? this.props.propertyValue.slice() : [] ;
         propertyValue.push(this.state.newListItem);
@@ -242,11 +247,9 @@ class FormInputImpl extends React.Component<IInputProps, {}> {
 const mapStateToProps: MapStateToProps<IInputStateProps, IInputProps> =
         (state: {forms: any}, ownProps: IInputProps): IInputStateProps => {
     let data = state.forms || {};
-    ownProps.model.split('.').forEach(prop => {
-        data = data.hasOwnProperty(prop) ? data[prop] : '';
-    });
+    
     return {
-        propertyValue: data,
+        propertyValue: getNestedData(data, ownProps.model),
     };
 };
 

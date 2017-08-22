@@ -5,7 +5,7 @@ import {Table, Tooltip, OverlayTrigger} from 'react-bootstrap';
 import {MapStateToProps, MapDispatchToPropsFunction, connect} from 'react-redux';
 import {IState} from './BulkUserActions';
 import {BaseModel} from '../../models/BaseModel';
-import {CustomActionType, CSS, IPagedListStyle} from '../../interfaces';
+import {CustomActionType, CSS, IPagedListStyle, IColumnNames} from '../../interfaces';
 import {getInnerData, getActionComponent} from '../../utils/appService';
 import {selectAllRecords, toggleCheckbox} from '../../actions/checkboxActions';
 import {SELECT_ALL_RECORDS, SELECT_ALL_RECORDS_ON_PAGE, CHECK_CHECKBOX, UNCHECK_CHECKBOX} from '../../constants';
@@ -46,8 +46,9 @@ export class DataGridImpl extends React.Component<IDataGridProps, void> {
 
     private resource: string;
     private properties: string[];
+    private columnNames: string[];
 
-    handleChange = (id: number, event: React.FormEvent): void => {
+    handleChange = (id: number, event: React.FormEvent<void>): void => {
         // For selectAllOnPage id will be -1
         if (id === -1) {
             if (event.target[`checked`]) {
@@ -75,6 +76,7 @@ export class DataGridImpl extends React.Component<IDataGridProps, void> {
 
     toggleAllCheckboxes = (isChecked: boolean): void => {
         let instances: BaseModel[] = this.props.instanceList;
+
         if (isChecked) {
             for (let i: number = 0; i < instances.length; i++) {
                 if (this.props.selectedIds && this.props.selectedIds.indexOf(instances[i].properties.id) === -1) {
@@ -91,17 +93,21 @@ export class DataGridImpl extends React.Component<IDataGridProps, void> {
     getInnerHtml = (property: string, instance: BaseModel, instanceProperties: string[]): JSX.Element | string => {
         if (property.indexOf('.') > 0) {
             let method: Function = instance['getHTML' + property.capitalize().substring(0, property.indexOf('.'))];
+
             if (method) {
                 return method(instanceProperties);
             }
+
             return getInnerData(instanceProperties, property);
         } else {
             if (instance['getHTML' + property.capitalize()]) {
                 return instance['getHTML' + property.capitalize()](instanceProperties);
             }
+
             if (!instanceProperties[property]) {
                 return instanceProperties[property];
             }
+
             return instanceProperties[property].toString();
         }
     }
@@ -199,11 +205,27 @@ export class DataGridImpl extends React.Component<IDataGridProps, void> {
         this.resource = this.props.instanceList[0] ? this.props.instanceList[0].resourceName : '';
 
         if (!this.props.properties || !this.props.properties.length) {
-        // TODO Better names for the properties array which is supposed to be send by the server.
-            this.properties = this.props.instanceList[0].columnNames ||
+            // TODO Better names for the properties array which is supposed to be send by the server.
+            const instance = this.props.instanceList[0];
+
+            let columnNames: string[] = [];
+            let propertyNames: string[] = [];
+
+            // To make it backward compatible
+            if (instance.columnNames && typeof instance.columnNames[0] === 'object') {
+                instance.columnNames.forEach((property: IColumnNames) => {
+                    columnNames.push(property.label);
+                    propertyNames.push(property.accessor);
+                });
+            }
+
+            this.columnNames = columnNames.length > 0 ? columnNames : this.properties;
+
+            this.properties = propertyNames.length > 0 ? propertyNames :
                     Object.keys(this.props.instanceList[0].properties);
         } else {
             this.properties = this.props.properties;
+            this.columnNames = this.props.properties;
         }
 
         let {showDefaultActions, customActions, style, isBordered} = this.props;
@@ -225,8 +247,8 @@ export class DataGridImpl extends React.Component<IDataGridProps, void> {
                                 />
                             </th>
                             <th style={style.headerStyle}>#</th>
-                            {this.properties.map((property: string, index: number) => {
-                                return (<th style={style.headerStyle} key={index}>{property.capitalize()}</th>);
+                            {this.columnNames.map((columnName: string, index: number) => {
+                                return (<th style={style.headerStyle} key={index}>{columnName.capitalize()}</th>);
                             })}
                             {showDefaultActions || customActions ? <th style={style.headerStyle}>Actions</th> : null}
                         </tr>
@@ -234,6 +256,7 @@ export class DataGridImpl extends React.Component<IDataGridProps, void> {
                     <tbody>
                         {this.props.instanceList.map((instance, index) => {
                             let instanceProperties = instance.properties;
+
                             return (
                                 <tr style={style.rowStyle} key={index} className="data-grid-row">
                                     <td style={style.dataStyle}>

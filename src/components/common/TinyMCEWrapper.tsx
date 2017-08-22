@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as Radium from 'radium';
 import {connect, MapStateToProps, MapDispatchToPropsFunction} from 'react-redux';
 import {CSS, IDispatchProps, IDispatch} from '../../interfaces';
+import {getNestedData} from '../../utils/commonUtils';
 const {actions} = require<any>('react-redux-form');
 const TinyMCE: any = require<any>('react-tinymce-input');
 
@@ -40,11 +41,8 @@ let mapStateToProps: MapStateToProps<ITinyMCEWrapperProps, ITinyMCEWrapperProps>
         (state: {forms}, ownProps: ITinyMCEWrapperProps): {value: string} => {
     let data: string = state.forms || {};
 
-    ownProps.model.split('.').forEach(prop => {
-        data = data.hasOwnProperty(prop) ? data[prop] : '';
-    });
     return {
-        value: data,
+        value: getNestedData(data, ownProps.model),
     };
 };
 
