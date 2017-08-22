@@ -30,6 +30,14 @@ export function scrollToTop(): void {
     }, 50);
 }
 
+/**
+ * This function checkes whether any element (object, string, array) exists at given path in given parent object.
+ * 
+ * @export
+ * @param {*} parent - Object in which to check for given path's existent.
+ * @param {string} path - Nested dotted path to be checked in given parent object whether it exists or not.
+ * @returns {*} Matched object at given path.
+ */
 export function getNestedData(parent: any, path: string): any {
 
     path.split('.').forEach((splittedKey: string) => {
