@@ -1,4 +1,4 @@
-# React Hero (v1.1.3)
+# React Hero (v1.1.5)
 
 Plugin provides utility directives and services.
 
@@ -197,10 +197,13 @@ eg:
 	- Example:
 
 		```
-        static columnNames: string[] = [
-        	'id',
-        	'firstname',
-        ];
+        static columnNames: Object[] = [{
+            label: 'Id',
+            accessor: 'id',
+        }, {
+            label: 'Title',
+            acessor: 'parentobject.nestedobject.title',
+        }];
         ```
 
      - With the above example only two columns (*Id* and the *Firstname*) will be generated in the table.

@@ -55,6 +55,7 @@ export interface IHeaderFooterLayoutProps {
     children?: any;
     open?: boolean;
     toggleNav?: () => void;
+    onNavClose?: () => void;
     style?: {
         header: React.CSSProperties,
         nav: React.CSSProperties,
@@ -153,7 +154,7 @@ export class HeaderFooterLayoutImpl extends React.Component<IHeaderFooterLayoutP
     }
 
     render(): JSX.Element {
-        const {toggleNav, menuPosition, style} = this.props;
+        const {toggleNav, menuPosition, style, onNavClose} = this.props;
         let navMenuClasses: string = `nav-menu ${menuPosition}`;
         let menuClosePosition: number = (menuPosition === 'left') ? -100 : 100;
         let closeButtonClasses: string = 'fa fa-times highlight-on-hover ';
@@ -169,7 +170,7 @@ export class HeaderFooterLayoutImpl extends React.Component<IHeaderFooterLayoutP
                                 style={objectAssign({}, {WebkitTransform: `translate3d(${x}%, 0, 0)`,
                                         transform: `translate3d(${x}%, 0, 0)`}, style.nav || {})}
                         >
-                            <i className={closeButtonClasses} onClick={toggleNav}/>
+                            <i className={closeButtonClasses} onClick={onNavClose || toggleNav}/>
                             {this.nav}
                         </div>
                             }

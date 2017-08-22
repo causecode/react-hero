@@ -18,7 +18,7 @@ export class OuterFilterImpl extends React.Component<IOuterFilterProps, void> {
         ModelService.getModel(resource).list();
     }
 
-    handleSubmit = (event: React.FormEvent): void => {
+    handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
         event.preventDefault();
         this.sendFilters(this.props.resource);
     };

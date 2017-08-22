@@ -35,7 +35,7 @@ export function setInstanceInList<T extends BaseModel>
 
     let {index}: {index: number} = findInstanceInList<T>(instanceList, instance.properties.id.toString());
     if (index < 0 && force) {
-        instanceList.push(instance);
+        instanceList = instanceList.concat(instance);
     } else if (index >= 0) {
         instanceList[index] = instance;
     }
