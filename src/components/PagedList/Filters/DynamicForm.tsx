@@ -20,7 +20,7 @@ export class InnerFilterFormImpl extends React.Component<IPagedListFiltersProps,
         );
     }
 
-    handleSubmit = (event: React.FormEvent): void => {
+    handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
         event.preventDefault();
         this.sendFilters(this.props.resource);
     };

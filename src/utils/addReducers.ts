@@ -12,7 +12,7 @@ const {combineForms} = require<any>('react-redux-form');
 const reduxFormReducer = require<any>('redux-form').reducer;
 let objectAssign: Function = require<Function>('object-assign');
 
-export const addReducers = (ReducerConfig: Object): Reducer => {
+export const addReducers = (ReducerConfig: Object) => {
     return combineReducers(objectAssign({}, ReducerConfig, {
         open,
         data,

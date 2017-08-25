@@ -67,6 +67,7 @@ export interface IHeaderFooterLayoutProps {
     open?: boolean;
     secondaryNavOpen?: boolean;
     toggleNav?: () => void;
+    onNavClose?: () => void;
     toggleSecondaryNav?: () => void;
     style?: IHeaderFooterLayoutStyle;
 }
@@ -190,7 +191,14 @@ export class HeaderFooterLayoutImpl extends React.Component<IHeaderFooterLayoutP
     }
 
     renderNavMenu = (isPrimaryNav: boolean): JSX.Element => {
-        const {toggleNav, primaryMenuPosition, style, secondaryMenuPosition, toggleSecondaryNav} = this.props;
+        const {
+            toggleNav,
+            primaryMenuPosition,
+            style,
+            secondaryMenuPosition,
+            toggleSecondaryNav,
+            onNavClose,
+        } = this.props;
 
         const menuPosition: string = isPrimaryNav ? primaryMenuPosition : secondaryMenuPosition;
         const navMenuClasses: string = `nav-menu ${menuPosition}`;
@@ -212,8 +220,11 @@ export class HeaderFooterLayoutImpl extends React.Component<IHeaderFooterLayoutP
                             {WebkitTransform: `translate3d(${x}%, 0, 0)`, transform: `translate3d(${x}%, 0, 0)`},
                             customStyle,
                         ]}>
-                        <i className={closeButtonClasses} onClick={isPrimaryNav ? toggleNav : toggleSecondaryNav}/>
-                        {this[isPrimaryNav ? 'primaryNav' : 'secondaryNav']}
+                            <i
+                                    className={closeButtonClasses}
+                                    onClick={isPrimaryNav ? (onNavClose || toggleNav) : toggleSecondaryNav}
+                            />
+                            {this[isPrimaryNav ? 'primaryNav' : 'secondaryNav']}
                     </div>
                 }
             </Motion>

@@ -53,7 +53,7 @@ export class UserActionsImpl extends React.Component<IUserActionProps, void> {
         return list;
     }
 
-    saveAction = (event: React.FormEvent): void => {
+    saveAction = (event: React.ChangeEvent<HTMLSelectElement>): void => {
         store.dispatch(saveUserAction(event.target[`value`]));
     }
 

@@ -1,9 +1,9 @@
-import * as TestUtils from 'react-addons-test-utils';
 import * as React from 'react';
 import {BaseModel, DefaultModel} from '../models/BaseModel';
+export const TestUtils = require<any>('react-addons-test-utils');
 
 export interface IInitializerData {
-    renderer: React.ShallowRenderer;
+    renderer: any;
     resource: string;
     instances: {'test': BaseModel, 'test1': BaseModel};
     fetchInstanceData: (...args: any[]) => void;

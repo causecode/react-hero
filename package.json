@@ -107,6 +107,9 @@
   },
   "devDependencies": {
     "@types/history": "4.5.1",
+    "@types/react": "15.0.21",
+    "@types/react-bootstrap": "0.0.50",
+    "@types/react-dom": "0.14.23",
     "@types/redux-logger": "3.0.0",
     "autoprefixer": "6.3.6",
     "autoprefixer-core": "6.0.1",
