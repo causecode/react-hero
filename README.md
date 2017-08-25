@@ -1,4 +1,4 @@
-# React Hero (v1.1.4)
+# React Hero (v1.1.6)
 
 Plugin provides utility directives and services.
 
@@ -120,16 +120,16 @@ eg:
   };
 
   render() {
-	    return (
-            <HeaderFooterLayout style={customStyle} primaryMenuPosition="left" secondaryMenuPosition="right">
-                ...
-                <NavigationMenu>    // The primary navigation menu.
-                    <div>A navigation menu<div>
-                </NavigationMenu>
-                <NavigationMenu>    // The secondary navigation menu.
-                    <div>Another navigation menu<div>
-                </NavigationMenu>
-	        </HeaderFooterLayout>
+	   return (
+        <HeaderFooterLayout style={customStyle} primaryMenuPosition="left" secondaryMenuPosition="right">
+            ...
+            <NavigationMenu>    // The primary navigation menu.
+                <div>A navigation menu<div>
+            </NavigationMenu>
+            <NavigationMenu>    // The secondary navigation menu.
+                <div>Another navigation menu<div>
+            </NavigationMenu>
+        </HeaderFooterLayout>
 	    )
   }
   ```

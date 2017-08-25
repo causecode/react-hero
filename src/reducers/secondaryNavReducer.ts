@@ -1,6 +1,7 @@
 import {TOGGLE_SECONDARY_NAV} from '../constants';
+import {IGenericAction} from '../interfaces';
 
-export function secondaryNavReducer (state: any = false, action: {type: string}) {
+export function secondaryNavReducer (state: boolean = false, action: IGenericAction) {
     switch (action.type) {
         case TOGGLE_SECONDARY_NAV:
             return !state;

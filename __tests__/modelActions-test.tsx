@@ -4,6 +4,7 @@ import * as Actions from '../src/actions/modelActions';
 import {initializeTestCase} from './../src/utils/initializeTestCase';
 import {IInitializerData} from './../src/utils/initializeTestCase';
 import {BaseModel} from '../src/models/BaseModel';
+import {IGenericAction} from '../src/interfaces';
 import {
     SAVE_INSTANCE,
     UPDATE_INSTANCE,
@@ -53,7 +54,7 @@ describe('instanceActions', () => {
         done: () => void,
         args: {
             title: string,
-            action: {type: string},
+            action: IGenericAction,
             expectedParams: (string | number)[],
         }
     ): void => {

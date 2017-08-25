@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as Radium from 'radium';
-import {NavMenuLauncherIcon} from './NavMenuLauncherIcon';
 import {Motion, spring} from 'react-motion';
+import {NavMenuLauncherIcon} from './NavMenuLauncherIcon';
 import {toggleNav, toggleSecondaryNav} from '../actions/modelActions';
 import {CSS} from '../interfaces';
 
@@ -115,19 +115,16 @@ export class HeaderFooterLayoutImpl extends React.Component<IHeaderFooterLayoutP
     parseChild = (child: any): void => {
         switch (child.type.componentType) {
             case headerType:
-                this.header = child;
+                this.setHeader(child);
                 break;
             case contentType:
-                this.content = child;
+                this.setContent(child);
                 break;
             case footerType:
-                this.footer = child;
+                this.setFooter(child);
                 break;
             case navigationMenuType:
-                // Maximum of two navigation drawer should be rendered.
-                if (++this.navMenuCount <= 2) {
-                    this.setNav(child, this.navMenuCount);
-                }
+                this.setNav(child);
                 break;
         }
     };
@@ -147,6 +144,12 @@ export class HeaderFooterLayoutImpl extends React.Component<IHeaderFooterLayoutP
         }
     }
 
+    componentWillMount(): void {
+        if (this.isNavBarPresent && !this.props.primaryMenuPosition) {
+            throw new Error('The prop primaryMenuPosition has not been defined.');
+        }
+    }
+
     protected setHeader(headerImpl: JSX.Element): void {
         this.header = headerImpl;
     }
@@ -159,21 +162,19 @@ export class HeaderFooterLayoutImpl extends React.Component<IHeaderFooterLayoutP
         this.footer = footerImpl;
     }
 
-    protected setNav(NavImpl: JSX.Element, navMenuCount: number): void {
-        if (navMenuCount === 2) {
-            this.isSecondaryNavBarPresent = true;
-            this.secondaryNav = NavImpl;
-        } else {
-            this.isNavBarPresent = true;
-            this.primaryNav = NavImpl;
+    protected setNav(NavImpl: JSX.Element): void {
+        // Maximum of two navigation drawer should be rendered.
+        if (++this.navMenuCount <= 2) {
+            if (this.navMenuCount === 2) {
+                this.isSecondaryNavBarPresent = true;
+                this.secondaryNav = NavImpl;
+            } else {
+                this.isNavBarPresent = true;
+                this.primaryNav = NavImpl;
+            }
         }
     }
 
-    componentWillMount(): void {
-        if (this.isNavBarPresent && !this.props.primaryMenuPosition) {
-            throw new Error('The prop primaryMenuPosition has not been defined.');
-        }
-    }
 
     renderNavMenuLauncherIcon = (isPrimaryNav: boolean): JSX.Element => {
         const {toggleNav, primaryMenuPosition, style, secondaryMenuPosition, toggleSecondaryNav} = this.props;
