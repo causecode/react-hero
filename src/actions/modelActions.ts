@@ -1,3 +1,4 @@
+import {IGenericAction} from '../interfaces';
 import {BaseModel} from '../models/BaseModel';
 import {
     SAVE_INSTANCE,
@@ -48,19 +49,19 @@ export const unsetList = (resource: string) => {
     };
 };
 
-export const toggleFilters = (): {type: string} => {
+export const toggleFilters = (): IGenericAction => {
     return {
         type: TOGGLE_FILTERS,
     };
 };
 
-export const toggleNav = (): {type: string} => {
+export const toggleNav = (): IGenericAction => {
     return {
         type: TOGGLE_NAV,
     };
 };
 
-export const toggleSecondaryNav = (): {type: string} => {
+export const toggleSecondaryNav = (): IGenericAction => {
     return {
         type: TOGGLE_SECONDARY_NAV,
     };

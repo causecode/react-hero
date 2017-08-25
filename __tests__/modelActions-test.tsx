@@ -1,6 +1,7 @@
 jest.unmock('../src/actions/modelActions');
 
 import * as Actions from '../src/actions/modelActions';
+import {IGenericAction} from '../src/interfaces';
 import {initializeTestCase} from './../src/utils/initializeTestCase';
 import {IInitializerData} from './../src/utils/initializeTestCase';
 import {BaseModel} from '../src/models/BaseModel';
@@ -53,7 +54,7 @@ describe('instanceActions', () => {
         done: () => void,
         args: {
             title: string,
-            action: {type: string},
+            action: IGenericAction,
             expectedParams: (string | number)[],
         }
     ): void => {
