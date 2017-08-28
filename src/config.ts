@@ -1,11 +1,11 @@
 import * as appService from './utils/appService';
-let packageJson: any = require('../../../package.json');
-let localConfigJson: any = require('../../../localConfig.json');
+let packageJson: any = require('../package.json');
+let localConfigJson: any = require('../localConfig.json');
 
 // Doing this to avoid cyclic imports problem when used through commandline.
 let isEmpty: (...args: any[]) => void | boolean = appService.isEmpty || ((...args: any[]) => {});
 let getEnvironment: () => string = appService.getEnvironment || (() => '');
-localConfigJson = isEmpty(localConfigJson) ? packageJson : localConfigJson;
+ localConfigJson = isEmpty(localConfigJson) ? packageJson : localConfigJson;
 
 let config: {
     reactHero: {
