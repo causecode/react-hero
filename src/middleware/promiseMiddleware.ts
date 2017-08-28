@@ -37,7 +37,7 @@ export function promiseMiddleware({ dispatch }) {
                 dispatch(objectAssign({}, {
                     type: FULFILLED,
                     payload: result.data || {},
-                    resource
+                    resource,
                 }, actionParams));
 
                 if (typeof successCallBack === 'function') {
@@ -48,7 +48,7 @@ export function promiseMiddleware({ dispatch }) {
                 dispatch(objectAssign({}, {
                     type: REJECTED,
                     payload: error,
-                    resource
+                    resource,
                 }, actionParams));
 
                 if (typeof failureCallBack === 'function') {

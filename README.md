@@ -1,4 +1,4 @@
-# React Hero (v1.1.5)
+# React Hero (v1.1.6)
 
 Plugin provides utility directives and services.
 
@@ -65,7 +65,6 @@ After you have merged everything to the master branch, follow the following step
       )
   }
   ```
-- If `NavigationMenu`component is rendered within the `HeaderFooterLayout` the sliding nav-menu along with the burger icon in the Header will be generated automatically. If it is not defined neither the icon nor the menu will be rendered.
 - There are also a few custom Widgets that have been provided for use in the `HeaderFooterLayout` which provide pre defined styles.
 eg:
   - `Title`
@@ -73,35 +72,69 @@ eg:
   - `Content`
   - `ButtonList`
   - `ButtonListItem`
+- __Navigation Menu__
+    * The `HeaderFooterLayout` has the ability to render upto two navigation menu. No additional prop is required in the `NavigationMenu` for differentiating between the two navigation menu. Just add two `NavigationMenu` elements inside `HeaderFooterLayout`.<br/><br/>`react-hero` is smart enough to identify the drawer.
+    The `NavigationMenu` appearing first in the sequence is the __primary__ menu and the other one is the __secondary__ menu. If any more `NavigationMenu` is added, it will be ignored.<br/>
+    Example: 
+    
+        ```
+        <HeaderFooterLayout>
+            ...
+            <NavigationMenu>    // The primary navigation menu.
+                <div>A navigation menu<div>
+            </NavigationMenu>
+            <NavigationMenu>    // The secondary navigation menu.
+                <div>Another navigation menu<div>
+            </NavigationMenu>
+        </HeaderFooterLayout>
+        ```  
+    * The default position for the primary menu is the _left_ side of the screen and for the secondary menu it's the _right_ side. But the sides can be changed as per the requirements by passing the props: `primaryMenuPosition` and `secondaryMenuPosition`. The value of these props can either be __left__ or __right__.
+    * The style of each navigation menu can be changed via the custom style passed to the `HeaderFooterLayout`. The style for the primary and the secondary menu can be assigned to the keys __primaryNav__ and __secondaryNav__ respectively. The example of the same can be found below.
+
 - `HeaderFooterLayout` accepts a `style` prop to override the default styles:
   ```
-  const customStyle = {
+  const customStyle: IHeaderFooterLayoutStyle = {
       header: {
-          padding: '0px',
-          background: 'transparent',
+          padding: 'none',
+      },
+      primaryNav: {
+          padding: 'none',
+          width: '30%',
+          backgroundColor: '#eea303',
+      },
+      secondaryNav: {
+          padding: 'none',
+          width: '50%',
       },
       content: {
-          overflow: 'auto'
-      },
-      navIcon: {
-          display: 'none'
-      },
-      nav: {
-          backgroundColor: '#EEA303'
+          color: '#888',
       },
       footer: {
-          padding: '0px'
-      }
+          backgroundColor: '#888',
+          fontSize: '15px',
+          color: 'white',
+      },
+      navIcon: {
+          color: '#777',
+      },
   };
 
   render() {
-	    return (
-	      <HeaderFooterLayout style={customStyle}>
-	        ...
-	      </HeaderFooterLayout>
+	   return (
+        <HeaderFooterLayout style={customStyle} primaryMenuPosition="left" secondaryMenuPosition="right">
+            ...
+            <NavigationMenu>    // The primary navigation menu.
+                <div>A navigation menu<div>
+            </NavigationMenu>
+            <NavigationMenu>    // The secondary navigation menu.
+                <div>Another navigation menu<div>
+            </NavigationMenu>
+        </HeaderFooterLayout>
 	    )
   }
   ```
+  ![NavigationMenuDemo screenshot](src/demo/images/NavigationMenuDemo.png "NavigationMenuDemo")
+  
 
 ### 3 Themeable Layout
 
@@ -479,89 +512,3 @@ eg:
              }
         }
         ```
-
-### Directive: **pagedList**
-
-#### Usage
-
-#### Functionality
-
-```
-* On Selecting 'Export Report' operation, scope method `export()` will be executed on selected bulk instances.
-
-#### Functionality
-
-* Filter directive Uses paged-list directive to filter list according to filters applied with the help of different
-HTML element or Select2 element.
-* Returns filtered list with custom parameters applied.
-
-### Service: **appService**
-
-#### blockPage
-Used to display a block message at center of the page with black backdrop behind it.
-```
-    appService.blockPage(true);  // Add backdrop
-    appService.blockPage(false);  // Remove backdrop
-```
-
-#### alert
-Used to display an alert message at center of the page.
-```
-    appService.alert({message}, {type});
-```
-> message : (Required) Alert Message
-> type : (Optional) Type Of Alert.(['success', 'warn', 'info', etc.])
-
-#### confirm
-Used to show an confirm message at center of the page, Returns callback to calling method.
-```
-    appService.confirm({message}, {type}).then( function() {
-        // Success Callback
-    }, function() {
-        // Failure Callback
-    });
-```
-> message : (Required) Alert Message
-> type : (Optional) Type Of Alert.(['success', 'warn', 'info', etc.])
-
-#### copy
-A generic method which extends usage of angular.copy() method to provide include, exclude options for copying to new object.
-```
-    var obj = {k1: 1, k2: 2, k3: 3};
-    appService.copy(obj, null, ['k1', 'k2']) === {k1: 1, k2: 2};
-```
-
-#### showAlertMessage
-Used to display alert messages at top of any page.
-```
-    appService.showAlertMessage({message}, '{type}');
-```
-> message: (Required) Message to show on alert box
-> type: (Optional) type of alert message- success, error, info. Default to 'warning'.
-
-> params: JavaScript object containing two values-
->> element: If other alert message to shown. Default to '#alert-message'.
->> makeStrong: Set it to true if the text in alert message needs to be bold.
->> timeout: Set timeout to automatically hide alert block after a particular time.
->> scrollToAlert: set to true to automatic scroll window to alert message.
-
-#### hideAlertMessage
-Used to hide alert messages from page.
-```
-    appService.hideAlertMessage();
-```
-
-#### toQueryString
-Used to create query String from parameters received.
-```
-    appService.toQueryString({parameters})
-```
-> parameters : Key value pair to be passed as query string.
-
-### Service: **ValidationService**
-Used in conjunction with ValidationErrors directive.
-
-### Script File: **String**
-Used to perform various string operations.
-
-### Generating JavaScript documentation.

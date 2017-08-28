@@ -15,8 +15,8 @@ export function initializeTestCase(): IInitializerData {
         resource: 'test',
         instances: {
             'test': new DefaultModel({id: '1', author: 'abc'}), 
-            'test1': new DefaultModel({id: '1', author: 'abc'})
+            'test1': new DefaultModel({id: '1', author: 'abc'}),
         },
-        fetchInstanceData: jest.fn<(...args: any[]) => void>()
+        fetchInstanceData: jest.fn<(...args: any[]) => void>(),
     };
 }

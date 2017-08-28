@@ -17,16 +17,16 @@ export class UserModel extends BaseModel {
         id: ModelPropTypes.NUMBER(),
         name: ModelPropTypes.OBJECT({
             firstName: ModelPropTypes.STRING(),
-            lastName: ModelPropTypes.STRING()
-        })
+            lastName: ModelPropTypes.STRING(),
+        }),
     };
 
     static defaultProps = {
         id: 0,
         name: {
             firstName: '',
-            lastName: ''
-        }
+            lastName: '',
+        },
     };
 
     static resourceName: string = 'test';
@@ -35,7 +35,7 @@ export class UserModel extends BaseModel {
         'id',
         'name.firstName',
         'top.secret',
-        'organization'
+        'organization',
     ];
 
     getHTMLName(instance: IUser): JSX.Element {
@@ -59,8 +59,8 @@ export const userInstance: IUser = {
     id: 1,
     name: {
         firstName: 'Stephen',
-        lastName: 'Amell'
-    }
+        lastName: 'Amell',
+    },
 };
 
 export const userModelStephenInstance: UserModel = new UserModel(userInstance);

@@ -8,7 +8,7 @@ export interface IGenericListPageProps {
 export class GenericListPage extends React.Component<IGenericListPageProps, void> {
 
     static defaultProps: IGenericListPageProps = {
-        resource: ''
+        resource: '',
     };
 
     render(): JSX.Element {

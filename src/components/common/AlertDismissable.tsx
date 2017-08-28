@@ -41,7 +41,7 @@ let mapStateToProps: MapStateToProps<IAlertDismissableProps, IAlertDismissablePr
             return {
                 show: state.alertDismissable.show,
                 type: state.alertDismissable.type,
-                message: state.alertDismissable.message
+                message: state.alertDismissable.message,
             };
 };
 
@@ -56,9 +56,9 @@ const alertStyle: CSS = {
     width: '100%',
     verticalAlign: 'middle',
     zIndex: 887,
-    marginTop: '-20px'
+    marginTop: '-20px',
 };
 const fontStyle: CSS = {
     fontSize: '16px',
-    fontWeight: 'bold'
+    fontWeight: 'bold',
 };

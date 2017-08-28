@@ -48,3 +48,5 @@ function equals<T>(obj: Object | Array<T>): boolean {
 Array.prototype.each = arrayEach;
 Array.prototype.equals = equals;
 String.prototype.capitalize = capitalize;
+Object.prototype.isEmpty = isEmpty;
+Object.prototype.each = objectEach;

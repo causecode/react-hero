@@ -11,7 +11,7 @@ export class NavMenuLauncherIcon extends React.Component<INavMenuLauncherIconPro
     static defaultProps: INavMenuLauncherIconProps = {
         onClick: () => {},
         position: 'left',
-        style: {}
+        style: {},
     };
 
     handleClick = (): void => {
