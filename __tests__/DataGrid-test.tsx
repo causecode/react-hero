@@ -3,13 +3,13 @@ jest.mock('../src/utils/appService');
 
 import * as React from 'react';
 import * as AppService from '../src/utils/appService';
-import {ReactWrapper, mount, ShallowWrapper, shallow} from 'enzyme';
+import {ReactWrapper, mount, ShallowWrapper, shallow, EnzymePropSelector} from 'enzyme';
 import {Provider} from 'react-redux';
-import {Link} from 'react-router';
+import {Link} from 'react-router-dom';
 import {Table} from 'react-bootstrap';
 import {ICheckboxReducer} from '../src/interfaces';
 import {store, configureStore} from '../src/store';
-import {userModelStephenInstance} from './testData/UserModel';
+import {userModelStephenInstance, UserModel} from './testData/UserModel';
 import {toggleCheckbox} from '../src/actions/checkboxActions';
 import {TestModel, userModelBruceInstance} from './testData/TestModel';
 import {IDataGridProps, DataGrid, DataGridImpl} from '../src/components/PagedList/DataGrid';
@@ -44,12 +44,13 @@ describe('Tests for DataGrid', () => {
                     selectAllRecords={selectAllRecords}
                     selectAllRecordsOnPage={selectAllRecordsOnPage}
                     handleRecordDelete={testFunction}
+                    style={{}}
             />
     );
 
     unroll('should render #count #component elements', (
         done: () => void,
-        args: {component: string, selector: JSX.Element | string, count: number}
+        args: {component: string, selector: EnzymePropSelector, count: number}
     ) => {
         expect(dataGrid.find(args.selector).length).toBe(args.count);
         done();
@@ -96,7 +97,7 @@ describe('Tests for DataGrid', () => {
         ['empty', []],
     ]);
 
-    describe('When getHTML method is defined for any property inside model', (): void => {
+    describe('When getHTML and getRowStyle method is defined for any property inside model', (): void => {
         let checkbox: ICheckboxReducer = {selectedIds: [1], selectAll: false, selectAllOnPage: false};
 
         AppService.getInnerData = jest.fn();
@@ -117,24 +118,28 @@ describe('Tests for DataGrid', () => {
 
         store.dispatch = jest.fn();
 
-        let userDataGrid: ReactWrapper<IDataGridProps, void> = mount<IDataGridProps, void> (
-                <Provider store={configureStore({checkbox: checkbox})}>
-                    <DataGrid
-                            instanceList={[userModelStephenInstance]}
-                            properties={userModelStephenInstance.properties}
-                    />
-                </Provider>
+        let userDataGrid: ShallowWrapper<IDataGridProps, void> = shallow<IDataGridProps, void> (
+                <DataGridImpl
+                        instanceList={[userModelStephenInstance]}
+                        properties={Object.keys(userModelStephenInstance.properties)}
+                        style={{}}
+                />
         );
 
         it('should render property as HTML element when method is defined inside model for that property', () => {
-            expect(userDataGrid.find('Link').length).toBe(4);
+            expect(userDataGrid.find('Table').dive().find('Link').length).toBe(4);
             let renderedAsLink: boolean = false;
-            userDataGrid.find('Link').forEach((link) => {
+            userDataGrid.find('Table').dive().find('Link').forEach((link) => {
                 if (link.props()[`to`] === '/stephen' || link.props()[`to`] === '/queensConsolidated') {
                     renderedAsLink = true;
                 }
             });
             expect(renderedAsLink).toBeTruthy();
+        });
+
+        it('should call getRowStyle Method', (): void => {
+            const tr = userDataGrid.find('Table').dive().find('tr').at(1);
+            expect(tr.prop('style').color).toBe('#ffffff');
         });
     });
 
@@ -165,6 +170,7 @@ describe('Tests for DataGrid', () => {
                                 totalCount={totalCount}
                                 properties={userModelBruceInstance.properties}
                                 showDefaultActions={false}
+                                style={{}}
                         />
                     </Provider>
             );
@@ -184,6 +190,7 @@ describe('Tests for DataGrid', () => {
                                     totalCount={totalCount}
                                     properties={userModelBruceInstance.properties}
                                     customActions={args.propValue}
+                                    style={{}}
                             />
                         </Provider>
                 );
@@ -209,6 +216,7 @@ describe('Tests for DataGrid', () => {
                                 instanceList={instanceList}
                                 totalCount={totalCount}
                                 properties={userModelBruceInstance.properties}
+                                style={{}}
                         />
                     </Provider>
             );

@@ -6,14 +6,16 @@ export interface IAuthRouteProps {
     component: React.ComponentClass<any>;
     onEnter: () => boolean;
     redirectTo: string;
+    exact?: boolean;
 }
 
 export class AuthRoute extends React.Component<IAuthRouteProps, void> {
 
     render(): JSX.Element {
         let {Route, Redirect} = reactRouterDom;
-        let {onEnter, path, component, redirectTo} = this.props;
+        let {onEnter, path, component, redirectTo, exact} = this.props;
+        let routeProps = exact ? {path, component, exact} : {path, component};
 
-        return onEnter() ? <Route path={path} component={component} /> : <Redirect from={path} to={redirectTo} />;
+        return onEnter() ? <Route {...routeProps} /> : <Redirect from={path} to={redirectTo} />;
     }
 }

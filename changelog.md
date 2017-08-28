@@ -27,3 +27,15 @@
 - Object prototype functions:
     * `isEmpty` to check if an object is empty.
     * `objectEach` to iterate over an object.
+
+## [1.1.7] - 2017-08-28
+
+### Added
+
+- `getRowStyle` Method support in Model to get custom style for every Row of DataGrid. When defined in Model, it will be called for every instance in instanceList and CSS returned from that method will be applied to Row of that instance
+
+### Removed
+
+- Object prototype functions:
+    * `isEmpty`.
+    * `objectEach`.
