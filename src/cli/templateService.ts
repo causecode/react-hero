@@ -50,7 +50,7 @@ export function getListPage(ModelClass: typeof BaseModel): any {
 
     return listTemplate({
         modelName,
-        resourceName 
+        resourceName,
     });
 }
 
@@ -80,7 +80,7 @@ function getSubFormPage(propertyName, subPropTypes, model, resourceName) {
             type: currentPropType.type,
             enumInstance,
             propertyName: prop,
-            model: model + '.' + prop    
+            model: model + '.' + prop,
         };
 
         formControls[prop] = inputTemplate(templateData);
@@ -89,7 +89,7 @@ function getSubFormPage(propertyName, subPropTypes, model, resourceName) {
             _.template(require<string>('../../templates/SubFormTemplate.ejs'));
     return SubFormTemplate({
         propertyName,
-        formControls
+        formControls,
     });
 }
 
@@ -143,7 +143,7 @@ export function generateFormPage(ModelClass: typeof BaseModel, pageType: 'edit' 
                 type: currentPropType.type,
                 enumInstance,
                 propertyName: prop,
-                model    
+                model,
             };
 
             formControls[prop] = inputTemplate(templateData);
@@ -160,7 +160,7 @@ export function generateFormPage(ModelClass: typeof BaseModel, pageType: 'edit' 
         modelPath: `../..${commandLine.modelPath[0] === '/' ? commandLine.modelPath : `/${commandLine.modelPath}`}`, // Assuming the file will always be generated 3 levels deep from the root.
         /* tslint:enable */
         cancelDestination: commandLine.onCancel,
-        formControls
+        formControls,
     });
 }
 
@@ -178,13 +178,13 @@ function getNestedObjectView(propertyName: string, propTypes: any, resourceName:
     Object.keys(propTypes).forEach((prop: string, index: number) => {
         tableRowMap[prop] = tableRowTemplate({
             subPropertyName: prop,
-            subPropertyValue: `instance.properties.${propertyName}.${prop}.toString()`
+            subPropertyValue: `instance.properties.${propertyName}.${prop}.toString()`,
         });
     });
 
     return subShowTemplate({
         propertyName,
-        tableRowMap
+        tableRowMap,
     });
 }
 
@@ -215,7 +215,7 @@ export function getShowPage(ModelClass: typeof BaseModel): string {
 
         tableRowMap[prop] = tableRowTemplate({
             propertyName: prop,
-            propertyValue: `instance.properties.${prop}.toString()`
+            propertyValue: `instance.properties.${prop}.toString()`,
         });
     });
   

@@ -16,7 +16,7 @@ export module HTTP {
             method: 'post',
             url: BASE_URL + path,
             data,
-            headers
+            headers,
         });
     }
 
@@ -39,7 +39,7 @@ export module HTTP {
         return axios({
             method: 'get',
             url: url,
-            headers
+            headers,
         });
     }
 
@@ -49,7 +49,7 @@ export module HTTP {
             method: 'put',
             url: BASE_URL + path,
             data: data,
-            headers
+            headers,
         });
     }
 
@@ -58,7 +58,7 @@ export module HTTP {
         return axios({
             method: 'delete',
             url: BASE_URL + path,
-            headers
+            headers,
         });
     }
 

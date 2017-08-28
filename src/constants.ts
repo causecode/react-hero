@@ -17,6 +17,7 @@ export const UNSET_RESOURCE_LIST: string = 'UNSET_RESOURCE_LIST';
 export const TOGGLE_FILTERS: string = 'TOGGLE_FILTERS';
 // export const CREATE_INSTANCE: string = 'CREATE_INSTANCE';
 export const TOGGLE_NAV: string = 'TOGGLE_NAV';
+export const TOGGLE_SECONDARY_NAV: string = 'TOGGLE_SECONDARY_NAV';
 
 // Error messages.
 export const MISSING_ACTION_PAYLOAD: string = 'No Data in the Action Payload. ' +

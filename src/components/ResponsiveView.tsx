@@ -18,7 +18,7 @@ export class DeviceTypes {
         DeviceTypes.TABLET,
         DeviceTypes.TABLET_PORTRAIT,
         DeviceTypes.TABLET_LANDSCAPE,
-        DeviceTypes.DESKTOP
+        DeviceTypes.DESKTOP,
     ];
 
     constructor(public id: number, public name: string) {

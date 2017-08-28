@@ -66,7 +66,7 @@ const BooleanInputTemplate = (props): JSX.Element => {
                     value="option-true"
                     name={props.propertyName}
                     checked={props.propertyValue}>
-                    {props.radioButtonLabels.first || 'True'}
+                    {props.radioButtonLabels && props.radioButtonLabels.first ? props.radioButtonLabels.first : 'True'}
                 </Radio>
             </Col>
             <Col sm={6}>
@@ -75,7 +75,11 @@ const BooleanInputTemplate = (props): JSX.Element => {
                     value="option-false"
                     name={props.propertyName}
                     checked={!props.propertyValue}>
-                    {props.radioButtonLabels.second || 'False'}
+                    {
+                        props.radioButtonLabels && props.radioButtonLabels.second
+                            ? props.radioButtonLabels.second
+                            : 'False'
+                    }
                 </Radio>
             </Col>
         </Row>

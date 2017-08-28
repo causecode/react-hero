@@ -1,5 +1,4 @@
-export {HeaderFooterLayout, HeaderView, FooterView, ContentView, NavigationMenu,
-        IHeaderFooterLayoutProps} from './HeaderFooterLayout';
+export * from './HeaderFooterLayout';
 export * from './NavMenuLauncherIcon';
 export * from './ResponsiveView';
 export * from './Widgets';
