@@ -1,5 +1,6 @@
 import {combineReducers} from 'redux';
 import {open} from './open';
+import {secondaryNavReducer} from './secondaryNavReducer';
 import {dataReducer as data} from './data';
 import {routerReducer} from 'react-router-redux';
 import {userReducer} from './userReducer';
@@ -13,6 +14,7 @@ const reduxFormReducer = require<any>('redux-form').reducer;
 let rootReducer: Reducer = combineReducers({
     open,
     data,
+    secondaryNavOpen: secondaryNavReducer,
     checkbox: checkboxReducer,
     alertDismissable: alertReducer,
     confirmationModal: confirmationModalReducer,

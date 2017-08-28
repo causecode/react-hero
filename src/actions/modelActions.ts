@@ -1,3 +1,4 @@
+import {IGenericAction} from '../interfaces';
 import {BaseModel} from '../models/BaseModel';
 import {
     SAVE_INSTANCE,
@@ -7,7 +8,8 @@ import {
     TOGGLE_FILTERS,
     TOGGLE_NAV,
     UNSET_RESOURCE_LIST,
-    SAVE_ALL_INSTANCES
+    SAVE_ALL_INSTANCES,
+    TOGGLE_SECONDARY_NAV,
 } from '../constants';
 
 export interface IInstanceAction {
@@ -21,7 +23,7 @@ export function ModelActionFactory(type: string) {
         return {
             type,
             resource,
-            instance
+            instance,
         };
     };
 }
@@ -36,26 +38,32 @@ export const setPage = (pageNumber: number, resource: string): {type: string, re
     return {
         type: SET_PAGE,
         resource: resource,
-        pageNumber: pageNumber
+        pageNumber: pageNumber,
     };
 };
 
 export const unsetList = (resource: string) => {
     return {
         type: UNSET_RESOURCE_LIST,
-        resource
+        resource,
     };
 };
 
-export const toggleFilters = (): {type: string} => {
+export const toggleFilters = (): IGenericAction => {
     return {
-        type: TOGGLE_FILTERS
+        type: TOGGLE_FILTERS,
     };
 };
 
-export const toggleNav = (): {type: string} => {
+export const toggleNav = (): IGenericAction => {
     return {
-        type: TOGGLE_NAV
+        type: TOGGLE_NAV,
+    };
+};
+
+export const toggleSecondaryNav = (): IGenericAction => {
+    return {
+        type: TOGGLE_SECONDARY_NAV,
     };
 };
 
@@ -63,7 +71,7 @@ export const saveAllInstances = (instanceList: BaseModel[], resource: string) =>
     return {
         type: SAVE_ALL_INSTANCES,
         resource,
-        instanceList
+        instanceList,
     };
 };
 
