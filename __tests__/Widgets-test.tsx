@@ -1,9 +1,9 @@
-jest.unmock('../src/components/Widgets');
+jest.unmock('../src/components/widgets');
 
 import * as React from 'react';
 import * as TestUtils from 'react-addons-test-utils';
 import * as ReactDOM from 'react-dom';
-import {Title, Content, ButtonList, ButtonListItem, Description} from '../src/components/Widgets';
+import {Title, Content, ButtonList, ButtonListItem, Description} from '../src/components/widgets';
 import {initializeTestCase} from './../src/utils/initializeTestCase';
 import {IShallowTestUtils} from '../src/interfaces';
 import {IInitializerData} from './../src/utils/initializeTestCase';
@@ -14,7 +14,7 @@ const unroll: any = require<any>('unroll');
 
 unroll.use(it);
 
-describe('Test Widgets', () => {
+describe('Test widgets', () => {
     let renderer: React.ShallowRenderer;
 
     beforeEach(() => {

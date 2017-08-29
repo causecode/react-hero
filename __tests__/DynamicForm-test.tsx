@@ -1,13 +1,13 @@
-jest.unmock('../src/components/PagedList/Filters/DynamicForm');
+jest.unmock('../src/components/paged-list/Filters/DynamicForm');
 
 import * as React from 'react';
-import {DropDownFilter} from '../src/components/PagedList/Filters/DropDownFilter';
-import {RangeFilter} from '../src/components/PagedList/Filters/RangeFilter';
-import {DateRangeFilter} from '../src/components/PagedList/Filters/DateRangeFilter';
-import {QueryFilter} from '../src/components/PagedList/Filters/QueryFilter';
+import {DropDownFilter} from '../src/components/paged-list/Filters/DropDownFilter';
+import {RangeFilter} from '../src/components/paged-list/Filters/RangeFilter';
+import {DateRangeFilter} from '../src/components/paged-list/Filters/DateRangeFilter';
+import {QueryFilter} from '../src/components/paged-list/Filters/QueryFilter';
 import {shallow, ShallowWrapper} from 'enzyme';
 import {IPagedListFiltersProps} from '../src/interfaces/index';
-import {InnerFilterFormImpl} from '../src/components/PagedList/Filters/DynamicForm';
+import {InnerFilterFormImpl} from '../src/components/paged-list/Filters/DynamicForm';
 import {ModelService} from '../src/utils/modelService';
 import {BlogModel} from '../src/demo/models/BlogModel';
 

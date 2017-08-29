@@ -1,4 +1,4 @@
-jest.unmock('../src/components/PagedList/DataGrid');
+jest.unmock('../src/components/paged-list/DataGrid');
 jest.mock('../src/utils/appService');
 
 import * as React from 'react';
@@ -12,7 +12,7 @@ import {store, configureStore} from '../src/store';
 import {userModelStephenInstance} from './testData/UserModel';
 import {toggleCheckbox} from '../src/actions/checkboxActions';
 import {TestModel, userModelBruceInstance} from './testData/TestModel';
-import {IDataGridProps, DataGrid, DataGridImpl} from '../src/components/PagedList/DataGrid';
+import {IDataGridProps, DataGrid, DataGridImpl} from '../src/components/paged-list/DataGrid';
 import '../src/init';
 const unroll: any = require<any>('unroll');
 

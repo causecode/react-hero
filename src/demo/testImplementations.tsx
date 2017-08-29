@@ -1,56 +1,22 @@
 import * as React from 'react';
 import {Switch, Route, Link} from 'react-router-dom';
-import {Title, Description, Content, ButtonList, ButtonListItem} from '../components/Widgets/Widgets';
-import {HeaderFooterLayout} from '../components/HeaderFooterLayout';
+import {Title, Description, Content, ButtonList, ButtonListItem} from '../components/widgets/Widgets';
 import {ResponsiveView} from '../components/ResponsiveView';
 import {ListPage} from '../components-stateful/ListPage';
 import {ShowPage} from '../components-stateful/ShowPage';
 import {EditPage} from '../components-stateful/EditPage';
 import {ErrorPage} from '../components/ErrorPage';
 import {PAGE_NOT_FOUND} from '../constants';
-import {
-    HeaderView,
-    FooterView,
-    ContentView,
-    NavigationMenu,
-    IHeaderFooterLayoutStyle,
-} from '../components/HeaderFooterLayout';
-require<void>('../init');
 
-const headerFooterLayoutStyles: IHeaderFooterLayoutStyle = {
-    header: {
-        padding: 'none',
-    },
-    primaryNav: {
-        padding: 'none',
-        width: '30%',
-        backgroundColor: '#eea303',
-    },
-    secondaryNav: {
-        padding: 'none',
-        width: '50%',
-    },
-    content: {
-        color: '#888',
-    },
-    footer: {
-        backgroundColor: '#888',
-        fontSize: '15px',
-        color: 'white',
-    },
-    navIcon: {
-        color: '#777',
-    },
-};
+import {HeaderFooterLayout, HeaderView, FooterView, ContentView} from '../components/header-footer-layout';
+import {PrimarySliderNav, SecondarySliderNav} from '../components/header-footer-layout/navigation-menu';
+require<void>('../init');
 
 export class NewPage extends React.Component<void, void> {
 
     render(): JSX.Element {
         return (
-            <HeaderFooterLayout
-                    primaryMenuPosition="left"
-                    secondaryMenuPosition="right"
-                    style={headerFooterLayoutStyles}>
+            <HeaderFooterLayout>
                 <HeaderView>
                     <Content>
                         <Title>New App</Title>
@@ -63,6 +29,7 @@ export class NewPage extends React.Component<void, void> {
                         </ButtonList>
                     </Content>
                 </HeaderView>
+
                 <ContentView>
                     <Switch>
                         <Route exact path="/" component={HomeContent}/>
@@ -76,18 +43,8 @@ export class NewPage extends React.Component<void, void> {
                     </Switch>
                 </ContentView>
                 <FooterView>my footer</FooterView>
-                <NavigationMenu>
-                    <Content>
-                        <Title>This is the primary nav-menu</Title>
-                        <Description>This is the description</Description>
-                        <ButtonList highlightOnHover={true}>
-                            <ButtonListItem><Link to="/">Home</Link></ButtonListItem>
-                            <ButtonListItem><Link to="/page2">Button 2</Link></ButtonListItem>
-                            <ButtonListItem><Link to="/resp">Responsive View Page</Link></ButtonListItem>
-                        </ButtonList>
-                    </Content>
-                </NavigationMenu>
-                <NavigationMenu>
+
+                <PrimarySliderNav>
                     <Content>
                         <Title>This is the secondary nav-menu</Title>
                         <Description>This is the description</Description>
@@ -97,7 +54,18 @@ export class NewPage extends React.Component<void, void> {
                             <ButtonListItem><Link to="/resp">Responsive View Page</Link></ButtonListItem>
                         </ButtonList>
                     </Content>
-                </NavigationMenu>
+                </PrimarySliderNav>
+                <SecondarySliderNav>
+                    <Content>
+                        <Title>This is the secondary nav-menu</Title>
+                        <Description>This is the description</Description>
+                        <ButtonList highlightOnHover={true}>
+                            <ButtonListItem><Link to="/">Home</Link></ButtonListItem>
+                            <ButtonListItem><Link to="/page2">Button 2</Link></ButtonListItem>
+                            <ButtonListItem><Link to="/resp">Responsive View Page</Link></ButtonListItem>
+                        </ButtonList>
+                    </Content>
+                </SecondarySliderNav>
             </HeaderFooterLayout>
         );
     }
@@ -114,13 +82,13 @@ class UserEditPage extends React.Component<any, any> {
 
 export class HomeContent extends ResponsiveView<any, any> {
     protected renderDefault(): JSX.Element {
-        return <h1 style={{height: '30em'}}>This is the home page</h1>;
+        return <h1>This is the home page</h1>;
     }
 }
 
 export class Page2Content extends ResponsiveView<any, any> {
     protected renderDefault(): JSX.Element {
-        return <h1 style={{height: '30em'}}>Just Another Page!!</h1>;
+        return <h1>Just Another Page!!</h1>;
     }
 }
 

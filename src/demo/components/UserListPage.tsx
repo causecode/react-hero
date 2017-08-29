@@ -1,9 +1,9 @@
 import * as React from 'react';
-import {DropDownFilter} from '../../components/PagedList/Filters/DropDownFilter';
+import {DropDownFilter} from '../../components/paged-list/Filters/DropDownFilter';
 import {PagedList} from '../../components-stateful/PagedList';
-import {RangeFilter} from '../../components/PagedList/Filters/RangeFilter';
-import {DateRangeFilter} from '../../components/PagedList/Filters/DateRangeFilter';
-import {QueryFilter} from '../../components/PagedList/Filters/QueryFilter';
+import {RangeFilter} from '../../components/paged-list/Filters/RangeFilter';
+import {DateRangeFilter} from '../../components/paged-list/Filters/DateRangeFilter';
+import {QueryFilter} from '../../components/paged-list/Filters/QueryFilter';
 import {Link} from 'react-router-dom';
 
 export interface IUser {
