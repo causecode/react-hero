@@ -43,12 +43,10 @@ export const navIconStyle: CSS = {
     color: '#777',
 };
 
-const mapStateToProps = (state): {open: boolean, secondaryNav: boolean, primaryNav: boolean} => {
+const mapStateToProps = (state): {secondaryNav: boolean, primaryNav: boolean} => {
     return {
-        open: state.open,
         secondaryNav: state.navMenu.secondaryNav,
         primaryNav: state.navMenu.primaryNav,
-
     };
 };
 

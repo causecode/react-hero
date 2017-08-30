@@ -20,6 +20,8 @@ export interface ISliderNavProps {
     toggleSecondaryNav?: () => void;
     navContent?: JSX.Element;
     navStyle?: CSS;
+    setPrimaryNav?: (visibilityStatus: boolean) => void;
+    setSecondaryNav?: (visibilityStatus: boolean) => void;
 }
 
 const mapStateToProps = (state): {open: boolean, secondaryNavOpen: boolean} => {
@@ -39,7 +41,7 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 @Radium
-class SliderNavImpl extends React.Component<ISliderNavProps, void> {
+export class SliderNavImpl extends React.Component<ISliderNavProps, void> {
 
     constructor(props) {
         super(props);
