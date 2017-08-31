@@ -7,7 +7,7 @@ import {ReactWrapper, mount, ShallowWrapper, shallow, EnzymePropSelector} from '
 import {Provider} from 'react-redux';
 import {Link} from 'react-router-dom';
 import {Table} from 'react-bootstrap';
-import {ICheckboxReducer} from '../src/interfaces';
+import {ICheckboxReducer, CSS} from '../src/interfaces';
 import {store, configureStore} from '../src/store';
 import {userModelStephenInstance, UserModel} from './testData/UserModel';
 import {toggleCheckbox} from '../src/actions/checkboxActions';
@@ -21,6 +21,7 @@ unroll.use(it);
 describe('Tests for DataGrid', () => {
 
     let testFunction: jest.Mock<void> = jest.fn<void>();
+    const style: CSS = {color: 'black'};
 
     let instanceList: TestModel[] = [userModelBruceInstance];
     let totalCount: number = 1;
@@ -44,7 +45,7 @@ describe('Tests for DataGrid', () => {
                     selectAllRecords={selectAllRecords}
                     selectAllRecordsOnPage={selectAllRecordsOnPage}
                     handleRecordDelete={testFunction}
-                    style={{}}
+                    style={style}
             />
     );
 
@@ -122,7 +123,7 @@ describe('Tests for DataGrid', () => {
                 <DataGridImpl
                         instanceList={[userModelStephenInstance]}
                         properties={Object.keys(userModelStephenInstance.properties)}
-                        style={{}}
+                        style={style}
                 />
         );
 
@@ -138,8 +139,8 @@ describe('Tests for DataGrid', () => {
         });
 
         it('should call getRowStyle Method', (): void => {
-            const tr = userDataGrid.find('Table').dive().find('tr').at(1);
-            expect(tr.prop('style').color).toBe('#ffffff');
+            const tableRow = userDataGrid.find('Table').dive().find('tr').at(1);
+            expect(tableRow.prop('style').color).toBe('#ffffff');
         });
     });
 
@@ -170,7 +171,7 @@ describe('Tests for DataGrid', () => {
                                 totalCount={totalCount}
                                 properties={userModelBruceInstance.properties}
                                 showDefaultActions={false}
-                                style={{}}
+                                style={style}
                         />
                     </Provider>
             );
@@ -190,7 +191,7 @@ describe('Tests for DataGrid', () => {
                                     totalCount={totalCount}
                                     properties={userModelBruceInstance.properties}
                                     customActions={args.propValue}
-                                    style={{}}
+                                    style={style}
                             />
                         </Provider>
                 );
@@ -216,7 +217,7 @@ describe('Tests for DataGrid', () => {
                                 instanceList={instanceList}
                                 totalCount={totalCount}
                                 properties={userModelBruceInstance.properties}
-                                style={{}}
+                                style={style}
                         />
                     </Provider>
             );

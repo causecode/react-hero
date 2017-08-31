@@ -32,7 +32,7 @@
 
 ### Added
 
-- `getRowStyle` Method support in Model to get custom style for every Row of DataGrid. When defined in Model, it will be called for every instance in instanceList and CSS returned from that method will be applied to Row of that instance
+- `getRowStyle` Method support in Model to get custom style for every Row of DataGrid. When defined in Model, it will be called for every instance in instanceList and CSS returned from that method will be applied to Row of that Grid.
 
 ### Removed
 

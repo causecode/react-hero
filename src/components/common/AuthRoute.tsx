@@ -14,7 +14,7 @@ export class AuthRoute extends React.Component<IAuthRouteProps, void> {
     render(): JSX.Element {
         let {Route, Redirect} = reactRouterDom;
         let {onEnter, path, component, redirectTo, exact} = this.props;
-        let routeProps = exact ? {path, component, exact} : {path, component};
+        let routeProps: Partial<IAuthRouteProps> = exact ? {path, component, exact} : {path, component};
 
         return onEnter() ? <Route {...routeProps} /> : <Redirect from={path} to={redirectTo} />;
     }

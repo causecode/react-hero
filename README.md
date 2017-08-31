@@ -223,10 +223,10 @@ eg:
         };
         ```
 
-- __columnNames__: string[]
+- __columnNames__: Object[]
 
 	- By default, the listing page generated the table with a column for each of the property specified in the `propTypes`
-	- This default behaviour can be avoided by specifying the property name as a string in the `columnNames`
+	- This default behaviour can be avoided by specifying the object with property `label`(label to be displayed in column) and `accessor` (path from where the data from instance will be fetched) in `columnNames[]`
 	- Example:
 
 		```
@@ -512,3 +512,9 @@ eg:
              }
         }
         ```
+
+### 9 DataGrid
+
+ * This component is responsible for rendering the table and the filters in the listing page. It is internally used by PagedList.
+
+ * When `getRowStyle` method is defined in Model used in DataGrid, then it will be called for every row of DataGrid and style returned from that method will be applied to Row of that Grid.

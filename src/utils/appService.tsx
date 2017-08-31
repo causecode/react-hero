@@ -56,7 +56,7 @@ export function getInnerData(data: any, nestedPath: string) {
             if (data) {
                 if (data.constructor === Array) {
                     data.forEach((innerItem, index) => {
-                        result = innerItem[item] && `${result} ${innerItem[item].toString()}`;
+                        result = innerItem[item] ? `${result} ${innerItem[item].toString()}` : result;
                     });
                 } else {
                     data = data[item];
