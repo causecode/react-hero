@@ -22,13 +22,21 @@ export interface ISliderNavProps {
     navStyle?: CSS;
     setPrimaryNav?: (visibilityStatus: boolean) => void;
     setSecondaryNav?: (visibilityStatus: boolean) => void;
+    primaryNavCount?: number;
+    secondaryNavCount?: number;
 }
 
-const mapStateToProps = (state): {open: boolean, secondaryNavOpen: boolean} => {
-    return {
-        open: state.open,
-        secondaryNavOpen: state.secondaryNavOpen,
-    };
+const mapStateToProps = (state): {
+    open: boolean,
+    secondaryNavOpen: boolean,
+    primaryNavCount: number,
+    secondaryNavCount: number} => {
+            return {
+                open: state.open,
+                secondaryNavOpen: state.secondaryNavOpen,
+                primaryNavCount: state.primaryNavCount,
+                secondaryNavCount: state.secondaryNavCount,
+            };
 };
 
 const mapDispatchToProps = (dispatch) => {
@@ -48,6 +56,7 @@ export class SliderNavImpl extends React.Component<ISliderNavProps, void> {
         props.isPrimaryNav ? props.setPrimaryNav(true) : props.setSecondaryNav(true);
     }
 
+
     render(): JSX.Element {
         const {
             isPrimaryNav,
@@ -63,23 +72,23 @@ export class SliderNavImpl extends React.Component<ISliderNavProps, void> {
         closeButtonClasses += isPrimaryNav ? 'right' : 'left';
 
         const motion = <Motion
-                            style={{x: spring(this.props[isPrimaryNav ? 'open' : 'secondaryNavOpen'] ?
-                                0 : menuClosePosition )}}
-                            key={isPrimaryNav ? 'primary-nav' : 'secondary-nav'}>
-                            {
-                                ({x} : {x: number}): JSX.Element =>
-                                    <div className={navMenuClasses}
-                                         style={[
-                                             {WebkitTransform: `translate3d(${x}%, 0, 0)`,
-                                                 transform: `translate3d(${x}%, 0, 0)`},
-                                             navStyle,
-                                         ]}>
-                                        <i className={closeButtonClasses}
-                                           onClick = {isPrimaryNav ? toggleNav : toggleSecondaryNav}/>
-                                        {this.props.navContent}
-                                    </div>
-                            }
-                        </Motion>;
+            style={{x: spring(this.props[isPrimaryNav ? 'open' : 'secondaryNavOpen'] ?
+                0 : menuClosePosition )}}
+            key={isPrimaryNav ? 'primary-nav' : 'secondary-nav'}>
+            {
+                ({x} : {x: number}): JSX.Element =>
+                    <div className={navMenuClasses}
+                         style={[
+                             {WebkitTransform: `translate3d(${x}%, 0, 0)`,
+                                 transform: `translate3d(${x}%, 0, 0)`},
+                             navStyle,
+                         ]}>
+                        <i className={closeButtonClasses}
+                           onClick = {isPrimaryNav ? toggleNav : toggleSecondaryNav}/>
+                        {this.props.navContent}
+                    </div>
+            }
+        </Motion>;
         return(motion);
     }
 }

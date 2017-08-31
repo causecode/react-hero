@@ -21,7 +21,6 @@ export class NavMenuLauncherIcon extends React.Component<INavMenuLauncherIconPro
     render(): JSX.Element {
         return(
             <span
-                id={}
                 style={this.props.style}
                 className={`burger-icon highlight-on-hover float-${this.props.position}`}
                 onClick={this.handleClick}>

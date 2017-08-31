@@ -46,7 +46,7 @@ export class NewPage extends React.Component<void, void> {
 
                 <PrimarySliderNav>
                     <Content>
-                        <Title>This is the secondary nav-menu</Title>
+                        <Title>This is the primary nav-menu</Title>
                         <Description>This is the description</Description>
                         <ButtonList highlightOnHover={true}>
                             <ButtonListItem><Link to="/">Home</Link></ButtonListItem>
@@ -57,7 +57,7 @@ export class NewPage extends React.Component<void, void> {
                 </PrimarySliderNav>
                 <SecondarySliderNav>
                     <Content>
-                        <Title>This is the secondary nav-menu</Title>
+                        <Title>This is the primary nav-menu</Title>
                         <Description>This is the description</Description>
                         <ButtonList highlightOnHover={true}>
                             <ButtonListItem><Link to="/">Home</Link></ButtonListItem>

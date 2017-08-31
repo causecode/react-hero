@@ -158,6 +158,8 @@ export interface IColumnNames {
 }
 
 export interface INavMenuReducer {
-    primaryNav: boolean,
-    secondaryNav: boolean,
+    primaryNav: boolean;
+    secondaryNav: boolean;
+    primaryNavCount: number;
+    secondaryNavCount: number;
 }
