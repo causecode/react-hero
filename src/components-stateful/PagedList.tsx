@@ -107,6 +107,7 @@ export class PagedListImpl extends React.Component<IPagedListProps, void> {
         const {resource} = this.props;
         this.fetchInstanceList(resource);
         OuterFilter = createOuterFilterForm(`${this.props.resource}Filters`);
+        this.props.setPage(1, resource);
     };
 
     componentWillUnmount(): void {

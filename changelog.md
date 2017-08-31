@@ -34,6 +34,9 @@
 
 - `getRowStyle` Method support in Model to get custom style for every Row of DataGrid. When defined in Model, it will be called for every instance in instanceList and CSS returned from that method will be applied to Row of that Grid.
 
+### Changed
+ - Reseted `activePage` for `Pagination` on `componentWillMount` of `PagedList`, So when coming back again on Listing Page from any other page, pagination will start from 1.
+
 ### Removed
 
 - Object prototype functions:
