@@ -4,17 +4,13 @@ import {CSS} from '../../interfaces';
 
 export interface IFooterViewProps {
     style?: CSS;
+    isSticky?: boolean;
 }
 
 @Radium
 export class FooterView extends React.Component<IFooterViewProps, void> {
     render(): JSX.Element {
-        return <div style={[footerStyle,this.props.style]} className="footer">{this.props.children}</div>;
+        const footerClass = this.props.isSticky ? 'footer container navbar-fixed-bottom' : 'footer';
+        return <div style={[this.props.style]} className={footerClass}>{this.props.children}</div>;
     }
 }
-
-export const footerStyle: CSS = {
-    position: 'relative',
-    bottom: 0,
-    width: '100%',
-};

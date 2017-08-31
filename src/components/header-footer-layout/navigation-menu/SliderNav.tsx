@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as Radium from 'radium';
-import {CSS} from '../../../interfaces';
 import {Motion, spring} from 'react-motion';
+import {CSS} from '../../../interfaces';
 import {toggleNav, toggleSecondaryNav} from '../../../actions/modelActions';
 import {showPrimaryNav, showSecondaryNav} from '../../../actions/navMenuAction';
 
@@ -72,23 +72,23 @@ export class SliderNavImpl extends React.Component<ISliderNavProps, void> {
         closeButtonClasses += isPrimaryNav ? 'right' : 'left';
 
         const motion = <Motion
-            style={{x: spring(this.props[isPrimaryNav ? 'open' : 'secondaryNavOpen'] ?
-                0 : menuClosePosition )}}
-            key={isPrimaryNav ? 'primary-nav' : 'secondary-nav'}>
-            {
-                ({x} : {x: number}): JSX.Element =>
-                    <div className={navMenuClasses}
-                         style={[
-                             {WebkitTransform: `translate3d(${x}%, 0, 0)`,
-                                 transform: `translate3d(${x}%, 0, 0)`},
-                             navStyle,
-                         ]}>
-                        <i className={closeButtonClasses}
-                           onClick = {isPrimaryNav ? toggleNav : toggleSecondaryNav}/>
-                        {this.props.navContent}
-                    </div>
-            }
-        </Motion>;
+                style={{x: spring(this.props[isPrimaryNav ? 'open' : 'secondaryNavOpen'] ?
+                        0 : menuClosePosition )}}
+                key={isPrimaryNav ? 'primary-nav' : 'secondary-nav'}>
+                {
+                    ({x} : {x: number}): JSX.Element =>
+                        <div className={navMenuClasses}
+                             style={[
+                                 {WebkitTransform: `translate3d(${x}%, 0, 0)`,
+                                     transform: `translate3d(${x}%, 0, 0)`},
+                                 navStyle,
+                             ]}>
+                            <i className={closeButtonClasses}
+                               onClick = {isPrimaryNav ? toggleNav : toggleSecondaryNav}/>
+                            {this.props.navContent}
+                        </div>
+                }
+            </Motion>;
         return(motion);
     }
 }

@@ -73,6 +73,9 @@ eg:
   - `Content`
   - `ButtonList`
   - `ButtonListItem`
+
+- __FooterView__
+    * Uses an optional prop `isSticky` to make the footer stick to bottom of the window. Default value is `false`.
 - __Navigation Menu__
     * The `HeaderFooterLayout` has the ability to render upto two navigation menu. `PrimarySliderNav` renders a navigation drawer that opens from left and `SecondarySliderNav` renders a navigation drawer that opens from right. An optional style prop can be passed for customizing the navigation drawer.<br/>
     Example:

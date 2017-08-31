@@ -18,8 +18,6 @@ export class ContentView extends React.Component<IContentViewProps, void> {
     }
 }
 
-
-
 export const contentStyle: CSS = {
     position: 'relative',
     width: '100%',

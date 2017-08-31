@@ -21,7 +21,7 @@ var NavMenuLauncherIcon = (function (_super) {
         return _this;
     }
     NavMenuLauncherIcon.prototype.render = function () {
-        return (<span id= style={this.props.style} className={"burger-icon highlight-on-hover float-" + this.props.position} onClick={this.handleClick}>
+        return (<span style={this.props.style} className={"burger-icon highlight-on-hover float-" + this.props.position} onClick={this.handleClick}>
                 <span className="fa fa-bars"/>
             </span>);
     };

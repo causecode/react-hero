@@ -30,6 +30,8 @@ var mapStateToProps = function (state) {
     return {
         open: state.open,
         secondaryNavOpen: state.secondaryNavOpen,
+        primaryNavCount: state.primaryNavCount,
+        secondaryNavCount: state.secondaryNavCount,
     };
 };
 var mapDispatchToProps = function (dispatch) {
@@ -57,18 +59,18 @@ var SliderNavImpl = (function (_super) {
         closeButtonClasses += isPrimaryNav ? 'right' : 'left';
         var motion = <react_motion_1.Motion style={{ x: react_motion_1.spring(this.props[isPrimaryNav ? 'open' : 'secondaryNavOpen'] ?
                 0 : menuClosePosition) }} key={isPrimaryNav ? 'primary-nav' : 'secondary-nav'}>
-                            {function (_a) {
+                {function (_a) {
             var x = _a.x;
             return <div className={navMenuClasses} style={[
                 { WebkitTransform: "translate3d(" + x + "%, 0, 0)",
                     transform: "translate3d(" + x + "%, 0, 0)" },
                 navStyle,
             ]}>
-                                        <i className={closeButtonClasses} onClick={isPrimaryNav ? toggleNav : toggleSecondaryNav}/>
-                                        {_this.props.navContent}
-                                    </div>;
+                            <i className={closeButtonClasses} onClick={isPrimaryNav ? toggleNav : toggleSecondaryNav}/>
+                            {_this.props.navContent}
+                        </div>;
         }}
-                        </react_motion_1.Motion>;
+            </react_motion_1.Motion>;
         return (motion);
     };
     return SliderNavImpl;

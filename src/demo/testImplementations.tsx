@@ -42,7 +42,7 @@ export class NewPage extends React.Component<void, void> {
                         <Route render={() => <ErrorPage message={PAGE_NOT_FOUND}/>} />
                     </Switch>
                 </ContentView>
-                <FooterView>my footer</FooterView>
+                <FooterView isSticky={true}>my footer</FooterView>
 
                 <PrimarySliderNav>
                     <Content>

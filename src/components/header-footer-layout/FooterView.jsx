@@ -24,7 +24,8 @@ var FooterView = (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     FooterView.prototype.render = function () {
-        return <div style={[exports.footerStyle, this.props.style]} className="footer">{this.props.children}</div>;
+        var footerClass = this.props.isSticky ? 'footer container navbar-fixed-bottom' : 'footer';
+        return <div style={[this.props.style]} className={footerClass}>{this.props.children}</div>;
     };
     return FooterView;
 }(React.Component));
@@ -32,8 +33,3 @@ FooterView = __decorate([
     Radium
 ], FooterView);
 exports.FooterView = FooterView;
-exports.footerStyle = {
-    position: 'relative',
-    bottom: 0,
-    width: '100%',
-};

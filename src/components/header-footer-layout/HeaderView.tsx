@@ -6,8 +6,6 @@ import {toggleNav, toggleSecondaryNav} from '../../actions/modelActions';
 
 const connect = require<any>('react-redux').connect;
 
-
-
 export interface IHeaderViewProps {
     style?: CSS;
     toggleNav?: () => void;
