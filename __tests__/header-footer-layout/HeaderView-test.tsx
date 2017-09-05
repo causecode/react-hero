@@ -1,3 +1,5 @@
+import {IGenericAction} from "../../src/interfaces/index";
+
 jest.unmock('../../src/components/header-footer-layout');
 
 import * as React from 'react';
@@ -7,10 +9,24 @@ import {HeaderView} from '../../src/components/header-footer-layout';
 import {configureStore} from '../../src/store/index';
 import {NavMenuLauncherIcon} from '../../src/components/NavMenuLauncherIcon';
 import {IHeaderViewProps} from '../../src/components/header-footer-layout/HeaderView';
+import {IUserAction, IGenericAction} from '../../src/interfaces';
+import {toggleNav, toggleSecondaryNav} from '../../src/actions/modelActions';
 
 const unroll: any = require('unroll');
 
 unroll.use(it);
+
+toggleNav = jest.fn<IGenericAction>(() => {
+    return {
+        type: 'TOGGLE_NAV',
+    };
+});
+
+toggleSecondaryNav = jest.fn<IGenericAction>(() => {
+    return {
+        type: 'TOGGLE_SECONDARY_NAV',
+    };
+});
 
 describe('HeaderView test', (): void => {
     const componentTree: ReactWrapper<IHeaderViewProps, void> = mount<IHeaderViewProps, void>(
@@ -42,10 +58,17 @@ describe('HeaderView test', (): void => {
             ['NavMenuLauncherIcon', NavMenuLauncherIcon, 2],
         ]
     );
-    describe('Click simulation of NavMenuLauncherIcon', (): void => {
-        it('Should Handle click for PrimaryNavIcon and SecondaryNavIcon', () => {
+    describe('Click simulation of NavMenuLauncherIcon for toggling PrimarySliderNav and SeconadrySliderNav', (): void => {
+        it('Should Handle click for PrimaryNavIcon', () => {
+            expect(toggleNav).not.toBeCalled();
             expect(componentTree.find(NavMenuLauncherIcon).first().simulate('click'));
+            expect(toggleNav).toBeCalled();
+        });
+
+        it('Should Handle click for SecondaryNavIcon', () => {
+            expect(toggleSecondaryNav).not.toBeCalled();
             expect(componentTree.find(NavMenuLauncherIcon).last().simulate('click'));
+            expect(toggleSecondaryNav).toBeCalled();
         });
     });
 });

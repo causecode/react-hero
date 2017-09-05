@@ -28,7 +28,7 @@ describe('FooterView Test', (): void => {
             </FooterView>
         );
 
-        it('should render an div containing class container', (): void => {
+        it('should render a div containing class container', (): void => {
             expect(componentTree.find('.container').length).toBe(1);
         });
     });

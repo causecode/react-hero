@@ -8,7 +8,7 @@ const NAV_INITIAL_STATE: INavMenuReducer = {
     secondaryNavCount: 0,
 };
 
-export function navMenuReducer(state = NAV_INITIAL_STATE, action) {
+export function navMenuReducer(state = NAV_INITIAL_STATE, action): INavMenuReducer {
     switch (action.type) {
         case SHOW_PRIMARY_NAV:
             return {

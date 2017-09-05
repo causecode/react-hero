@@ -31,7 +31,7 @@ describe('navMenuReducer Test', (): void => {
     it('should handle SHOW_SECONDARY_NAV', (): void => {
         expect(navMenuReducer(NAV_INITIAL_STATE, {
                 type: types.SHOW_SECONDARY_NAV,
-                payload: true
+                payload: true,
             })
         ).toEqual(
             {

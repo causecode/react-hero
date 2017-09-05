@@ -26,7 +26,7 @@ toggleSecondaryNav = jest.fn<IGenericAction>(() => {
 });
 
 describe('SliderNav Test', (): void => {
-    describe('It should render a primary NavMenu', () => {
+    describe('It should render a primary NavMenu', (): void => {
         const componentTree: ShallowWrapper<ISliderNavProps, void> = shallow<ISliderNavProps, void> (
             <SliderNavImpl setPrimaryNav={setPrimaryNav} setSecondaryNav={setSecondaryNav} isPrimaryNav={true}/>
         );
@@ -38,19 +38,19 @@ describe('SliderNav Test', (): void => {
     describe('When connected to store', (): void => {
         const componentTree: ReactWrapper<ISliderNavProps, void> = mount<ISliderNavProps, void>(
             <Provider store={configureStore(
-                    {
-                        open: false,
-                        secondaryNavOpen: true,
-                        toggleNav,
-                        toggleSecondaryNav,
-                        setPrimaryNav,
-                        setSecondaryNav,
-                        navMenu: {
-                            primaryNavCount: 0,
-                            secondaryNavCount: 0,
-                        },
+                {
+                    open: false,
+                    secondaryNavOpen: true,
+                    toggleNav,
+                    toggleSecondaryNav,
+                    setPrimaryNav,
+                    setSecondaryNav,
+                    navMenu: {
+                        primaryNavCount: 0,
+                        secondaryNavCount: 0,
                     },
-                )}>
+                },
+            )}>
                 <SliderNav isPrimaryNav={false}/>
             </Provider>
 
