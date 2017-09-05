@@ -3,10 +3,6 @@ jest.unmock('../../src/actions/navMenuAction');
 import * as navMenuAction from '../../src/actions/navMenuAction';
 import * as types from '../../src/constants';
 
-const unroll: any = require<any>('unroll');
-
-unroll.use(it);
-
 describe('Tests for navMenuAction', (): void => {
     it('should create SHOW_PRIMARY_NAV action', (): void => {
         let visibilityStatus = true;
