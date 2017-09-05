@@ -21,5 +21,3 @@ export const contentStyle: CSS = {
     position: 'relative',
     width: '100%',
 };
-
-

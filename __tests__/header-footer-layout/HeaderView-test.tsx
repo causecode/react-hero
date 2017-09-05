@@ -59,13 +59,13 @@ describe('HeaderView test', (): void => {
         ]
     );
     describe('Click simulation of NavMenuLauncherIcon for toggling PrimarySliderNav and SeconadrySliderNav', (): void => {
-        it('Should Handle click for PrimaryNavIcon', () => {
+        it('Should Handle click for PrimaryNavIcon', (): void => {
             expect(toggleNav).not.toBeCalled();
             expect(componentTree.find(NavMenuLauncherIcon).first().simulate('click'));
             expect(toggleNav).toBeCalled();
         });
 
-        it('Should Handle click for SecondaryNavIcon', () => {
+        it('Should Handle click for SecondaryNavIcon', (): void => {
             expect(toggleSecondaryNav).not.toBeCalled();
             expect(componentTree.find(NavMenuLauncherIcon).last().simulate('click'));
             expect(toggleSecondaryNav).toBeCalled();
