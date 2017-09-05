@@ -84,10 +84,10 @@ eg:
         <HeaderFooterLayout>
             ...
             <PrimarySliderNav>    // The primary navigation menu.
-                <div>Navigation drawer content<div>
+                <div>Primary Navigation ...<div>
             </PrimarySliderNav>
             <SecondarySliderNav>    // The secondary navigation menu.
-                <div>Navigation drawer content<div>
+                <div>Secondary Navigation ...<div>
             </SecondarySliderNav>
         </HeaderFooterLayout>
         ```

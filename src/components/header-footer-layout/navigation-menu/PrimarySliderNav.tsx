@@ -3,16 +3,19 @@ import * as Radium from 'radium';
 import {CSS} from '../../../interfaces';
 import {SliderNav} from './SliderNav';
 
-export interface IPrimarySliderNav {
+export interface IPrimarySliderNavProps {
     style?: CSS;
 }
 
 @Radium
-export class PrimarySliderNav extends React.Component<IPrimarySliderNav, void> {
+export class PrimarySliderNav extends React.Component<IPrimarySliderNavProps, void> {
     render(): JSX.Element {
         return (
                 <SliderNav
-                        navStyle={[navStyle,this.props.style]} isPrimaryNav={true} navContent={this.props.children} />
+                        navStyle={[navStyle,this.props.style]}
+                        isPrimaryNav
+                        navContent={this.props.children}
+                />
         );
     }
 }

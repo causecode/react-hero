@@ -1,6 +1,6 @@
 jest.unmock('../src/reducers/open');
 
-import {open} from '../src/reducers/open';
+import {open} from '../src/reducers/primaryNavReducer';
 import {TOGGLE_NAV} from '../src/constants';
 
 describe('open reducer test cases.', () => {

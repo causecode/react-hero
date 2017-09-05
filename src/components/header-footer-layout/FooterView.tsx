@@ -11,6 +11,10 @@ export interface IFooterViewProps {
 export class FooterView extends React.Component<IFooterViewProps, void> {
     render(): JSX.Element {
         const footerClass = this.props.isSticky ? 'footer container navbar-fixed-bottom' : 'footer';
-        return <div style={[this.props.style]} className={footerClass}>{this.props.children}</div>;
+        return (
+            <div style={[this.props.style]} className={footerClass}>
+                {this.props.children}
+            </div>
+        );
     }
 }

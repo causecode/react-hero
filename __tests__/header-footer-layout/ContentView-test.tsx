@@ -7,12 +7,23 @@ import {ContentView} from '../../src/components/header-footer-layout';
 const unroll: any = require('unroll');
 unroll.use(it);
 
-describe('When FooterView is rendered', (): void => {
+describe('When ContentView is rendered', (): void => {
     const componentTree: ShallowWrapper<void, void> = shallow<void, void> (
-        <ContentView/>
+        <ContentView>
+            <h1>I am the one who knocks - Heisenberg.</h1>
+        </ContentView>
     );
 
-    it('should render an div element', (): void => {
-        expect(componentTree.find('div').length).toBe(1);
-    });
+    unroll('it should render #elementName #count times', (
+        done: () => void,
+        args: {elementName: string, element: EnzymePropSelector, count: number}
+    ): void => {
+        expect(componentTree.find(args.element).length).toBe(args.count);
+        done();
+    },  [
+            ['elementName', 'element', 'count'],
+            ['div', 'div', 1],
+            ['h1', 'h1', 1],
+        ]
+    );
 });

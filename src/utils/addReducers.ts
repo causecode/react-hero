@@ -1,4 +1,4 @@
-import {open} from '../reducers/open';
+import {primaryNavReducer} from '../reducers/primaryNavReducer';
 import {secondaryNavReducer} from '../reducers/secondaryNavReducer';
 import {combineReducers} from 'redux';
 import {Reducer} from 'redux';
@@ -14,8 +14,8 @@ let objectAssign: Function = require<Function>('object-assign');
 
 export const addReducers = (ReducerConfig: Object) => {
     return combineReducers(objectAssign({}, ReducerConfig, {
-        open,
         data,
+        primaryNavOpen: primaryNavReducer,
         secondaryNavOpen: secondaryNavReducer,
         routing: routerReducer,
         form: reduxFormReducer,

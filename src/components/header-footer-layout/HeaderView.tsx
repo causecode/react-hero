@@ -16,20 +16,46 @@ export interface IHeaderViewProps {
 
 @Radium
 export class HeaderViewImpl extends React.Component<IHeaderViewProps, void> {
+
+    showNavLauncherIcon = (
+        isNavigationPresent: boolean,
+        position: string,
+        toggleNavigation: () => void
+    ): JSX.Element => {
+        return (
+            isNavigationPresent &&
+            <NavMenuLauncherIcon
+                    style={navIconStyle}
+                    position={position}
+                    onClick={toggleNavigation}
+            />
+        );
+    };
+
     render(): JSX.Element {
         return (
             <div style={[headerStyle,this.props.style]} className="header">
-                {this.props.primaryNav &&
-                        <NavMenuLauncherIcon style={navIconStyle}
-                                             position={'left'} onClick={this.props.toggleNav}/>}
-                {this.props.secondaryNav &&
-                        <NavMenuLauncherIcon style={navIconStyle}
-                                             position={'right'} onClick={this.props.toggleSecondaryNav}/>}
+                {this.showNavLauncherIcon(this.props.primaryNav, 'left', this.props.toggleNav)}
+                {this.showNavLauncherIcon(this.props.secondaryNav, 'right', this.props.toggleSecondaryNav)}
                 {this.props.children}
             </div>
         );
     }
 }
+
+const mapStateToProps = (state): {secondaryNav: boolean, primaryNav: boolean} => {
+    return {
+        secondaryNav: state.navMenu.secondaryNav,
+        primaryNav: state.navMenu.primaryNav,
+    };
+};
+
+const mapDispatchToProps = (dispatch): {toggleNav: () => void, toggleSecondaryNav: () => void} => {
+    return {
+        toggleNav: (): void => dispatch(toggleNav()),
+        toggleSecondaryNav: (): void => dispatch(toggleSecondaryNav()),
+    };
+};
 
 export const headerStyle: CSS = {
     position: 'relative',
@@ -39,20 +65,6 @@ export const headerStyle: CSS = {
 
 export const navIconStyle: CSS = {
     color: '#777',
-};
-
-const mapStateToProps = (state): {secondaryNav: boolean, primaryNav: boolean} => {
-    return {
-        secondaryNav: state.navMenu.secondaryNav,
-        primaryNav: state.navMenu.primaryNav,
-    };
-};
-
-const mapDispatchToProps = (dispatch) => {
-    return {
-        toggleNav: (): void => dispatch(toggleNav()),
-        toggleSecondaryNav: (): void => dispatch(toggleSecondaryNav()),
-    };
 };
 
 export const HeaderView = connect(mapStateToProps, mapDispatchToProps)(HeaderViewImpl);

@@ -8,33 +8,34 @@ import {
     FooterView,
     ContentView,
     PrimarySliderNav,
-    SecondarySliderNav
+    SecondarySliderNav,
 } from '../../src/components/header-footer-layout';
 
 const unroll: any = require('unroll');
 unroll.use(it);
 
-describe('HeaderFooterLayout Test', () => {
+describe('HeaderFooterLayout Test', (): void => {
     describe('When no children is passed', (): void => {
         const componentTree: ShallowWrapper<void, void> = shallow<void, void> (
             <HeaderFooterLayout/>
         );
 
-        unroll('it should render #element #count times', (
-        done: () => void,
-        args: {elementName: string, element: EnzymePropSelector, count: number}
+        unroll('it should render #elementName #count times', (
+            done: () => void,
+            args: {elementName: string, element: EnzymePropSelector, count: number}
         ): void => {
             expect(componentTree.find(args.element).length).toBe(args.count);
             done();
-        }, [
-            ['element', 'count'],
-            ['div', 1],
-            [HeaderView, 0],
-            [FooterView, 0],
-            [ContentView, 0],
-            [PrimarySliderNav, 0],
-            [SecondarySliderNav, 0],
-        ]);
+        },  [
+                ['elementName', 'element', 'count'],
+                ['div', 'div', 1],
+                ['HeaderView', HeaderView, 0],
+                ['FooterView', FooterView, 0],
+                ['ContentView', ContentView, 0],
+                ['PrimarySliderNav', PrimarySliderNav, 0],
+                ['SecondarySliderNav', SecondarySliderNav, 0],
+            ]
+        );
     });
 
     describe('When all childrens are passed', (): void => {
@@ -48,20 +49,21 @@ describe('HeaderFooterLayout Test', () => {
             </HeaderFooterLayout>
         );
 
-        unroll('it should render #element #count times', (
-        done: () => void,
-        args: {elementName: string, element: EnzymePropSelector, count: number}
+        unroll('it should render #elementName #count times', (
+            done: () => void,
+            args: {elementName: string, element: EnzymePropSelector, count: number}
         ): void => {
             expect(componentTree.find(args.element).length).toBe(args.count);
             done();
-        }, [
-            ['element', 'count'],
-            ['div', 1],
-            [HeaderView, 1],
-            [FooterView, 1],
-            [ContentView, 1],
-            [PrimarySliderNav, 1],
-            [SecondarySliderNav, 1],
-        ]);
+        },  [
+                ['elementName', 'element', 'count'],
+                ['div', 'div', 1],
+                ['HeaderView', HeaderView, 1],
+                ['FooterView', FooterView, 1],
+                ['ContentView', ContentView, 1],
+                ['PrimarySliderNav', PrimarySliderNav, 1],
+                ['SecondarySliderNav', SecondarySliderNav, 1],
+            ]
+        );
     });
 })
