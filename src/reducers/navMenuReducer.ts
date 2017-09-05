@@ -18,7 +18,6 @@ export function navMenuReducer(state = NAV_INITIAL_STATE, action) {
             };
 
         case SHOW_SECONDARY_NAV:
-
             return {
                 ...state,
                 secondaryNav: action.payload,

@@ -85,13 +85,13 @@ const mapStateToProps = (state): {
     secondaryNavOpen: boolean,
     primaryNavCount: number,
     secondaryNavCount: number} => {
-    return {
-        primaryNavOpen: state.primaryNavOpen,
-        secondaryNavOpen: state.secondaryNavOpen,
-        primaryNavCount: state.navMenu.primaryNavCount,
-        secondaryNavCount: state.navMenu.secondaryNavCount,
+        return {
+            primaryNavOpen: state.primaryNavOpen,
+            secondaryNavOpen: state.secondaryNavOpen,
+            primaryNavCount: state.navMenu.primaryNavCount,
+            secondaryNavCount: state.navMenu.secondaryNavCount,
+        };
     };
-};
 
 const mapDispatchToProps = (dispatch) => {
     return {

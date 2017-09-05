@@ -11,11 +11,11 @@ export interface IPrimarySliderNavProps {
 export class PrimarySliderNav extends React.Component<IPrimarySliderNavProps, void> {
     render(): JSX.Element {
         return (
-                <SliderNav
-                        navStyle={[navStyle,this.props.style]}
-                        isPrimaryNav
-                        navContent={this.props.children}
-                />
+            <SliderNav
+                    navStyle={[navStyle,this.props.style]}
+                    isPrimaryNav
+                    navContent={this.props.children}
+            />
         );
     }
 }

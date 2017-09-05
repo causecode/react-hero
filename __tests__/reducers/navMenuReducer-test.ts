@@ -1,13 +1,8 @@
 jest.unmock('../../src/reducers/navMenuReducer');
 
-import { navMenuReducer } from '../../src/reducers/navMenuReducer';
-import {SHOW_PRIMARY_NAV, SHOW_SECONDARY_NAV} from '../../src/constants';
+import {navMenuReducer} from '../../src/reducers/navMenuReducer';
 import {INavMenuReducer} from '../../src/interfaces';
 import * as types from '../../src/constants';
-
-const unroll: any = require('unroll');
-
-unroll.use(it);
 
 describe('navMenuReducer Test', (): void => {
     let NAV_INITIAL_STATE: INavMenuReducer = {
