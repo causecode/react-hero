@@ -20,10 +20,13 @@ export class TestModel extends BaseModel {
 
     static resourceName: string = 'test';
 
-    static columnNames: string[] = [
-        'id',
-        'name'
-    ];
+    static columnNames: Object[] = [{
+        label: 'Id',
+        accessor: 'id',
+    }, {
+        label: 'Name',
+        accessor: 'name',
+    }];
 
     constructor(properties: ITest) {
         super(properties);
