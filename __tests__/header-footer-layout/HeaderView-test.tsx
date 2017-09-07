@@ -1,5 +1,3 @@
-import {IGenericAction} from "../../src/interfaces/index";
-
 jest.unmock('../../src/components/header-footer-layout');
 
 import * as React from 'react';
