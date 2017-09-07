@@ -88,7 +88,8 @@ const BooleanInputTemplate = (props): JSX.Element => {
 
 const DropDownInputTemplate = (props): JSX.Element => {
 
-    const handleChange: (e: React.ChangeEvent<HTMLSelectElement>) => void = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const handleChange: (e: React.ChangeEvent<HTMLSelectElement>) => void =
+            (e: React.ChangeEvent<HTMLSelectElement>) => {
         props.onChange(e.target[`value`]);
     };
 
