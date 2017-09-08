@@ -8,9 +8,8 @@ import {UserListPage} from '../../src/demo/components/UserListPage';
 const unroll = require<any>('unroll');
 
 unroll.use(it);
-
 describe('Test cases for AuthenticateRoute component', (): void => {
-
+    
     const checkPermission = jest.fn();
     checkPermission.mockReturnValueOnce(true)
             .mockReturnValueOnce(false);

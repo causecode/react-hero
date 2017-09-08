@@ -27,3 +27,19 @@
 - Object prototype functions:
     * `isEmpty` to check if an object is empty.
     * `objectEach` to iterate over an object.
+
+## [1.1.7] - 2017-08-28
+
+### Added
+
+- `getRowStyle` Method support in Model to get custom style for every Row of DataGrid. When defined in Model, it will be called for every instance in instanceList and CSS returned from that method will be applied to Row of that Grid.
+- Added boolean prop `exact` in `AuthRoute` which will add prop `exact` to `Route` of `react-router-dom` if specified.
+
+### Changed
+ - Reseted `activePage` for `Pagination` on `componentWillMount` of `PagedList`, So when coming back again on Listing Page from any other page, pagination will start from 1.
+
+### Removed
+
+- Object prototype functions:
+    * `isEmpty`.
+    * `objectEach`.

@@ -112,6 +112,14 @@ export class DataGridImpl extends React.Component<IDataGridProps, void> {
         }
     }
 
+    getRowStyle = (instance: BaseModel): CSS => {
+        if (instance[`getRowStyle`]) {
+            return instance[`getRowStyle`](instance.properties);
+        }
+
+        return null;
+    }
+
     renderSelectAllRecordsCheckbox = (): JSX.Element => {
         let style = this.props.style;
 
@@ -219,10 +227,10 @@ export class DataGridImpl extends React.Component<IDataGridProps, void> {
                 });
             }
 
-            this.columnNames = columnNames.length > 0 ? columnNames : this.properties;
-
             this.properties = propertyNames.length > 0 ? propertyNames :
                     Object.keys(this.props.instanceList[0].properties);
+            
+            this.columnNames = columnNames.length > 0 ? columnNames : this.properties;
         } else {
             this.properties = this.props.properties;
             this.columnNames = this.props.properties;
@@ -258,7 +266,11 @@ export class DataGridImpl extends React.Component<IDataGridProps, void> {
                             let instanceProperties = instance.properties;
 
                             return (
-                                <tr style={style.rowStyle} key={index} className="data-grid-row">
+                                <tr
+                                        style={this.getRowStyle(instance) || style.rowStyle}
+                                        key={index}
+                                        className="data-grid-row"
+                                >
                                     <td style={style.dataStyle}>
                                         <input
                                                 type="checkbox"
