@@ -3,7 +3,7 @@ import * as Radium from 'radium';
 import {MapStateToProps, connect} from 'react-redux';
 import {CSS} from '../../interfaces';
 import {Modal, Button, Row, Col, FontAwesome} from '../ReusableComponents';
-import {ButtonProps} from "react-bootstrap";
+import {ButtonProps} from 'react-bootstrap';
 
 export interface IConfirmationModalStateProps {
     show?: boolean;
