@@ -1,11 +1,11 @@
 import * as React from 'react';
-import {Pagination} from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {BaseModel} from '../models/BaseModel';
 import {setPage} from '../actions/modelActions';
 import {scrollToTop} from '../utils/commonUtils';
 import {ModelService} from '../utils/modelService';
+import {Pagination} from '../components/ReusableComponents';
 import {resetCheckboxState} from '../actions/checkboxActions';
 import {UserActions} from '../components/paged-list/BulkUserActions';
 import {QueryFilter} from '../components/paged-list/Filters/QueryFilter';

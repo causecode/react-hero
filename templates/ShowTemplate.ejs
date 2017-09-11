@@ -1,14 +1,16 @@
+import * as Radium from 'radium';
 import * as React from 'react';
 import {Table} from 'react-bootstrap';
 import {ModelPropTypes, IInstancePageProps} from 'react-hero';
-import {<%= modelName%>Model} from '<%= modelPath%>';
+import {<%= modelName.capitalize()%>Model} from '<%= modelPath%>';
 
+@Radium
 export class <%= modelName.capitalize()%>ShowPage extends React.Component<IInstancePageProps, void> {
 
     static resourceName: string = '<%= resourceName%>';
-    
+
     static defaultProps: IInstancePageProps = {
-        instance: new <%= modelName%>Model({})
+        instance: new <%= modelName.capitalize()%>Model({})
     };
 
     render(): JSX.Element {
