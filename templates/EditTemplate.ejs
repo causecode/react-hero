@@ -1,20 +1,29 @@
 import * as Radium from 'radium';
 import * as React from 'react';
 import {Link} from 'react-router-dom';
-import {ControlLabel, FormGroup, Col, Button, Grid} from 'react-hero';
-import {FormInput, IInstancePageProps, BaseModel, store} from 'react-hero';
+import {
+    ControlLabel,
+    FormGroup,
+    Col,
+    Button,
+    Grid,
+    FormInput,
+    IInstancePageProps,
+    BaseModel,
+    store
+} from 'react-hero';
 import {<%= modelName.capitalize()%>Model} from '<%= modelPath%>';
 
 export interface I<%= componentName.capitalize()%>PageProps extends IInstancePageProps {
     handleSubmit: (
         instance: <%= modelName.capitalize()%>Model,
-        successCallBack?: ((cb: any) => {}),
-        failureCallBack?: ((cb: any) => {}),
+        successCallBack?: ((response?: Axios.AxiosXHR<{message?: string}>) => void),
+        failureCallBack?: (() => void),
     ) => void;
     handleDelete: (
         instance: <%= modelName.capitalize()%>Model,
-        successCallBack?: ((cb: any) => {}),
-        failureCallBack?: ((cb: any) => {}),
+        successCallBack?: ((response?: Axios.AxiosXHR<{message?: string}>) => void),
+        failureCallBack?: (() => void),
     ) => void;
     instance: <%= modelName.capitalize()%>Model;
     isCreatePage: boolean;

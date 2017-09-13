@@ -3,7 +3,7 @@ import * as React from 'react';
 import {PagedList} from 'react-hero';
 
 @Radium
-export class <%= modelName.capitalize()%>ListPage extends React.Component<{}, void> {
+export class <%= modelName.capitalize()%>ListPage extends React.Component<void, void> {
     static resourceName: string = `<%= resourceName%>`;
 
     render(): JSX.Element {

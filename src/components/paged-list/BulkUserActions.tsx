@@ -101,7 +101,7 @@ export class UserActionsImpl extends React.Component<IUserActionProps, void> {
     }
 }
 
-let mapStateToProps: MapStateToProps<IUserActionStateProps, IUserActionProps> =
+const mapStateToProps: MapStateToProps<IUserActionStateProps, IUserActionProps> =
         (state: IState): IUserActionStateProps => {
     return {
         action: state.userAction.action,

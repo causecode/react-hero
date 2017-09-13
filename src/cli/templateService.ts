@@ -58,13 +58,14 @@ function getSubFormPage(propertyName, subPropTypes, model, resourceName) {
     // type `any` is used because it's a generic object.
     let formControls: any = {};
     let {modelName} = commandLine;
-    let inputTemplateString: string = `<FormInput
-                                            type="<%= type%>" ` +
-                                            `<% if (enumInstance) { %>` + `
-                                            enum={<%= enumInstance%>}<% } %>` + `
-                                            propertyName="<%= propertyName%>"
-                                            model="<%= model%>"
-                                       />`;
+    let inputTemplateString: string =
+        `<FormInput
+                    type="<%= type%>" ` +
+                    `<% if (enumInstance) { %>` + `
+                    enum={<%= enumInstance%>}<% } %>` + `
+                    propertyName="<%= propertyName%>"
+                    model="<%= model%>"
+        />`;
 
     // TODO figure out the type and remove `any`
     let inputTemplate: any = _.template(inputTemplateString);
@@ -98,13 +99,14 @@ export function generateFormPage(ModelClass: typeof BaseModel, pageType: 'edit' 
     let {modelName} = commandLine;
 
     let formControls: {[key: string]: string} = {};
-    let inputTemplateString: string = `<FormInput
-                                            type="<%= type%>" ` +
-                                            `<% if (enumInstance) { %>` + `
-                                            enum={<%= enumInstance%>}<% } %>` + `
-                                            propertyName="<%= propertyName%>"
-                                            model="<%= model%>"
-                                       />`;
+    let inputTemplateString: string =
+        `<FormInput
+                type="<%= type%>" ` +
+                `<% if (enumInstance) { %>` + `
+                enum={<%= enumInstance%>}<% } %>` + `
+                propertyName="<%= propertyName%>"
+                model="<%= model%>"
+        />`;
 
     // TODO figure out the type and remove `any`
     let inputTemplate: any = _.template(inputTemplateString);
@@ -130,10 +132,10 @@ export function generateFormPage(ModelClass: typeof BaseModel, pageType: 'edit' 
 
             if (currentPropType.type === 'object') {
                 formControls[prop] = getSubFormPage(
-                        prop,
-                        currentPropType.propTypes,
-                        model,
-                        resourceName
+                    prop,
+                    currentPropType.propTypes,
+                    model,
+                    resourceName
                 );
                 return;
             }
@@ -174,7 +176,7 @@ function getNestedObjectView(propertyName: string, propTypes: any, resourceName:
                 <td><strong><%= subPropertyName%></strong></td>
                 <td>{<%= subPropertyValue%>}</td>
             </tr>`);
-    let tableRowMap: any = {};
+    let tableRowMap: object = {};
     Object.keys(propTypes).forEach((prop: string, index: number) => {
         tableRowMap[prop] = tableRowTemplate({
             subPropertyName: prop,
