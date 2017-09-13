@@ -4,7 +4,7 @@ import {BaseModel} from '../models/BaseModel';
 import {ModelPropTypes} from '../models/ModelPropTypes';
 import {store} from '../store';
 import {ControlLabel, Col, FormGroup} from 'react-bootstrap';
-import {FormInput} from '../components/Widgets';
+import {FormInput} from '../components/widgets';
 import {IImmutable} from '../interfaces';
 import {fromJS} from 'immutable';
 import {AUTH_TOKEN_KEY, AUTH_TOKEN_KEY_TIMESTAMP} from '../constants';
@@ -123,8 +123,8 @@ function fetchComponent(componentPath: string, componentName: string, theme?: st
     /**
      * TODO use the path of the app root directory instead of ../../../../src.
      */
-    // return require(`../../src/${theme || 'default'}/${componentPath}`)[`${componentName}`];
     return require(`../../../../app/${theme || 'default'}/${componentPath}`)[`${componentName}`];
+    // return require(`../src/${theme || 'default'}/${componentPath}`)[`${componentName}`];
 }
 
 export function showWarn(message: string): void {
@@ -229,7 +229,9 @@ export function getActionComponent(fileName: string): React.ComponentClass<any> 
     let fileNameSplittedToWords: string[] = fileName.split('-').map((item: string): string => {
         return item.capitalize();
     });
-
+    // For development choose this
+    // return require(`../../src/components-stateful`)[fileNameSplittedToWords.join('')];
+    // For using react-hero as a plugin use this
     return require(`../../../../app/containers`)[fileNameSplittedToWords.join('')];
 };
 

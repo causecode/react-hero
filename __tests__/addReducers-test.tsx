@@ -5,7 +5,7 @@ import {dataReducer as data} from '../src/reducers/data';
 import {combineReducers} from 'redux';
 import {routerReducer} from 'react-router-redux';
 import {addReducers} from '../src/utils/addReducers';
-import {open} from '../src/reducers/open';
+import {primaryNavReducer} from '../src/reducers/primaryNavReducer';
 
 const reduxFormReducer = require<any>('redux-form').reducer;
 const constants = require<{combinedForms: string}>('../__mocks__/constants');
@@ -23,7 +23,7 @@ describe('Test AddReducers', () => {
         });
         expect(combineReducers).toBeCalledWith({
             userReducer: testReducer,
-            open,
+            primaryNavReducer,
             data,
             routing: routerReducer,
             form: reduxFormReducer,

@@ -1,7 +1,7 @@
-jest.unmock('../src/components/PagedList/Filters/RangeFilter');
+jest.unmock('../src/components/paged-list/Filters/RangeFilter');
 
 import * as React from 'react';
-import {RangeFilter} from '../src/components/PagedList/Filters/RangeFilter';
+import {RangeFilter} from '../src/components/paged-list/Filters/RangeFilter';
 import {IFilter} from '../src/interfaces';
 import {ShallowWrapper, shallow} from 'enzyme';
 import '../src/init';

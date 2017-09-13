@@ -1,7 +1,7 @@
-jest.unmock('../src/components/PagedList/Filters/DropDownSelect');
+jest.unmock('../src/components/paged-list/Filters/DropDownSelect');
 
 import * as React from 'react';
-import {DropDownSelect, IDropDownSelectProps} from '../src/components/PagedList/Filters/DropDownSelect';
+import {DropDownSelect, IDropDownSelectProps} from '../src/components/paged-list/Filters/DropDownSelect';
 import {ShallowWrapper, shallow} from 'enzyme';
 import {IDropDownFilterData} from '../src/interfaces';
 

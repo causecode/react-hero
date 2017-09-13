@@ -1,7 +1,7 @@
-jest.unmock('../src/components/PagedList/Filters/QueryFilter');
+jest.unmock('../src/components/paged-list/Filters/QueryFilter');
 
 import * as React from 'react';
-import {QueryFilter, IQueryFilter} from '../src/components/PagedList/Filters/QueryFilter';
+import {QueryFilter, IQueryFilter} from '../src/components/paged-list/Filters/QueryFilter';
 import {ShallowWrapper, shallow} from 'enzyme';
 import '../src/init';
 

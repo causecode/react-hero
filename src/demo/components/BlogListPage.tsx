@@ -1,10 +1,10 @@
 import * as React from 'react';
 import {PagedList} from '../../components-stateful/PagedList';
-import {QueryFilter} from '../../components/PagedList/Filters/QueryFilter';
-import {RangeFilter} from '../../components/PagedList/Filters/RangeFilter';
-import {DropDownFilter} from '../../components/PagedList/Filters/DropDownFilter';
-import {DateRangeFilter} from '../../components/PagedList/Filters/DateRangeFilter';
-import {AutocompleteQueryFilter} from '../../components/PagedList/Filters/AutocompleteQueryFilter';
+import {QueryFilter} from '../../components/paged-list/Filters/QueryFilter';
+import {RangeFilter} from '../../components/paged-list/Filters/RangeFilter';
+import {DropDownFilter} from '../../components/paged-list/Filters/DropDownFilter';
+import {DateRangeFilter} from '../../components/paged-list/Filters/DateRangeFilter';
+import {AutocompleteQueryFilter} from '../../components/paged-list/Filters/AutocompleteQueryFilter';
 
 export class BlogListPage extends React.Component<{resource: string}, void> {
 

@@ -10,3 +10,6 @@ public
 .vscode
 .DS_Store
 localConfig.json
+*.jsx
+*.js
+*.sh

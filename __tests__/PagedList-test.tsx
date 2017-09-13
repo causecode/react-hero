@@ -1,4 +1,4 @@
-jest.unmock('../src/components-stateful/PagedList');
+jest.unmock('../src/components-stateful/paged-list');
 jest.mock('../src/utils/appService');
 
 import * as React from 'react';
@@ -12,10 +12,10 @@ import {setPage} from '../src/actions/modelActions';
 import {ModelService} from '../src/utils/modelService';
 import {resetCheckboxState} from '../src/actions/checkboxActions';
 import {TestModel, userModelBruceInstance} from './testData/TestModel';
-import {UserActions} from '../src/components/PagedList/BulkUserActions';
-import {QueryFilter} from '../src/components/PagedList/Filters/QueryFilter';
-import {DataGrid, IDataGridProps} from '../src/components/PagedList/DataGrid';
-import {PagedListFilters} from '../src/components/PagedList/Filters/PagedListFilter';
+import {UserActions} from '../src/components/paged-list/BulkUserActions';
+import {QueryFilter} from '../src/components/paged-list/Filters/QueryFilter';
+import {DataGrid, IDataGridProps} from '../src/components/paged-list/DataGrid';
+import {PagedListFilters} from '../src/components/paged-list/Filters/PagedListFilter';
 import {PagedListImpl, PagedList, IPagedListProps} from '../src/components-stateful/PagedList';
 import {
     IPagedListFiltersProps,
@@ -30,7 +30,7 @@ const unroll = require<any>('unroll');
 
 unroll.use(it);
 
-describe('Test cases for PagedList', (): void => {
+describe('Test cases for paged-list', (): void => {
 
     it('should throw an error when resource name is not passed', (): void => {
         expect((): void => {
@@ -205,7 +205,7 @@ describe('Test cases for PagedList', (): void => {
     });
 });
 
-describe('Test cases for PagedList using mount', (): void => {
+describe('Test cases for paged-list using mount', (): void => {
 
     let storeInstances: {testList?: IStoreInstanceType} = {};
 
@@ -228,7 +228,7 @@ describe('Test cases for PagedList using mount', (): void => {
         </Provider>
     );
 
-    it('should unmount PagedList when unmount is called', (): void => {
+    it('should unmount paged-list when unmount is called', (): void => {
         expect(pagedList.find('h2').length).toBe(1);
         pagedList.unmount();
         expect(pagedList.find('h2').length).toBe(0);

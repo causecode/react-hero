@@ -1,12 +1,12 @@
-jest.unmock('../src/components/PagedList/Filters/OuterFilter');
+jest.unmock('../src/components/paged-list/Filters/OuterFilter');
 
 import * as React from 'react';
 import {shallow, ShallowWrapper} from 'enzyme';
 import {ModelService} from '../src/utils/modelService';
 import {BlogModel} from '../src/demo/models/BlogModel';
-import {QueryFilter} from '../src/components/PagedList/Filters/QueryFilter';
-import {DateRangeFilter} from '../src/components/PagedList/Filters/DateRangeFilter';
-import {IOuterFilterProps, OuterFilterImpl} from '../src/components/PagedList/Filters/OuterFilter';
+import {QueryFilter} from '../src/components/paged-list/Filters/QueryFilter';
+import {DateRangeFilter} from '../src/components/paged-list/Filters/DateRangeFilter';
+import {IOuterFilterProps, OuterFilterImpl} from '../src/components/paged-list/Filters/OuterFilter';
 
 const unroll = require<any>('unroll');
 

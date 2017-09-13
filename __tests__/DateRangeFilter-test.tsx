@@ -1,7 +1,7 @@
-jest.unmock('../src/components/PagedList/Filters/DateRangeFilter');
+jest.unmock('../src/components/paged-list/Filters/DateRangeFilter');
 
 import * as React from 'react';
-import {DateRangeFilter} from '../src/components/PagedList/Filters/DateRangeFilter';
+import {DateRangeFilter} from '../src/components/paged-list/Filters/DateRangeFilter';
 import {IFilter} from '../src/interfaces';
 import {ShallowWrapper, shallow} from 'enzyme';
 import '../src/init';

@@ -1,5 +1,5 @@
 jest.unmock('../src/components/CRUD/GenericListPage');
-jest.mock('../src/components-stateful/PagedList');
+jest.mock('../src/components-stateful/paged-list');
 
 import * as React from 'react';
 import * as TestUtils from 'react-addons-test-utils';

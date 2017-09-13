@@ -57,84 +57,70 @@ After you have merged everything to the master branch, follow the following step
   render() {
     return (
       <HeaderFooterLayout>
-        <HeaderView></HeaderView>
-        <ContentView></ContentView>
-        <FooterView></FooterView>
-        <NavigationMenu></NavigationMenu>
+        <HeaderView style={optionalStyle}></HeaderView>
+        <ContentView style={optionalStyle}></ContentView>
+        <FooterView style={optionalStyle}></FooterView>
+        <PrimarySliderNav style={optionalStyle}></PrimarySliderNav>
+        <SecondarySliderNav style={optionalStyle}></SecondarySliderNav>
       </HeaderFooterLayout>
       )
   }
   ```
-- There are also a few custom Widgets that have been provided for use in the `HeaderFooterLayout` which provide pre defined styles.
+- There are also a few custom Widgets that have been provided for use in the `HeaderFooterLayout` which provide predefined styles.
 eg:
   - `Title`
   - `Description`
   - `Content`
   - `ButtonList`
   - `ButtonListItem`
+
+- __FooterView__
+    * Uses an optional prop `isSticky` to make the footer stick to bottom of the window. Default value is `false`.
 - __Navigation Menu__
-    * The `HeaderFooterLayout` has the ability to render upto two navigation menu. No additional prop is required in the `NavigationMenu` for differentiating between the two navigation menu. Just add two `NavigationMenu` elements inside `HeaderFooterLayout`.<br/><br/>`react-hero` is smart enough to identify the drawer.
-    The `NavigationMenu` appearing first in the sequence is the __primary__ menu and the other one is the __secondary__ menu. If any more `NavigationMenu` is added, it will be ignored.<br/>
-    Example: 
-    
+    * The `HeaderFooterLayout` has the ability to render upto two navigation menu. `PrimarySliderNav` renders a navigation drawer that opens from left and `SecondarySliderNav` renders a navigation drawer that opens from right. An optional style prop can be passed for customizing the navigation drawer.<br/>
+    Example:
+
         ```
         <HeaderFooterLayout>
             ...
-            <NavigationMenu>    // The primary navigation menu.
-                <div>A navigation menu<div>
-            </NavigationMenu>
-            <NavigationMenu>    // The secondary navigation menu.
-                <div>Another navigation menu<div>
-            </NavigationMenu>
+            <PrimarySliderNav>    // The primary navigation menu.
+                <div>Primary Navigation ...<div>
+            </PrimarySliderNav>
+            <SecondarySliderNav>    // The secondary navigation menu.
+                <div>Secondary Navigation ...<div>
+            </SecondarySliderNav>
         </HeaderFooterLayout>
-        ```  
-    * The default position for the primary menu is the _left_ side of the screen and for the secondary menu it's the _right_ side. But the sides can be changed as per the requirements by passing the props: `primaryMenuPosition` and `secondaryMenuPosition`. The value of these props can either be __left__ or __right__.
-    * The style of each navigation menu can be changed via the custom style passed to the `HeaderFooterLayout`. The style for the primary and the secondary menu can be assigned to the keys __primaryNav__ and __secondaryNav__ respectively. The example of the same can be found below.
+        ```
+    * The style of each navigation menu can be changed via the `style` prop. The example of the same can be found below.
 
-- `HeaderFooterLayout` accepts a `style` prop to override the default styles:
+- `PrimarySliderNav` and `SecondarySliderNav` accepts an optional `style` prop to override the default styles:
   ```
-  const customStyle: IHeaderFooterLayoutStyle = {
-      header: {
-          padding: 'none',
-      },
-      primaryNav: {
+const primaryNavStyle: CSS = {
           padding: 'none',
           width: '30%',
           backgroundColor: '#eea303',
-      },
-      secondaryNav: {
+      };
+ const secondaryNavStyle: CSS = {
           padding: 'none',
           width: '50%',
-      },
-      content: {
-          color: '#888',
-      },
-      footer: {
-          backgroundColor: '#888',
-          fontSize: '15px',
-          color: 'white',
-      },
-      navIcon: {
-          color: '#777',
-      },
-  };
+      };
 
   render() {
 	   return (
-        <HeaderFooterLayout style={customStyle} primaryMenuPosition="left" secondaryMenuPosition="right">
+        <HeaderFooterLayout>
             ...
-            <NavigationMenu>    // The primary navigation menu.
+            <PrimarySliderNav style={primaryNavStyle}>    // The primary navigation menu.
                 <div>A navigation menu<div>
-            </NavigationMenu>
-            <NavigationMenu>    // The secondary navigation menu.
+            </PrimarySliderNav>
+            <SecondarySliderNav style={secondaryNavStyle}>    // The secondary navigation menu.
                 <div>Another navigation menu<div>
-            </NavigationMenu>
+            </SecondarySliderNav>
         </HeaderFooterLayout>
 	    )
   }
   ```
   ![NavigationMenuDemo screenshot](src/demo/images/NavigationMenuDemo.png "NavigationMenuDemo")
-  
+
 
 ### 3 Themeable Layout
 
@@ -512,9 +498,14 @@ eg:
              }
         }
         ```
+        ### 9 DataGrid
 
-### 9 DataGrid
+         * This component is responsible for rendering the table and the filters in the listing page. It is internally used by PagedList.
 
- * This component is responsible for rendering the table and the filters in the listing page. It is internally used by PagedList.
+         * When `getRowStyle` method is defined in Model used in DataGrid, then it will be called for every row of DataGrid and style returned from that method will be applied to Row of that Grid.
 
- * When `getRowStyle` method is defined in Model used in DataGrid, then it will be called for every row of DataGrid and style returned from that method will be applied to Row of that Grid.
+
+
+        ```
+* When `getRowStyle` method is defined in Model used in DataGrid, then it will be called for every row of DataGrid and style returned from that method will be applied to Row of that Grid.
+
