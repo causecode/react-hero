@@ -123,8 +123,8 @@ function fetchComponent(componentPath: string, componentName: string, theme?: st
     /**
      * TODO use the path of the app root directory instead of ../../../../src.
      */
-    // return require(`../../src/${theme || 'default'}/${componentPath}`)[`${componentName}`];
     return require(`../../../../app/${theme || 'default'}/${componentPath}`)[`${componentName}`];
+    // return require(`../src/${theme || 'default'}/${componentPath}`)[`${componentName}`];
 }
 
 export function showWarn(message: string): void {
@@ -229,7 +229,9 @@ export function getActionComponent(fileName: string): React.ComponentClass<any> 
     let fileNameSplittedToWords: string[] = fileName.split('-').map((item: string): string => {
         return item.capitalize();
     });
-
+    // For development choose this
+    // return require(`../../src/components-stateful`)[fileNameSplittedToWords.join('')];
+    // For using react-hero as a plugin use this
     return require(`../../../../app/containers`)[fileNameSplittedToWords.join('')];
 };
 

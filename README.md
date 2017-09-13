@@ -498,9 +498,14 @@ const primaryNavStyle: CSS = {
              }
         }
         ```
+        ### 9 DataGrid
 
-### 9 DataGrid
+         * This component is responsible for rendering the table and the filters in the listing page. It is internally used by PagedList.
 
- * This component is responsible for rendering the table and the filters in the listing page. It is internally used by PagedList.
+         * When `getRowStyle` method is defined in Model used in DataGrid, then it will be called for every row of DataGrid and style returned from that method will be applied to Row of that Grid.
 
- * When `getRowStyle` method is defined in Model used in DataGrid, then it will be called for every row of DataGrid and style returned from that method will be applied to Row of that Grid.
+
+
+        ```
+* When `getRowStyle` method is defined in Model used in DataGrid, then it will be called for every row of DataGrid and style returned from that method will be applied to Row of that Grid.
+
