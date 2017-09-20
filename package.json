@@ -1,6 +1,6 @@
 {
   "name": "react-hero",
-  "version": "1.1.7",
+  "version": "1.1.8",
   "description": "",
   "private": true,
   "main": "public/index.js",
@@ -68,7 +68,7 @@
     "html-webpack-plugin": "2.19.0",
     "immutable": "3.8.1",
     "json-loader": "0.5.4",
-    "moment": "2.15.2",
+    "moment": "2.18.1",
     "object-assign": "4.1.0",
     "radium": "0.18.1",
     "react": "15.6.1",

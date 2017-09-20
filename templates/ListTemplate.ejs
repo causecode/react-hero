@@ -1,7 +1,9 @@
+import * as Radium from 'radium';
 import * as React from 'react';
 import {PagedList} from 'react-hero';
 
-export class <%= modelName%>ListPage extends React.Component<{}, void> {
+@Radium
+export class <%= modelName.capitalize()%>ListPage extends React.Component<void, void> {
     static resourceName: string = `<%= resourceName%>`;
 
     render(): JSX.Element {
