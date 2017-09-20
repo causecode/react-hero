@@ -1,45 +1,56 @@
+import * as Radium from 'radium';
 import * as React from 'react';
-import {<%= modelName%>Model} from '<%= modelPath%>';
-import {ControlLabel, FormGroup, Col, Button, Grid} from 'react-bootstrap';
-import {Link} from 'react-router';
-import {FormInput, IInstancePageProps, BaseModel} from 'react-hero';
-import {store} from '../../store';
+import {Link} from 'react-router-dom';
+import {
+    ControlLabel,
+    FormGroup,
+    Col,
+    Button,
+    Grid,
+    FormInput,
+    IInstancePageProps,
+    BaseModel,
+    store
+} from 'react-hero';
+import {<%= modelName.capitalize()%>Model} from '<%= modelPath%>';
 
-export interface I<%= componentName%>PageProps extends IInstancePageProps {
+export interface I<%= componentName.capitalize()%>PageProps extends IInstancePageProps {
     handleSubmit: (
-        instance: <%= modelName%>Model, 
-        successCallBack?: ((any) => {}), 
-        failureCallBack?: ((any) => {})
+        instance: <%= modelName.capitalize()%>Model,
+        successCallBack?: ((response?: Axios.AxiosXHR<{message?: string}>) => void),
+        failureCallBack?: (() => void),
     ) => void;
     handleDelete: (
-        instance: <%= modelName%>Model,
-        successCallBack?: ((any) => {}), 
-        failureCallBack?: ((any) => {})
+        instance: <%= modelName.capitalize()%>Model,
+        successCallBack?: ((response?: Axios.AxiosXHR<{message?: string}>) => void),
+        failureCallBack?: (() => void),
     ) => void;
-    instance: <%= modelName%>Model;
+    instance: <%= modelName.capitalize()%>Model;
     isCreatePage: boolean;
 }
 
-export class <%= componentName%>Page extends React.Component<I<%= componentName%>PageProps, void> { 
+@Radium
+export class <%= componentName.capitalize()%>Page extends React.Component<I<%= componentName.capitalize()%>PageProps, void> {
 
     static resourceName: string = '<%= resourceName%>';
-    
-    fetchStoreInstance = (): <%= modelName%>Model => {
-        let instance: <%= modelName%>Model = this.props.instance;
-        let instanceKey: string = this.props.isCreatePage ? `${instance.resourceName}Create` : `${instance.resourceName}Edit`;
-        instance.properties = store.getState().forms[`rhForms`][instanceKey].properties; 
+
+    fetchStoreInstance = (): <%= modelName.capitalize()%>Model => {
+        let instance: <%= modelName.capitalize()%>Model = this.props.instance;
+        let instanceKey: string = this.props.isCreatePage ?
+                                    `${instance.resourceName}Create` : `${instance.resourceName}Edit`;
+        instance.properties = store.getState().forms[`rhForms`][instanceKey].properties;
         return instance;
     }
 
-    handleSubmit = (e: React.FormEvent) => {
+    handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         // Not using connect here to avoid rerendering of component on change of instance properties.
         this.props.handleSubmit(this.fetchStoreInstance());
     }
 
-    handleDelete = (e: React.FormEvent) => {
+    handleDelete = () => {
         if (this.props.handleDelete && this.props.handleDelete instanceof Function) {
-            this.props.handleDelete(this.fetchStoreInstance()); 
+            this.props.handleDelete(this.fetchStoreInstance());
         }
     }
 
@@ -65,6 +76,6 @@ export class <%= componentName%>Page extends React.Component<I<%= componentName%
                 </FormGroup>
                 </Grid>
             </form>
-        );    
+        );
     }
 };

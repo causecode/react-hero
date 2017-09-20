@@ -58,13 +58,14 @@ function getSubFormPage(propertyName, subPropTypes, model, resourceName) {
     // type `any` is used because it's a generic object.
     let formControls: any = {};
     let {modelName} = commandLine;
-    let inputTemplateString: string = `<FormInput 
-                                            type="<%= type%>" ` + 
-                                            `<% if (enumInstance) { %>` + ` 
-                                            enum={<%= enumInstance%>}<% } %>` + `
-                                            propertyName="<%= propertyName%>"
-                                            model="<%= model%>"    
-                                       />`;
+    let inputTemplateString: string =
+        `<FormInput
+                    type="<%= type%>" ` +
+                    `<% if (enumInstance) { %>` + `
+                    enum={<%= enumInstance%>}<% } %>` + `
+                    propertyName="<%= propertyName%>"
+                    model="<%= model%>"
+        />`;
 
     // TODO figure out the type and remove `any`
     let inputTemplate: any = _.template(inputTemplateString);
@@ -74,7 +75,7 @@ function getSubFormPage(propertyName, subPropTypes, model, resourceName) {
         }
 
         let currentPropType: any = subPropTypes[prop];
-        let enumInstance: string = currentPropType.enum ? 
+        let enumInstance: string = currentPropType.enum ?
                 `${modelName.capitalize()}Model.propTypes.${propertyName}.propTypes[\`${prop}\`].enum` : '';
         let templateData: IFormTemplateData = {
             type: currentPropType.type,
@@ -85,7 +86,7 @@ function getSubFormPage(propertyName, subPropTypes, model, resourceName) {
 
         formControls[prop] = inputTemplate(templateData);
     });
-    let SubFormTemplate: (...data: any[]) => string = 
+    let SubFormTemplate: (...data: any[]) => string =
             _.template(require<string>('../../templates/SubFormTemplate.ejs'));
     return SubFormTemplate({
         propertyName,
@@ -96,15 +97,16 @@ function getSubFormPage(propertyName, subPropTypes, model, resourceName) {
 export function generateFormPage(ModelClass: typeof BaseModel, pageType: 'edit' | 'create'): string {
     let {resourceName, propTypes} = ModelClass;
     let {modelName} = commandLine;
-    
+
     let formControls: {[key: string]: string} = {};
-    let inputTemplateString: string = `<FormInput 
-                                            type="<%= type%>" ` + 
-                                            `<% if (enumInstance) { %>` + ` 
-                                            enum={<%= enumInstance%>}<% } %>` + `
-                                            propertyName="<%= propertyName%>"
-                                            model="<%= model%>"    
-                                       />`;
+    let inputTemplateString: string =
+        `<FormInput
+                type="<%= type%>" ` +
+                `<% if (enumInstance) { %>` + `
+                enum={<%= enumInstance%>}<% } %>` + `
+                propertyName="<%= propertyName%>"
+                model="<%= model%>"
+        />`;
 
     // TODO figure out the type and remove `any`
     let inputTemplate: any = _.template(inputTemplateString);
@@ -130,15 +132,15 @@ export function generateFormPage(ModelClass: typeof BaseModel, pageType: 'edit' 
 
             if (currentPropType.type === 'object') {
                 formControls[prop] = getSubFormPage(
-                        prop, 
-                        currentPropType.propTypes, 
-                        model,
-                        resourceName
+                    prop,
+                    currentPropType.propTypes,
+                    model,
+                    resourceName
                 );
                 return;
             }
-            let enumInstance: string = currentPropType.enum ? 
-                    `${modelName.capitalize()}Model.propTypes.${prop}.enum` : ''; 
+            let enumInstance: string = currentPropType.enum ?
+                    `${modelName.capitalize()}Model.propTypes.${prop}.enum` : '';
             let templateData: IFormTemplateData = {
                 type: currentPropType.type,
                 enumInstance,
@@ -150,14 +152,14 @@ export function generateFormPage(ModelClass: typeof BaseModel, pageType: 'edit' 
         });
     }
 
-    let editTemplate: (...data: any[]) => string = 
+    let editTemplate: (...data: any[]) => string =
             _.template(require<string>('../../templates/EditTemplate.ejs'));
     return editTemplate({
-        modelName, 
+        modelName,
         componentName,
         resourceName,
         /* tslint:disable */
-        modelPath: `../..${commandLine.modelPath[0] === '/' ? commandLine.modelPath : `/${commandLine.modelPath}`}`, // Assuming the file will always be generated 3 levels deep from the root.
+        modelPath: `../../..${commandLine.modelPath[0] === '/' ? commandLine.modelPath : `/${commandLine.modelPath}`}`, // Assuming the file will always be generated 4 levels deep from the root.
         /* tslint:enable */
         cancelDestination: commandLine.onCancel,
         formControls,
@@ -173,8 +175,8 @@ function getNestedObjectView(propertyName: string, propTypes: any, resourceName:
     let tableRowTemplate: any = _.template(`<tr>
                 <td><strong><%= subPropertyName%></strong></td>
                 <td>{<%= subPropertyValue%>}</td>
-            </tr>`); 
-    let tableRowMap: any = {};   
+            </tr>`);
+    let tableRowMap: object = {};
     Object.keys(propTypes).forEach((prop: string, index: number) => {
         tableRowMap[prop] = tableRowTemplate({
             subPropertyName: prop,
@@ -199,10 +201,10 @@ export function getShowPage(ModelClass: typeof BaseModel): string {
     let tableRowTemplate: any = _.template(`<tr>
             <td><strong><%= propertyName%></strong></td>
             <td>{<%= propertyValue%>}</td>
-            </tr>`); 
+            </tr>`);
 
     // type `any` is used because it's a generic object.
-    let tableRowMap: any = {};   
+    let tableRowMap: any = {};
     Object.keys(propTypes).forEach((prop: string, index: number) => {
         if (!propTypes.hasOwnProperty(prop)) {
             return;
@@ -218,11 +220,11 @@ export function getShowPage(ModelClass: typeof BaseModel): string {
             propertyValue: `instance.properties.${prop}.toString()`,
         });
     });
-  
+
     return showTemplate({
-        modelName: commandLine.modelName, 
+        modelName: commandLine.modelName,
         /* tslint:disable */
-        modelPath: `../..${commandLine.modelPath[0] === '/' ? commandLine.modelPath : `/${commandLine.modelPath}`}`, // Assuming the file will always be generated 3 levels deep from the root.
+        modelPath: `../../..${commandLine.modelPath[0] === '/' ? commandLine.modelPath : `/${commandLine.modelPath}`}`, // Assuming the file will always be generated 4 levels deep from the root.
         /* tslint:enable */
         resourceName,
         tableRowMap,

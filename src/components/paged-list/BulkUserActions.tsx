@@ -11,7 +11,7 @@ export interface IUserActionStateProps {
     selectedIds?: number[];
     selectAllOnPage?: boolean;
     selectAll?: boolean;
-    totalCount?: number; 
+    totalCount?: number;
 }
 
 export interface IUserActionProps extends IUserActionStateProps {
@@ -27,10 +27,10 @@ export interface IState {
 
 @Radium
 export class UserActionsImpl extends React.Component<IUserActionProps, void> {
-    
+
     private listItems: string[] = ['--User Action--'];
-    
-    componentWillMount = (): void => {
+
+    componentWillMount(): void {
         if (this.props.userActionsMap && this.props.userActionsMap.length > 0) {
             let actionMap: IBulkUserActionType[] = this.props.userActionsMap;
             actionMap.forEach((action: IBulkUserActionType) => {
@@ -60,7 +60,7 @@ export class UserActionsImpl extends React.Component<IUserActionProps, void> {
     performAction = (): void => {
         const {userActionsMap} = this.props;
         // Using every as we cannot break from forEach loop.
-        // http://stackoverflow.com/questions/6260756/how-to-stop-javascript-foreach  
+        // http://stackoverflow.com/questions/6260756/how-to-stop-javascript-foreach
         userActionsMap.every((item: IBulkUserActionType): boolean => {
             if (item.label === this.props.action) {
                 this.saveUserActionData();
@@ -68,11 +68,11 @@ export class UserActionsImpl extends React.Component<IUserActionProps, void> {
                 return false;
             }
             return true;
-        });  
+        });
     }
 
     saveUserActionData = (): void => {
-        let records: number = this.props.selectAll ? this.props.totalCount : 
+        let records: number = this.props.selectAll ? this.props.totalCount :
                 this.props.selectedIds && this.props.selectedIds.length;
         store.dispatch(saveUserActionData(records));
     }
@@ -88,7 +88,7 @@ export class UserActionsImpl extends React.Component<IUserActionProps, void> {
                  >
                     {this.renderDropDownItems()}
                 </select>
-                <Button 
+                <Button
                         disabled={this.props.action === this.listItems[0] || this.props.selectedIds.length === 0}
                         onClick={this.performAction}
                         style={(this.props.action === this.listItems[0] || this.props.selectedIds.length === 0) ?
@@ -101,7 +101,7 @@ export class UserActionsImpl extends React.Component<IUserActionProps, void> {
     }
 }
 
-let mapStateToProps: MapStateToProps<IUserActionStateProps, IUserActionProps> = 
+const mapStateToProps: MapStateToProps<IUserActionStateProps, IUserActionProps> =
         (state: IState): IUserActionStateProps => {
     return {
         action: state.userAction.action,

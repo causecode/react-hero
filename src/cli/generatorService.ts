@@ -11,22 +11,22 @@ export function getEditPage(pageType: 'edit' | 'create') {
     let modelModule: any = require<any>(`${projectRoot}${typescriptOut}${commandLine.modelPath}`);
 
     let ModelClass: typeof BaseModel = modelModule[`${commandLine.modelName.capitalize()}Model`];
-    
+
     if (!ModelClass) {
         throw new Error(INVALID_MODEL_NAME(commandLine.modelName, commandLine.modelPath));
     }
 
     let {resourceName} = ModelClass;
     let fileName: string = `${resourceName.capitalize()}${pageType === 'create' ? 'Create' : 'Edit'}.tsx`;
-    let filePath: string = `${projectRoot}/src/components/${resourceName}/${fileName}`;
+    let filePath: string = `${projectRoot}/app/containers/${resourceName}/${fileName}`;
 
     TemplateService.writeFile(
-            path.join(__dirname, filePath), 
+            path.join(__dirname, filePath),
             TemplateService.generateFormPage(ModelClass, pageType), () => {}
     );
 
     /* tslint:disable */
-    console.log(`${fileName} File created at src/components/${ModelClass.resourceName}/`);
+    console.log(`${fileName} File created at app/containers/${ModelClass.resourceName}/`);
     /* tslint:enable */
 }
 
@@ -45,19 +45,19 @@ export function getListPage() {
     let {resourceName} = ModelClass;
 
     TemplateService.writeFile(
-            path.join(__dirname, `${projectRoot}/src/components/${resourceName}/${resourceName.capitalize()}List.tsx`), 
+            path.join(__dirname, `${projectRoot}/app/containers/${resourceName}/${resourceName.capitalize()}List.tsx`),
             TemplateService.getListPage(ModelClass), () => {}
     );
 
     /* tslint:disable */
-    console.log(`${resourceName.capitalize()}List.tsx File created at src/components/${resourceName}/`);
+    console.log(`${resourceName.capitalize()}List.tsx File created at app/containers/${resourceName}/`);
     /* tslint:enable */
 }
 
 export function getShowPage() {
 
     TemplateService.parseOptions('modelPath', 'modelName');
-    
+
     let modelModule: any = require<any>(`${projectRoot}${typescriptOut}${commandLine.modelPath}`);
     let ModelClass: typeof BaseModel = modelModule[`${commandLine.modelName.capitalize()}Model`];
 
@@ -68,12 +68,12 @@ export function getShowPage() {
     let {resourceName} = ModelClass;
 
     TemplateService.writeFile(
-            path.join(__dirname, `${projectRoot}/src/components/${resourceName}/${resourceName.capitalize()}Show.tsx`), 
+            path.join(__dirname, `${projectRoot}/app/containers/${resourceName}/${resourceName.capitalize()}Show.tsx`),
             TemplateService.getShowPage(ModelClass), () => {}
     );
 
     /* tslint:disable */
-    console.log(`${resourceName.capitalize()}Show.tsx File created at src/components/${resourceName}/`);
+    console.log(`${resourceName.capitalize()}Show.tsx File created at app/containers/${resourceName}/`);
     /* tslint:enable */
 }
 

@@ -18,7 +18,7 @@ export class PagedListFilters extends React.Component<IPagedListFiltersProps, vo
         resource: '',
     };
 
-    componentWillMount = (): void => {
+    componentWillMount(): void {
         InnerFilterForm = createFilterForm(this.props.resource);
     }
 

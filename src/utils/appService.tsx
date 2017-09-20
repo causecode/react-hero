@@ -4,7 +4,7 @@ import {BaseModel} from '../models/BaseModel';
 import {ModelPropTypes} from '../models/ModelPropTypes';
 import {store} from '../store';
 import {ControlLabel, Col, FormGroup} from 'react-bootstrap';
-import {FormInput} from '../components/Widgets';
+import {FormInput} from '../components/widgets';
 import {IImmutable} from '../interfaces';
 import {fromJS} from 'immutable';
 import {AUTH_TOKEN_KEY, AUTH_TOKEN_KEY_TIMESTAMP} from '../constants';
@@ -229,7 +229,9 @@ export function getActionComponent(fileName: string): React.ComponentClass<any> 
     let fileNameSplittedToWords: string[] = fileName.split('-').map((item: string): string => {
         return item.capitalize();
     });
-
+    // For development choose this
+    // return require(`../../src/components-stateful`)[fileNameSplittedToWords.join('')];
+    // For using react-hero as a plugin use this
     return require(`../../../../app/containers`)[fileNameSplittedToWords.join('')];
 };
 

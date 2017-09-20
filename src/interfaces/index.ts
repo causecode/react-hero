@@ -155,4 +155,11 @@ export interface IPagedListStyle {
 export interface IColumnNames {
     label: string;
     accessor: string;
-};
+}
+
+export interface INavMenuReducer {
+    primaryNav: boolean;
+    secondaryNav: boolean;
+    primaryNavCount: number;
+    secondaryNavCount: number;
+}

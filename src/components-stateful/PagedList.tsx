@@ -1,17 +1,17 @@
 import * as React from 'react';
-import {Pagination} from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {BaseModel} from '../models/BaseModel';
 import {setPage} from '../actions/modelActions';
 import {scrollToTop} from '../utils/commonUtils';
 import {ModelService} from '../utils/modelService';
+import {Pagination} from '../components/ReusableComponents';
 import {resetCheckboxState} from '../actions/checkboxActions';
-import {UserActions} from '../components/PagedList/BulkUserActions';
-import {QueryFilter} from '../components/PagedList/Filters/QueryFilter';
-import {DataGrid, IDataGridProps} from '../components/PagedList/DataGrid';
-import {PagedListFilters} from '../components/PagedList/Filters/PagedListFilter';
-import {IOuterFilterProps, createOuterFilterForm} from '../components/PagedList/Filters/OuterFilter';
+import {UserActions} from '../components/paged-list/BulkUserActions';
+import {QueryFilter} from '../components/paged-list/Filters/QueryFilter';
+import {DataGrid, IDataGridProps} from '../components/paged-list/DataGrid';
+import {PagedListFilters} from '../components/paged-list/Filters/PagedListFilter';
+import {IOuterFilterProps, createOuterFilterForm} from '../components/paged-list/Filters/OuterFilter';
 import '../utils/appService';
 const objectAssign = require<any>('object-assign');
 const FontAwesome = require<any>('react-fontawesome');
@@ -50,7 +50,7 @@ export interface IPagedListProps extends IPagedListStateProps, IPagedListDispatc
     showDefaultActions?: boolean;
     customActions?: CustomActionType;
 
-    // List of props that can be passed to make PagedList customizable
+    // List of props that can be passed to make paged-list customizable
     pageHeader?: JSX.Element;
     pagedListFilters?: React.ComponentClass<IPagedListFiltersProps> | JSX.Element;
     dataGrid?: React.ComponentClass<IDataGridProps> | JSX.Element;

@@ -1,4 +1,4 @@
-jest.unmock('../src/components/PagedList/BulkUserActions');
+jest.unmock('../src/components/paged-list/BulkUserActions');
 
 import * as React from 'react';
 import {ReactWrapper, mount} from 'enzyme';
@@ -6,7 +6,7 @@ import {Provider} from 'react-redux';
 import {store} from '../src/store';
 import {ICheckboxReducer, IBulkUserActionType} from '../src/interfaces';
 import {configureStore} from '../src/store';
-import {UserActions, IUserActionProps} from '../src/components/PagedList/BulkUserActions';
+import {UserActions, IUserActionProps} from '../src/components/paged-list/BulkUserActions';
 const unroll: any = require<any>('unroll');
 
 unroll.use(it);

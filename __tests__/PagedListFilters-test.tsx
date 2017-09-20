@@ -1,9 +1,9 @@
-jest.unmock('../src/components/PagedList/Filters/PagedListFilter');
+jest.unmock('../src/components/paged-list/Filters/PagedListFilter');
 
 import * as React from 'react';
-import {PagedListFilters} from '../src/components/PagedList/Filters/PagedListFilter';
+import {PagedListFilters} from '../src/components/paged-list/Filters/PagedListFilter';
 import {IPagedListFiltersProps} from '../src/interfaces';
-import {QueryFilter} from '../src/components/PagedList/Filters/QueryFilter';
+import {QueryFilter} from '../src/components/paged-list/Filters/QueryFilter';
 import {ShallowWrapper, shallow} from 'enzyme';
 import {toggleFilters} from '../src/actions/modelActions';
 import {TOGGLE_FILTERS} from '../src/constants';
