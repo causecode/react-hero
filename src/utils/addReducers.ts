@@ -7,6 +7,7 @@ import {dataReducer as data} from '../reducers/data';
 import {checkboxReducer} from '../reducers/checkboxReducers';
 import {userReducer} from '../reducers/userReducer';
 import {alertReducer} from '../reducers/alertReducer';
+import {navMenuReducer} from '../reducers/navMenuReducer';
 import {confirmationModalReducer} from '../reducers/confirmationModalReducer';
 const {combineForms} = require<any>('react-redux-form');
 const reduxFormReducer = require<any>('redux-form').reducer;
@@ -23,6 +24,7 @@ export const addReducers = (ReducerConfig: Object) => {
         alertDismissable: alertReducer,
         confirmationModal: confirmationModalReducer,
         userAction: userReducer,
+        navMenu: navMenuReducer,
         forms: combineForms({rhForms: {}}),
     }));
 };
