@@ -146,6 +146,7 @@ export interface IDispatchProps {
 }
 
 export interface IPagedListStyle {
+    queryFilterLength?: number;
     searchButton?: React.CSSProperties;
     headerStyle?: React.CSSProperties;
     rowStyle?: React.CSSProperties;
