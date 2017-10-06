@@ -560,3 +560,23 @@ const primaryNavStyle: CSS = {
  - __DateTimeComponent__
     * This renders a `date` type input input element using FormControl from `react-bootstrap`.
     * The `style` prop makes use of `inputCSS` for styling.
+
+### 10 KeywordMatcher
+
+* This component is responsible for conditional rendering based on the `keyword` meta-data available on the page.
+
+* It takes prop `match` of type string and based on whether the keyword on the page contains it, it either returns the passed children or null.
+
+* Usage:
+
+        render() {
+            return (
+                <KeywordMatcher match="string">
+                    <h1>
+                        Anything passed here will only be rendered if `match` matches
+                        the keyword available on the page being rendered.
+                    </h1>
+                    <div>Sibling components will be rendered too.</div>
+                </KeywordMatcher>
+            )
+        }
