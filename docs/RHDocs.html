@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="https://stackedit.io/res-min/themes/base.css" />
 <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
 </head>
-<body><div class="container"><h1 id="react-hero-v114">React Hero (v1.1.8)</h1>
+<body><div class="container"><h1 id="react-hero-v114">React Hero (v1.1.9)</h1>
 <p>Plugin provides utility directives and services.</p>
 
 
@@ -838,6 +838,29 @@ static propTypes = { <br>
         );
      }
 }</code></pre></li></ul></li>
+</ul>
+<h3 id="keywordmatcher">9 KeywordMatcher</h3>
+<ul>
+  <li><p>This component is responsible for conditional rendering based on the <code>keyword</code> meta-data available on the page.</p></li>
+  <li><p>It takes prop <code>match</code> of type string and based on whether the keyword on the page contains it, it either returns the passed children or null.</p></li>
+  <li>
+    <p>Usage:</p>
+
+    <pre>
+      <code>render() {
+        return (
+            &lt;KeywordMatcher match="string"&gt;
+                &lt;h1&gt;
+                    Anything passed here will only be rendered if `match` matches
+                    the keyword available on the page being rendered.
+                &lt;/h1&gt;
+                &lt;div&gt;Sibling components will be rendered too.&lt;/div&gt;
+            &lt;/KeywordMatcher&gt;
+          )
+        }
+      </code>
+    </pre>
+  </li>
 </ul>
 </div></body>
 </html>

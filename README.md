@@ -509,3 +509,22 @@ const primaryNavStyle: CSS = {
         ```
 * When `getRowStyle` method is defined in Model used in DataGrid, then it will be called for every row of DataGrid and style returned from that method will be applied to Row of that Grid.
 
+### 9 KeywordMatcher
+
+* This component is responsible for conditional rendering based on the `keyword` meta-data available on the page.
+
+* It takes prop `match` of type string and based on whether the keyword on the page contains it, it either returns the passed children or null.
+
+* Usage:
+
+        render() {
+            return (
+                <KeywordMatcher match="string">
+                    <h1>
+                        Anything passed here will only be rendered if `match` matches
+                        the keyword available on the page being rendered.
+                    </h1>
+                    <div>Sibling components will be rendered too.</div>
+                </KeywordMatcher>
+            )
+        }
