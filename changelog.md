@@ -14,7 +14,7 @@
 
 ### Removed
 
-- Removed deprecated typings of `redux` and used typings which was coming with `redux`. 
+- Removed deprecated typings of `redux` and used typings which was coming with `redux`.
 
 ## [1.1.6] - 2017-08-25
 
@@ -43,3 +43,9 @@
 - Object prototype functions:
     * `isEmpty`.
     * `objectEach`.
+
+## [1.1.9] - 2017-10-09
+
+### Changed
+
+- Updated require('...') to require.include('...') in `fetchComponent` function of `utils/appService.tsx`.
