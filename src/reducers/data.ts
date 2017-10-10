@@ -46,12 +46,7 @@ function dataReducer(state = INITIAL_STATE, action ): IFromJS {
                 throw new Error(MISSING_ACTION_PAYLOAD);
             }
 
-            const updatedState: IFromJS = state.set(instanceResource + 'Edit', fromJS({
-                hasError: false,
-                isLoading: false,
-            }));
-
-            return StoreService.setInstanceInList(updatedState, instanceResource, new Model(instance), true);
+            return StoreService.setInstanceInList(state, instanceResource, new Model(instance), true);
 
         case FETCH_INSTANCE_DATA_ERROR:
             return state.set(`${action.resource}Edit`, fromJS({
