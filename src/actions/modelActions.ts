@@ -1,15 +1,16 @@
 import {BaseModel} from '../models/BaseModel';
 import {IGenericAction} from '../interfaces';
 import {
-    SAVE_INSTANCE,
-    UPDATE_INSTANCE,
+    CLEAR_INSTANCE_DATA_ERROR,
     DELETE_INSTANCE,
+    SAVE_ALL_INSTANCES,
+    SAVE_INSTANCE,
     SET_PAGE,
     TOGGLE_FILTERS,
     TOGGLE_NAV,
-    UNSET_RESOURCE_LIST,
-    SAVE_ALL_INSTANCES,
     TOGGLE_SECONDARY_NAV,
+    UNSET_RESOURCE_LIST,
+    UPDATE_INSTANCE,
 } from '../constants';
 
 export interface IInstanceAction {
@@ -75,3 +76,9 @@ export const saveAllInstances = (instanceList: BaseModel[], resource: string) =>
     };
 };
 
+export const clearInstanceDataError = (resource: string): IGenericAction => {
+    return {
+        type: CLEAR_INSTANCE_DATA_ERROR,
+        resource,
+    };
+};
