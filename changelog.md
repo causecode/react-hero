@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.1.9] - 2017-10-13
+
+### Added
+- Added props to style headers in PagedList
+- Added isJobBoardManager permission
+
 ## [1.1.5] - 2017-08-20
 
 ### Added
@@ -14,7 +20,7 @@
 
 ### Removed
 
-- Removed deprecated typings of `redux` and used typings which was coming with `redux`. 
+- Removed deprecated typings of `redux` and used typings which was coming with `redux`.
 
 ## [1.1.6] - 2017-08-25
 
