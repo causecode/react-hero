@@ -2,11 +2,11 @@ import * as React from 'react';
 import * as Radium from 'radium';
 
 export interface IKeywordMatcherProps {
-    match: string
+    match: string;
 }
 
 export interface IKeywordMatcherState {
-    keywords: string[]
+    keywords: string[];
 }
 
 @Radium
@@ -18,12 +18,13 @@ export class KeywordMatcher extends React.Component<IKeywordMatcherProps, IKeywo
     }
 
     extractKeyword = (): string[] => {
-        const metas = document.getElementsByTagName('meta');
-        let keywords = [];
+        const metas: Object = document.getElementsByTagName('meta');
+        const keywords: string[] = [];
+
         if (metas) {
             for (let item in metas) {
                 if (item.toLowerCase() === 'keywords') {
-                    keywords = keywords.concat(metas[item].content.split(',').map((i) => i.trim()));
+                    keywords.push(...(metas[item].content.split(',').map((content: string): string => content.trim())));
                 }
             };
         }
@@ -45,8 +46,8 @@ export class KeywordMatcher extends React.Component<IKeywordMatcherProps, IKeywo
                     {this.props.children}
                 </div>
             );
-        } else {
-            return null;
         }
+
+        return null;
     }
 }
