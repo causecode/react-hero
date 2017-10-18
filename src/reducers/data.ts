@@ -116,7 +116,7 @@ function dataReducer(state = INITIAL_STATE, action ): IFromJS {
             return state.deleteIn([`${action.resource}List`, 'instanceList']);
 
         case CLEAR_INSTANCE_DATA_ERROR:
-            return state.set(`${action.resource}Edit`, '');
+            return state.set(`${action.payload}Edit`, '');
 
         default:
             return state;

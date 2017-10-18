@@ -79,6 +79,6 @@ export const saveAllInstances = (instanceList: BaseModel[], resource: string) =>
 export const clearInstanceDataError = (resource: string): IGenericAction => {
     return {
         type: CLEAR_INSTANCE_DATA_ERROR,
-        resource,
+        payload: resource,
     };
 };
