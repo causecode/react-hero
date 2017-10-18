@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as Radium from 'radium';
+import {KEYWORDS} from '../../constants';
 
 export interface IKeywordMatcherProps {
     match: string;
@@ -18,22 +19,29 @@ export class KeywordMatcher extends React.Component<IKeywordMatcherProps, IKeywo
     }
 
     extractKeyword = (): string[] => {
-        const metas: Object = document.getElementsByTagName('meta');
+        const allMetaTags: NodeListOf<Element> = document.getElementsByTagName('meta');
         const keywords: string[] = [];
 
-        if (metas) {
-            for (let item in metas) {
-                if (item.toLowerCase() === 'keywords') {
-                    keywords.push(...(metas[item].content.split(',').map((content: string): string => content.trim())));
+        if (allMetaTags && Object.keys(allMetaTags).length !== 0) {
+            Object.keys(allMetaTags).forEach((key: string): void => {
+                if (key.toLowerCase() === KEYWORDS) {
+                    let keywordTags = allMetaTags[key].content.split(',');
+                    keywordTags = keywordTags.map((value: string): string => value.trim());
+                    keywords.push(...keywordTags);
                 }
-            };
+            });
         }
 
         return keywords;
     }
 
     componentDidMount(): void {
-        this.setState({keywords: this.extractKeyword()});
+        const allKeywords = this.extractKeyword();
+        const {keywords} = this.state;
+
+        if (allKeywords.length !== keywords.length && allKeywords.every((value, key) => value !== keywords[key])) {
+            this.setState({keywords: allKeywords});
+        }
     }
 
     render(): JSX.Element {

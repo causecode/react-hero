@@ -104,7 +104,7 @@ export interface IBulkUserActions {
 
 export interface IGenericAction {
     type: string;
-    resource?: string;
+    payload?: any;
 }
 
 export interface IUserAction {
