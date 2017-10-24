@@ -14,6 +14,14 @@
 - Added props to style headers in PagedList
 - Added isJobBoardManager permission
 
+<<<<<<< HEAD
+=======
+### Changed
+
+- Refactored `Input` in widgets to modularize `GenericInputTemplate`, `BooleanInputTemplate`, `DropDownInputTemplate`, `DateTimeComponent` and `ListInputTemplate`
+- Replaced the use of `react-datetime` with `FormControl[type="date"]` in DateTimeComponent.
+
+>>>>>>> ba3daa8... Refactored Input.tsx. Fixed #29
 ## [1.1.5] - 2017-08-20
 
 ### Added
