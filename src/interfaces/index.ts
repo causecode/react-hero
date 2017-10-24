@@ -68,6 +68,7 @@ export interface IFromJS {
     set: Function;
     get: Function;
     toJS: Function;
+    data?: any;
 }
 
 export interface IImmutable {
