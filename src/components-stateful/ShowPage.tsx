@@ -35,7 +35,7 @@ export class ShowPageImpl extends React.Component<ShowPageProps, void> {
         }
         const resource: string = this.props.match.params.resource;
         const childProps = {instance: this.props.instance, resource: resource};
-        let Page: React.ComponentClass<void> = ComponentService.getShowPage(resource) as React.ComponentClass<void>;
+        let Page: React.ComponentClass<{}> = ComponentService.getShowPage(resource) as React.ComponentClass<{}>;
         return (
             <Page {...childProps}/>
         );
