@@ -1,4 +1,4 @@
-import * as TestUtils from 'react-addons-test-utils';
+import * as TestUtils from 'react-dom/test-utils';
 import * as React from 'react';
 import {initializeTestCase, IInitializerData} from './../src/utils/initializeTestCase';
 import {INavMenuLauncherIconProps} from '../src/components/NavMenuLauncherIcon';

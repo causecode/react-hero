@@ -106,7 +106,6 @@
     "webpack-dev-server": "1.14.1"
   },
   "devDependencies": {
-    "@types/axios": "0.14.0",
     "@types/es6-promise": "0.0.33",
     "@types/history": "4.6.1",
     "@types/jest": "21.1.5",
@@ -138,6 +137,7 @@
     "raw-loader": "0.5.1",
     "react-addons-test-utils": "15.6.2",
     "react-select": "1.0.0-rc.5",
+    "react-dom": "16.0.0",
     "redux-localstorage": "0.4.1",
     "rimraf": "2.6.2",
     "stylelint": "8.2.0",

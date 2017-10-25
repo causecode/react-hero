@@ -1,7 +1,7 @@
 jest.unmock('../src/components/CRUD/GenericShowPage');
 
 import * as React from 'react';
-import * as TestUtils from 'react-addons-test-utils';
+import * as TestUtils from 'react-dom/test-utils';
 import {MissingInstanceError} from '../src/errors/MissingInstanceError';
 import {IInstancePageProps} from '../src/interfaces';
 import {GenericListPage} from '../src/components/CRUD/GenericListPage';

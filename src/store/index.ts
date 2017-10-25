@@ -16,16 +16,16 @@ export interface IMockStore extends Store<{}> {
 }
 
 export function configureStore(initialState): Store<{}> | IMockStore {
-    let store : Store<{}> | IMockStore;
+    let setStore : Store<{}> | IMockStore;
     // Using process.env.NODE_ENV instead of appService.getEnvironment because appService Import was returning empty.
     if (process.env.NODE_ENV === 'test') {
-        store = configureMockStore()(initialState);
-        // store = configureMockStore(_getMiddleware())(initialState, rootReducer, _getMiddleware());
+        setStore = configureMockStore()(initialState);
+        // setStore = configureMockStore(_getMiddleware())(initialState, rootReducer, _getMiddleware());
     } else {
-        store = compose.apply(null, [_getMiddleware(), ..._getEnhancers()])(createStore)(rootReducer, initialState);
+        setStore = compose.apply(null, [_getMiddleware(), ..._getEnhancers()])(createStore)(rootReducer, initialState);
     }
 
-    return store;
+    return setStore;
 }
 
 function _getMiddleware(): GenericStoreEnhancer {
