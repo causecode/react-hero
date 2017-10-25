@@ -66,7 +66,7 @@ export class BaseModel {
             headers: Object = {},
             successCallBack = ((...args: any[]) => {}),
             failureCallBack = ((...args: any[]) => {}),
-            path: string = this.resourceName
+            path: string = this.resourceName,
     ): void {
         if (flush) {
             HTTP.postRequest(path, headers, this.properties)
@@ -110,7 +110,7 @@ export class BaseModel {
             headers: Object = {},
             successCallBack = ((...args: any[]) => {}),
             failureCallBack = ((...args: any[]) => {}),
-            path?: string
+            path?: string,
     ): void {
         if (flush) {
             if (!this.properties.hasOwnProperty('id')) {
@@ -142,7 +142,7 @@ export class BaseModel {
         successCallBack: Function = () => {},
         failureCallBack: Function = () => {},
         path: string = this.resourceName,
-        state?: {data?: any}
+        state?: {data?: any},
     ) {
         let resourceName: string = this.getResourceName();
 
@@ -159,8 +159,8 @@ export class BaseModel {
                         filters,
                         headers,
                         successCallBack,
-                        failureCallBack
-                    )()
+                        failureCallBack,
+                    )(),
                 );
             }
 
@@ -230,8 +230,8 @@ export class BaseModel {
                    params || {},
                    headers,
                    successCallBack,
-                   failureCallBack
-               )()
+                   failureCallBack,
+               )(),
            );
        }
 
@@ -257,7 +257,7 @@ function getPromiseAction(
     filters: Object,
     headers: Object = {},
     successCallBack: Function,
-    failureCallBack: Function
+    failureCallBack: Function,
 ): any {
     return () =>
         (dispatch) => {
@@ -280,7 +280,7 @@ export function getData(path: string, filters = {}, headers: Object = {}): Promi
                 resolve(response);
             })
             .then<void>(null, (err) =>
-                reject(new Error(FETCH_ERR_MSG))
+                reject(new Error(FETCH_ERR_MSG)),
             );
     });
 }

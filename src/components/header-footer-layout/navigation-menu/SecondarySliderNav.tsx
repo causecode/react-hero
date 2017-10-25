@@ -8,7 +8,7 @@ export interface ISecondarySliderNavProps {
 }
 
 @Radium
-export class SecondarySliderNav extends React.Component<ISecondarySliderNavProps, void> {
+export class SecondarySliderNav extends React.Component<ISecondarySliderNavProps, {}> {
     render(): JSX.Element {
         return (
             <SliderNav navStyle={[navStyle, this.props.style]} isPrimaryNav={false} navContent={this.props.children} />

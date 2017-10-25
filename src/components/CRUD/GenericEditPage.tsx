@@ -12,19 +12,19 @@ export interface IGenericEditPageProps extends IInstancePageProps {
     handleSubmit: (
         instance: BaseModel,
         successCallBack?: ((args) => {}),
-        failureCallBack?: ((args) => {})
+        failureCallBack?: ((args) => {}),
     ) => void;
     handleDelete?: (
         instance: BaseModel,
         successCallBack?: ((args) => {}),
-        failureCallBack?: ((args) => {})
+        failureCallBack?: ((args) => {}),
     ) => void;
     params: {resource: string};
     instance: BaseModel;
     isCreatePage: boolean;
 }
 
-export class GenericEditPage extends React.Component<IGenericEditPageProps, void> {
+export class GenericEditPage extends React.Component<IGenericEditPageProps, {}> {
     static defaultProps: IGenericEditPageProps = {
         handleSubmit: (instance: BaseModel): void => {},
         params: {resource: ''},
