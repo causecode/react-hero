@@ -24,14 +24,16 @@ export class OuterFilterImpl extends React.Component<IOuterFilterProps, void> {
     };
 
     render(): JSX.Element {
+        const {queryFilterLength, searchButton} = this.props.style;
+
         return (
             <form onSubmit={this.handleSubmit} style={outerFilterStyle}>
                 <Row style={{margin: 0}}>
-                    <Col md={5}>
+                    <Col md={queryFilterLength || 5}>
                         <InputGroup>
                             {this.props.children}
                             <InputGroup.Button>
-                                <Button type="submit" style={this.props.style}>
+                                <Button type="submit" style={searchButton}>
                                     <FontAwesome name="search" />
                                 </Button>
                             </InputGroup.Button>

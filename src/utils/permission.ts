@@ -58,3 +58,11 @@ export function isEmployee(): boolean {
 
     return true;
 }
+
+export function isJobBoardManager(): boolean {
+    if (!hasAnyRole(['ROLE_ADMIN', 'ROLE_JOB_BOARD_MANAGER', 'ROLE_HR', 'ROLE_HR_ADMIN'])) {
+        return false;
+    }
+
+    return true;
+}

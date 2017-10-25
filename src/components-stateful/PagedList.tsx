@@ -216,7 +216,7 @@ export class PagedListImpl extends React.Component<IPagedListProps, void> {
                 }
 
                 <div>
-                    <OuterFilter style={style.searchButton} resource={this.props.resource}>
+                    <OuterFilter style={style} resource={this.props.resource}>
                         <QueryFilter placeholder="Search" paramName="query" label="Search"/>
                     </OuterFilter>
                 </div>
