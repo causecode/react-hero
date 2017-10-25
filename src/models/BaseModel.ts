@@ -70,7 +70,7 @@ export class BaseModel {
     ): void {
         if (flush) {
             HTTP.postRequest(path, headers, this.properties)
-                .then((response: Axios.AxiosXHR<{}>) => {
+                .then((response: {data: any}) => {
                     successCallBack(response);
                     this.properties = response.data;
                     store.dispatch(saveInstance(this, this.resourceName));

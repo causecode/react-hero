@@ -1,4 +1,4 @@
-import * as axios from 'axios';
+import axios, {AxiosPromise} from 'axios';
 import {config} from '../../config';
 import {getTokenFromLocalStorage} from '../../utils/appService';
 
@@ -10,7 +10,7 @@ export function setDefaultHeader(): void {
 
 export module HTTP {
 
-    export function postRequest(path: string, headers = {}, data = {}): Axios.IPromise<Axios.AxiosXHR<{}>> {
+    export function postRequest(path: string, headers = {}, data = {}): AxiosPromise<{}> {
         setDefaultHeader();
         return axios({
             method: 'post',
@@ -33,7 +33,7 @@ export module HTTP {
         return str.join('&');
     }
 
-    export function getRequest(path: string, headers = {}, data = {}): Axios.IPromise<Axios.AxiosXHR<{}>> {
+    export function getRequest(path: string, headers = {}, data = {}): AxiosPromise<{}> {
         setDefaultHeader();
         let url: string = Object.keys(data).length ? BASE_URL + path + `?${serialize(data)}` : BASE_URL + path;
         return axios({
@@ -43,7 +43,7 @@ export module HTTP {
         });
     }
 
-    export function putRequest(path: string, headers = {}, data = {}): Axios.IPromise<Axios.AxiosXHR<{}>> {
+    export function putRequest(path: string, headers = {}, data = {}): AxiosPromise<{}> {
         setDefaultHeader();
         return axios({
             method: 'put',
@@ -53,7 +53,7 @@ export module HTTP {
         });
     }
 
-    export function deleteRequest(path: string, headers = {}): Axios.IPromise<Axios.AxiosXHR<{}>> {
+    export function deleteRequest(path: string, headers = {}): AxiosPromise<{}> {
         setDefaultHeader();
         return axios({
             method: 'delete',

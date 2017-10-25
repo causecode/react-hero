@@ -55,6 +55,7 @@
   "license": "ISC",
   "homepage": "https://bitbucket.org/causecode/react-hero#readme",
   "dependencies": {
+    "@types/jest": "20.0.3",
     "axios": "0.17.0",
     "bootstrap": "3.3.7",
     "classnames": "2.2.5",
@@ -99,14 +100,18 @@
     "tslint": "5.8.0",
     "tslint-loader": "3.5.3",
     "typescript": "2.5.3",
-    "typings": "1.0.4",
     "underscore": "1.8.3",
     "url-loader": "0.6.2",
     "webpack": "1.14.0",
     "webpack-dev-server": "1.14.1"
   },
   "devDependencies": {
+    "@types/axios": "0.14.0",
+    "@types/es6-promise": "0.0.33",
     "@types/history": "4.6.1",
+    "@types/jest": "21.1.5",
+    "@types/node": "8.0.47",
+    "@types/radium": "0.18.23",
     "@types/react": "16.0.18",
     "@types/react-bootstrap": "0.31.6",
     "@types/react-dom": "16.0.2",

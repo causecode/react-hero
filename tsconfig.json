@@ -11,11 +11,12 @@
     "sourceMap": true,
     "jsx": "react",
     "allowSyntheticDefaultImports": true,
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "typeRoots": [
+      "node_modules/@types"
+    ]
   },
   "exclude": [
-    "typings/browser.d.ts",
-    "typings/browser",
     "node_modules",
     "__tests__"
   ]
