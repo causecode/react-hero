@@ -116,7 +116,7 @@ const DropDownInputTemplate = (props): JSX.Element => {
                             key={index}
                             value={element.value}>
                             {element.label}
-                        </option>
+                        </option>,
                     );
                 });
                 return optionElements;

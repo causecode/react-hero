@@ -5,7 +5,7 @@ export interface IBlogAction {
         id: number,
         author: string,
         email: string,
-        age: number
+        age: number,
     };
 }
 

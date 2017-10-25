@@ -10,7 +10,7 @@ import {ErrorPage} from '../components/ErrorPage';
 import {store} from '../store';
 import {getResourceParams} from '../utils/appService';
 
-export type ShowPageProps = IInstanceContainerProps & RouteComponentProps<IRouteParams>
+export type ShowPageProps = IInstanceContainerProps & RouteComponentProps<IRouteParams>;
 
 export class ShowPageImpl extends React.Component<ShowPageProps, void> {
 
@@ -60,7 +60,7 @@ function mapStateToProps(state: IFromJS, ownProps: ShowPageProps): {instance: Ba
 }
 
 let ShowPage = connect(
-    mapStateToProps
+    mapStateToProps,
 )(ShowPageImpl);
 
 export {ShowPage};

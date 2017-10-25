@@ -22,7 +22,7 @@ export function getEditPage(pageType: 'edit' | 'create') {
 
     TemplateService.writeFile(
             path.join(__dirname, filePath),
-            TemplateService.generateFormPage(ModelClass, pageType), () => {}
+            TemplateService.generateFormPage(ModelClass, pageType), () => {},
     );
 
     /* tslint:disable */
@@ -46,7 +46,7 @@ export function getListPage() {
 
     TemplateService.writeFile(
             path.join(__dirname, `${projectRoot}/app/containers/${resourceName}/${resourceName.capitalize()}List.tsx`),
-            TemplateService.getListPage(ModelClass), () => {}
+            TemplateService.getListPage(ModelClass), () => {},
     );
 
     /* tslint:disable */
@@ -69,7 +69,7 @@ export function getShowPage() {
 
     TemplateService.writeFile(
             path.join(__dirname, `${projectRoot}/app/containers/${resourceName}/${resourceName.capitalize()}Show.tsx`),
-            TemplateService.getShowPage(ModelClass), () => {}
+            TemplateService.getShowPage(ModelClass), () => {},
     );
 
     /* tslint:disable */

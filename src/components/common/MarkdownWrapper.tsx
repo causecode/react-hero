@@ -14,7 +14,7 @@ export interface IMarkdownStateProps {
 export interface IMarkdownProps extends IMarkdownStateProps, IDispatchProps {
     model?: string;
     style?: CSS;
-};
+}
 
 // TODO: Merge wrapper components (MarkdownWrapper & RawContentWrapper).
 // Only config and part of render method is different.

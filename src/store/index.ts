@@ -16,7 +16,7 @@ export interface IMockStore extends Store<{}> {
 }
 
 export function configureStore(initialState): Store<{}> | IMockStore {
-    let store: Store<{}> | IMockStore;
+    let store : Store<{}> | IMockStore;
     // Using process.env.NODE_ENV instead of appService.getEnvironment because appService Import was returning empty.
     if (process.env.NODE_ENV === 'test') {
         store = configureMockStore()(initialState);

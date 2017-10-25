@@ -87,7 +87,7 @@ export class BaseModel {
             headers: Object = {},
             successCallBack = ((...args: any[]) => {}),
             failureCallBack = ((...args: any[]) => {}),
-            path: string = `${this.resourceName}/${this.properties.id}`
+            path: string = `${this.resourceName}/${this.properties.id}`,
     ): void {
         if (flush) {
             if (!this.properties || !this.properties.hasOwnProperty('id')) {

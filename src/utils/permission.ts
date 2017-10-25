@@ -2,7 +2,7 @@ import {store} from '../store';
 
 export interface INextState {
     location: {
-        pathname: string
+        pathname: string,
     };
 }
 

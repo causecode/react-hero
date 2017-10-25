@@ -94,7 +94,7 @@ function dataReducer(state = INITIAL_STATE, action ): IFromJS {
             let incomingInstanceList = action.instanceList || [];
             return state.setIn(
                     [`${action.resource}List`, 'instanceList'],
-                    existingInstanceList.concat(incomingInstanceList)
+                    existingInstanceList.concat(incomingInstanceList),
             );
 
         case SET_PAGE:

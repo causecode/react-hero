@@ -1,10 +1,10 @@
 function capitalize(): string {
     return this.charAt(0).toUpperCase() + this.slice(1);
-};
+}
 
 function isEmpty(): boolean {
     return (!this || !Object.keys(this).length);
-};
+}
 
 function objectEach(callback: Function) {
     if (!(callback instanceof Function)) {

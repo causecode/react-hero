@@ -11,7 +11,7 @@ export function saveUserAction (action: string): IUserAction {
         type: 'SAVE_USER_ACTION',
         payload: action,
     };
-};
+}
 
 export function saveUserActionData (records: number): IUserAction {
     return {

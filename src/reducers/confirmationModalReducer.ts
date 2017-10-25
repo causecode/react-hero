@@ -11,4 +11,4 @@ export function confirmationModalReducer(state: boolean = MODAL_INITIAL_STATE, a
         default:
             return state;
     }
-};
+}

@@ -65,7 +65,7 @@ export class SliderNavImpl extends React.Component<ISliderNavProps, void> {
                              style={[
                                  {
                                      WebkitTransform: `translate3d(${x}%, 0, 0)`,
-                                     transform: `translate3d(${x}%, 0, 0)`
+                                     transform: `translate3d(${x}%, 0, 0)`,
                                  },
                                  navStyle,
                              ]}>

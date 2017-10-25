@@ -27,7 +27,7 @@ export function RangeFilter({label, paramName, type, paramNameFrom, paramNameTo}
 }
 
 export function renderRangeFilter(
-            paramName: string, type: string, formatter?: (value: any) => any, parser?: (value: string) => any
+            paramName: string, type: string, formatter?: (value: any) => any, parser?: (value: string) => any,
     ): JSX.Element {
     return (
         <Field type={type} name={paramName} component={GenericFilter} format={formatter} parse={parser} />

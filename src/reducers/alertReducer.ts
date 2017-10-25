@@ -13,4 +13,4 @@ export function alertReducer(state: IAlertType = ALERT_INITIAL_STATE, action: IA
         default:
             return state;
     }
-};
+}

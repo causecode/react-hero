@@ -20,7 +20,7 @@ export class HeaderViewImpl extends React.Component<IHeaderViewProps, void> {
     showNavLauncherIcon = (
         isNavigationPresent: boolean,
         position: string,
-        toggleNavigation: () => void
+        toggleNavigation: () => void,
     ): JSX.Element => {
         return (
             isNavigationPresent &&
@@ -34,7 +34,7 @@ export class HeaderViewImpl extends React.Component<IHeaderViewProps, void> {
 
     render(): JSX.Element {
         return (
-            <div style={[headerStyle,this.props.style]} className="header">
+            <div style={[headerStyle, this.props.style]} className="header">
                 {this.showNavLauncherIcon(this.props.primaryNav, 'left', this.props.toggleNav)}
                 {this.showNavLauncherIcon(this.props.secondaryNav, 'right', this.props.toggleSecondaryNav)}
                 {this.props.children}

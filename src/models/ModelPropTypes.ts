@@ -1,9 +1,9 @@
 import { Dictionary } from '../interfaces';
 export module ModelPropTypes {
-    
+
     export interface IModelPropType {
         (
-            prop?: Object | {[id: string]: IPropData} | IPropData 
+            prop?: Object | {[id: string]: IPropData} | IPropData ,
         ): IPropData;
     }
     export interface IPropData {
@@ -29,7 +29,7 @@ export module ModelPropTypes {
     export let STRING: IModelPropType = () =>  { return {type: stringInputType}; };
     export let OBJECT = (propTypes: Dictionary<any>) =>  { return {type: objectInputType, propTypes}; };
     export let BOOLEAN: IModelPropType = () =>  { return {type: booleanInputType }; };
-    export let ENUM: IModelPropType = (enumInstance) => { 
-        return {type: enumInputType, enum: enumInstance}; 
+    export let ENUM: IModelPropType = (enumInstance) => {
+        return {type: enumInputType, enum: enumInstance};
     };
 }
