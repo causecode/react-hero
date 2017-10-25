@@ -189,32 +189,32 @@ export class BaseModel {
         store.dispatch(saveAllInstances(instanceDataList, resource));
     }
 
-    static get<T extends BaseModel>(
-       id: string,
-       valueInStore?: boolean,
-       headers?: {},
-       successCallBack?: Function,
-       failureCallBack?: Function,
-       state?: {data?: any},
-       params?: Object,
-   ): T;
-   static get<T extends BaseModel>(
-       id: string,
-       valueInStore?: boolean,
-       headers?: {},
-       successCallBack?: Function,
-       failureCallBack?: Function,
-       state?: {data?: any},
-       operation?: 'edit' | 'create',
-       params?: Object,
-   ): T;
+//     static get<T extends BaseModel>(
+//        id: string,
+//        valueInStore?: boolean,
+//        headers?: {},
+//        successCallBack?: Function,
+//        failureCallBack?: Function,
+//        state?: {data?: any},
+//        params?: Object,
+//    ): T;
+//    static get<T extends BaseModel>(
+//        id: string,
+//        valueInStore?: boolean,
+//        headers?: {},
+//        successCallBack?: Function,
+//        failureCallBack?: Function,
+//        state?: {data?: any},
+//        operation?: 'edit' | 'create',
+//        params?: Object,
+//    ): T;
    static get<T extends BaseModel>(
        id: string,
        valueInStore: boolean = false,
        headers?: {},
        successCallBack: Function = () => {},
        failureCallBack: Function = () => {},
-       state?: {forms?: any},
+       state?: {forms?: any, data?: any},
        operation?: 'edit' | 'create',
        params?: Object,
    ): T {
