@@ -1,12 +1,12 @@
 {
   "name": "react-hero",
-  "version": "1.1.8",
+  "version": "2.0.0",
   "description": "",
   "private": true,
   "main": "public/index.js",
   "typings": "public/index.d.ts",
   "scripts": {
-    "start": "npm run clean && webpack-dev-server --production",
+    "start": "npm run clean && webpack-dev-server",
     "build": "npm run clean && webpack",
     "clean": "rimraf public dist",
     "compile": "npm run clean && tsc",
@@ -103,7 +103,7 @@
     "underscore": "1.8.3",
     "url-loader": "0.6.2",
     "webpack": "3.8.1",
-    "webpack-dev-server": "1.14.1"
+    "webpack-dev-server": "2.9.3"
   },
   "devDependencies": {
     "@types/history": "4.5.1",

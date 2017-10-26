@@ -1,11 +1,12 @@
 # Changelog
 
-## [1.1.8] - 2017-10-26
+## [2.0.0] - 2017-10-26
 ### Added
 - Webpack's `ModuleConcatenationPlugin` for optimization in bundle
 
 ### Changed
-- Webpack version to v1.8.3
+- Webpack version to v3.8.1
+- Webpack Dev Server version to v2.9.3
 
 ## [1.1.5] - 2017-08-20
 
