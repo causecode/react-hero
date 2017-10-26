@@ -853,7 +853,7 @@ static propTypes = { <br>
 <h3 id="keywordmatcher">9 KeywordMatcher</h3>
 <ul>
   <li><p>This component is responsible for conditional rendering based on the <code>keyword</code> meta-data available on the page.</p></li>
-  <li><p>It takes prop <code>match</code> of type <code>string</code> and if it matched with the <code>keyword</code> meta-data available on the page, it returns the passed children. If there is no matching keyword, it returns <code>null</code>.</p></li>
+  <li><p>It takes prop <code>match</code> of type <code>string</code> or <code>array of string</code> and if it matched with the <code>keyword</code> meta-data available on the page, it returns the passed children. If there is no matching keyword, it returns <code>null</code>.</p></li>
   <li>
     <p>Usage:</p>
 
@@ -867,6 +867,16 @@ static propTypes = { <br>
               &lt;div&gt;Sibling components will be rendered too.&lt;/div&gt;
               Add a comment to this line
           &lt;/KeywordMatcher&gt;
+      </code>
+      <code>
+        &lt;KeywordMatcher match={['strings','array']}&gt;
+            &lt;h1&gt;
+                Anything passed here will only be rendered if any string from
+                `match` matches the keyword available on the page being rendered.
+            &lt;/h1&gt;
+            &lt;div&gt;Sibling components will be rendered too.&lt;/div&gt;
+            Add a comment to this line
+        &lt;/KeywordMatcher&gt;
       </code>
     </pre>
   </li>

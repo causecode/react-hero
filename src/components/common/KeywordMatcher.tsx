@@ -3,7 +3,7 @@ import * as Radium from 'radium';
 import {KEYWORDS} from '../../constants';
 
 export interface IKeywordMatcherProps {
-    match: string;
+    match: string | string[];
 }
 
 export interface IKeywordMatcherState {
@@ -48,7 +48,8 @@ export class KeywordMatcher extends React.Component<IKeywordMatcherProps, IKeywo
         const {keywords} = this.state;
         const {match} = this.props;
 
-        if (keywords.indexOf(match) > -1) {
+        if (typeof(match) === 'string' && keywords.indexOf(match) > -1
+            || typeof(match) === 'object' && keywords.some((value: string): boolean => match.indexOf(value) > -1)) {
             return (
                 <div>
                     {this.props.children}

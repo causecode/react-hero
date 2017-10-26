@@ -565,14 +565,21 @@ const primaryNavStyle: CSS = {
 
 * This component is responsible for conditional rendering based on the `keyword` meta-data available on the page.
 
-* It takes prop `match` of type `string` and if it matched with the `keyword` meta-data available on the page, it returns the passed children. If there is no matching keyword, it returns `null`.
+* It takes prop `match` of type string or array of string and if it matched with the `keyword` meta-data available on the page, it returns the passed children. If there is no matching keyword, it returns `null`.
 
 * Usage:
 
         <KeywordMatcher match="string">
 		    <h1>
-			    Anything passed here will only be rendered if `match`
-                matches the keyword available on the page being rendered.
+			    Anything passed here will only be rendered if `match` matches the keyword available on the page being rendered.
+		    </h1>
+		    <div>Sibling components will be rendered too.</div>
+		    Add a comment to this line
+		</KeywordMatcher>
+
+        <KeywordMatcher match={['strings','array']}>
+		    <h1>
+			    Anything passed here will only be rendered if any string from `match` matches the keyword available on the page being rendered.
 		    </h1>
 		    <div>Sibling components will be rendered too.</div>
 		    Add a comment to this line
