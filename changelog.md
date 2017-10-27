@@ -6,6 +6,7 @@
 
 ### Changed
 - Upgraded Webpack to 3.8.1, Webpack Dev Server to 2.9.3, Extract Text Plugin to 2.1.2, and React Hot Loader to 3.1.1
+- Added `navIconStyle` prop to HeaderView to allow style override
 
 ## [1.1.9] - 2017-10-13
 
