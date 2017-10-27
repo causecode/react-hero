@@ -7,6 +7,7 @@ import {ShowPage} from '../components-stateful/ShowPage';
 import {EditPage} from '../components-stateful/EditPage';
 import {ErrorPage} from '../components/ErrorPage';
 import {PAGE_NOT_FOUND} from '../constants';
+import {FormInput} from '../components/widgets/Input';
 
 import {HeaderFooterLayout, HeaderView, FooterView, ContentView} from '../components/header-footer-layout';
 import {PrimarySliderNav, SecondarySliderNav} from '../components/header-footer-layout/navigation-menu';
@@ -82,7 +83,73 @@ class UserEditPage extends React.Component<any, any> {
 
 export class HomeContent extends ResponsiveView<any, any> {
     protected renderDefault(): JSX.Element {
-        return <h1>This is the home page</h1>;
+        return (
+            <div>
+                <FormInput
+                        type="text"
+                        propertyName="birthdate"
+                        model="rhForms.userManagementCreate.properties.a"
+                        style={{
+                            labelCSS: {color:'#aaa'},
+                            inputCSS: {borderRadius: '50px'},
+                        }}
+                />
+                <FormInput
+                        type="boolean"
+                        propertyName="birthdate"
+                        model="rhForms.userManagementCreate.properties.b"
+                        style={{
+                            labelCSS: {color:'#aaa'},
+                            inputCSS: {color: 'red'},
+                        }}
+                />
+                <FormInput
+                        type="select"
+                        propertyName="birthdate"
+                        model="rhForms.userManagementCreate.properties.c"
+                        style={{
+                            labelCSS: {color:'#aaa'},
+                            inputCSS: {borderRadius: '50px', color: 'red'},
+                        }}
+                        options = {[
+                            { value: 'one', label: 'One' },
+                            { value: 'two', label: 'Two' },
+                        ]}
+                />
+                <FormInput
+                        type="select"
+                        propertyName="birthdate"
+                        model="rhForms.userManagementCreate.properties.ce"
+                        style={{
+                            labelCSS: {color:'#aaa'},
+                            inputCSS: {borderRadius: '50px', color: 'red'},
+                        }}
+                        options = {[
+                            { value: 'one', label: 'One' },
+                            { value: 'two', label: 'Two' },
+                        ]}
+                        creatable
+                />
+                <FormInput
+                        type="list"
+                        propertyName="birthdate"
+                        model="rhForms.userManagementCreate.properties.d"
+                        style={{
+                            labelCSS: {color:'#aaa'},
+                            inputCSS: {borderRadius: '50px'},
+                        }}
+                />
+                <FormInput
+                        type="datetime"
+                        propertyName="birthdate"
+                        model="rhForms.userManagementCreate.properties.birthdate"
+                        style={{
+                            labelCSS: {color:'#aaa'},
+                            inputCSS: {borderRadius: '50px'},
+                        }}
+                />
+            </div>
+        );
     }
 }
 

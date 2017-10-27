@@ -1,15 +1,16 @@
 jest.unmock('../../src/components/widgets/Input/ListInputTemplate');
 
 import * as React from 'react';
-import {FormControl, ListGroup, ListGroupItem} from 'react-bootstrap';
-import {shallow, ShallowWrapper, EnzymePropSelector, mount} from 'enzyme';
-import IInputProps from '../../src/components/widgets/Input';
-import ListInputTemplate, {IListInputState} from '../../src/components/widgets/Input/ListInputTemplate';
+import {ListGroup, ListGroupItem} from 'react-bootstrap';
+import {shallow, ShallowWrapper, EnzymePropSelector, mount, ReactWrapper} from 'enzyme';
+import {IInputProps} from '../../src/components/widgets/Input';
+import {ListInputTemplate, IListInputState} from '../../src/components/widgets/Input/ListInputTemplate';
+import {FormControl, Col, Row, Button} from '../../src/components/ReusableComponents';
 const unroll: any = require<any>('unroll');
 
 unroll.use(it);
 
-const handleChange = jest.fn();
+const handleChange = jest.fn<void>();
 
 describe('Tests for DropDownInputTemplate', (): void => {
 
@@ -24,23 +25,22 @@ describe('Tests for DropDownInputTemplate', (): void => {
         ): void => {
             expect(componentTree.find(args.element).length).toBe(args.count);
             done();
-        },  [
-                ['elementName', 'element', 'count'],
-                ['div', 'div', 1],
-                ['Row', 'Row', 1],
-                ['Col', 'Col', 2],
-                ['Button', 'Button', 1],
-                ['ListGroup', ListGroup, 1],
-                ['ListGroupItem', ListGroupItem, 1],
-                ['FormControl', FormControl, 1],
-            ]
-        );
+        }, [
+            ['elementName', 'element', 'count'],
+            ['div', 'div', 1],
+            ['Row', Row, 1],
+            ['Col', Col, 2],
+            ['Button', Button, 1],
+            ['ListGroup', ListGroup, 1],
+            ['ListGroupItem', ListGroupItem, 1],
+            ['FormControl', FormControl, 1],
+        ]);
     });
 
-    describe('Test for actions', (): void => {
+    describe('Tests for actions', (): void => {
 
         test('when handleTextChange is triggered', (): void => {
-            const componentTree: EnzymePropSelector<IInputProps, IListInputState> =
+            const componentTree: ReactWrapper<IInputProps, IListInputState> =
                 mount<IInputProps, IListInputState> (
                     <ListInputTemplate/>
             );
@@ -52,13 +52,14 @@ describe('Tests for DropDownInputTemplate', (): void => {
 
         describe('when addListItem is triggered', (): void => {
             test('without propertyValue prop', (): void => {
-                const componentTree: EnzymePropSelector<IInputProps, IListInputState> =
+                const componentTree: ReactWrapper<IInputProps, IListInputState> =
                     mount<IInputProps, IListInputState> (
                         <ListInputTemplate onChange={handleChange}/>
                 );
                 componentTree.find('button').simulate('click');
                 expect(handleChange).toHaveBeenCalled();
             });
+
             test('with propertyValue prop', (): void => {
                 const componentTree: EnzymePropSelector<IInputProps, IListInputState> =
                     mount<IInputProps, IListInputState> (
@@ -72,7 +73,7 @@ describe('Tests for DropDownInputTemplate', (): void => {
     });
 
     describe('Tests for styles passed as prop', (): void => {
-        const componentTree: EnzymePropSelector<IInputProps, IListInputState> = mount<IInputProps, IListInputState> (
+        const componentTree: ReactWrapper<IInputProps, IListInputState> = mount<IInputProps, IListInputState> (
             <ListInputTemplate
                     style={{
                         inputCSS: {color:'red', borderRadius: '50px'},
@@ -91,12 +92,11 @@ describe('Tests for DropDownInputTemplate', (): void => {
             ): void => {
                 expect(containerStyle[args.property]).toBe(args.value);
                 done();
-            },  [
-                    ['property', 'value'],
-                    ['color', 'red'],
-                    ['border-radius', '50px'],
-                ]
-            );
+            }, [
+                ['property', 'value'],
+                ['color', 'red'],
+                ['border-radius', '50px'],
+            ]);
         });
 
         describe('Test for styles in List', (): void => {
@@ -108,12 +108,11 @@ describe('Tests for DropDownInputTemplate', (): void => {
             ): void => {
                 expect(containerStyle[args.property]).toBe(args.value);
                 done();
-            },  [
-                    ['property', 'value'],
-                    ['color', 'blue'],
-                    ['border-radius', '10px'],
-                ]
-            );
+            }, [
+                ['property', 'value'],
+                ['color', 'blue'],
+                ['border-radius', '10px'],
+            ]);
         });
 
         describe('Test for styles in Button', (): void => {
@@ -125,14 +124,11 @@ describe('Tests for DropDownInputTemplate', (): void => {
             ): void => {
                 expect(containerStyle[args.property]).toBe(args.value);
                 done();
-            },  [
-                    ['property', 'value'],
-                    ['color', 'yellow'],
-                    ['border-radius', '25px'],
-                ]
-            );
+            }, [
+                ['property', 'value'],
+                ['color', 'yellow'],
+                ['border-radius', '25px'],
+            ]);
         });
     });
-
-
 });

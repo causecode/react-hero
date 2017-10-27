@@ -512,3 +512,51 @@ const primaryNavStyle: CSS = {
         ```
 * When `getRowStyle` method is defined in Model used in DataGrid, then it will be called for every row of DataGrid and style returned from that method will be applied to Row of that Grid.
 
+### 9 Form Input
+
+ * This is a generic component responsible for rendering different input types for the edit/create pages.
+ * It differentiates between different input types based on its prop `type` passed to it. The available values for `type` prop are:
+    1. text: renders a text input
+    2. boolean: renders radio buttons
+    3. select: renders a drop down component
+    4. list: renders a list component
+    5. datetime: renders a date type input
+ * The common props in all the input types are:
+    * model: string;
+    * propertyName: string;
+    * fieldSize?: number;
+    * labelSize?: number;
+    * style?: { inputCSS?: CSS, labelCSS?: CSS, listCSS?: CSS, btnCSS?: CSS }
+    * onBlur?: boolean;
+    * onChange?: function
+
+ - __GenericInputTemplate__
+    * This is essentially a text input with minimal functionality.
+    * The `style` prop makes use of `inputCSS` for styling.
+
+ - __BooleanInputTemplate__
+    * This renders an input area with two radio options.
+    * The text for Radio options by default are `True` and `False` but can be configured by passing a prop `radioButtonLabels` with `{first: string, second: string}` to customize labels.
+    * The `style` prop makes use of `inputCSS` for styling.
+
+ - __DropDownInputTemplate__
+    * This renders a drop down input using `react-select`.
+    * The following custom props are supported at the time (false by default):
+        * multi?: boolean
+        * creatable?: boolean
+        * autoBlur?: boolean
+        * autofocus?: boolean
+        * value?: string
+        * options?: IDropDownFilterData[]
+        * onInputChange?: function
+        * onInputKeyDown?: function
+        * style?: {inputCSS?: CSS}
+    * [Read docs here.](https://github.com/JedWatson/react-select#further-options)
+
+ - __ListInputTemplate__
+    * This renders a text input, Add button and a list view.
+    * The `style` prop makes use of `inputCSS`, `btnCSS` and `listCSS` to apply styles to the aforementioned elements respectively.
+
+ - __DateTimeComponent__
+    * This renders a `date` type input input element using FormControl from `react-bootstrap`.
+    * The `style` prop makes use of `inputCSS` for styling.

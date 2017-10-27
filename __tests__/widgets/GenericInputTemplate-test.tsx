@@ -1,20 +1,20 @@
 jest.unmock('../../src/components/widgets/Input/GenericInputTemplate');
 
 import * as React from 'react';
-import {shallow, ShallowWrapper, EnzymePropSelector, mount} from 'enzyme';
-import IInputProps from '../../src/components/widgets/Input';
-import GenericInputTemplate from '../../src/components/widgets/Input/GenericInputTemplate';
+import {shallow, ShallowWrapper, EnzymePropSelector, mount, ReactWrapper} from 'enzyme';
+import {IInputProps} from '../../src/components/widgets/Input';
+import {GenericInputTemplate} from '../../src/components/widgets/Input/GenericInputTemplate';
 const unroll: any = require<any>('unroll');
 
 unroll.use(it);
 
-const handleChange = jest.fn();
+const handleChange = jest.fn<void>();
 
 describe('Test for GenericInputTemplate', (): void => {
 
     describe('Test for initial rendering', (): void => {
 
-        const componentTree: EnzymePropSelector<IInputProps, void> = mount<IInputProps, void> (
+        const componentTree: ReactWrapper<IInputProps, void> = mount<IInputProps, void> (
             <GenericInputTemplate/>
         );
 
@@ -24,20 +24,20 @@ describe('Test for GenericInputTemplate', (): void => {
         ): void => {
             expect(componentTree.find(args.element).length).toBe(args.count);
             done();
-        },  [
-                ['element', 'count'],
-                ['input', 1],
-            ]
-        );
+        }, [
+            ['element', 'count'],
+            ['input', 1],
+        ]);
     });
 
     describe('Test for styles passed', (): void => {
 
-        const componentTree: EnzymePropSelector<IInputProps, void> = mount<IInputProps, void> (
+        const componentTree: ReactWrapper<IInputProps, void> = mount<IInputProps, void> (
             <GenericInputTemplate style={{inputCSS: {color:'red', borderRadius: '50px'}}}/>
         );
 
-        const containerStyle = componentTree.find('input').get(0).style._values;
+        // Accessing DOM element to check for styles to make sure the passed styles are rendered.
+        const containerStyle: CSS = componentTree.find('input').get(0).style._values;
 
         unroll('should contain #property with #value value', (
                 done: () => void,
@@ -45,18 +45,16 @@ describe('Test for GenericInputTemplate', (): void => {
         ): void => {
             expect(containerStyle[args.property]).toBe(args.value);
             done();
-        },  [
-                ['property', 'value'],
-                ['color', 'red'],
-                ['border-radius', '50px'],
-            ]
-        );
-
+        }, [
+            ['property', 'value'],
+            ['color', 'red'],
+            ['border-radius', '50px'],
+        ]);
     });
 
     describe('Test for handleChange', (): void => {
         test('when onBlur is true', (): void => {
-            const componentTree: EnzymePropSelector<IInputProps, void> = mount<IInputProps, void> (
+            const componentTree: ReactWrapper<IInputProps, void> = mount<IInputProps, void> (
                 <GenericInputTemplate onBlur={true} onChange={handleChange}/>
             );
 
@@ -65,7 +63,7 @@ describe('Test for GenericInputTemplate', (): void => {
         });
 
         test('when onBlur is false', (): void => {
-            const componentTree: EnzymePropSelector<IInputProps, void> = mount<IInputProps, void> (
+            const componentTree: ReactWrapper<IInputProps, void> = mount<IInputProps, void> (
                 <GenericInputTemplate onBlur={false} onChange={handleChange}/>
             );
 
@@ -73,5 +71,4 @@ describe('Test for GenericInputTemplate', (): void => {
             expect(handleChange).toHaveBeenCalled();
         });
     });
-
 });

@@ -1,26 +1,26 @@
 import * as React from 'react';
 import * as moment from 'moment';
-import {FormControl, FormControlProps} from 'react-bootstrap';
+import {FormControlProps} from 'react-bootstrap';
+import {FormControl} from '../../ReusableComponents';
 import {IInputProps} from './index';
 
-class DateTimeComponent extends React.Component<IInputProps, void> {
+export class DateTimeComponent extends React.Component<IInputProps, void> {
 
-    handleChange = (e: React.FormEvent<React.Component<FormControlProps, {}>>): void => {
+    handleChange = (e: React.ChangeEvent<FormControlProps>): void => {
         this.props.change(this.props.model, e.target[`value`]);
     }
 
     render(): JSX.Element {
+        const {style, propertyValue} = this.props;
+
         return(
             <FormControl
                     type="date"
-                    style={this.props.style ? this.props.style.inputCSS : {}}
+                    style={style ? style.inputCSS : {}}
                     onChange={this.handleChange}
-                    value={this.props.propertyValue ?
-                        moment(this.props.propertyValue).format('YYYY-MM-DD') : ''}
+                    value={propertyValue ? moment(propertyValue).format('YYYY-MM-DD') : ''}
             />
         );
     }
 
 }
-
-export default DateTimeComponent;

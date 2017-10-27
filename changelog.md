@@ -1,12 +1,15 @@
 # Changelog
 
-## [1.1.10] - 2017-10-27
+## [2.0.1] - 2017-10-31
 ### Added
 - Webpack's ModuleConcatenationPlugin to the config
 
 ### Changed
 - Upgraded Webpack to 3.8.1, Webpack Dev Server to 2.9.3, Extract Text Plugin to 2.1.2, and React Hot Loader to 3.1.1
 - Added `navIconStyle` prop to HeaderView to allow style override
+- Refactored `Input` in widgets to modularize `GenericInputTemplate`, `BooleanInputTemplate`, `DropDownInputTemplate`, `DateTimeComponent` and `ListInputTemplate`
+- Replaced the use of `react-datetime` with `FormControl[type="date"]` in DateTimeComponent.
+- Replaced custom dropdown in `DropDownInputTemplate` with `react-select`
 
 ## [1.1.9] - 2017-10-13
 
@@ -14,14 +17,6 @@
 - Added props to style headers in PagedList
 - Added isJobBoardManager permission
 
-<<<<<<< HEAD
-=======
-### Changed
-
-- Refactored `Input` in widgets to modularize `GenericInputTemplate`, `BooleanInputTemplate`, `DropDownInputTemplate`, `DateTimeComponent` and `ListInputTemplate`
-- Replaced the use of `react-datetime` with `FormControl[type="date"]` in DateTimeComponent.
-
->>>>>>> ba3daa8... Refactored Input.tsx. Fixed #29
 ## [1.1.5] - 2017-08-20
 
 ### Added

@@ -1,26 +1,24 @@
 import * as React from 'react';
 import {IInputProps} from './';
 
-const GenericInputTemplate = (props: IInputProps): JSX.Element => {
-    const handleChange: (e: React.FormEvent<void>) => void = (e: React.FormEvent<void>) => {
+export const GenericInputTemplate = (props: IInputProps): JSX.Element => {
+
+    const {type, style, propertyValue} = props;
+
+    const handleChange: (e: React.FormEvent<void>) => void = (e: React.FormEvent<void>): void => {
         props.onChange(e.target[`value`]);
     };
 
-    const inputProps: {
-        onBlur: (e: React.FormEvent<void>) => void;
-    } | {
-        onChange: (e: React.FormEvent<void>) => void;
-    } = props.onBlur ? {onBlur: handleChange} : {onChange: handleChange};
+    const inputProps: {onBlur: (e: React.FormEvent<void>) => void} | {onChange: (e: React.FormEvent<void>) => void}
+            = props.onBlur ? {onBlur: handleChange} : {onChange: handleChange};
 
     return (
         <input
-                type={props.type}
-                style={props.style && props.style.inputCSS ? props.style.inputCSS : {}}
+                type={type}
+                style={style && style.inputCSS ? style.inputCSS : {}}
                 className="form-control"
-                defaultValue={props.propertyValue}
+                defaultValue={propertyValue}
                 {...inputProps}
         />
     );
 };
-
-export default GenericInputTemplate;

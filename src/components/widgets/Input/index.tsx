@@ -2,20 +2,24 @@ import * as React from 'react';
 import {connect, MapStateToProps, MapDispatchToPropsFunction} from 'react-redux';
 import {IDispatch} from '../../../interfaces';
 import {parseWidgetDate} from '../../../utils/appService';
-import {
-    FormGroup,
-    Col,
-    ControlLabel,
-} from 'react-bootstrap';
+import {FormGroup, Col, ControlLabel} from '../../ReusableComponents';
 import {getNestedData} from '../../../utils/commonUtils';
-import GenericInputTemplate from './GenericInputTemplate';
-import BooleanInputTemplate from './BooleanInputTemplate';
-import DropDownInputTemplate from './DropDownInputTemplate';
-import DateTimeComponent from './DateTimeComponent';
-import ListInputTemplate from './ListInputTemplate';
 import {CSS} from '../../../interfaces';
+import {GenericInputTemplate} from './GenericInputTemplate';
+import {BooleanInputTemplate} from './BooleanInputTemplate';
+import {DropDownInputTemplate} from './DropDownInputTemplate';
+import {DateTimeComponent} from './DateTimeComponent';
+import {ListInputTemplate} from './ListInputTemplate';
+import {IReactSelectProps} from './DropDownInputTemplate';
 
 const {actions} = require<any>('react-redux-form');
+
+export interface IStyle {
+    inputCSS?: React.CSSProperties;
+    labelCSS?: React.CSSProperties;
+    listCSS?: React.CSSProperties;
+    btnCSS?: React.CSSProperties;
+}
 
 export interface IInputStateProps {
     propertyValue?: any;
@@ -25,22 +29,17 @@ export interface IInputDispatchProps {
     change?: (model: string, value: any) => void;
 }
 
-export interface IInputProps extends IInputStateProps, IInputDispatchProps {
+export interface IInputProps extends IReactSelectProps, IInputStateProps, IInputDispatchProps {
     model: string;
     enum?: any;
     type: string;
     propertyName: string;
     fieldSize?: number;
     labelSize?: number;
-    style?: {
-        inputCSS?: React.CSSProperties;
-        labelCSS?: React.CSSProperties;
-        listCSS?: React.CSSProperties;
-        btnCSS?: React.CSSProperties;
-    };
+    style?: IStyle;
     radioButtonLabels?: {first: string, second: string}
     onBlur?: boolean;
-    onChange?: (e: React.ChangeEvent<HTMLSelectElement> | string[] | boolean) => void;
+    onChange?: (e: React.ChangeEvent<HTMLSelectElement> | string[] | object[] | boolean) => void;
 }
 
 class FormInputImpl extends React.Component<IInputProps, {}> {
@@ -95,13 +94,9 @@ class FormInputImpl extends React.Component<IInputProps, {}> {
     }
 }
 
-const defaultLabelStyle: CSS = {
-    textAlign: 'right',
-};
-
 const mapStateToProps: MapStateToProps<IInputStateProps, IInputProps> =
         (state: {forms: any}, ownProps: IInputProps): IInputStateProps => {
-    let data = state.forms || {};
+    const data = state.forms || {};
 
     return {
         propertyValue: getNestedData(data, ownProps.model),
@@ -119,3 +114,7 @@ const mapDispatchToProps: MapDispatchToPropsFunction<IInputDispatchProps, IInput
 
 export const FormInput: React.ComponentClass<IInputProps> = connect<IInputStateProps, IInputDispatchProps, IInputProps>
         (mapStateToProps, mapDispatchToProps)(FormInputImpl);
+
+const defaultLabelStyle: CSS = {
+    textAlign: 'right',
+};

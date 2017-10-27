@@ -1,20 +1,20 @@
 jest.unmock('../../src/components/widgets/Input/DateTimeComponent');
 
 import * as React from 'react';
-import {shallow, ShallowWrapper, EnzymePropSelector, mount} from 'enzyme';
-import {FormControl} from 'react-bootstrap';
-import IInputProps from '../../src/components/widgets/Input';
-import DateTimeComponent from '../../src/components/widgets/Input/DateTimeComponent';
+import {shallow, ShallowWrapper, EnzymePropSelector, mount, ReactWrapper} from 'enzyme';
+import {DateTimeComponent} from '../../src/components/widgets/Input/DateTimeComponent';
+import {FormControl} from '../../src/components/ReusableComponents';
+import {IInputProps} from '../../src/components/widgets/Input';
 const unroll: any = require<any>('unroll');
 
 unroll.use(it);
 
-const handleChange = jest.fn();
+const handleChange = jest.fn<void>();
 
-describe('Test for DateTimeComponent', (): void => {
+describe('Tests for DateTimeComponent', (): void => {
 
     describe('Test for initial rendering', (): void => {
-        const componentTree: EnzymePropSelector<IInputProps, void> = mount<IInputProps, void> (
+        const componentTree: ReactWrapper<IInputProps, void> = mount<IInputProps, void> (
             <DateTimeComponent/>
         );
 
@@ -24,20 +24,19 @@ describe('Test for DateTimeComponent', (): void => {
         ): void => {
             expect(componentTree.find(args.element).length).toBe(args.count);
             done();
-        },  [
-                ['elementName', 'element', 'count'],
-                ['FormControl', FormControl, 1],
-            ]
-        );
+        }, [
+            ['elementName', 'element', 'count'],
+            ['FormControl', FormControl, 1],
+        ]);
     });
 
     describe('Test for styles passed', (): void => {
-        const componentTree: EnzymePropSelector<IInputProps, void> = mount<IInputProps, void> (
+        const componentTree: ReactWrapper<IInputProps, void> = mount<IInputProps, void> (
             <DateTimeComponent style={{inputCSS: {color:'red', borderRadius: '50px'}}}/>
         );
 
-        let containerStyle = componentTree.find('input').get(0).style._values;
-        console.log(componentTree.find('input').get(0).style._values);
+        // Accessing DOM element to check for styles to make sure the passed styles are rendered.
+        const containerStyle: CSS = componentTree.find('input').get(0).style._values;
 
         unroll('should contain #property with #value value', (
                 done: () => void,
@@ -45,17 +44,16 @@ describe('Test for DateTimeComponent', (): void => {
         ): void => {
             expect(containerStyle[args.property]).toBe(args.value);
             done();
-        },  [
-                ['property', 'value'],
-                ['color', 'red'],
-                ['border-radius', '50px'],
-            ]
-        );
+        }, [
+            ['property', 'value'],
+            ['color', 'red'],
+            ['border-radius', '50px'],
+        ]);
     });
 
     describe('Test for handleChange', (): void => {
         test('when onChange is triggered', (): void => {
-            const componentTree: EnzymePropSelector<IInputProps, void> = mount<IInputProps, void> (
+            const componentTree: ReactWrapper<IInputProps, void> = mount<IInputProps, void> (
                 <DateTimeComponent change={handleChange}/>
             );
 
@@ -68,7 +66,7 @@ describe('Test for DateTimeComponent', (): void => {
 
     describe('Test for propertyValue', (): void => {
         test('when propertyValue prop is passed', (): void => {
-            const componentTree: EnzymePropSelector<IInputProps, void> = mount<IInputProps, void> (
+            const componentTree: ReactWrapper<IInputProps, void> = mount<IInputProps, void> (
                 <DateTimeComponent propertyValue='2017-10-24'/>
             );
 

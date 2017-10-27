@@ -1,29 +1,21 @@
 import * as React from 'react';
+import {ListGroup, ListGroupItem, FormControlProps, ButtonProps} from 'react-bootstrap';
+import {FormControl, Col, Row, Button} from '../../ReusableComponents';
 import {IInputProps} from './';
-import {
-  FormControl,
-  Col,
-  Row,
-  Button,
-  ListGroup,
-  ListGroupItem,
-  FormControlProps,
-  ButtonProps,
-} from 'react-bootstrap';
 
 export interface IListInputState {
     newListItem: string;
 }
 
 // TODO Add support for nested objects list in this component.
-class ListInputTemplate extends React.Component<IInputProps, IListInputState> {
+export class ListInputTemplate extends React.Component<IInputProps, IListInputState> {
 
     constructor(props) {
         super(props);
         this.state = {newListItem: ''};
     }
 
-    handleTextChange = (e: React.FormEvent<React.Component<FormControlProps, {}>>): void => {
+    handleTextChange = (e: React.ChangeEvent<FormControlProps>): void => {
         this.setState({newListItem: e.target[`value`]});
     }
 
@@ -35,11 +27,11 @@ class ListInputTemplate extends React.Component<IInputProps, IListInputState> {
     }
 
     render(): JSX.Element {
-        const props: IInputProps = this.props;
+        const {style} = this.props;
 
-        const inputCSS: React.CSSProperties = props.style && props.style.inputCSS ? props.style.inputCSS : {};
-        const listCSS: React.CSSProperties = props.style && props.style.listCSS ? props.style.listCSS : {};
-        const btnCSS: React.CSSProperties = props.style && props.style.btnCSS ? props.style.btnCSS : {};
+        const inputCSS: React.CSSProperties = style && style.inputCSS ? style.inputCSS : {};
+        const listCSS: React.CSSProperties = style && style.listCSS ? style.listCSS : {};
+        const btnCSS: React.CSSProperties = style && style.btnCSS ? style.btnCSS : {};
 
         const list: string[] = this.props.propertyValue || ['Nothing to show.'];
 
@@ -65,8 +57,8 @@ class ListInputTemplate extends React.Component<IInputProps, IListInputState> {
                     </Col>
                 </Row>
                 <ListGroup style={{margin: '10px'}}>
-                {(() => {
-                    return list.map((listItem : string, index : number) => {
+                {
+                    list.map((listItem : string, index : number) => {
                         return (
                             <ListGroupItem
                                     style={{wordWrap: 'break-word', ...listCSS}}
@@ -75,12 +67,10 @@ class ListInputTemplate extends React.Component<IInputProps, IListInputState> {
                                 {listItem}
                             </ListGroupItem>
                         );
-                    });
-                })()}
+                    })
+                }
                 </ListGroup>
             </div>
         );
     }
 }
-
-export default ListInputTemplate;

@@ -1,14 +1,13 @@
 import * as React from 'react';
+import {RadioProps} from 'react-bootstrap';
+import {Col, Row, Radio} from '../../ReusableComponents';
 import {IInputProps} from './';
-import {
-    Col,
-    Row,
-    Radio,
-} from 'react-bootstrap';
 
-const BooleanInputTemplate = (props: IInputProps): JSX.Element => {
+export const BooleanInputTemplate = (props: IInputProps): JSX.Element => {
 
-    const handleChange: (e: React.FormEvent<Radio>) => void = (e: React.FormEvent<Radio>) => {
+    const {radioButtonLabels, propertyName, propertyValue, style} = props;
+
+    const handleChange: (e: React.ChangeEvent<RadioProps>) => void = (e: React.ChangeEvent<RadioProps>) => {
         props.onChange((e.target[`value`] === 'option-true'));
     };
 
@@ -18,30 +17,24 @@ const BooleanInputTemplate = (props: IInputProps): JSX.Element => {
                 <Radio
                         onChange={handleChange}
                         value="option-true"
-                        name={props.propertyName}
-                        checked={props.propertyValue}
-                        style={props.style && props.style.inputCSS ? props.style.inputCSS : {}}
+                        name={propertyName}
+                        checked={propertyValue}
+                        style={style && style.inputCSS ? style.inputCSS : {}}
                 >
-                    {props.radioButtonLabels && props.radioButtonLabels.first ? props.radioButtonLabels.first : 'True'}
+                    {radioButtonLabels && radioButtonLabels.first ? radioButtonLabels.first : 'True'}
                 </Radio>
             </Col>
             <Col sm={6}>
                 <Radio
                         onChange={handleChange}
                         value="option-false"
-                        name={props.propertyName}
-                        checked={!props.propertyValue}
-                        style={props.style && props.style.inputCSS ? props.style.inputCSS : {}}
+                        name={propertyName}
+                        checked={!propertyValue}
+                        style={style && style.inputCSS ? style.inputCSS : {}}
                 >
-                    {
-                        props.radioButtonLabels && props.radioButtonLabels.second
-                            ? props.radioButtonLabels.second
-                            : 'False'
-                    }
+                    {radioButtonLabels && radioButtonLabels.second ? radioButtonLabels.second : 'False'}
                 </Radio>
             </Col>
         </Row>
     );
 };
-
-export default BooleanInputTemplate;
