@@ -6,7 +6,7 @@
   "main": "public/index.js",
   "typings": "public/index.d.ts",
   "scripts": {
-    "start": "npm run clean && webpack-dev-server --production",
+    "start": "npm run clean && webpack-dev-server",
     "build": "npm run clean && webpack",
     "clean": "rimraf public dist",
     "compile": "npm run clean && tsc",
@@ -99,9 +99,9 @@
     "tslint-loader": "3.5.3",
     "typescript": "2.5.3",
     "underscore": "1.8.3",
-    "url-loader": "0.6.2",
-    "webpack": "1.14.0",
-    "webpack-dev-server": "1.14.1"
+    "url-loader": "0.5.7",
+    "webpack": "3.8.1",
+    "webpack-dev-server": "2.9.3"
   },
   "devDependencies": {
     "@types/es6-promise": "0.0.33",

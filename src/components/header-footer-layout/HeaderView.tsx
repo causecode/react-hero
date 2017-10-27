@@ -12,6 +12,7 @@ export interface IHeaderViewProps {
     toggleSecondaryNav?: () => void;
     primaryNav?: boolean;
     secondaryNav?: boolean;
+    navIconStyle?: CSS;
 }
 
 @Radium
@@ -22,10 +23,11 @@ export class HeaderViewImpl extends React.Component<IHeaderViewProps, void> {
         position: string,
         toggleNavigation: () => void,
     ): JSX.Element => {
+        const {navIconStyle} = this.props;
         return (
             isNavigationPresent &&
             <NavMenuLauncherIcon
-                    style={navIconStyle}
+                    style={[navIconDefaultStyle, navIconStyle]}
                     position={position}
                     onClick={toggleNavigation}
             />
@@ -63,7 +65,7 @@ export const headerStyle: CSS = {
     width: '100%',
 };
 
-export const navIconStyle: CSS = {
+export const navIconDefaultStyle: CSS = {
     color: '#777',
 };
 

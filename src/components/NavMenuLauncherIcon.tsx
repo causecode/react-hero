@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as Radium from 'radium';
 
 export interface INavMenuLauncherIconProps {
     onClick?: () => void;

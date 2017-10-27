@@ -63,7 +63,8 @@ plugins.push(
         filename: 'index.html',
         template: 'index.ejs'
     }),
-    new ExtractTextPlugin('style.css', {allChunks: true})
+    new ExtractTextPlugin({filename: 'style.css', allChunks: true}),
+    new webpack.optimize.ModuleConcatenationPlugin()
 );
 
 var config = {
@@ -78,18 +79,18 @@ var config = {
     },
     devtool: 'source-map',
     resolve: {
-        root: [
-            path.resolve('./src')
+        modules: [
+            path.resolve('./src'),
+            "node_modules"
         ],
-        extensions: ['', '.webpack.js', '.web.js', '.ts', '.tsx', '.js', '.css', '.json']
+        extensions: ['.webpack.js', '.web.js', '.ts', '.tsx', '.js', '.css', '.json', '.ejs'],
+        enforceExtension: false
     },
     module: {
-        preLoaders: [
-            {test: /\.tsx?$/, loader: 'tslint', exclude: /node_modules/}
-        ],
         loaders: [
+            {test: /\.tsx?$/, loader: 'tslint-loader', exclude: /node_modules/, enforce: 'pre'},
             {test: /\.tsx?$/, exclude: /node_modules/, loaders: ['react-hot-loader/webpack', 'ts-loader']},
-            {test: /\.css$/, loader: ExtractTextPlugin.extract('style-loader', 'css-loader')},
+            {test: /\.css$/, loader: ExtractTextPlugin.extract({fallback: 'style-loader', use: 'css-loader'})},
             {test: /.(png|woff(2)?|eot|ttf|svg)(\?[a-z0-9=\.]+)?$/, loader: 'url-loader?limit=1024&name=fonts/[name].[ext]'},
             {test: /\.(jpg|jpeg|gif|png)$/, loader: 'url-loader?limit=10&mimetype=image/(jpg|jpeg|gif|png)&name=images/[name].[ext]'},
             {test: /\.json$/, loader: 'json-loader' },
@@ -112,3 +113,4 @@ if (isRunningOnServer) {
 }
 
 module.exports = config;
+
