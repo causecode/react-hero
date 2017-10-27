@@ -17,7 +17,7 @@ export class NewPage extends React.Component<void, void> {
     render(): JSX.Element {
         return (
             <HeaderFooterLayout>
-                <HeaderView>
+                <HeaderView navIconStyle={{color: 'red'}}>
                     <Content>
                         <Title>New App</Title>
                         <ButtonList highlightOnHover={true}>
