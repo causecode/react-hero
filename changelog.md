@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.1.10] - 2017-10-27
+
+### Added
+
+- `KeywordMatcher` component for conditional rendering based on keywords.
+
 ## [1.1.9] - 2017-10-13
 
 ### Added
@@ -49,9 +55,3 @@
 - Object prototype functions:
     * `isEmpty`.
     * `objectEach`.
-
-## [1.1.9] - 2017-10-10
-
-### Added
-
-- `KeywordMatcher` component for conditional rendering based on keywords.
