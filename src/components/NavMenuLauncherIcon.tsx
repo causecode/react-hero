@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as Radium from 'radium';
 
 export interface INavMenuLauncherIconProps {
     onClick?: () => void;
@@ -6,6 +7,7 @@ export interface INavMenuLauncherIconProps {
     style?: React.CSSProperties;
 }
 
+@Radium
 export class NavMenuLauncherIcon extends React.Component<INavMenuLauncherIconProps, void> {
 
     static defaultProps: INavMenuLauncherIconProps = {
