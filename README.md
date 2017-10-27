@@ -57,7 +57,7 @@ After you have merged everything to the master branch, follow the following step
   render() {
     return (
       <HeaderFooterLayout>
-        <HeaderView style={optionalStyle}></HeaderView>
+        <HeaderView style={optionalStyle} navIconStyle={optionalNavIconStyle}></HeaderView>
         <ContentView style={optionalStyle}></ContentView>
         <FooterView style={optionalStyle}></FooterView>
         <PrimarySliderNav style={optionalStyle}></PrimarySliderNav>
@@ -74,6 +74,8 @@ eg:
   - `ButtonList`
   - `ButtonListItem`
 
+- __HeaderView__
+    * Takes two optional props: `style` and `navIconStyle` to apply any user specified styles to the header and navIcon respectively
 - __FooterView__
     * Uses an optional prop `isSticky` to make the footer stick to bottom of the window. Default value is `false`.
 - __Navigation Menu__
