@@ -62,7 +62,7 @@
     "ejs-loader": "0.3.0",
     "es5-shim": "4.5.9",
     "es6-promise": "4.1.1",
-    "extract-text-webpack-plugin": "1.0.1",
+    "extract-text-webpack-plugin": "2.1.2",
     "file-loader": "1.1.5",
     "font-awesome": "4.7.0",
     "html-webpack-plugin": "2.30.1",
