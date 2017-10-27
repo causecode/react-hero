@@ -1,12 +1,11 @@
 # Changelog
 
 ## [2.0.1] - 2017-10-31
+
 ### Added
-- Webpack's ModuleConcatenationPlugin to the config
+- `KeywordMatcher` component for conditional rendering based on keywords.
 
 ### Changed
-- Upgraded Webpack to 3.8.1, Webpack Dev Server to 2.9.3, Extract Text Plugin to 2.1.2, and React Hot Loader to 3.1.1
-- Added `navIconStyle` prop to HeaderView to allow style override
 - Refactored `Input` in widgets to modularize `GenericInputTemplate`, `BooleanInputTemplate`, `DropDownInputTemplate`, `DateTimeComponent` and `ListInputTemplate`
 - Replaced the use of `react-datetime` with `FormControl[type="date"]` in DateTimeComponent.
 - Replaced custom dropdown in `DropDownInputTemplate` with `react-select`
@@ -60,9 +59,3 @@
 - Object prototype functions:
     * `isEmpty`.
     * `objectEach`.
-
-## [1.1.9] - 2017-10-10
-
-### Added
-
-- `KeywordMatcher` component for conditional rendering based on keywords.
