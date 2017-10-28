@@ -8,6 +8,16 @@
 <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
 </head>
 <body><div class="container"><h1 id="react-hero-v114">React Hero (v2.0.0)</h1>
+  <h4>
+    <div style="background-color: #ecdada; padding: 10px; border-radius: 10px; color: red;">
+        <b>Breaking change</b>
+        <div style="color: black"> 
+          React Hero 2.0.0 temporarily uses a simple HTML textarea instead of the <b>MarkdownEditor</b> component from the package 
+          'react-markdown-editor'. This is because the package doesn't support React 16. While the textarea works, it's not
+          functional as a MD editor. If you need a real MarkdownEditor in your app, please don't upgrade it to RH 2.0.0 yet.
+        </div>              
+    </div>
+</h4>
 <p>Plugin provides utility directives and services.</p>
 
 
@@ -43,8 +53,6 @@
 
 
 <h2 id="detailed-documentation">Detailed Documentation</h2>
-
-
 
 <h3 id="1-responsiveview">1. ResponsiveView :</h3>
 
