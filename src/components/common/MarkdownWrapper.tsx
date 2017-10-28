@@ -4,7 +4,8 @@ import {connect, MapStateToProps, MapDispatchToPropsFunction} from 'react-redux'
 import {CSS, IDispatchProps, IDispatch} from '../../interfaces';
 import {getNestedData} from '../../utils/commonUtils';
 const {actions} = require<any>('react-redux-form');
-const MarkdownEditor = require<any>('react-markdown-editor').MarkdownEditor;
+// TODO: uncomment this when react-markdown-editor adds React 16 support
+// const MarkdownEditor = require<any>('react-markdown-editor').MarkdownEditor;
 const MarkDownPreview = require<any>('react-markdown');
 
 export interface IMarkdownStateProps {
@@ -37,12 +38,22 @@ export class MarkdownWrapperImpl extends React.Component<IMarkdownProps, void> {
                             },
                         }}
                 />
-                <MarkdownEditor
+                <textarea 
+                        onChange={this.handleChange}
                         className="markDownEditor"
-                        initialContent={this.props.value}
-                        iconsSet="font-awesome"
-                        onContentChange={this.handleChange}
-                />
+                >
+                    {this.props.value}
+                </textarea>
+                {/* 
+                    TODO: Remove the above <textarea /> and uncomment this when react-markdown-editor
+                    adds React 16 support. It currently breaks as it tries to access React propTypes
+                    <MarkdownEditor
+                            className="markDownEditor"
+                            initialContent={this.props.value}
+                            iconsSet="font-awesome"
+                            onContentChange={this.handleChange}
+                    /> 
+                */}
                 <div style={topMargin}>
                     <strong style={labelStyle}>Output</strong>
                     <div style={this.props.value ? previewStyle : {display: 'none'}}>
@@ -65,7 +76,7 @@ let mapStateToProps: MapStateToProps<IMarkdownStateProps, IMarkdownProps> =
 
 let mapDispatchToProps: MapDispatchToPropsFunction<IDispatchProps, IMarkdownProps> =
         (dispatch: IDispatch): IDispatchProps => {
-    return {
+    return {    
         saveData(model : string, value: string): void {
             dispatch(actions.change(model, value));
         },
