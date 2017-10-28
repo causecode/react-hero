@@ -19,7 +19,7 @@ interface IFormTemplateData {
 
 export function writeFile(fpath, contents, cb): void {
     mkdirp(path.dirname(fpath), function (err) {
-        if (err) { return cb(err); };
+        if (err) { return cb(err); }
 
         fs.writeFile(fpath, contents, cb);
     });
@@ -135,7 +135,7 @@ export function generateFormPage(ModelClass: typeof BaseModel, pageType: 'edit' 
                     prop,
                     currentPropType.propTypes,
                     model,
-                    resourceName
+                    resourceName,
                 );
                 return;
             }

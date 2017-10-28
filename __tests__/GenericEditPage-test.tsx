@@ -1,7 +1,7 @@
 jest.unmock('../src/components/CRUD/GenericEditPage');
 jest.unmock('react-bootstrap');
 
-import * as TestUtils from 'react-addons-test-utils';
+import * as TestUtils from 'react-dom/test-utils';
 import * as ReactDOM from 'react-dom';
 import * as React from 'react';
 import {GenericEditPage} from '../src/components/CRUD/GenericEditPage';

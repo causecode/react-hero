@@ -16,8 +16,8 @@ export interface ISliderNavProps {
     isPrimaryNav: boolean;
     primaryNavOpen?: boolean;
     secondaryNavOpen?: boolean;
-    toggleNav?: () => void;
-    toggleSecondaryNav?: () => void;
+    toggleNavHandler?: () => void;
+    toggleSecondaryNavHandler?: () => void;
     navContent?: JSX.Element;
     navStyle?: CSS;
     setPrimaryNav?: (visibilityStatus: boolean) => void;
@@ -44,8 +44,8 @@ export class SliderNavImpl extends React.Component<ISliderNavProps, void> {
     render(): JSX.Element {
         const {
             isPrimaryNav,
-            toggleNav,
-            toggleSecondaryNav,
+            toggleNavHandler,
+            toggleSecondaryNavHandler,
             navStyle,
         } = this.props;
         const menuPosition: string = isPrimaryNav ? 'left' : 'right';
@@ -65,12 +65,12 @@ export class SliderNavImpl extends React.Component<ISliderNavProps, void> {
                              style={[
                                  {
                                      WebkitTransform: `translate3d(${x}%, 0, 0)`,
-                                     transform: `translate3d(${x}%, 0, 0)`
+                                     transform: `translate3d(${x}%, 0, 0)`,
                                  },
                                  navStyle,
                              ]}>
                             <i className={closeButtonClasses}
-                               onClick = {isPrimaryNav ? toggleNav : toggleSecondaryNav}/>
+                               onClick = {isPrimaryNav ? toggleNavHandler : toggleSecondaryNavHandler}/>
                             {this.props.navContent}
                         </div>
                 }
@@ -95,8 +95,8 @@ const mapStateToProps = (state): {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        toggleNav: (): void => dispatch(toggleNav()),
-        toggleSecondaryNav: (): void => dispatch(toggleSecondaryNav()),
+        toggleNavHandler: (): void => dispatch(toggleNav()),
+        toggleSecondaryNavHandler: (): void => dispatch(toggleSecondaryNav()),
         setPrimaryNav: (visibilityStatus: boolean): void => dispatch(showPrimaryNav(visibilityStatus)),
         setSecondaryNav: (visibilityStatus: boolean): void => dispatch(showSecondaryNav(visibilityStatus)),
     };

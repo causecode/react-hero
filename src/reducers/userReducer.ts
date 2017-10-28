@@ -14,7 +14,7 @@ export function userReducer (state = INITIAL_STATE, action) {
         case 'RESET_USER_ACTION':
             return INITIAL_STATE;
 
-        default: 
+        default:
             return state;
     }
-};
+}

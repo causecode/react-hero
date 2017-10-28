@@ -8,17 +8,17 @@ export interface IDropDownSelectProps {
 }
 
 export class DropDownSelect extends React.Component<IDropDownSelectProps, void> {
-    
+
     renderOptions = (): JSX.Element[] => {
         let options: JSX.Element[] = [];
         let possibleValues: IDropDownFilterData[] = this.props.possibleValues;
-        
+
         if (possibleValues && possibleValues.length > 0) {
             possibleValues.forEach((item: IDropDownFilterData, index: number) => {
                 options.push(
                     <option key={index} value={item.value}>
                         {item.label}
-                    </option>
+                    </option>,
                 );
             });
         }

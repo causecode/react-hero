@@ -3,17 +3,17 @@ import {ModelPropTypes} from '../../models/ModelPropTypes';
 
 export enum Status {
     PRESENT,
-    FIRED
+    FIRED,
 }
 
 export enum IsCurrent {
     YES,
-    NO
+    NO,
 }
 
 export class BlogModel extends BaseModel {
     static resourceName: string = 'blog';
-    
+
     static propTypes = {
         id: ModelPropTypes.NUMBER(),
         author: ModelPropTypes.STRING(),
@@ -35,23 +35,23 @@ export class BlogModel extends BaseModel {
         'dateCreated',
         'lastUpdated',
     ];
-        
+
     constructor(properties?: any) {
         super(properties);
     }
 }
 
 let blogInstance = new BlogModel({
-        id: 10, 
+        id: 10,
         name: 'My test blog',
         dateCreated: new Date().setDate(new Date().getDate() + 10),
         guestList: ['abc', 'qwe'],
         address: {
-            lineOne: 'this is line one', 
-            lineTwo: 'this.is line two', 
-            flatNumber: 12, 
-            current: true, 
-            livingSince: new Date(), 
+            lineOne: 'this is line one',
+            lineTwo: 'this.is line two',
+            flatNumber: 12,
+            current: true,
+            livingSince: new Date(),
             residents: ['Nahush', 'Piyush'],
             isCurrent: IsCurrent.YES,
         },
@@ -59,4 +59,4 @@ let blogInstance = new BlogModel({
         status: Status.PRESENT,
     });
 
-export {blogInstance}
+export {blogInstance};

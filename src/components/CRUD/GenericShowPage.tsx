@@ -6,7 +6,7 @@ import {ModelPropTypes} from '../../models/ModelPropTypes';
 import {isEmpty} from '../../utils/appService';
 
 // TODO handle how dates are displayed.
-export class GenericShowPage extends React.Component<IInstancePageProps, void> {
+export class GenericShowPage extends React.Component<IInstancePageProps, {}> {
     static defaultProps: IInstancePageProps = {
         instance: new DefaultModel({}),
     };
@@ -28,7 +28,7 @@ export class GenericShowPage extends React.Component<IInstancePageProps, void> {
                 </thead>
                 <tbody>
                     {instanceKeys.map((key: string, index: number) => {
-                        let currentPropType = instance.propTypes[key]; 
+                        let currentPropType = instance.propTypes[key];
                         if (currentPropType.type === ModelPropTypes.objectInputType) {
                             return (
                                 <tr key={index}>
@@ -44,7 +44,7 @@ export class GenericShowPage extends React.Component<IInstancePageProps, void> {
                                                             <td>{instanceProperties[key][subKey].toString()}</td>
                                                         </tr>
                                                     );
-                                                })}        
+                                                })}
                                             </tbody>
                                         </Table>
                                     </td>

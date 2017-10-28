@@ -16,7 +16,7 @@ export interface IDataGridStateProps {
     selectedIds?: number[];
     selectAllOnPage?: boolean;
     selectAll?: boolean;
-};
+}
 
 export interface IDataGridDispatchProps {
     selectAllRecords?: (isChecked: boolean) => void;
@@ -229,7 +229,7 @@ export class DataGridImpl extends React.Component<IDataGridProps, void> {
 
             this.properties = propertyNames.length > 0 ? propertyNames :
                     Object.keys(this.props.instanceList[0].properties);
-            
+
             this.columnNames = columnNames.length > 0 ? columnNames : this.properties;
         } else {
             this.properties = this.props.properties;

@@ -1,5 +1,5 @@
 jest.unmock('../src/components/ResponsiveView');
-import * as TestUtils from 'react-addons-test-utils';
+import * as TestUtils from 'react-dom/test-utils';
 import * as React from 'react';
 import {INSTANTIATION_ERROR} from '../src/constants';
 import {ResponsiveView} from '../src/components/ResponsiveView';

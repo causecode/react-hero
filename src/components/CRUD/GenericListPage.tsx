@@ -5,7 +5,7 @@ export interface IGenericListPageProps {
     resource: string;
 }
 
-export class GenericListPage extends React.Component<IGenericListPageProps, void> {
+export class GenericListPage extends React.Component<IGenericListPageProps, {}> {
 
     static defaultProps: IGenericListPageProps = {
         resource: '',

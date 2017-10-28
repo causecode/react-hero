@@ -45,7 +45,7 @@ export class ConfirmationModalImpl extends React.Component<IConfirmationModalPro
             </Modal>
         );
     }
-};
+}
 
 
 let mapStateToProps: MapStateToProps<IConfirmationModalStateProps, IConfirmationModalProps> =

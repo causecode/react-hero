@@ -68,8 +68,8 @@ function dataReducer(state = INITIAL_STATE, action ): IFromJS {
                 for (let payloadKey in payloadData) {
                     if (payloadData.hasOwnProperty(payloadKey)) {
                         if (payloadKey === instanceListKey) {
-                            storeData.instanceList = payloadData[payloadKey].map((instance): BaseModel => {
-                                return new Model(instance);
+                            storeData.instanceList = payloadData[payloadKey].map((instanceKey): BaseModel => {
+                                return new Model(instanceKey);
                             });
                         } else {
                             storeData[payloadKey] = payloadData[payloadKey];
@@ -94,7 +94,7 @@ function dataReducer(state = INITIAL_STATE, action ): IFromJS {
             let incomingInstanceList = action.instanceList || [];
             return state.setIn(
                     [`${action.resource}List`, 'instanceList'],
-                    existingInstanceList.concat(incomingInstanceList)
+                    existingInstanceList.concat(incomingInstanceList),
             );
 
         case SET_PAGE:

@@ -1,7 +1,7 @@
 jest.unmock('../src/components-stateful/ShowPage');
 
 import * as React from 'react';
-import * as TestUtils from 'react-addons-test-utils';
+import * as TestUtils from 'react-dom/test-utils';
 import {IInstanceContainerProps} from '../src/interfaces';
 import {ShowPageImpl, ShowPage} from '../src/components-stateful/ShowPage';
 import {initializeTestCase} from './../src/utils/initializeTestCase';

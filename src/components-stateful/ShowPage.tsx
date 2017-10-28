@@ -10,7 +10,7 @@ import {ErrorPage} from '../components/ErrorPage';
 import {store} from '../store';
 import {getResourceParams} from '../utils/appService';
 
-export type ShowPageProps = IInstanceContainerProps & RouteComponentProps<IRouteParams>
+export type ShowPageProps = IInstanceContainerProps & RouteComponentProps<IRouteParams>;
 
 export class ShowPageImpl extends React.Component<ShowPageProps, void> {
 
@@ -35,7 +35,7 @@ export class ShowPageImpl extends React.Component<ShowPageProps, void> {
         }
         const resource: string = this.props.match.params.resource;
         const childProps = {instance: this.props.instance, resource: resource};
-        let Page: React.ComponentClass<void> = ComponentService.getShowPage(resource) as React.ComponentClass<void>;
+        let Page: React.ComponentClass<{}> = ComponentService.getShowPage(resource) as React.ComponentClass<{}>;
         return (
             <Page {...childProps}/>
         );
@@ -60,7 +60,7 @@ function mapStateToProps(state: IFromJS, ownProps: ShowPageProps): {instance: Ba
 }
 
 let ShowPage = connect(
-    mapStateToProps
+    mapStateToProps,
 )(ShowPageImpl);
 
 export {ShowPage};

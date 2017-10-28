@@ -9,11 +9,14 @@
     "rootDir": "src",
     "outDir": "public",
     "sourceMap": true,
-    "jsx": "react"
+    "jsx": "react",
+    "allowSyntheticDefaultImports": true,
+    "moduleResolution": "node",
+    "typeRoots": [
+      "node_modules/@types"
+    ]
   },
   "exclude": [
-    "typings/browser.d.ts",
-    "typings/browser",
     "node_modules",
     "__tests__"
   ]

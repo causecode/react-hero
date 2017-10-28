@@ -108,7 +108,7 @@ export class PagedListImpl extends React.Component<IPagedListProps, void> {
         this.fetchInstanceList(resource);
         OuterFilter = createOuterFilterForm(`${this.props.resource}Filters`);
         this.props.setPage(1, resource);
-    };
+    }
 
     componentWillUnmount(): void {
         this.props.resetCheckboxState();
@@ -245,7 +245,7 @@ export class PagedListImpl extends React.Component<IPagedListProps, void> {
                 }
             </div>
         );
-    };
+    }
 }
 
 function mapStateToProps(state: IPagedListState, ownProps): IPagedListStateProps {

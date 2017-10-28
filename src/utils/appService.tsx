@@ -42,7 +42,7 @@ export function parseWidgetDate(date: number | string | Date): string {
     let timestamp: number = date as number;
     if (date instanceof Date) {
         timestamp = date.getTime();
-    }else if (typeof date === 'string') {
+    } else if (typeof date === 'string') {
         timestamp = parseInt(date, 10);
     }
     return moment(timestamp).format('YYYY-MM-DD');
@@ -70,7 +70,7 @@ export function getInnerData(data: any, nestedPath: string) {
     }
 
     return result;
-};
+}
 
 export function isEmpty(obj: Object): boolean {
     return (!obj || !Object.keys(obj).length);
@@ -120,11 +120,11 @@ export function getThemedComponent(componentPath: string, componentName: string)
 }
 
 function fetchComponent(componentPath: string, componentName: string, theme?: string): React.ComponentClass<any> {
-    /**
+   /**
      * TODO use the path of the app root directory instead of ../../../../src.
      */
     // return require(`../../src/${theme || 'default'}/${componentPath}`)[`${componentName}`];
-    return require(`../../../../app/${theme || 'default'}/${componentPath}`)[`${componentName}`];
+    return require(`../../../../src/${theme || 'default'}/${componentPath}`)[`${componentName}`];
 }
 
 export function showWarn(message: string): void {
@@ -192,7 +192,7 @@ export function generateForm<T extends BaseModel>(
         instance: T,
         isCreatePage: boolean,
         model: string = '',
-        propTypes: any = instance.propTypes
+        propTypes: any = instance.propTypes,
 ): JSX.Element {
     return (
         <div>
@@ -207,7 +207,7 @@ export function generateForm<T extends BaseModel>(
                     return generateSubForm(
                             prop,
                             (getIn(instance.propTypes, keyPath) as typeof BaseModel).propTypes,
-                            modelString
+                            modelString,
                     );
                 }
                 return (
@@ -232,8 +232,8 @@ export function getActionComponent(fileName: string): React.ComponentClass<any> 
     // For development choose this
     // return require(`../../src/components-stateful`)[fileNameSplittedToWords.join('')];
     // For using react-hero as a plugin use this
-    return require(`../../../../app/containers`)[fileNameSplittedToWords.join('')];
-};
+    return require(`../../../../src/containers`)[fileNameSplittedToWords.join('')];
+}
 
 export function setTokenInLocalStorage(token: string): boolean {
     if (!token) {
@@ -244,7 +244,7 @@ export function setTokenInLocalStorage(token: string): boolean {
     localStorage.setItem(AUTH_TOKEN_KEY, token);
     localStorage.setItem(AUTH_TOKEN_KEY_TIMESTAMP, new Date().toString());
     return true;
-};
+}
 
 export function getTokenFromLocalStorage(): string {
     let token: string = localStorage.getItem(AUTH_TOKEN_KEY);
@@ -253,7 +253,7 @@ export function getTokenFromLocalStorage(): string {
     }
 
     return token;
-};
+}
 
 export function removeTokenFromLocalStorage(): void {
     localStorage.removeItem(AUTH_TOKEN_KEY);
