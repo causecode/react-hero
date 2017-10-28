@@ -18,7 +18,7 @@ export class KeywordMatcher extends React.Component<IKeywordMatcherProps, IKeywo
         this.state = {keywords: []};
     }
 
-    extractKeyword = (): string[] => {
+    getPageKeywords = (): string[] => {
         const allMetaTags: NodeListOf<Element> = document.getElementsByTagName('meta');
         const keywords: string[] = [];
 
@@ -36,11 +36,11 @@ export class KeywordMatcher extends React.Component<IKeywordMatcherProps, IKeywo
     }
 
     componentDidMount(): void {
-        const allKeywords = this.extractKeyword();
+        const pageKeywords = this.getPageKeywords();
         const {keywords} = this.state;
 
-        if (allKeywords.length !== keywords.length && allKeywords.every((value, key) => value !== keywords[key])) {
-            this.setState({keywords: allKeywords});
+        if (pageKeywords.length !== keywords.length && pageKeywords.every((value, key) => value !== keywords[key])) {
+            this.setState({keywords: pageKeywords});
         }
     }
 
