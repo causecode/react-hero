@@ -1,0 +1,1 @@
+{"version":3,"file":"navMenuAction.js","sourceRoot":"","sources":["../../src/actions/navMenuAction.ts"],"names":[],"mappings":";;AAEa,QAAA,cAAc,GAAG,UAAC,gBAAyB;IACpD,MAAM,CAAC;QACH,IAAI,EAAE,kBAAkB;QACxB,OAAO,EAAE,gBAAgB;KAC5B,CAAC;AACN,CAAC,CAAC;AAEW,QAAA,gBAAgB,GAAG,UAAC,gBAAyB;IACtD,MAAM,CAAC;QACH,IAAI,EAAE,oBAAoB;QAC1B,OAAO,EAAE,gBAAgB;KAC5B,CAAC;AACN,CAAC,CAAC"}

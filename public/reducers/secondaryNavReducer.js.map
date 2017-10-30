@@ -1,0 +1,1 @@
+{"version":3,"file":"secondaryNavReducer.js","sourceRoot":"","sources":["../../src/reducers/secondaryNavReducer.ts"],"names":[],"mappings":";;AAAA,0CAAkD;AAGlD,6BAAqC,KAAsB,EAAE,MAAsB;IAA9C,sBAAA,EAAA,aAAsB;IACvD,MAAM,CAAC,CAAC,MAAM,CAAC,IAAI,CAAC,CAAC,CAAC;QAClB,KAAK,gCAAoB;YACrB,MAAM,CAAC,CAAC,KAAK,CAAC;QAClB;YACI,MAAM,CAAC,KAAK,CAAC;IACrB,CAAC;AACL,CAAC;AAPD,kDAOC"}
