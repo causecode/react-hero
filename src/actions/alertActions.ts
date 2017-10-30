@@ -8,10 +8,10 @@ export function setAlertVisible(type: string, message: string): IAlertAction {
             alertMessage: message,
         },
     };
-};
+}
 
 export function setAlertInvisible(): IGenericAction {
     return {
         type: 'HIDE_ALERT',
     };
-};
+}

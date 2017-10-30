@@ -7,7 +7,17 @@
 <link rel="stylesheet" href="https://stackedit.io/res-min/themes/base.css" />
 <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
 </head>
-<body><div class="container"><h1 id="react-hero-v114">React Hero (v1.1.8)</h1>
+<body><div class="container"><h1 id="react-hero-v114">React Hero (v2.0.0)</h1>
+  <h4>
+    <div style="background-color: #ecdada; padding: 10px; border-radius: 10px; color: red;">
+        <b>Breaking change</b>
+        <div style="color: black"> 
+          React Hero 2.0.0 temporarily uses a simple HTML textarea instead of the <b>MarkdownEditor</b> component from the package 
+          'react-markdown-editor'. This is because the package doesn't support React 16. While the textarea works, it's not
+          functional as a MD editor. If you need a real MarkdownEditor in your app, please don't upgrade it to RH 2.0.0 yet.
+        </div>              
+    </div>
+</h4>
 <p>Plugin provides utility directives and services.</p>
 
 
@@ -43,8 +53,6 @@
 
 
 <h2 id="detailed-documentation">Detailed Documentation</h2>
-
-
 
 <h3 id="1-responsiveview">1. ResponsiveView :</h3>
 
@@ -84,7 +92,7 @@ Example:</p>
 <pre class="prettyprint"><code class=" hljs xml">render() {
 return (
   <span class="hljs-tag">&lt;<span class="hljs-title">HeaderFooterLayout</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-title">HeaderView</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{optionalStyle}</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">HeaderView</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">HeaderView</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{optionalStyle}</span></span> <span class="hljs-attribute">navIconStyle</span>=<span class="hljs-value">{optionalNavIconStyle}</span>&gt;</span> <span class="hljs-tag">&lt;/<span class="hljs-title">HeaderView</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-title">ContentView</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{optionalStyle}</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">ContentView</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-title">FooterView</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{optionalStyle}</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">FooterView</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-title">PrimarySliderNav</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{optionalStyle}</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">PrimarySliderNav</span>&gt;</span>
@@ -99,6 +107,9 @@ eg: <br>
 <li><code>Content</code></li>
 <li><code>ButtonList</code></li>
 <li><code>ButtonListItem</code></li></ul></li>
+<li><p><strong>HeaderView</strong></p>
+  <ul><li><p>Takes two optional props: <code>style</code> and <code>navIconStyle</code> to apply any user specified styles to the header and navIcon respectively
+</p></li></ul></li>
 <li><p><strong>FooterView</strong></p>
   <ul><li><p>Uses an optional prop <code>isSticky</code> to make the footer stick to bottom of the window. Default value is <code>false</code>.</p></li></ul></li>
 <li><p><strong>Navigation Menu</strong></p>

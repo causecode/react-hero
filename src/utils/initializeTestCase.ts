@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {BaseModel, DefaultModel} from '../models/BaseModel';
-export const TestUtils = require<any>('react-addons-test-utils');
+export const TestUtils = require<any>('react-dom/test-utils');
 
 export interface IInitializerData {
     renderer: any;

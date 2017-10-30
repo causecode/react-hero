@@ -16,5 +16,5 @@ render(
             <Route path="/" component={NewPage} />
         </BrowserRouter>
     </Provider>,
-    document.getElementsByClassName('main-container')[0]
+    document.getElementsByClassName('main-container')[0],
 );

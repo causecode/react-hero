@@ -7,4 +7,4 @@ export function primaryNavReducer (state: any = false, action: {type: string}) {
         default:
             return state;
     }
-};
+}

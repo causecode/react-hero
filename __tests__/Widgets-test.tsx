@@ -1,7 +1,7 @@
 jest.unmock('../src/components/widgets');
 
 import * as React from 'react';
-import * as TestUtils from 'react-addons-test-utils';
+import * as TestUtils from 'react-dom/test-utils';
 import * as ReactDOM from 'react-dom';
 import {Title, Content, ButtonList, ButtonListItem, Description} from '../src/components/widgets';
 import {initializeTestCase} from './../src/utils/initializeTestCase';

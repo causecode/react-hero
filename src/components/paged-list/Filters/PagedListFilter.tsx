@@ -12,7 +12,7 @@ const FontAwesome = Radium(ReactFontAwesome);
 let InnerFilterForm: React.ComponentClass<IPagedListFiltersProps>;
 
 @Radium
-export class PagedListFilters extends React.Component<IPagedListFiltersProps, void> {
+export class PagedListFilters extends React.Component<IPagedListFiltersProps, {}> {
 
     static defaultProps: IPagedListFiltersProps = {
         resource: '',

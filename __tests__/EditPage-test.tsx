@@ -1,7 +1,7 @@
 jest.unmock('../src/components-stateful/EditPage');
 
 import * as React from 'react';
-import * as TestUtils from 'react-addons-test-utils';
+import * as TestUtils from 'react-dom/test-utils';
 import {EditPageImpl, EditPageProps, EditPage} from '../src/components-stateful/EditPage';
 import {BaseModel, DefaultModel} from '../src/models/BaseModel';
 import {IInstanceContainerProps} from '../src/interfaces/';
@@ -74,7 +74,7 @@ describe('Test EditPage', () => {
         expect(page.props.params.resource).toBe('');
         expect(page.props.params.resourceID).toBe('');
         expect(page.props.instance).toEqual(new DefaultModel({}));
-        let renderedPage: React.ComponentClass<IGenericEditPageProps> = 
+        let renderedPage: React.ComponentClass<IGenericEditPageProps> =
                 ShallowTestUtils.findWithType(page, GenericEditPage);
         generalEditPageTests(renderedPage, new DefaultModel({}), '');
         expect(BaseModel.get).not.toBeCalled();
@@ -157,13 +157,13 @@ describe('Test EditPage', () => {
         renderedInstance.$save = jest.fn<typeof renderedInstance.$save>();
         renderedInstance.$update = jest.fn<typeof renderedInstance.$update>();
         renderedInstance.$delete = jest.fn<typeof renderedInstance.$delete>();
-        
+
         it('renders the EditPage with the store', () => {
             ModelService.getModel = jest.fn<any>();
             BaseModel.get = jest.fn<typeof BaseModel.get>();
             let storeInstances: {testCreate?: BaseModel, testEdit?: BaseModel} = {};
             storeInstances['testEdit'] = renderedInstance;
-            
+
             let page: React.Component<void, void> = TestUtils.renderIntoDocument<React.Component<void, void>>(
                 <Provider store = {configureStore({instances: fromJS(storeInstances)})}>
                     <EditPage

@@ -7,10 +7,10 @@ export interface IContentViewProps {
 }
 
 @Radium
-export class ContentView extends React.Component<IContentViewProps, void> {
+export class ContentView extends React.Component<IContentViewProps, {}> {
     render(): JSX.Element {
         return (
-            <div style={[contentStyle,this.props.style]} className="content">
+            <div style={[contentStyle, this.props.style]} className="content">
                 {this.props.children}
             </div>
         );

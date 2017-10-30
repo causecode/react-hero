@@ -18,7 +18,7 @@ function isCreatePage(pathName: string): boolean {
     }
     return pathName.toLowerCase().indexOf('create') > -1;
 }
-export type EditPageProps = IInstanceContainerProps & RouteComponentProps<IRouteParams>
+export type EditPageProps = IInstanceContainerProps & RouteComponentProps<IRouteParams>;
 
 export class EditPageImpl extends React.Component<EditPageProps, void> {
     static defaultProps: IInstanceContainerProps = {
@@ -39,7 +39,7 @@ export class EditPageImpl extends React.Component<EditPageProps, void> {
                 () => {},
                 () => {},
                 store.getState(),
-                'edit'
+                'edit',
             );
         }
     }
@@ -120,7 +120,7 @@ function mapStateToProps(state: IFromJS, ownProps: EditPageProps): Object {
                 () => {},
                 () => {},
                 state,
-                '' as 'edit' | 'create'
+                '' as 'edit' | 'create',
             );
     } else {
         instance = new ModelClass({});
@@ -131,7 +131,7 @@ function mapStateToProps(state: IFromJS, ownProps: EditPageProps): Object {
 }
 
 let EditPage = connect(
-    mapStateToProps
+    mapStateToProps,
 )(EditPageImpl);
 
 export {EditPage};

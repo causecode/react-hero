@@ -28,7 +28,7 @@ export function ModelActionFactory(type: string) {
     };
 }
 
-export type ModelActionCreatorType = (instance: BaseModel, key?: string) => IInstanceAction
+export type ModelActionCreatorType = (instance: BaseModel, key?: string) => IInstanceAction;
 
 export const saveInstance: ModelActionCreatorType = ModelActionFactory(SAVE_INSTANCE);
 export const updateInstance: ModelActionCreatorType = ModelActionFactory(UPDATE_INSTANCE);

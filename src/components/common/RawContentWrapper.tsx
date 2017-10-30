@@ -12,7 +12,7 @@ export interface IRawContentProps extends IRawContentStateProps, IDispatchProps 
     model?: string;
     style?: CSS;
     onBlur?: boolean;
-};
+}
 
 export class RawContentWrapperImpl extends React.Component<IRawContentProps, void> {
 

@@ -25,7 +25,7 @@ export function promiseMiddleware({ dispatch }) {
             {type: PENDING},
             data ? {payload: data} : {},
             {resource},
-            actionParams
+            actionParams,
         ));
 
         /**
@@ -54,7 +54,7 @@ export function promiseMiddleware({ dispatch }) {
                 if (typeof failureCallBack === 'function') {
                     failureCallBack(error);
                 }
-            }
+            },
         );
     };
 }

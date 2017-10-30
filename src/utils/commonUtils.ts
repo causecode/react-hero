@@ -4,11 +4,11 @@ import {hideConfirmationModal, showConfirmationModal} from '../actions/confirmat
 
 export function showModal(): void {
     store.dispatch(showConfirmationModal());
-};
+}
 
 export function hideModal(): void {
     store.dispatch(hideConfirmationModal());
-};
+}
 
 export function showAlert(type: string, message: string, hideAfter?: number): void {
     store.dispatch(setAlertVisible(type, message));
@@ -32,7 +32,7 @@ export function scrollToTop(): void {
 
 /**
  * This function checkes whether any element (object, string, array) exists at given path in given parent object.
- * 
+ *
  * @export
  * @param {*} parent - Object in which to check for given path's existent.
  * @param {string} path - Nested dotted path to be checked in given parent object whether it exists or not.

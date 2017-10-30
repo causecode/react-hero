@@ -116,7 +116,7 @@ const DropDownInputTemplate = (props): JSX.Element => {
                             key={index}
                             value={element.value}>
                             {element.label}
-                        </option>
+                        </option>,
                     );
                 });
                 return optionElements;
@@ -178,7 +178,7 @@ class ListInputTemplate extends React.Component<any, any> {
 }
 
 // TODO: Make it generic component by allowing it to accept all props of react-datetime
-class DateTimeComponent extends React.Component<IInputProps, void> {
+class DateTimeComponent extends React.Component<IInputProps, {}> {
 
     handleChange = (newValue: {_d: {toISOString: () => any}}): void => {
         if (newValue && newValue._d) {
@@ -252,7 +252,7 @@ class FormInputImpl extends React.Component<IInputProps, {}> {
 const mapStateToProps: MapStateToProps<IInputStateProps, IInputProps> =
         (state: {forms: any}, ownProps: IInputProps): IInputStateProps => {
     let data = state.forms || {};
-    
+
     return {
         propertyValue: getNestedData(data, ownProps.model),
     };

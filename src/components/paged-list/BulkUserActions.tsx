@@ -47,7 +47,7 @@ export class UserActionsImpl extends React.Component<IUserActionProps, void> {
             list.push(
                 <option value={item} key={index}>
                     {item}
-                </option>
+                </option>,
             );
         });
         return list;

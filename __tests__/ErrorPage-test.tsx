@@ -2,7 +2,7 @@ jest.unmock('../src/components/ErrorPage');
 import {ErrorPage} from '../src/components/ErrorPage';
 import {Wrapper} from '../src/components/Wrapper';
 import * as React from 'react';
-import * as TestUtils from 'react-addons-test-utils';
+import * as TestUtils from 'react-dom/test-utils';
 
 it('should render ErrorPage correctly', () => {
     let testMessage: string = 'Error Message';

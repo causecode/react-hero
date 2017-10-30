@@ -8,7 +8,7 @@ export interface IFooterViewProps {
 }
 
 @Radium
-export class FooterView extends React.Component<IFooterViewProps, void> {
+export class FooterView extends React.Component<IFooterViewProps, {}> {
     render(): JSX.Element {
         const footerClass = this.props.isSticky ? 'footer container navbar-fixed-bottom' : 'footer';
         return (

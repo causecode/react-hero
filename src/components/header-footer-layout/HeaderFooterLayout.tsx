@@ -7,10 +7,10 @@ export interface IHeaderFooterLayoutProps {
 }
 
 @Radium
-export class HeaderFooterLayout extends React.Component<IHeaderFooterLayoutProps, void> {
+export class HeaderFooterLayout extends React.Component<IHeaderFooterLayoutProps, {}> {
     render(): JSX.Element {
         return (
-            <div style={[layoutStyle,this.props.style]}>
+            <div style={[layoutStyle, this.props.style]}>
                 {this.props.children}
             </div>
         );
