@@ -8,7 +8,7 @@ export const BooleanInputTemplate = (props: IInputProps): JSX.Element => {
     const {radioButtonLabels, propertyName, propertyValue, style} = props;
 
     const handleChange: (e: React.ChangeEvent<RadioProps>) => void = (e: React.ChangeEvent<RadioProps>) => {
-        props.onChange((e.target[`value`] === 'option-true'));
+        props.onChange(e.target[`value`] === 'option-true');
     };
 
     return (

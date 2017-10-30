@@ -10,9 +10,9 @@ const unroll: any = require<any>('unroll');
 
 unroll.use(it);
 
-const handleChange = jest.fn<void>();
-
 describe('Tests for DropDownInputTemplate', (): void => {
+
+    const handleChange: jest.Mock<void> = jest.fn<void>();
 
     describe('Tests for initial rendering', (): void => {
         const componentTree: ReactWrapper<IInputProps, void> = mount<IInputProps, void> (

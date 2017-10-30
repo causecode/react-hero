@@ -9,9 +9,9 @@ const unroll: any = require<any>('unroll');
 
 unroll.use(it);
 
-const handleChange = jest.fn<void>();
-
 describe('Tests for DateTimeComponent', (): void => {
+
+    const handleChange: jest.Mock<void> = jest.fn<void>();
 
     describe('Test for initial rendering', (): void => {
         const componentTree: ReactWrapper<IInputProps, void> = mount<IInputProps, void> (
@@ -59,7 +59,6 @@ describe('Tests for DateTimeComponent', (): void => {
 
             const event: React.FormEvent = {target: {value: '2017-10-24'}};
             componentTree.find('input').simulate('change', event);
-
             expect(handleChange).toHaveBeenCalled();
         });
     });

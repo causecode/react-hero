@@ -8,9 +8,9 @@ const unroll: any = require<any>('unroll');
 
 unroll.use(it);
 
-const handleChange = jest.fn<void>();
-
 describe('Test for GenericInputTemplate', (): void => {
+
+    const handleChange: jest.Mock<void> = jest.fn<void>();
 
     describe('Test for initial rendering', (): void => {
 
@@ -53,22 +53,22 @@ describe('Test for GenericInputTemplate', (): void => {
     });
 
     describe('Test for handleChange', (): void => {
-        test('when onBlur is true', (): void => {
+
+        unroll('when onBlur is #onBlur', (
+                done: () => void,
+                args: {elementName: string, element: EnzymePropSelector, count: number, isCreatable: boolean}
+        ): void => {
             const componentTree: ReactWrapper<IInputProps, void> = mount<IInputProps, void> (
-                <GenericInputTemplate onBlur={true} onChange={handleChange}/>
+                <GenericInputTemplate onBlur={args.onBlur} onChange={handleChange}/>
             );
 
-            componentTree.find('input').simulate('blur');
+            componentTree.find('input').simulate(args.action);
             expect(handleChange).toHaveBeenCalled();
-        });
-
-        test('when onBlur is false', (): void => {
-            const componentTree: ReactWrapper<IInputProps, void> = mount<IInputProps, void> (
-                <GenericInputTemplate onBlur={false} onChange={handleChange}/>
-            );
-
-            componentTree.find('input').simulate('change');
-            expect(handleChange).toHaveBeenCalled();
-        });
+            done();
+        }, [
+            ['action', 'onBlur'],
+            ['blur', true],
+            ['change', false],
+        ]);
     });
 });

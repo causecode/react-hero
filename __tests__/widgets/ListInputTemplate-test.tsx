@@ -10,9 +10,9 @@ const unroll: any = require<any>('unroll');
 
 unroll.use(it);
 
-const handleChange = jest.fn<void>();
-
 describe('Tests for DropDownInputTemplate', (): void => {
+
+    const handleChange: jest.Mock<void> = jest.fn<void>();
 
     describe('Test for initial rendering', (): void => {
         const componentTree: ShallowWrapper<IInputProps, void> = shallow<IInputProps, void> (
@@ -40,34 +40,34 @@ describe('Tests for DropDownInputTemplate', (): void => {
     describe('Tests for actions', (): void => {
 
         test('when handleTextChange is triggered', (): void => {
-            const componentTree: ReactWrapper<IInputProps, IListInputState> =
-                mount<IInputProps, IListInputState> (
+            const componentTree: ReactWrapper<IInputProps, IListInputState> = mount<IInputProps, IListInputState> (
                     <ListInputTemplate/>
             );
-            const event: React.FormEvent = {target: {value: 'abcd'}};
-            componentTree.find('input').simulate('change', event);
 
-            expect(componentTree.state().newListItem).toBe('abcd');
+            const event: React.FormEvent = {target: {value: 'dummy'}};
+
+            componentTree.find('input').simulate('change', event);
+            expect(componentTree.state().newListItem).toBe('dummy');
         });
 
         describe('when addListItem is triggered', (): void => {
-            test('without propertyValue prop', (): void => {
-                const componentTree: ReactWrapper<IInputProps, IListInputState> =
-                    mount<IInputProps, IListInputState> (
-                        <ListInputTemplate onChange={handleChange}/>
-                );
-                componentTree.find('button').simulate('click');
-                expect(handleChange).toHaveBeenCalled();
-            });
 
-            test('with propertyValue prop', (): void => {
-                const componentTree: EnzymePropSelector<IInputProps, IListInputState> =
-                    mount<IInputProps, IListInputState> (
-                        <ListInputTemplate onChange={handleChange} propertyValue={['a','b','c']}/>
+            unroll('#case propertyValue prop', (
+                    done: () => void,
+                    args: {elementName: string, element: EnzymePropSelector, count: number, isCreatable: boolean}
+            ): void => {
+                const componentTree: ReactWrapper<IInputProps, void> = mount<IInputProps, void> (
+                    <ListInputTemplate onChange={handleChange} propertyValue={args.propertyValue}/>
                 );
+
                 componentTree.find('button').simulate('click');
                 expect(handleChange).toHaveBeenCalled();
-            });
+                done();
+            }, [
+                ['case', 'propertyValue'],
+                ['without', null],
+                ['with', ['a', 'b', 'c']],
+            ]);
         });
 
     });

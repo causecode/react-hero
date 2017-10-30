@@ -5,49 +5,32 @@ import {shallow, ShallowWrapper, EnzymePropSelector, mount, ReactWrapper} from '
 import {IInputProps} from '../../src/components/widgets/Input';
 import {DropDownInputTemplate} from '../../src/components/widgets/Input/DropDownInputTemplate';
 
-const TestUtils = require<any>('react-dom/test-utils');
-
 const Select = require<any>('react-select');
 const CreatableSelect = require<any>('react-select').Creatable;
 const unroll: any = require<any>('unroll');
 
 unroll.use(it);
 
-const handleChange = jest.fn<void>();
-
 describe('Test for DropDownInputTemplate', (): void => {
 
+    const handleChange: jest.Mock<void> = jest.fn<void>();
+
     describe('Test for initial rendering', (): void => {
-        const componentTree: ShallowWrapper<IInputProps, void> = shallow<IInputProps, void> (
-            <DropDownInputTemplate/>
-        );
 
         unroll('should render #elementName #count times', (
                 done: () => void,
-                args: {elementName: string, element: EnzymePropSelector, count: number}
+                args: {elementName: string, element: EnzymePropSelector, count: number, isCreatable: boolean}
         ): void => {
+            const componentTree: ShallowWrapper<IInputProps, void> = shallow<IInputProps, void> (
+                <DropDownInputTemplate creatable={args.isCreatable}/>
+            );
+
             expect(componentTree.find(args.element).length).toBe(args.count);
             done();
         }, [
-            ['elementName', 'element', 'count'],
-            ['Select', Select, 1],
-        ]);
-    });
-
-    describe('Test for initial rendering with creatable flag', (): void => {
-        const componentTree: ShallowWrapper<IInputProps, void> = shallow<IInputProps, void> (
-            <DropDownInputTemplate creatable/>
-        );
-
-        unroll('should render #elementName #count times', (
-                done: () => void,
-                args: {elementName: string, element: EnzymePropSelector, count: number}
-        ): void => {
-            expect(componentTree.find(args.element).length).toBe(args.count);
-            done();
-        }, [
-            ['elementName', 'element', 'count'],
-            ['CreatableSelect', CreatableSelect, 1],
+            ['elementName', 'element', 'count', 'isCreatable'],
+            ['Select', Select, 1, false],
+            ['CreatableSelect', CreatableSelect, 1, true]
         ]);
     });
 
@@ -73,52 +56,38 @@ describe('Test for DropDownInputTemplate', (): void => {
             ]);
         });
 
-        test('when onInputChange is passed as prop', (): void => {
-            const componentTree: ShallowWrapper<IInputProps, void> = shallow<IInputProps, void> (
-                <DropDownInputTemplate onInputChange={handleChange}/>
+        test('when options prop is passed', (): void => {
+            const componentTree: ReactWrapper<IInputProps, void> = mount<IInputProps, void> (
+                <DropDownInputTemplate options={[{label: 'A', value: 'A'}, {label: 'B', value: 'B'}]}/>
             );
 
-            componentTree.find('Select').simulate('inputChange');
-            expect(handleChange).toHaveBeenCalled();
-        });
-
-        test('when onInputKeyDown is passed as prop', (): void => {
-            const componentTree: ShallowWrapper<IInputProps, void> = shallow<IInputProps, void> (
-                <DropDownInputTemplate onInputKeyDown={handleChange}/>
-            );
-
-            componentTree.find('Select').simulate('inputKeyDown');
-            expect(handleChange).toHaveBeenCalled();
-        });
-    });
-
-    describe('Test for options prop passed', (): void => {
-        const componentTree: ReactWrapper<IInputProps, void> = mount<IInputProps, void> (
-            <DropDownInputTemplate options={[{label: 'A', value: 'A'}, {label: 'B', value: 'B'}]}/>
-        );
-
-        unroll('should render #element #count times', (
-                done: () => void,
-                args: {element: EnzymePropSelector, count: number}
-        ): void => {
             componentTree.find('input').simulate('change');
-            expect(componentTree.find(args.element).length).toBe(args.count);
-            done();
-        }, [
-            ['element', 'count'],
-            ['div.Select-menu-outer', 1],
-        ]);
-    });
+            expect(componentTree.find('div.Select-menu-outer').length).toBe(1);
+        });
 
-    describe('Test for handleChange', (): void => {
-        test('when onChange is triggered', (): void => {
-            const componentTree: ShallowWrapper<IInputProps, void> = shallow<IInputProps, void> (
-                <DropDownInputTemplate onChange={handleChange}/>
-            );
+        describe('Test for handleChange', (): void => {
 
-            componentTree.find('Select').simulate('change');
-            expect(handleChange).toHaveBeenCalled();
+            unroll('when #changeFunction is triggered', (
+                    done: () => void,
+                    args: {changeFunction: string}
+            ): void => {
+                const componentTree: ShallowWrapper<IInputProps, void> = shallow<IInputProps, void> (
+                    <DropDownInputTemplate
+                            onChange={handleChange}
+                            onInputChange={handleChange}
+                            onInputKeyDown={handleChange}
+                    />
+                );
+
+                componentTree.find('Select').simulate(args.changeFunction);
+                expect(handleChange).toHaveBeenCalled();
+                done();
+            }, [
+                ['changeFunction'],
+                ['change'],
+                ['inputChange'],
+                ['inputKeyDown'],
+            ]);
         });
     });
-
 });

@@ -87,8 +87,7 @@ export class HomeContent extends ResponsiveView<any, any> {
             <div>
                 <FormInput
                         type="text"
-                        propertyName="birthdate"
-                        model="rhForms.userManagementCreate.properties.a"
+                        propertyName="A"
                         style={{
                             labelCSS: {color:'#aaa'},
                             inputCSS: {borderRadius: '50px'},
@@ -96,7 +95,7 @@ export class HomeContent extends ResponsiveView<any, any> {
                 />
                 <FormInput
                         type="boolean"
-                        propertyName="birthdate"
+                        propertyName="B"
                         model="rhForms.userManagementCreate.properties.b"
                         style={{
                             labelCSS: {color:'#aaa'},
@@ -105,7 +104,7 @@ export class HomeContent extends ResponsiveView<any, any> {
                 />
                 <FormInput
                         type="select"
-                        propertyName="birthdate"
+                        propertyName="C"
                         model="rhForms.userManagementCreate.properties.c"
                         style={{
                             labelCSS: {color:'#aaa'},
@@ -115,24 +114,12 @@ export class HomeContent extends ResponsiveView<any, any> {
                             { value: 'one', label: 'One' },
                             { value: 'two', label: 'Two' },
                         ]}
-                />
-                <FormInput
-                        type="select"
-                        propertyName="birthdate"
-                        model="rhForms.userManagementCreate.properties.ce"
-                        style={{
-                            labelCSS: {color:'#aaa'},
-                            inputCSS: {borderRadius: '50px', color: 'red'},
-                        }}
-                        options = {[
-                            { value: 'one', label: 'One' },
-                            { value: 'two', label: 'Two' },
-                        ]}
                         creatable
+                        multi
                 />
                 <FormInput
                         type="list"
-                        propertyName="birthdate"
+                        propertyName="D"
                         model="rhForms.userManagementCreate.properties.d"
                         style={{
                             labelCSS: {color:'#aaa'},
@@ -141,8 +128,8 @@ export class HomeContent extends ResponsiveView<any, any> {
                 />
                 <FormInput
                         type="datetime"
-                        propertyName="birthdate"
-                        model="rhForms.userManagementCreate.properties.birthdate"
+                        propertyName="E"
+                        model="rhForms.userManagementCreate.properties.e"
                         style={{
                             labelCSS: {color:'#aaa'},
                             inputCSS: {borderRadius: '50px'},

@@ -21,7 +21,7 @@ export class ListInputTemplate extends React.Component<IInputProps, IListInputSt
 
     addListItem = (e: React.MouseEvent<React.ClassicComponent<ButtonProps, {}>>): void => {
         this.setState({newListItem: ''});
-        let propertyValue: string[] = this.props.propertyValue ? this.props.propertyValue.slice() : [] ;
+        const propertyValue: string[] = this.props.propertyValue ? this.props.propertyValue.slice() : [] ;
         propertyValue.push(this.state.newListItem);
         this.props.onChange(propertyValue);
     }

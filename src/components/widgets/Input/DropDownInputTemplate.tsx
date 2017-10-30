@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {IInputProps, IStyle} from './';
+import {IInputProps, IInputWidgetStyle} from './';
 import {IDropDownFilterData} from '../../../interfaces';
 
 const Select = require<any>('react-select');
@@ -15,7 +15,7 @@ export interface IReactSelectProps {
     options?: IDropDownFilterData[];
     onInputChange?: (value: string) => void;
     onInputKeyDown?: (value: string) => void;
-    style?: IStyle;
+    style?: IInputWidgetStyle;
 }
 
 export const DropDownInputTemplate = (props: IInputProps): JSX.Element => {
@@ -26,7 +26,7 @@ export const DropDownInputTemplate = (props: IInputProps): JSX.Element => {
 
     const {multi, creatable, autoBlur, autofocus, propertyValue, options, style} = props;
 
-    let selectProps: IReactSelectProps = {
+    const selectProps: IReactSelectProps = {
         multi: multi || false,
         creatable: creatable || false,
         autoBlur: autoBlur || false,

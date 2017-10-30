@@ -14,7 +14,7 @@ import {IReactSelectProps} from './DropDownInputTemplate';
 
 const {actions} = require<any>('react-redux-form');
 
-export interface IStyle {
+export interface IInputWidgetStyle {
     inputCSS?: React.CSSProperties;
     labelCSS?: React.CSSProperties;
     listCSS?: React.CSSProperties;
@@ -36,7 +36,7 @@ export interface IInputProps extends IReactSelectProps, IInputStateProps, IInput
     propertyName: string;
     fieldSize?: number;
     labelSize?: number;
-    style?: IStyle;
+    style?: IInputWidgetStyle;
     radioButtonLabels?: {first: string, second: string}
     onBlur?: boolean;
     onChange?: (e: React.ChangeEvent<HTMLSelectElement> | string[] | object[] | boolean) => void;
@@ -74,7 +74,9 @@ class FormInputImpl extends React.Component<IInputProps, {}> {
         if (this.props.type === 'date') {
             propertyValue = propertyValue ? parseWidgetDate(propertyValue) : '';
         }
+
         const InputTemplate: React.ComponentClass<any> = this.getInputTemplate() as React.ComponentClass<any>;
+
         return (
             <FormGroup className="row" style={{margin: '0px'}}>
                 <Col sm={this.props.labelSize}>
@@ -99,7 +101,7 @@ const mapStateToProps: MapStateToProps<IInputStateProps, IInputProps> =
     const data = state.forms || {};
 
     return {
-        propertyValue: getNestedData(data, ownProps.model),
+        propertyValue: getNestedData(data, ownProps.model || ''),
     };
 };
 
