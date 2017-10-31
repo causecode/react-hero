@@ -191,6 +191,15 @@ export class BaseModel {
 
     static get<T extends BaseModel>(
         id: string,
+        valueInStore?: boolean,
+        headers?: {},
+        successCallBack?: Function,
+        failureCallBack?: Function,
+        state?: {data?: any},
+        params?: Object,
+    ): T;
+    static get<T extends BaseModel>(
+        id: string,
         valueInStore: boolean = false,
         headers?: {},
         successCallBack: Function = () => {},
