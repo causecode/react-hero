@@ -22,8 +22,8 @@ export interface IMarkdownProps extends IMarkdownStateProps, IDispatchProps {
 @Radium
 export class MarkdownWrapperImpl extends React.Component<IMarkdownProps, void> {
 
-    handleChange = (value: string): void => {
-        this.props.saveData(this.props.model, value);
+    handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>): void => {
+        this.props.saveData(this.props.model, e.target.value);
     }
 
     render(): JSX.Element {
@@ -38,13 +38,13 @@ export class MarkdownWrapperImpl extends React.Component<IMarkdownProps, void> {
                             },
                         }}
                 />
-                <textarea 
+                <textarea
                         onChange={this.handleChange}
                         className="markDownEditor"
                 >
                     {this.props.value}
                 </textarea>
-                {/* 
+                {/*
                     TODO: Remove the above <textarea /> and uncomment this when react-markdown-editor
                     adds React 16 support. It currently breaks as it tries to access React propTypes
                     <MarkdownEditor
@@ -52,7 +52,7 @@ export class MarkdownWrapperImpl extends React.Component<IMarkdownProps, void> {
                             initialContent={this.props.value}
                             iconsSet="font-awesome"
                             onContentChange={this.handleChange}
-                    /> 
+                    />
                 */}
                 <div style={topMargin}>
                     <strong style={labelStyle}>Output</strong>
@@ -76,7 +76,7 @@ let mapStateToProps: MapStateToProps<IMarkdownStateProps, IMarkdownProps> =
 
 let mapDispatchToProps: MapDispatchToPropsFunction<IDispatchProps, IMarkdownProps> =
         (dispatch: IDispatch): IDispatchProps => {
-    return {    
+    return {
         saveData(model : string, value: string): void {
             dispatch(actions.change(model, value));
         },

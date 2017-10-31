@@ -1,4 +1,4 @@
-# React Hero (v2.0.0)
+# React Hero (v2.0.1)
 ### React Hero 2.0.0 temporarily uses a simple HTML textarea instead of the <b>MarkdownEditor</b> component from the package 'react-markdown-editor'. This is because the package doesn't support React 16. While the textarea works, it's not functional as a MD editor. If you need a real MarkdownEditor in your app, please don't upgrade it to RH 2.0.0 yet.
 
 Plugin provides utility directives and services.
@@ -512,3 +512,75 @@ const primaryNavStyle: CSS = {
         ```
 * When `getRowStyle` method is defined in Model used in DataGrid, then it will be called for every row of DataGrid and style returned from that method will be applied to Row of that Grid.
 
+### 9 Form Input
+
+ * This is a generic component responsible for rendering different input types for the edit/create pages.
+ * It differentiates between different input types based on its prop `type` passed to it. The available values for `type` prop are:
+    1. text: renders a text input
+    2. boolean: renders radio buttons
+    3. select: renders a drop down component
+    4. list: renders a list component
+    5. datetime: renders a date type input
+ * The common props in all the input types are:
+    * model: string;
+    * propertyName: string;
+    * fieldSize?: number;
+    * labelSize?: number;
+    * style?: { inputCSS?: CSS, labelCSS?: CSS, listCSS?: CSS, btnCSS?: CSS }
+    * onBlur?: boolean;
+    * onChange?: function
+
+ - __GenericInputTemplate__
+    * This is essentially a text input with minimal functionality.
+    * The `style` prop makes use of `inputCSS` for styling.
+
+ - __BooleanInputTemplate__
+    * This renders an input area with two radio options.
+    * The text for Radio options by default are `True` and `False` but can be configured by passing a prop `radioButtonLabels` with `{first: string, second: string}` to customize labels.
+    * The `style` prop makes use of `inputCSS` for styling.
+
+ - __DropDownInputTemplate__
+    * This renders a drop down input using `react-select`.
+    * The following custom props are supported at the time (false by default):
+        * multi?: boolean
+        * creatable?: boolean
+        * autoBlur?: boolean
+        * autofocus?: boolean
+        * value?: string
+        * options?: IDropDownFilterData[]
+        * onInputChange?: function
+        * onInputKeyDown?: function
+        * style?: {inputCSS?: CSS}
+    * [Read docs here.](https://github.com/JedWatson/react-select#further-options)
+
+ - __ListInputTemplate__
+    * This renders a text input, Add button and a list view.
+    * The `style` prop makes use of `inputCSS`, `btnCSS` and `listCSS` to apply styles to the aforementioned elements respectively.
+
+ - __DateTimeComponent__
+    * This renders a `date` type input input element using FormControl from `react-bootstrap`.
+    * The `style` prop makes use of `inputCSS` for styling.
+
+### 10 KeywordMatcher
+
+* This component is responsible for conditional rendering based on the `keyword` meta-data available on the page.
+
+* It takes prop `match` of type string or array of string and if it matched with the `keyword` meta-data available on the page, it returns the passed children. If there is no matching keyword, it returns `null`.
+
+* Usage:
+
+        <KeywordMatcher match="string">
+		    <h1>
+			    Anything passed here will only be rendered if `match` matches the keyword available on the page being rendered.
+		    </h1>
+		    <div>Sibling components will be rendered too.</div>
+		    Add a comment to this line
+		</KeywordMatcher>
+
+        <KeywordMatcher match={['strings','array']}>
+		    <h1>
+			    Anything passed here will only be rendered if any string from `match` matches the keyword available on the page being rendered.
+		    </h1>
+		    <div>Sibling components will be rendered too.</div>
+		    Add a comment to this line
+		</KeywordMatcher>
