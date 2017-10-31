@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.1.11] - 2017-10-31
+### Added
+- Now we can pass custom `onNavClose` callback on `PrimaryNavSlider` and `SecondaryNavSlider` which will be called when Navigation menu is closed
+- `clearInstanceDataError` modelAction to clear error info in store
 ## [1.1.9] - 2017-10-13
 
 ### Added

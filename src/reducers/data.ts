@@ -16,7 +16,7 @@ import {
     DELETE_INSTANCE,
 } from '../constants';
 import * as StoreService from '../utils/storeService';
-import {MISSING_ACTION_PAYLOAD} from '../constants';
+import {MISSING_ACTION_PAYLOAD, CLEAR_INSTANCE_DATA_ERROR} from '../constants';
 import {IFromJS} from '../interfaces';
 
 const INITIAL_STATE = fromJS({
@@ -114,6 +114,9 @@ function dataReducer(state = INITIAL_STATE, action ): IFromJS {
 
         case UNSET_RESOURCE_LIST:
             return state.deleteIn([`${action.resource}List`, 'instanceList']);
+
+        case CLEAR_INSTANCE_DATA_ERROR:
+            return state.set(`${action.payload}Edit`, '');
 
         default:
             return state;
