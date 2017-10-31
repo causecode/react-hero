@@ -5,6 +5,7 @@ import {SliderNav} from './SliderNav';
 
 export interface IPrimarySliderNavProps {
     style?: CSS;
+    onNavClose?: () => void;
 }
 
 @Radium
@@ -15,6 +16,7 @@ export class PrimarySliderNav extends React.Component<IPrimarySliderNavProps, {}
                     navStyle={[navStyle, this.props.style]}
                     isPrimaryNav
                     navContent={this.props.children}
+                    onPrimaryNavClose={this.props.onNavClose}
             />
         );
     }
