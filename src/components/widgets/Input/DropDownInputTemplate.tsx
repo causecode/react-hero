@@ -58,5 +58,5 @@ export const DropDownInputTemplate = (props: IInputProps): JSX.Element => {
                 {...selectProps}
             />
         );
-    };
+    }
 };
