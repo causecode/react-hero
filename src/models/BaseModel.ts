@@ -190,34 +190,15 @@ export class BaseModel {
     }
 
     static get<T extends BaseModel>(
-       id: string,
-       valueInStore?: boolean,
-       headers?: {},
-       successCallBack?: Function,
-       failureCallBack?: Function,
-       state?: {data?: any},
-       params?: Object,
-   ): T;
-   static get<T extends BaseModel>(
-       id: string,
-       valueInStore?: boolean,
-       headers?: {},
-       successCallBack?: Function,
-       failureCallBack?: Function,
-       state?: {data?: any},
-       operation?: 'edit' | 'create',
-       params?: Object,
-   ): T;
-   static get<T extends BaseModel>(
-       id: string,
-       valueInStore: boolean = false,
-       headers?: {},
-       successCallBack: Function = () => {},
-       failureCallBack: Function = () => {},
-       state?: {forms?: any},
-       operation?: 'edit' | 'create',
-       params?: Object,
-   ): T {
+        id: string,
+        valueInStore: boolean = false,
+        headers?: {},
+        successCallBack: Function = () => {},
+        failureCallBack: Function = () => {},
+        state?: {forms?: any, data?: any},
+        operation?: 'edit' | 'create',
+        params?: Object,
+    ): T {
        let resourceName: string = this.getResourceName();
        if (!valueInStore && operation !== 'create') {
            // Fetch Instance Data from the server and save it in the store.

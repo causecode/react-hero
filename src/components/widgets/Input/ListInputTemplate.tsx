@@ -4,7 +4,7 @@ import {FormControl, Col, Row, Button} from '../../ReusableComponents';
 import {IInputProps} from './';
 
 export interface IListInputState {
-    newListItem: string;
+    newListItem: number | string | string[];
 }
 
 // TODO Add support for nested objects list in this component.
@@ -21,7 +21,7 @@ export class ListInputTemplate extends React.Component<IInputProps, IListInputSt
 
     addListItem = (e: React.MouseEvent<React.ClassicComponent<ButtonProps, {}>>): void => {
         this.setState({newListItem: ''});
-        const propertyValue: string[] = this.props.propertyValue ? this.props.propertyValue.slice() : [] ;
+        const propertyValue = this.props.propertyValue ? this.props.propertyValue.slice() : [] ;
         propertyValue.push(this.state.newListItem);
         this.props.onChange(propertyValue);
     }

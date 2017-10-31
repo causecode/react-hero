@@ -88,8 +88,9 @@ export class HomeContent extends ResponsiveView<any, any> {
                 <FormInput
                         type="text"
                         propertyName="A"
+                        model="rhForms.userManagementCreate.properties.a"
                         style={{
-                            labelCSS: {color:'#aaa'},
+                            labelCSS: {color: '#aaa'},
                             inputCSS: {borderRadius: '50px'},
                         }}
                 />
@@ -98,8 +99,8 @@ export class HomeContent extends ResponsiveView<any, any> {
                         propertyName="B"
                         model="rhForms.userManagementCreate.properties.b"
                         style={{
-                            labelCSS: {color:'#aaa'},
-                            inputCSS: {color: 'red'},
+                            labelCSS: {color: '#aaa'},
+                            inputCSS: {color: 'blue'},
                         }}
                 />
                 <FormInput
@@ -107,8 +108,8 @@ export class HomeContent extends ResponsiveView<any, any> {
                         propertyName="C"
                         model="rhForms.userManagementCreate.properties.c"
                         style={{
-                            labelCSS: {color:'#aaa'},
-                            inputCSS: {borderRadius: '50px', color: 'red'},
+                            labelCSS: {color: '#aaa'},
+                            inputCSS: {borderRadius: '50px'},
                         }}
                         options = {[
                             { value: 'one', label: 'One' },
@@ -122,7 +123,7 @@ export class HomeContent extends ResponsiveView<any, any> {
                         propertyName="D"
                         model="rhForms.userManagementCreate.properties.d"
                         style={{
-                            labelCSS: {color:'#aaa'},
+                            labelCSS: {color: '#aaa'},
                             inputCSS: {borderRadius: '50px'},
                         }}
                 />
@@ -131,7 +132,7 @@ export class HomeContent extends ResponsiveView<any, any> {
                         propertyName="E"
                         model="rhForms.userManagementCreate.properties.e"
                         style={{
-                            labelCSS: {color:'#aaa'},
+                            labelCSS: {color: '#aaa'},
                             inputCSS: {borderRadius: '50px'},
                         }}
                 />

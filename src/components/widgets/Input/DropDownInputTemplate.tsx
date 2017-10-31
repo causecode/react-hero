@@ -33,7 +33,6 @@ export const DropDownInputTemplate = (props: IInputProps): JSX.Element => {
         autofocus: autofocus || false,
         value: propertyValue || '',
         options: options || [],
-        style: style && style.inputCSS ? style.inputCSS : {},
     };
 
     if (props.onInputChange) {
@@ -47,6 +46,7 @@ export const DropDownInputTemplate = (props: IInputProps): JSX.Element => {
         return (
             <Creatable
                 onChange={handleChange}
+                style={style && style.inputCSS || {}}
                 {...selectProps}
             />
         );
@@ -54,6 +54,7 @@ export const DropDownInputTemplate = (props: IInputProps): JSX.Element => {
         return (
             <Select
                 onChange={handleChange}
+                style={style && style.inputCSS || {}}
                 {...selectProps}
             />
         );
