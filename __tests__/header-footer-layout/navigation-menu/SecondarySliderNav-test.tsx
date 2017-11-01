@@ -1,16 +1,20 @@
 jest.unmock('../../../src/components/header-footer-layout');
 
 import * as React from 'react';
-import { Provider } from 'react-redux';
-import {shallow, ShallowWrapper, EnzymePropSelector, mount} from 'enzyme';
+import * as Adapter from 'enzyme-adapter-react-16';
+import {Provider} from 'react-redux';
+import {shallow, ShallowWrapper, EnzymePropSelector, mount, configure} from 'enzyme';
 import {SecondarySliderNav} from '../../../src/components/header-footer-layout';
 import {SliderNav} from '../../../src/components/header-footer-layout/navigation-menu/SliderNav';
 import {configureStore} from '../../../src/store';
-import {IUserAction} from '../../../public/interfaces';
-import {ISecondarySliderNavProps} from '../../../src/components/header-footer-layout/navigation-menu/SecondarySliderNav';
+import {IUserAction} from '../../../src/interfaces';
+import {ISecondarySliderNavProps} from
+        '../../../src/components/header-footer-layout/navigation-menu/SecondarySliderNav';
 
 const unroll: any = require('unroll');
 unroll.use(it);
+
+configure({adapter: new Adapter()});
 
 const setSecondaryNav = jest.fn<IUserAction>();
 const toggleSecondaryNav = jest.fn<IUserAction>();

@@ -102,6 +102,8 @@
     "webpack-dev-server": "2.9.3"
   },
   "devDependencies": {
+    "@types/enzyme": "3.1.1",
+    "@types/enzyme-adapter-react-16": "1.0.0",
     "@types/es6-promise": "0.0.33",
     "@types/history": "4.6.1",
     "@types/jest": "16.0.7",
@@ -123,7 +125,8 @@
     "cssnano": "3.10.0",
     "ejs": "2.5.7",
     "ejs-html-loader": "3.1.0",
-    "enzyme": "2.9.1",
+    "enzyme": "3.1.0",
+    "enzyme-adapter-react-16": "1.0.2",
     "history": "4.7.2",
     "jest": "17.0.3",
     "jest-cli": "17.0.3",
@@ -131,8 +134,8 @@
     "postcss-loader": "2.0.8",
     "radium": "0.19.6",
     "raw-loader": "0.5.1",
-    "react-select": "1.0.0-rc.5",
     "react-dom": "16.0.0",
+    "react-select": "1.0.0-rc.5",
     "redux-localstorage": "0.4.1",
     "rimraf": "2.6.2",
     "stylelint": "8.2.0",
