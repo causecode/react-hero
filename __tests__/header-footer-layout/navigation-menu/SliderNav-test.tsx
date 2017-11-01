@@ -1,16 +1,23 @@
 jest.unmock('../../../src/components/header-footer-layout');
 
 import * as React from 'react';
-import {shallow, ShallowWrapper, EnzymePropSelector, mount, ReactWrapper} from 'enzyme';
+import * as Adapter from 'enzyme-adapter-react-16';
+import {shallow, ShallowWrapper, EnzymePropSelector, mount, ReactWrapper, configure} from 'enzyme';
 import {Motion} from 'react-motion';
 import {Provider} from 'react-redux';
-import {SliderNav, SliderNavImpl, ISliderNavProps} from '../../../src/components/header-footer-layout/navigation-menu/SliderNav';
 import {configureStore} from '../../../src/store';
 import {IUserAction, IGenericAction} from '../../../src/interfaces';
 import {toggleNav, toggleSecondaryNav} from '../../../src/actions/modelActions';
+import {
+    SliderNav, 
+    SliderNavImpl,
+    ISliderNavProps,
+} from '../../../src/components/header-footer-layout/navigation-menu/SliderNav';
 
 const unroll: any = require('unroll');
 unroll.use(it);
+
+configure({adapter: new Adapter()});
 
 const setPrimaryNav = jest.fn<IUserAction>();
 const setSecondaryNav = jest.fn<IUserAction>();
@@ -125,5 +132,35 @@ describe('SliderNav Test', (): void => {
         it('should log an error message and not render a navigation slider', (): void => {
             expect(componentTree.find(Motion).length).toBe(0);
         });
+    });
+
+    describe('When onNavClose callback is provided', (): void => {
+        const primaryNavCLose: jest.Mock<void> = jest.fn();
+        const secondaryNavCLose: jest.Mock<void> = jest.fn();
+
+        const componentTree: ShallowWrapper<ISliderNavProps, void> = shallow<ISliderNavProps, void>(
+            <SliderNavImpl setPrimaryNav={setPrimaryNav} setSecondaryNav={setSecondaryNav} />
+        );
+
+        unroll('It should call onNavClose passed as prop fro #componentName', (
+                done: () => void,
+                args: {isPrimaryNav: boolean, callback: jest.Mock<void>, componentName: string},
+        ): void => {
+            componentTree.setProps({isPrimaryNav: args.isPrimaryNav});
+
+            if (args.isPrimaryNav) {
+                componentTree.setProps({onPrimaryNavClose: args.callback});
+            } else {
+                componentTree.setProps({onSecondaryNavClose: args.callback});
+            }
+
+            componentTree.find(Motion).dive().find('i').simulate('click');
+            expect(args.callback).toHaveBeenCalled();
+            done();
+        }, [
+            ['isPrimaryNav', 'callback', 'componentName'],
+            [true, primaryNavCLose, 'Primary nav'],
+            [false, secondaryNavCLose, 'Secondary nav'],
+        ]);
     });
 });

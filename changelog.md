@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.0.2] - 2017-11-01
+
+### Added
+- Now we can pass custom callback `onNavClose` to be invoked when Primary or Secondary Navigation Menu is closed
+- Added `enzyme-adapter-react-16@1.0.2` to make test cases compatible with `react 16`
+
+### Changed
+- Updated `enzyme` to `3.1.0` to make test cases compatible with `react 16`
 ## [2.0.1] - 2017-10-31
 
 ### Added
