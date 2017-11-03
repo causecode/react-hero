@@ -11,5 +11,4 @@ public
 .DS_Store
 localConfig.json
 *.jsx
-*.js
 *.sh
