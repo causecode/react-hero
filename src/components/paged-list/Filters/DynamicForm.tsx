@@ -8,7 +8,7 @@ const ReduxForm: any = require<any>('redux-form');
 const classNames: any = require<any>('classnames');
 
 @Radium
-export class InnerFilterFormImpl extends React.Component<IPagedListFiltersProps, void> {
+export class InnerFilterFormImpl extends React.Component<IPagedListFiltersProps> {
 
     static defaultProps: IPagedListFiltersProps = {
         filtersOpen: false,

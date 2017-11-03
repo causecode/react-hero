@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {CSS, IDropDownFilterData} from '../../interfaces';
-import Select = require('react-select');
+const Select = require<any>('react-select').default;
 import 'react-select/dist/react-select.css';
 
 export interface IReactSelectProps {
