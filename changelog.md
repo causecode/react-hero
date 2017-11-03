@@ -1,6 +1,6 @@
 # Changelog
 
-## [2.0.2] - 2017-11-01
+## [2.0.2] - [Unreleased]
 
 ### Added
 - Now we can pass custom callback `onNavClose` to be invoked when Primary or Secondary Navigation Menu is closed
@@ -8,6 +8,13 @@
 
 ### Changed
 - Updated `enzyme` to `3.1.0` to make test cases compatible with `react 16`
+- Changed `src` to `app` when looking for components/model when registering. (Changed in `modelService.ts`, `componentService.ts`, `appService.ts`)
+
+### Fixed
+- Some type issues.
+- `react-select` import in `DropDownInputTemplate`.
+- Fixed `onChange` handler in `DropDownInputTemplate`.
+
 ## [2.0.1] - 2017-10-31
 
 ### Added
