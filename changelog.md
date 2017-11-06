@@ -7,8 +7,7 @@
 - Added `enzyme-adapter-react-16@1.0.2` to make test cases compatible with `react 16`
 
 ### Changed
-- Updated `enzyme` to `3.1.0` to make test cases compatible with `react 16`
-- Changed `src` to `app` when looking for components/model when registering. (Changed in `modelService.ts`, `componentService.ts`, `appService.ts`)
+- Updated `enzyme` to `3.1.0` to make test cases compatible with `react 16`.
 
 ### Fixed
 - Some type issues.
