@@ -17,7 +17,7 @@ export interface ISelectProps extends IReactSelectProps {
     value: string;
 }
 
-export class ReactSelect extends React.Component<IReactSelectProps, void> {
+export class ReactSelect extends React.Component<IReactSelectProps> {
 
     handleChange = (value: any): void => {
         if (value && value.constructor === Array) {

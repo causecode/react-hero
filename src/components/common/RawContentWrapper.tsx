@@ -14,7 +14,7 @@ export interface IRawContentProps extends IRawContentStateProps, IDispatchProps 
     onBlur?: boolean;
 }
 
-export class RawContentWrapperImpl extends React.Component<IRawContentProps, void> {
+export class RawContentWrapperImpl extends React.Component<IRawContentProps> {
 
     handleChange = (event: React.ChangeEvent<HTMLTextAreaElement> | React.FocusEvent<HTMLTextAreaElement>): void => {
         this.props.saveData(this.props.model, event.target[`value`]);

@@ -29,7 +29,7 @@ export interface ISliderNavProps {
 }
 
 @Radium
-export class SliderNavImpl extends React.Component<ISliderNavProps, void> {
+export class SliderNavImpl extends React.Component<ISliderNavProps> {
     constructor(props) {
         super(props);
         props.isPrimaryNav ? props.setPrimaryNav(true) : props.setSecondaryNav(true);

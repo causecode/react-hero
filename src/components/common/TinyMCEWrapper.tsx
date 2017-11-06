@@ -14,7 +14,7 @@ export interface ITinyMCEWrapperProps extends IDispatchProps {
 }
 
 @Radium
-export class TinyMCEWrapperImpl extends React.Component<ITinyMCEWrapperProps, void> {
+export class TinyMCEWrapperImpl extends React.Component<ITinyMCEWrapperProps> {
 
     handleChange = (value: string): void => {
         this.props.saveData(this.props.model, value);

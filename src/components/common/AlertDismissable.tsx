@@ -18,7 +18,7 @@ export interface IAlertDismissableState {
 }
 
 @Radium
-export class AlertDismissableImpl extends React.Component<IAlertDismissableProps, void> {
+export class AlertDismissableImpl extends React.Component<IAlertDismissableProps> {
 
     render(): JSX.Element {
         if (!this.props.show) {
