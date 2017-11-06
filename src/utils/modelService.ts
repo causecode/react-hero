@@ -17,7 +17,7 @@ module ModelService {
 
     export function registerAll(): void {
          try {
-            const modules: any = require<any>('../../../../app/models');
+            const modules: any = require<any>('../../../../src/models');
             // const modules: any = require<any>('../demo/models');
             for (let component in modules) {
                 if (modules[component] && modules[component].resourceName && component.indexOf('Model') > -1) {
@@ -25,7 +25,7 @@ module ModelService {
                 }
             }
         } catch (error) {
-            showWarn('Exported files not found in /app/models.');
+            showWarn('Exported files not found in /src/models.');
         }
     }
 

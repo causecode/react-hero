@@ -25,7 +25,7 @@ module ComponentService {
 
     export function registerAll(): void {
         try {
-            const modules: any = require<any>('../../../../app/containers');
+            const modules: any = require<any>('../../../../src/containers');
             // const modules: any = require<any>('../demo/components');
             for (let component in modules) {
                 if (modules[component]) {
@@ -43,7 +43,7 @@ module ComponentService {
                 }
             }
         } catch (error) {
-            showWarn('Exported files not found in /app/containers.');
+            showWarn('Exported files not found in /src/containers.');
         }
     }
 
