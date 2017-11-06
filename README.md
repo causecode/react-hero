@@ -1,4 +1,4 @@
-# React Hero (v2.0.1)
+# React Hero (v2.0.2)
 ### React Hero 2.0.0 temporarily uses a simple HTML textarea instead of the <b>MarkdownEditor</b> component from the package 'react-markdown-editor'. This is because the package doesn't support React 16. While the textarea works, it's not functional as a MD editor. If you need a real MarkdownEditor in your app, please don't upgrade it to RH 2.0.0 yet.
 
 Plugin provides utility directives and services.
@@ -96,8 +96,9 @@ eg:
         ```
     * The style of each navigation menu can be changed via the `style` prop. The example of the same can be found below.
 
-- `PrimarySliderNav` and `SecondarySliderNav` accepts an optional `style` prop to override the default styles:
-  ```
+- `PrimarySliderNav` and `SecondarySliderNav` accepts an optional `style` and `onNavClose` prop to override the default styles and to call the passed callback when navigation menu is called respectively:
+
+```
 const primaryNavStyle: CSS = {
           padding: 'none',
           width: '30%',
@@ -112,16 +113,23 @@ const primaryNavStyle: CSS = {
 	   return (
         <HeaderFooterLayout>
             ...
-            <PrimarySliderNav style={primaryNavStyle}>    // The primary navigation menu.
+            <PrimarySliderNav
+                    style={primaryNavStyle}
+                    onNavClose={callbackForPrimaryMenu}
+            >    // The primary navigation menu.
                 <div>A navigation menu<div>
             </PrimarySliderNav>
-            <SecondarySliderNav style={secondaryNavStyle}>    // The secondary navigation menu.
+            <SecondarySliderNav
+                    style={secondaryNavStyle}
+                    onNavClose={callbackForSecondaryMenu}
+            >    // The secondary navigation menu.
                 <div>Another navigation menu<div>
             </SecondarySliderNav>
         </HeaderFooterLayout>
 	    )
   }
   ```
+
   ![NavigationMenuDemo screenshot](src/demo/images/NavigationMenuDemo.png "NavigationMenuDemo")
 
 

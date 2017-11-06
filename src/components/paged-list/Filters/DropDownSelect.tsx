@@ -7,7 +7,7 @@ export interface IDropDownSelectProps {
     input: any; // this field is injected by redux-form
 }
 
-export class DropDownSelect extends React.Component<IDropDownSelectProps, void> {
+export class DropDownSelect extends React.Component<IDropDownSelectProps> {
 
     renderOptions = (): JSX.Element[] => {
         let options: JSX.Element[] = [];

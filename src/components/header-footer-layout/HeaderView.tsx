@@ -16,7 +16,7 @@ export interface IHeaderViewProps {
 }
 
 @Radium
-export class HeaderViewImpl extends React.Component<IHeaderViewProps, void> {
+export class HeaderViewImpl extends React.Component<IHeaderViewProps> {
 
     showNavLauncherIcon = (
         isNavigationPresent: boolean,

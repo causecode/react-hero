@@ -43,7 +43,7 @@ module ComponentService {
                 }
             }
         } catch (error) {
-            showWarn('Exported files not found in /app/containers.');
+            showWarn('Exported files not found in /src/containers.');
         }
     }
 

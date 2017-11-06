@@ -12,7 +12,7 @@ import {getResourceParams} from '../utils/appService';
 
 export type ShowPageProps = IInstanceContainerProps & RouteComponentProps<IRouteParams>;
 
-export class ShowPageImpl extends React.Component<ShowPageProps, void> {
+export class ShowPageImpl extends React.Component<ShowPageProps> {
 
     static defaultProps: IInstanceContainerProps = {
         instance: new DefaultModel({}),

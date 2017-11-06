@@ -25,7 +25,7 @@ module ModelService {
                 }
             }
         } catch (error) {
-            showWarn('Exported files not found in /app/models.');
+            showWarn('Exported files not found in /src/models.');
         }
     }
 

@@ -20,7 +20,7 @@ export interface IMarkdownProps extends IMarkdownStateProps, IDispatchProps {
 // TODO: Merge wrapper components (MarkdownWrapper & RawContentWrapper).
 // Only config and part of render method is different.
 @Radium
-export class MarkdownWrapperImpl extends React.Component<IMarkdownProps, void> {
+export class MarkdownWrapperImpl extends React.Component<IMarkdownProps> {
 
     handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>): void => {
         this.props.saveData(this.props.model, e.target.value);

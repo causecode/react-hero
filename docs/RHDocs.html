@@ -127,31 +127,37 @@ Example: </p>
     <span class="hljs-tag">&lt;/<span class="hljs-title">SecondarySliderNav</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-title">HeaderFooterLayout</span>&gt;</span></code></pre></li>
 <li>The style of each navigation menu can be changed via the <code>style</code> prop. The example of the same can be found below.</li></ul></li>
-<li><p><code>PrimarySliderNav</code> and <code>SecondarySliderNav</code> accepts an optional <code>style</code> prop to override the default styles:</p>
-
-<pre class="prettyprint"><code class=" hljs r">const primaryNavStyle: CSS = {
-      padding: <span class="hljs-string">'none'</span>,
-      width: <span class="hljs-string">'30%'</span>,
-      backgroundColor: <span class="hljs-string">'#eea303'</span>,
-  };
-const secondaryNavStyle: CSS = {
-      padding: <span class="hljs-string">'none'</span>,
-      width: <span class="hljs-string">'50%'</span>,
-  };
-
-render() {
-   <span class="hljs-keyword">return</span> (
-    <span class="hljs-tag">&lt;<span class="hljs-title">HeaderFooterLayout</span>&gt;</span>
-        <span class="hljs-keyword">...</span>
-        <span class="hljs-tag">&lt;<span class="hljs-title">PrimarySliderNav</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{primaryNavStyle}</span>&gt;</span>    // The primary navigation menu.
-            <span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;A navigation menu&lt;/<span class="hljs-title">div</span>&gt;</span>
-        <span class="hljs-tag">&lt;/<span class="hljs-title">PrimarySliderNav</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-title">SecondarySliderNav</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{secondaryNavStyle}</span>&gt;</span>    // The secondary navigation menu.
-            <span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;Another navigation menu&lt;/<span class="hljs-title">div</span>&gt;</span>
-        <span class="hljs-tag">&lt;/<span class="hljs-title">SecondarySliderNav</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-title">/HeaderFooterLayout</span>&gt;</span>
-    )
-}</code></pre>
+<li><p><code>PrimarySliderNav</code> and <code>SecondarySliderNav</code> accepts an optional <code>style</code> and <code>onNavClose</code> prop to override the default styles and to call the passed callback when navigation menu is called respectively:</p>
+  
+  <pre class="prettyprint"><code class=" hljs r">const primaryNavStyle: CSS = {
+        padding: <span class="hljs-string">'none'</span>,
+        width: <span class="hljs-string">'30%'</span>,
+        backgroundColor: <span class="hljs-string">'#eea303'</span>,
+    };
+  const secondaryNavStyle: CSS = {
+        padding: <span class="hljs-string">'none'</span>,
+        width: <span class="hljs-string">'50%'</span>,
+    };
+  
+  render() {
+     <span class="hljs-keyword">return</span> (
+      &lt;HeaderFooterLayout&gt;
+          <span class="hljs-keyword">...</span>
+          &lt;PrimarySliderNav
+                  style={primaryNavStyle}
+                  onNavClose={callbackForPrimaryMenu}
+          &gt;    // The primary navigation menu.
+              &lt;div&gt;A navigation menu&lt;div&gt;
+          &lt;/PrimarySliderNav&gt;
+          &lt;SecondarySliderNav
+                  style={secondaryNavStyle}
+                  onNavClose={callbackForSecondaryMenu}
+          &gt;    // The secondary navigation menu.
+              &lt;div&gt;Another navigation menu&lt;div&gt;
+          &lt;/SecondarySliderNav&gt;
+      &lt;/HeaderFooterLayout&gt;
+      )
+  }</code></pre>
 
 <p><img src="src/demo/images/NavigationMenuDemo.png" alt="NavigationMenuDemo screenshot" title="NavigationMenuDemo"></p></li>
 </ul>

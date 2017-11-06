@@ -20,7 +20,7 @@ function isCreatePage(pathName: string): boolean {
 }
 export type EditPageProps = IInstanceContainerProps & RouteComponentProps<IRouteParams>;
 
-export class EditPageImpl extends React.Component<EditPageProps, void> {
+export class EditPageImpl extends React.Component<EditPageProps> {
     static defaultProps: IInstanceContainerProps = {
         instance: new DefaultModel({}),
     };

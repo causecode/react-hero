@@ -18,6 +18,8 @@ export interface ISliderNavProps {
     secondaryNavOpen?: boolean;
     toggleNavHandler?: () => void;
     toggleSecondaryNavHandler?: () => void;
+    onPrimaryNavClose?: () => void;
+    onSecondaryNavClose?: () => void;
     navContent?: JSX.Element;
     navStyle?: CSS;
     setPrimaryNav?: (visibilityStatus: boolean) => void;
@@ -27,7 +29,7 @@ export interface ISliderNavProps {
 }
 
 @Radium
-export class SliderNavImpl extends React.Component<ISliderNavProps, void> {
+export class SliderNavImpl extends React.Component<ISliderNavProps> {
     constructor(props) {
         super(props);
         props.isPrimaryNav ? props.setPrimaryNav(true) : props.setSecondaryNav(true);
@@ -47,6 +49,8 @@ export class SliderNavImpl extends React.Component<ISliderNavProps, void> {
             toggleNavHandler,
             toggleSecondaryNavHandler,
             navStyle,
+            onPrimaryNavClose,
+            onSecondaryNavClose,
         } = this.props;
         const menuPosition: string = isPrimaryNav ? 'left' : 'right';
         const navMenuClasses: string = `nav-menu ${menuPosition}`;
@@ -69,8 +73,13 @@ export class SliderNavImpl extends React.Component<ISliderNavProps, void> {
                                  },
                                  navStyle,
                              ]}>
-                            <i className={closeButtonClasses}
-                               onClick = {isPrimaryNav ? toggleNavHandler : toggleSecondaryNavHandler}/>
+                            <i
+                                    className={closeButtonClasses}
+                                    onClick = {isPrimaryNav ?
+                                        (onPrimaryNavClose || toggleNavHandler) :
+                                                (onSecondaryNavClose || toggleSecondaryNavHandler)
+                                    }
+                            />
                             {this.props.navContent}
                         </div>
                 }

@@ -2,7 +2,7 @@ import * as React from 'react';
 import {IInputProps, IInputWidgetStyle} from './';
 import {IDropDownFilterData} from '../../../interfaces';
 
-const Select = require<any>('react-select');
+const Select = require<any>('react-select').default;
 const Creatable = require<any>('react-select').Creatable;
 import 'react-select/dist/react-select.css';
 
@@ -21,10 +21,14 @@ export interface IReactSelectProps {
 export const DropDownInputTemplate = (props: IInputProps): JSX.Element => {
 
     const handleChange = (e: IDropDownFilterData & IDropDownFilterData[]): void => {
-        props.onChange(e);
+        if (e.constructor === Array) {
+            props.onChange(e.map((item: IDropDownFilterData) => item.value));
+        } else {
+            props.onChange(e.value);
+        }
     };
 
-    const {multi, creatable, autoBlur, autofocus, propertyValue, options, style} = props;
+    const {multi, creatable, autoBlur, autofocus, propertyValue, enum:options, style} = props;
 
     const selectProps: IReactSelectProps = {
         multi: multi || false,
@@ -58,5 +62,5 @@ export const DropDownInputTemplate = (props: IInputProps): JSX.Element => {
                 {...selectProps}
             />
         );
-    };
+    }
 };
