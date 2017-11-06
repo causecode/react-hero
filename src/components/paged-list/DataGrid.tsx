@@ -38,7 +38,7 @@ export interface IDataGridProps extends IDataGridStateProps, IDataGridDispatchPr
     isBordered: boolean;
 }
 
-export class DataGridImpl extends React.Component<IDataGridProps, void> {
+export class DataGridImpl extends React.Component<IDataGridProps> {
 
     static defaultProps = {
         showDefaultActions: true,

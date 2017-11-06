@@ -26,7 +26,7 @@ export interface IState {
 }
 
 @Radium
-export class UserActionsImpl extends React.Component<IUserActionProps, void> {
+export class UserActionsImpl extends React.Component<IUserActionProps> {
 
     private listItems: string[] = ['--User Action--'];
 

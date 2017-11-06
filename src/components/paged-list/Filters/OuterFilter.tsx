@@ -12,7 +12,7 @@ export interface IOuterFilterProps {
 }
 
 @Radium
-export class OuterFilterImpl extends React.Component<IOuterFilterProps, void> {
+export class OuterFilterImpl extends React.Component<IOuterFilterProps> {
 
     sendFilters(resource: string): void {
         ModelService.getModel(resource).list();

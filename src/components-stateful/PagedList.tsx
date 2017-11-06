@@ -65,7 +65,7 @@ export interface IPagedListProps extends IPagedListStateProps, IPagedListDispatc
 
 let OuterFilter: React.ComponentClass<IOuterFilterProps>;
 
-export class PagedListImpl extends React.Component<IPagedListProps, void> {
+export class PagedListImpl extends React.Component<IPagedListProps> {
 
     private offset: number = 0;
 

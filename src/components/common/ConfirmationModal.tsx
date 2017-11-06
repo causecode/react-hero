@@ -21,7 +21,7 @@ export interface IConfirmationModalState {
 }
 
 @Radium
-export class ConfirmationModalImpl extends React.Component<IConfirmationModalProps, void> {
+export class ConfirmationModalImpl extends React.Component<IConfirmationModalProps> {
 
     render(): JSX.Element {
         return (

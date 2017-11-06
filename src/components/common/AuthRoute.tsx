@@ -9,7 +9,7 @@ export interface IAuthRouteProps {
     exact?: boolean;
 }
 
-export class AuthRoute extends React.Component<IAuthRouteProps, void> {
+export class AuthRoute extends React.Component<IAuthRouteProps> {
 
     render(): JSX.Element {
         let {Route, Redirect} = reactRouterDom;
