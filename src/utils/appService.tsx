@@ -232,7 +232,7 @@ export function getActionComponent(fileName: string): React.ComponentClass<any> 
     // For development choose this
     // return require(`../../src/components-stateful`)[fileNameSplittedToWords.join('')];
     // For using react-hero as a plugin use this
-    return require(`../../../../app/containers`)[fileNameSplittedToWords.join('')];
+    return require(`../../../../src/containers`)[fileNameSplittedToWords.join('')];
 }
 
 export function setTokenInLocalStorage(token: string): boolean {
