@@ -1,6 +1,6 @@
 # Changelog
 
-## [2.0.2] - [Unreleased]
+## [2.0.3] - [Unreleased]
 
 ### Added
 - Now we can pass custom callback `onNavClose` to be invoked when Primary or Secondary Navigation Menu is closed
