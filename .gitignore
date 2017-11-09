@@ -12,3 +12,4 @@ public
 localConfig.json
 *.jsx
 *.sh
+!nodeSetup.sh

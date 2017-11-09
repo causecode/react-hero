@@ -5,10 +5,13 @@
 ### Added
 - Now we can pass custom callback `onNavClose` to be invoked when Primary or Secondary Navigation Menu is closed
 - Added `enzyme-adapter-react-16@1.0.2` to make test cases compatible with `react 16`
-
+- Added `.circleci/config.yml` for continous integration.
+- Added `.circleci/npmSetup.sh` for resolving version dependencies during build.
+- Added `publishConfig` block in `package.json`.
 ### Changed
 - Updated `enzyme` to `3.1.0` to make test cases compatible with `react 16`.
-
+- Updated `.gitignore` for including `npmSetup.sh` into VCS.
+- Set `"private": false` in `package.json` for enabling publish operation.  
 ### Fixed
 - Some type issues.
 - `react-select` import in `DropDownInputTemplate`.

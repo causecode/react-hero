@@ -2,7 +2,7 @@
   "name": "react-hero",
   "version": "2.0.3",
   "description": "",
-  "private": true,
+  "private": false,
   "main": "public/index.js",
   "typings": "public/index.d.ts",
   "scripts": {
@@ -143,5 +143,8 @@
     "ts-jest": "17.0.3",
     "ts-loader": "3.0.5",
     "unroll": "1.5.0"
+  },
+  "publishConfig": {
+    "registry": "https://nexus.causecode.com/repository/npm-private/"
   }
 }
