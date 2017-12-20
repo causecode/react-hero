@@ -1,6 +1,10 @@
 # Changelog
 
-## [2.0.3] - [Unreleased]
+## [2.0.4] - [Unreleased]
+### Removed
+- require statement in fetchComponent method. (it was causing issue while chunking)
+
+## [2.0.3] - 2017-11-13
 
 ### Added
 - Now we can pass custom callback `onNavClose` to be invoked when Primary or Secondary Navigation Menu is closed
@@ -11,7 +15,7 @@
 ### Changed
 - Updated `enzyme` to `3.1.0` to make test cases compatible with `react 16`.
 - Updated `.gitignore` for including `npmSetup.sh` into VCS.
-- Set `"private": false` in `package.json` for enabling publish operation.  
+- Set `"private": false` in `package.json` for enabling publish operation.
 ### Fixed
 - Some type issues.
 - `react-select` import in `DropDownInputTemplate`.
