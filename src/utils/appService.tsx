@@ -119,12 +119,13 @@ export function getThemedComponent(componentPath: string, componentName: string)
     }
 }
 
-function fetchComponent(componentPath: string, componentName: string, theme?: string): React.ComponentClass<any> {
+function fetchComponent(componentPath: string, componentName: string, theme?: string): any {
    /**
      * TODO use the path of the app root directory instead of ../../../../src.
      */
+    // It was causing the issue during chunking. It is not being used anywhere across the codebase.
     // return require(`../../src/${theme || 'default'}/${componentPath}`)[`${componentName}`];
-    return require(`../../../../src/${theme || 'default'}/${componentPath}`)[`${componentName}`];
+    return require.include(`../../../../src/${theme || 'default'}/${componentPath}`)[`${componentName}`];
 }
 
 export function showWarn(message: string): void {
