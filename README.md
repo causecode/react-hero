@@ -1,4 +1,4 @@
-# React Hero (v2.0.4)
+# React Hero (v2.0.5)
 ### React Hero 2.0.0 temporarily uses a simple HTML textarea instead of the <b>MarkdownEditor</b> component from the package 'react-markdown-editor'. This is because the package doesn't support React 16. While the textarea works, it's not functional as a MD editor. If you need a real MarkdownEditor in your app, please don't upgrade it to RH 2.0.0 yet.
 
 Plugin provides utility directives and services.
@@ -537,6 +537,7 @@ const primaryNavStyle: CSS = {
     * style?: { inputCSS?: CSS, labelCSS?: CSS, listCSS?: CSS, btnCSS?: CSS }
     * onBlur?: boolean;
     * onChange?: function
+    * htmlAttributes?: React.InputHTMLAttributes<HTMLInputElement>
 
  - __GenericInputTemplate__
     * This is essentially a text input with minimal functionality.
