@@ -1,6 +1,7 @@
 import {fromJS} from 'immutable';
 import {BaseModel} from '../models/BaseModel';
 import {ModelService} from '../utils/modelService';
+import {MISSING_ACTION_PAYLOAD, CLEAR_INSTANCE_DATA_ERROR, CLEAR_INSTANCE_LIST_ERROR} from '../constants';
 import {
     FETCH_INSTANCE_LIST_START,
     FETCH_INSTANCE_LIST_FULFILLED,
@@ -16,7 +17,6 @@ import {
     DELETE_INSTANCE,
 } from '../constants';
 import * as StoreService from '../utils/storeService';
-import {MISSING_ACTION_PAYLOAD, CLEAR_INSTANCE_DATA_ERROR} from '../constants';
 import {IFromJS} from '../interfaces';
 
 const INITIAL_STATE = fromJS({
@@ -117,6 +117,10 @@ function dataReducer(state = INITIAL_STATE, action ): IFromJS {
 
         case CLEAR_INSTANCE_DATA_ERROR:
             return state.set(`${action.payload}Edit`, '');
+
+        case CLEAR_INSTANCE_LIST_ERROR:
+            return state.deleteIn([`${action.payload}List`, 'hasError'])
+                    .deleteIn([`${action.payload}List`, 'isLoading']);
 
         default:
             return state;

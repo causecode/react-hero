@@ -2,6 +2,7 @@ import {BaseModel} from '../models/BaseModel';
 import {IGenericAction} from '../interfaces';
 import {
     CLEAR_INSTANCE_DATA_ERROR,
+    CLEAR_INSTANCE_LIST_ERROR,
     DELETE_INSTANCE,
     SAVE_ALL_INSTANCES,
     SAVE_INSTANCE,
@@ -79,6 +80,13 @@ export const saveAllInstances = (instanceList: BaseModel[], resource: string) =>
 export const clearInstanceDataError = (resource: string): IGenericAction => {
     return {
         type: CLEAR_INSTANCE_DATA_ERROR,
+        payload: resource,
+    };
+};
+
+export const clearInstanceListError = (resource: string): IGenericAction => {
+    return {
+        type: CLEAR_INSTANCE_LIST_ERROR,
         payload: resource,
     };
 };
