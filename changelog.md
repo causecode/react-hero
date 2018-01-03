@@ -1,5 +1,9 @@
 # Changelog
 
+## [2.0.5] - [Unreleased]
+### Changed
+- Now `FormInput` can take any html attribute as prop.
+
 ## [2.0.4] - [Unreleased]
 ### Removed
 - require statement in fetchComponent method. (it was causing issue while chunking)

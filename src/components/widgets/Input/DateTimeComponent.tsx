@@ -11,7 +11,7 @@ export class DateTimeComponent extends React.Component<IInputProps, {}> {
     }
 
     render(): JSX.Element {
-        const {style, propertyValue} = this.props;
+        const {style, propertyValue, htmlAttributes} = this.props;
 
         return(
             <FormControl
@@ -19,6 +19,7 @@ export class DateTimeComponent extends React.Component<IInputProps, {}> {
                     style={style ? style.inputCSS : {}}
                     onChange={this.handleChange}
                     value={propertyValue ? moment(propertyValue).format('YYYY-MM-DD') : ''}
+                    {...htmlAttributes}
             />
         );
     }

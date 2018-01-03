@@ -3,13 +3,14 @@ import {IInputProps} from './';
 
 export const GenericInputTemplate = (props: IInputProps): JSX.Element => {
 
-    const {type, style, propertyValue} = props;
+    const {type, style, propertyValue, htmlAttributes} = props;
 
-    const handleChange: (e: React.FormEvent<void>) => void = (e: React.FormEvent<void>): void => {
+    const handleChange = (e: React.FocusEvent<HTMLInputElement> | React.ChangeEvent<HTMLInputElement>): void => {
         props.onChange(e.target[`value`]);
     };
 
-    const inputProps: {onBlur: (e: React.FormEvent<void>) => void} | {onChange: (e: React.FormEvent<void>) => void}
+    const inputProps: {onBlur: (e: React.FocusEvent<HTMLInputElement>) => void} |
+            {onChange: (e: React.ChangeEvent<HTMLInputElement>) => void}
             = props.onBlur ? {onBlur: handleChange} : {onChange: handleChange};
 
     return (
@@ -19,6 +20,7 @@ export const GenericInputTemplate = (props: IInputProps): JSX.Element => {
                 className="form-control"
                 defaultValue={propertyValue}
                 {...inputProps}
+                {...htmlAttributes}
         />
     );
 };
