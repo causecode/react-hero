@@ -40,6 +40,7 @@ export interface IInputProps extends IReactSelectProps, IInputStateProps, IInput
     radioButtonLabels?: {first: string, second: string}
     onBlur?: boolean;
     onChange?: (e: React.ChangeEvent<HTMLSelectElement> | string[] | object[] | boolean | string) => void;
+    htmlAttributes?: React.InputHTMLAttributes<HTMLInputElement>
 }
 
 class FormInputImpl extends React.Component<IInputProps, {}> {

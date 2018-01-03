@@ -125,7 +125,7 @@ function fetchComponent(componentPath: string, componentName: string, theme?: st
      */
     // It was causing the issue during chunking. It is not being used anywhere across the codebase.
     // return require(`../../src/${theme || 'default'}/${componentPath}`)[`${componentName}`];
-    return require.include(`../../../../src/${theme || 'default'}/${componentPath}`)[`${componentName}`];
+     return require.include(`../../../../src/${theme || 'default'}/${componentPath}`)[`${componentName}`];
 }
 
 export function showWarn(message: string): void {
