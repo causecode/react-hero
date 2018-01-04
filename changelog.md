@@ -2,7 +2,7 @@
 
 ## [2.0.6] - [Unreleased]
 ## Fixed
-- Error response on failure of requests.
+- Error response from axios is passed to failureCallback used in BaseModel.
 
 ## [2.0.5] - [Unreleased]
 ### Changed
