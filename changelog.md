@@ -1,5 +1,9 @@
 # Changelog
 
+## [2.0.6] - [Unreleased]
+## Fixed
+- Error response on failure of requests.
+
 ## [2.0.5] - [Unreleased]
 ### Changed
 - Now `FormInput` can take any html attribute as prop.

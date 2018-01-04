@@ -270,7 +270,7 @@ export function getData(path: string, filters = {}, headers: Object = {}): Promi
                 resolve(response);
             })
             .then<void>(null, (err) =>
-                reject(new Error(FETCH_ERR_MSG)),
+                reject(err),
             );
     });
 }
