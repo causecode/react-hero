@@ -1,6 +1,6 @@
 {
   "name": "react-hero",
-  "version": "2.0.5",
+  "version": "2.0.6",
   "description": "",
   "private": false,
   "main": "public/index.js",
@@ -13,7 +13,7 @@
     "postInstall": "npm run compile",
     "test": "NODE_ENV=test jest --no-cache --coverage",
     "lint-ts": "tslint 'src/*.tsx' 'src/**/*.tsx' 'src/*.ts' 'src/**/*.ts'",
-    "start:dev": "npm run clean && webpack-dev-server --watch --hot --inline",
+    "start:dev": "sh -ac '. .env.development npm run clean && webpack-dev-server --watch --hot --inline'",
     "buildCLI": "npm run compile",
     "linkCLI": "npm run buildCLI && npm link"
   },
@@ -55,10 +55,12 @@
   "license": "ISC",
   "homepage": "https://github.com/causecode/react-hero#readme",
   "dependencies": {
+    "@types/dotenv": "^6.1.0",
     "axios": "0.17.0",
     "bootstrap": "3.3.7",
     "classnames": "2.2.5",
     "css-loader": "0.28.7",
+    "dotenv": "^7.0.0",
     "ejs-loader": "0.3.0",
     "es5-shim": "4.5.9",
     "es6-promise": "4.1.1",

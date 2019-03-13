@@ -1,8 +1,10 @@
 import axios, {AxiosPromise} from 'axios';
-import {config} from '../../config';
 import {getTokenFromLocalStorage} from '../../utils/appService';
+import dotenv from 'dotenv';
 
-export const BASE_URL: string = config.APIUrl || config.serverUrl;
+dotenv.config();
+
+export const BASE_URL: string = process.env.API_URL || process.env.SERVER_URL;
 
 export function setDefaultHeader(): void {
     axios.defaults.headers.common['X-Auth-Token'] = getTokenFromLocalStorage();
