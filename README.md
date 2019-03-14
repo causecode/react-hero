@@ -5,10 +5,19 @@ Plugin provides utility directives and services.
 
 ## Installation
 
-1. `npm Install`
-2. `typings Install`
+1. `npm install`
+2. `typings install`
 3. `npm run start:dev`
 4. Installing new typings, eg. `typings install dt~react-dom --global --save`
+
+## Steps to install locally to react app
+1. `npm install`
+2. `npm run compile`
+3. Switch to react app, `install-local ../react-hero`
+
+- [install-local](https://www.npmjs.com/package/install-local)
+
+To run the app, make sure that you have environment files present.
 
 ## Releasing a new Version
 
@@ -168,13 +177,14 @@ const primaryNavStyle: CSS = {
 
 ### 4 HTTP requests
 
-- Before using this feature the following configuration should be present in the  package.json:
+- Before using this feature the following server URL and API URL should be present in the environment files. Example: For the development, these NAME=VALUE are present in the
+`.env.development` at the root level.
 
     ```
-    "reactHero": {
-        "serverUrl": "http://example.com/",
-        "APIUrl": "http://example.com/api/version"
-    },
+    NODE_ENV='development'
+    SERVER_URL='http://example.com/'
+    API_URL='http://example.com/api/version'
+
     ```
 
  - `APIUrl` is prefixed to the path provided with every request via `HTTP` module. If the `APIUrl` is not found, `serverUrl` is used.

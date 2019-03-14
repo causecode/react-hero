@@ -1,5 +1,7 @@
 import * as appService from './utils/appService';
-require('dotenv').config();
+import {config} from 'dotenv';
+
+config();
 
 // Doing this to avoid cyclic imports problem when used through commandline.
 let isEmpty: (...args: any[]) => void | boolean = appService.isEmpty || ((...args: any[]) => {});
