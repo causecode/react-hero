@@ -8,7 +8,6 @@ let isEmpty: (...args: any[]) => void | boolean = appService.isEmpty || ((...arg
 
 const { SERVER_URL, API_URL } = process.env;
 
-
 if (isEmpty(API_URL)) {
     throw new Error('ApiUrl must be defined.');
 }
