@@ -11,9 +11,9 @@
     "clean": "rimraf public dist",
     "compile": "npm run clean && tsc",
     "postInstall": "npm run compile",
-    "test": "NODE_ENV='test' API_URL='http://example.com/api/v1/' SERVER_URL='http://example.com/' jest --no-cache --env=jsdom",
+    "test": "NODE_ENV=test API_URL=http://example.com/api/v1/ SERVER_URL=http://example.com/ jest --no-cache --env=jsdom",
     "lint-ts": "tslint 'src/*.tsx' 'src/**/*.tsx' 'src/*.ts' 'src/**/*.ts'",
-    "start:dev": "env-cmd .env.development npm run clean && webpack-dev-server --watch --hot --inline",
+    "start:dev": "NODE_ENV=development npm run clean && webpack-dev-server --watch --hot --inline",
     "buildCLI": "npm run compile",
     "linkCLI": "npm run buildCLI && npm link"
   },
