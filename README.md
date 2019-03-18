@@ -178,7 +178,7 @@ const primaryNavStyle: CSS = {
 ### 4 HTTP requests
 
 - Before using this feature the following server URL and API URL should be present in the environment files. Example: For the development, these NAME=VALUE are present in the
-`.env.development` at the root level.
+`.env` at the root level.
 
     ```
     NODE_ENV='development'

@@ -1,6 +1,6 @@
 import axios, {AxiosPromise} from 'axios';
-import {getTokenFromLocalStorage} from '../../utils/appService';
 import {config} from '../../config';
+import {getTokenFromLocalStorage} from '../../utils/appService';
 
 export const BASE_URL: string = config.APIUrl || config.serverUrl;
 
