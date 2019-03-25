@@ -1,14 +1,17 @@
 # Changelog
 
-## [2.0.6] - [Unreleased]
+## [2.0.6] - [2019-03-14]
 ## Fixed
 - Error response from axios is passed to failureCallback used in BaseModel.
 
-## [2.0.5] - [Unreleased]
+## Changed
+- Environment configuration settings via dotenv files.
+
+## [2.0.5] - [2018-01-03]
 ### Changed
 - Now `FormInput` can take any html attribute as prop.
 
-## [2.0.4] - [Unreleased]
+## [2.0.4] - [2017-12-20]
 ### Removed
 - require statement in fetchComponent method. (it was causing issue while chunking)
 

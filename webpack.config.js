@@ -1,3 +1,6 @@
+var dotenv = require('dotenv');
+dotenv.config();
+
 var webpack = require('webpack');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -37,7 +40,9 @@ if (isProduction) {
         }),
         new webpack.DefinePlugin({
             'process.env': {
-                'NODE_ENV': JSON.stringify('production')
+                'NODE_ENV': JSON.stringify('production'),
+                'API_URL': JSON.stringify(process.env.API_URL),
+                'SERVER_URL': JSON.stringify(process.env.SERVER_URL),
             }
         })
     );
@@ -52,7 +57,9 @@ if (isProduction) {
     plugins.push(
         new webpack.DefinePlugin({
             'process.env': {
-                'NODE_ENV': JSON.stringify('development')
+                'NODE_ENV': JSON.stringify('development'),
+                'API_URL': JSON.stringify(process.env.API_URL),
+                'SERVER_URL': JSON.stringify(process.env.SERVER_URL),
             }
         })
     );

@@ -1,19 +1,20 @@
 import * as appService from './utils/appService';
-let packageJson: any = require('../../../package.json');
-let localConfigJson: any = require('../../../localConfig.json');
 
 // Doing this to avoid cyclic imports problem when used through commandline.
 let isEmpty: (...args: any[]) => void | boolean = appService.isEmpty || ((...args: any[]) => {});
-let getEnvironment: () => string = appService.getEnvironment || (() => '');
- localConfigJson = isEmpty(localConfigJson) ? packageJson : localConfigJson;
 
-let config: {
-    reactHero: {
-        serverUrl: string;
-        APIUrl: string;
-    };
-} = (getEnvironment() === 'production') ? packageJson : localConfigJson;
+const { SERVER_URL, API_URL } = process.env;
 
-let reactHeroConfig: {serverUrl: string, APIUrl: string} = config.reactHero;
+if (isEmpty(API_URL)) {
+    throw new Error('ApiUrl must be defined.');
+}
+
+if (isEmpty(SERVER_URL)) {
+    throw new Error('Server URL must be defined.');
+}
+
+let reactHeroConfig: {serverUrl: string, APIUrl: string} = {
+    serverUrl: SERVER_URL, APIUrl: API_URL,
+};
 
 export {reactHeroConfig as config};
